@@ -1,0 +1,6 @@
+{% block report %}
+    <p>{{ 'email.hello' |trans }} {{ approver }}</p>
+    <p>{{ submitter }} has submitted a timesheet for approval:</p>
+    <a href="{{ url }}">{{ week }}</a>
+{% endblock %}
+

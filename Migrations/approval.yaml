@@ -1,0 +1,13 @@
+# --------------------------------------------------------------------------------------------------
+# Generate a new migration with:
+# bin/console doctrine:migrations:diff --em=default --configuration=var/plugins/ApprovalBundle/Migrations/approval.yaml
+#
+# Execute all migrations with:
+# bin/console kimai:bundle:approval:install
+# bin/console doctrine:migrations:migrate --em=default --configuration=var/plugins/ApprovalBundle/Migrations/approval.yaml
+# --------------------------------------------------------------------------------------------------
+
+table_storage:
+    table_name: 'bundle_migration_approval'
+migrations_paths:
+    'KimaiPlugin\ApprovalBundle\Migrations': 'var/plugins/ApprovalBundle/Migrations'

@@ -1,0 +1,13 @@
+{% block report %}
+    <h1>{{ 'email.cronjob.teamleadNotSubmittedUsersTitle' | trans }}</h1>
+    {% for value in context %}
+        <p>{{ value[0].user }}</p>
+        {% for approval in value %}
+            <a href="{{ approval.url }}">
+                {{ approval.week }}
+            </a>
+            <br/>
+        {% endfor %}
+    {% endfor %}
+{% endblock %}
+

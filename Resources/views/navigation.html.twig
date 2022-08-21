@@ -1,0 +1,29 @@
+{% if not warningNoUsers %}
+<ul class="nav nav-tabs">
+    {% if showToApproveTab %}
+        <li{% if current_tab == "to_approve" %} class="active"{% endif %}>
+            <a href="{{ path('approval_bundle_to_approve') }}"
+               style="cursor: pointer"
+               aria-expanded="false">
+                {{ 'menu.to_approve' |trans }}
+            </a>
+        </li>
+    {% endif %}
+    <li{% if current_tab == "weekly_report" %} class="active"{% endif %}>
+        <a href="{{ path('approval_bundle_report') }}"
+           style="cursor: pointer"
+           aria-expanded="false">
+            {{ 'menu.report_user_week' |trans }}
+        </a>
+    </li>
+    {% if showSettings %}
+        <li{% if current_tab == "settings" %} class="active"{% endif %}>
+            <a href="{{ path('approval_bundle_settings') }}"
+               style="cursor: pointer"
+               aria-expanded="false">
+                {{ 'menu.settings' |trans }}
+            </a>
+        </li>
+    {% endif %}
+</ul>
+{% endif %}

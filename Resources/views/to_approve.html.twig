@@ -1,0 +1,96 @@
+{% extends '@Approval/layout.html.twig' %}
+
+{% block report_title %}{{ report_title|trans({}, 'ApprovalBundle') }}{% endblock %}
+
+{% block report %}
+    {% if past_rows is not empty %}
+        {% block past_week_table %}
+            {% block past_weeks_table_name %} <h3>{{ 'table.past_weeks'|trans }}</h3> {% endblock %}
+            <table class="table table-bordered table-hover dataTable">
+                <thead>
+                <tr>
+                    <th>{{ 'table.approve_user'|trans }}</th>
+                    <th>{{ 'table.approve_week'|trans }}</th>
+                    <th>{{ 'table.approve_status'|trans }}</th>
+                    <th style="width: 5vw; color: black">{{ 'table.approve_action'|trans }}</th>
+                </tr>
+
+                {% for row in past_rows %}
+                    <tr class="rows" style="background-color: {{ row['status'] == 'approved' ?
+                    '#32cd32c7' :
+                    row['status'] == 'denied' ?
+                    '#ff4500b8' :
+                    row['status'] == 'submitted' ?
+                    '#ff8c00a6' :
+                    '#cccccc' }}">
+                        <td>{{ row['user'] }}</td>
+                        <td>{{ row['week'] }}</td>
+                        <td>{{ row['status']|trans }}</td>
+                        <td>
+                            <a class="btn btn-default" style="font-weight: bold;"
+                               href="{{ path('approval_bundle_report', {'user':row['userId'], 'date': row['startDate']}) }}">
+                                <i class="fas fa-1x fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </thead>
+            </table>
+        {% endblock %}
+    {% endif %}
+
+    {% block current_week_tabe %}
+        {% block current_week_table_name %} <h3>{{ 'table.current_week'|trans }}</h3> {% endblock %}
+        <table class="table table-bordered table-hover dataTable">
+            <thead>
+            <tr>
+                <th>{{ 'table.approve_user'|trans }}</th>
+                <th>{{ 'table.approve_week'|trans }}</th>
+                <th>{{ 'table.approve_status'|trans }}</th>
+                <th style="width: 5vw; color: black">{{ 'table.approve_action'|trans }}</th>
+            </tr>
+            {% for row in current_rows %}
+                <tr class="rows" style="background-color: {{ row['status'] == 'approved' ?
+                '#32cd32c7' :
+                row['status'] == 'denied' ?
+                '#ff4500b8' :
+                row['status'] == 'submitted' ?
+                '#ff8c00a6' :
+                '#cccccc' }}">
+                    <td>{{ row['user'] }}</td>
+                    <td>{{ row['week'] }}</td>
+                    <td>{{ row['status']|trans }}</td>
+                    <td>
+                        <a class="btn btn-default" style="font-weight: bold;"
+                           href="{{ path('approval_bundle_report', {'user':row['userId'], 'date': row['startDate']}) }}">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </thead>
+        </table>
+    {% endblock %}
+{% endblock %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .box-header > .box-tools {
+            margin: 0;
+        }
+
+        a {
+            color: black;
+        }
+
+        .rows td {
+            vertical-align: middle !important;
+        }
+
+        .rows:hover {
+            filter: brightness(85%);
+        }
+    </style>
+{% endblock %}

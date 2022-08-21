@@ -1,0 +1,25 @@
+{
+    "name": "approval-bundle",
+    "description": "A Kimai 2 Plugin to manage approvals and supporting related API",
+    "homepage": "https://glacon.eu",
+    "type": "kimai-plugin",
+    "version": "0.9",
+    "require": {
+        "kimai/kimai2-composer": "*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Katja Glaß",
+            "email": "info@glacon.eu",
+            "homepage": "https://glacon.eu"
+        }
+    ],
+    "extra": {
+        "kimai": {
+            "require": "1.17",
+            "version": "0.9",
+            "name": "ApprovalBundle"
+        }
+    }
+}

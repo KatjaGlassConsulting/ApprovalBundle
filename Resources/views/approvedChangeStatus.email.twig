@@ -1,0 +1,13 @@
+{% block report %}
+    {% if reason %}
+        <p>{{ 'email.hello' |trans }} {{ submitter }}</p>
+        <p>{{ 'email.reject.message' | trans }} {{ approver }} </p>
+        <p>{{ 'email.reason' | trans }} {{ reason }}</p>
+        <a href="{{ url }}">{{ week }}</a>
+    {% else %}
+        <p>{{ 'email.hello' |trans }} {{ submitter }}</p>
+        <p>{{ approver }} {{ 'email.approved.message' | trans }}</p>
+        <a href="{{ url }}">{{ week }}</a>
+    {% endif %}
+{% endblock %}
+

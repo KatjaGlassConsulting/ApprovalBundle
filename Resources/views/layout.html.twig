@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% import "macros/widgets.html.twig" as widgets %}
+
+{% block page_title %}{{ 'menu.approval_bundle'|trans }}{% endblock %}
+{% block page_subtitle %}{{ 'menu.report_user_week'|trans }}{% endblock %}
+
+{% block main %}
+    {% if warningNoUsers %}
+        {{ widgets.callout('danger', 'warning.noUserToApprove'|trans) }}
+    {% endif %}
+
+    {% if settingsWarning %}
+        {{ widgets.callout('danger', 'warning.approval_settings_not_set'|trans) }}
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-12" id="ApprovalBundle-content">
+            <div class="nav-tabs-custom">
+                {{ include('@Approval/navigation.html.twig') }}
+                <div class="tab-content">
+                    {% block report %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+{% import "macros/widgets.html.twig" as widgets %}
+
+{% block page_title %}{{ 'title.approval_bundle'|trans }}{% endblock %}
+
+{% block main %}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="nav-tabs-custom">
+        <div class="tab-content">
+          {{ form_start(form) }}
+          {{ form_end(form) }}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block javascripts %}
+  {{ parent() }}
+  <script type="text/javascript">
+    document.addEventListener("kimai.initialized", function () {
+      let submitButtonElement = document.getElementById("add_to_approve_submit");
+      document.getElementById("add_to_approve_user").onchange = function () {
+        let monthSelectElement = document.getElementById("add_to_approve_week");
+        monthSelectElement.innerHTML = "";
+        {% for userWeek in userWeeks %}
+        if ('{{ userWeek.userId }}' === this.value) {
+          {% set index = 0 %}
+          {% for week in userWeek.week %}
+            let opt{{ index }} = document.createElement("option");
+            opt{{ index }}.value = '{{ week.value  }}';
+            opt{{ index }}.innerHTML = '{{ week.label }}';
+            monthSelectElement.appendChild(opt{{ index }});
+          {% set index =  index + 1 %}
+          {% endfor %}
+        }
+        {% set index =  index + 1 %}
+        {% endfor %}
+
+        submitButtonElement.disabled = false;
+        submitButtonElement.classList.remove("disabled");
+      };
+    });
+  </script>
+{% endblock %}

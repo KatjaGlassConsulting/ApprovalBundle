@@ -1,0 +1,14 @@
+controllers:
+    resource: '../../Controller/'
+    type: annotation
+    prefix: /{_locale}
+    requirements:
+        _locale: '%app_locales%'
+    defaults:
+        _locale: '%locale%'
+
+
+api_controllers:
+    resource: '../../API/'
+    type: annotation
+    prefix: '/api'
