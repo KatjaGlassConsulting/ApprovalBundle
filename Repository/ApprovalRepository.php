@@ -392,6 +392,29 @@ class ApprovalRepository extends ServiceEntityRepository
         return $arrayToReturn;
     }
 
+    /* returns an array of approval IDs */
+    public function findAllLaterApprovals(string $approveId)
+    {
+        $originApproval = $this->find($approveId);
+        $user = $originApproval->getUser();
+        $userId = $originApproval->getUser()->getId();
+        $date = $originApproval->getEndDate();
+
+        $allRows = $this->findAllWeek([$user]);
+        $allRows = $this->filterWeeksApprovedOrSubmitted($allRows);
+        $allRows = $this->filterWeeksLaterThan($allRows, $date->format('Y-m-d'));
+        
+        $result = [];
+        foreach ($allRows as $week){
+            $approvalId = end($this->findHistoryForUserAndWeek($userId, $week['startDate']))->getId();
+            if ($approvalId){
+                array_push($result, $approvalId);
+            }
+        }
+
+        return $result;
+    }
+
     public function findCurrentWeekToApprove(array $users, UserInterface $currentUser): int
     {
         $usersId = array_map(function ($user) {
@@ -481,6 +504,35 @@ class ApprovalRepository extends ServiceEntityRepository
                     $response[] = $approve;
                 }
 
+                return $response;
+            },
+            []
+        );
+    }
+
+    public function filterWeeksApprovedOrSubmitted($parseToViewArray): array
+    {
+        return array_reduce(
+            $parseToViewArray,
+            function ($response, $approve) {
+                if (\in_array($approve['status'], [ApprovalStatus::APPROVED, ApprovalStatus::SUBMITTED])) {
+                    $response[] = $approve;
+                }
+
+                return $response;
+            },
+            []
+        );
+    }
+
+    public function filterWeeksLaterThan($rowArray, $dateString): array
+    {
+        return array_reduce(
+            $rowArray,
+            function ($response, $item)  use ($dateString) {
+                if ($item['startDate'] > $dateString) {
+                    $response[] = $item;
+                }
                 return $response;
             },
             []

@@ -144,7 +144,11 @@ class ApprovalController extends AbstractController
             $approval
         );
         if ($approval) {
+            // set all approvals + following approvals to NOT_SUBMITTED
+            $this->resetAllLaterApprovals($this->approvalRepository->findAllLaterApprovals($approveId));
+            // set current approvals to NOT_SUBMITTED
             $approval = $this->createNewApproveHistory($approveId, ApprovalStatus::NOT_SUBMITTED);
+            // update lockdown period
             $this->lockdownRepository->updateLockWeek($approval, $this->approvalRepository);
         }
 
@@ -176,6 +180,10 @@ class ApprovalController extends AbstractController
                 $this->approvalRepository->getUrl($approval->getUser()->getId(), $approval->getStartDate()->format('Y-m-d'))
             );
             $this->createNewApproveHistory($approveId, ApprovalStatus::NOT_SUBMITTED, '', (new DateTime())->modify('+2 second')->format('d.m.Y H:i:s'));
+            
+            // set all approvals + following approvals to NOT_SUBMITTED
+            $this->resetAllLaterApprovals($this->approvalRepository->findAllLaterApprovals($approveId));
+            
             $this->lockdownRepository->updateLockWeek($approval, $this->approvalRepository);
         }
 
@@ -183,6 +191,12 @@ class ApprovalController extends AbstractController
             'user' => $request->query->get('user'),
             'date' => $request->query->get('date'),
         ]));
+    }
+
+    private function resetAllLaterApprovals($approvalIdArray){
+        foreach ($approvalIdArray as $approvalId){
+            $this->createNewApproveHistory($approvalId, ApprovalStatus::NOT_SUBMITTED, 'Reset due to earlier approval cancellation');
+        }
     }
 
     /**
@@ -208,7 +222,7 @@ class ApprovalController extends AbstractController
      * @throws Exception
      */
     private function createNewApproveHistory(string $approveId, string $status, string $message = null, string $dateTime = 'now'): ?Approval
-    {
+    {        
         if ($approveId > 0) {
             $dateTime = new DateTime($dateTime);
             $approve = $this->approvalRepository->find($approveId);
