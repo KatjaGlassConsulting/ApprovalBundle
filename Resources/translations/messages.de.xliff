@@ -388,6 +388,10 @@
 				<source>tooltip.undo</source>
 				<target>Approval zurücknehmen</target>
 			</trans-unit>
+            <trans-unit id="tooltip.submit">
+				<source>tooltip.submit</source>
+				<target>Submit Approval</target>
+			</trans-unit>
             <!-- END Tooltips for buttons -->
 			
 		</body>

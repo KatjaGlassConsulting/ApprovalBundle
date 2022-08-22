@@ -26,24 +26,24 @@
                 <span style="float: right">
 
                 {% if timesheet | length > 0 %}
-                    <a id="descriptionButton" class="btn btn-default btn-create" title={{ 'tooltip.description'| trans }}>
+                    <a id="descriptionButton" class="btn btn-default btn-create" title="{{ 'tooltip.description'|trans }}">
                         <i class="fas fa-1x fa-info-circle"></i>
                     </a>
-                    <a id="timesheetButton" class="btn btn-default btn-create" title={{ 'tooltip.timesheets'| trans }}>
+                    <a id="timesheetButton" class="btn btn-default btn-create" title="{{ 'tooltip.timesheets'|trans }}">
                         <i class="fas fa-1x fa-user-clock"></i>
                     </a>
                 {% endif %}
                 {% if status is not empty %}
-                    <a id="historyButton" class="btn btn-default btn-create" title={{ 'tooltip.history'| trans }}>
+                    <a id="historyButton" class="btn btn-default btn-create" title="{{ 'tooltip.history'|trans }}">
                         <i class="fa fa-1x fa-history"></i>
                     </a>
                 {% endif %}
                     {% if (status == 'submitted') and not (user.id == currentUser and canManageHimself) %}
                         <a href="{{ path('approve',{'approveId':approveId,'user':user.id,'date':current|date('Y-m-d')}) }}"
-                           class="btn btn-default btn-create" title={{ 'tooltip.approve'| trans }}>
+                           class="btn btn-default btn-create" title="{{ 'tooltip.approve'|trans }}">
                         <i class="fa fa-1x fa-check-circle"></i>
                     </a>
-                        <a id="deniedButton" class="btn btn-default btn-create closeModal" title={{ 'tooltip.reject'| trans }}>
+                        <a id="deniedButton" class="btn btn-default btn-create closeModal" title="{{ 'tooltip.reject'|trans }}">
                         <i class="fa fa-1x fa-times-circle"></i>
                     </a>
                 {% elseif (status is empty or status == 'not_submitted') and not settingsWarning %}
@@ -54,11 +54,11 @@
                                     href="{{ path('add_to_approve',{'user':user.id,'date':current|date('Y-m-d')}) }}"
                                 {% endif %}
                                 class="btn btn-default btn-create"
-                                title="Submit for approval">
+                                title="{{ 'tooltip.submit'|trans }}">
                         <i class="fa fa-1x fa-paper-plane"></i>
                     </a>
                 {% elseif isSuperAdmin and status == 'approved' %}
-                        <a id="undoButton" class="btn btn-default btn-create"  title={{ 'tooltip.undo'| trans }}>
+                        <a id="undoButton" class="btn btn-default btn-create"  title="{{ 'tooltip.undo'| trans }}">
                     <i class="fa fa-1x fa-undo"></i>
                 </a>
                     {% endif %}
