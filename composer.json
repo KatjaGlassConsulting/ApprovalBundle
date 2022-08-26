@@ -18,7 +18,7 @@
     "extra": {
         "kimai": {
             "require": "1.17",
-            "version": "0.9",
+            "version": "0.9.1",
             "name": "ApprovalBundle"
         }
     }
