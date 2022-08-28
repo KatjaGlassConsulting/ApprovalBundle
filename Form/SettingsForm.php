@@ -19,7 +19,7 @@ use KimaiPlugin\MetaFieldsBundle\Repository\MetaFieldRuleRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
-use App\Form\Type\DatePickerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class SettingsForm extends AbstractType
@@ -111,12 +111,9 @@ class SettingsForm extends AbstractType
 
         $workflowDate = $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WORKFLOW_START);
         if ($workflowDate == ""){
-            // $workflowDate = date("2000-01-01");
-            $workflowDate = new \Datetime();
-            $workflowDate = $workflowDate->createFromFormat('Y-m-d H:i:s', '2000-01-01 00:00:00');
-            // $workflowDate = '2000-01-01 00:00:00';
+            $workflowDate = '2000-01-01 00:00:00';
         }
-        $builder->add(FormEnum::WORKFLOW_START, DatePickerType::class, [
+        $builder->add(FormEnum::WORKFLOW_START, TextType::class, [
             'label' => 'label.workflow_start',
             'data' => $workflowDate,
             'required' => false

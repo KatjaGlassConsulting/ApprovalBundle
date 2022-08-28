@@ -292,6 +292,10 @@
 				<source>label.email_link_url</source>
 				<target>E-Mail-Link url</target>
 			</trans-unit>
+			<trans-unit id="label.workflow_start">
+				<source>label.workflow_start</source>
+				<target>Approval Workflow Start Datum</target>
+			</trans-unit>
 
 			<!-- START formatting patterns form -->
 			<trans-unit id="format.full_datetime">
