@@ -259,7 +259,7 @@ class ApprovalRepository extends ServiceEntityRepository
         if ($firstDay->format('D') !== 'Mon') {
             $firstDay = clone new DateTime($firstDay->modify('last monday')->format('Y-m-d H:i:s'));
         }
-        while ($firstDay < new DateTime('today')) {
+        while ($firstDay <= new DateTime('today')) {
             if (!\in_array($firstDay, $approvedWeeks) && $firstDay->format('Y-m-d') > $approval_ws_start_week) {
                 $weeks[] = (object) [
                     'label' => $this->formatting->parseDate($firstDay),
