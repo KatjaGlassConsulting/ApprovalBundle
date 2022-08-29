@@ -3,7 +3,7 @@
     "description": "A Kimai 2 Plugin to manage approvals and supporting related API",
     "homepage": "https://glacon.eu",
     "type": "kimai-plugin",
-    "version": "0.9.1",
+    "version": "0.9.2",
     "require": {
         "kimai/kimai2-composer": "*"
     },
@@ -18,7 +18,7 @@
     "extra": {
         "kimai": {
             "require": "1.17",
-            "version": "0.9.1",
+            "version": "0.9.2",
             "name": "ApprovalBundle"
         }
     }

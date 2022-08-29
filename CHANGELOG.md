@@ -6,7 +6,7 @@
 - New setting "Approval Start Date", only weeks with this date or later are considered for approval listing/workflow
 - Enhanced E-Mail text
 - New warning if Sunday is used as user-setting (in per-user screen, if user or displayed user use this not supported setting)
-- Fix: current week displays contains the last week also on Monday of the following week and not only when it is already Tuesday
+- Fix: current week display contains now also the last week also on Monday of the following week and not only when it is already Tuesday
 - Fix: email if month closed: only if it is a past month and also include the very first week which might start in the previous month
 
 ## 0.9 to 0.9.1
