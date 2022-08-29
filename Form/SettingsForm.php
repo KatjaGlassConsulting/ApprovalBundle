@@ -111,7 +111,7 @@ class SettingsForm extends AbstractType
 
         $workflowDate = $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WORKFLOW_START);
         if ($workflowDate == ""){
-            $workflowDate = '2000-01-01 00:00:00';
+            $workflowDate = '2000-01-01';
         }
         $builder->add(FormEnum::WORKFLOW_START, TextType::class, [
             'label' => 'label.workflow_start',

@@ -168,7 +168,7 @@ class ApprovalRepository extends ServiceEntityRepository
     {
         $parseToViewArray = $this->getUserApprovals($users);
         $parseToViewArray = $this->addAllNotSubmittedUsers($parseToViewArray, $users);
-
+        
         $result = $parseToViewArray ? $this->sort($parseToViewArray) : [];
 
         return $this->getNewestPerUser($result);
@@ -250,11 +250,17 @@ class ApprovalRepository extends ServiceEntityRepository
             ->getResult();
         $firstDay = $firstDayWork ? $firstDayWork[0]->getBegin() : new DateTime('today');
 
+        $approval_workflow_start = $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WORKFLOW_START);
+        if ($approval_workflow_start == ""){
+            $approval_workflow_start = "0000-01-01";
+        }
+        $approval_ws_start_week = (new DateTime($approval_workflow_start))->modify('-7 day')->format('Y-m-d');
+
         if ($firstDay->format('D') !== 'Mon') {
             $firstDay = clone new DateTime($firstDay->modify('last monday')->format('Y-m-d H:i:s'));
         }
         while ($firstDay < new DateTime('today')) {
-            if (!\in_array($firstDay, $approvedWeeks)) {
+            if (!\in_array($firstDay, $approvedWeeks) && $firstDay->format('Y-m-d') > $approval_ws_start_week) {
                 $weeks[] = (object) [
                     'label' => $this->formatting->parseDate($firstDay),
                     'value' => (clone $firstDay)->format('Y-m-d')
@@ -602,12 +608,19 @@ class ApprovalRepository extends ServiceEntityRepository
             return $user->getId();
         }, $users);
 
-        $em = $this->getEntityManager();
+        $approval_workflow_start = $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WORKFLOW_START);
+        if ($approval_workflow_start == ""){
+            $approval_workflow_start = "0000-01-01";
+        }
+        
+        $em = $this->getEntityManager();        
         $approvedList = $em->createQueryBuilder()
             ->select('ap')
             ->from(Approval::class, 'ap')
             ->join('ap.user', 'u')
             ->andWhere($em->getExpressionBuilder()->in('u.id', $usersId))
+            ->andWhere('ap.startDate >= :begin')
+            ->setParameter('begin', $approval_workflow_start)
             ->orderBy('ap.startDate', 'ASC')
             ->addOrderBy('u.username', 'ASC')
             ->addOrderBy('ap.creationDate', 'ASC')
