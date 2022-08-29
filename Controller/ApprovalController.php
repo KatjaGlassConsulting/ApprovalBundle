@@ -248,12 +248,18 @@ class ApprovalController extends AbstractController
      */
     private function emailIfClosedMonth($date): void
     {
-        $users = $this->userRepository->findAll();
-        $users = array_filter($users, function ($user) {
-            return $user->isEnabled() && !$user->isSuperAdmin();
-        });
-        if ($this->approvalRepository->areAllUsersApproved($date, $users)) {
-            $this->emailTool->sendClosedWeekEmail((new DateTime($date))->format('F'));
+        // only check when it is not the current month
+        $dateFirstMonthDay = (new DateTime($date))->modify('first day of this month')->format('Y-m-d');
+        $todayFirstMonthDay = (new DateTime())->modify('first day of this month')->format('Y-m-d');
+
+        if ($dateFirstMonthDay < $todayFirstMonthDay){
+            $users = $this->userRepository->findAll();
+            $users = array_filter($users, function ($user) {
+                return $user->isEnabled() && !$user->isSuperAdmin();
+            });
+            if ($this->approvalRepository->areAllUsersApproved($date, $users)) {
+                $this->emailTool->sendClosedWeekEmail((new DateTime($date))->format('F'));
+            }
         }
     }
 }

@@ -462,11 +462,12 @@ class ApprovalRepository extends ServiceEntityRepository
             return $current;
         });
         $month = (new DateTime($date))->modify('first day of this month');
-        $startMonth = (new DateTime($date));
+        $endDay = (new DateTime($date))->modify('last day of this month');
         if ($month->format('N') !== '1') {
-            $month->modify('next monday');
+            $month->modify('previous monday');
         }
-        while ($this->isTheSameMonthAndPastDate($month, $startMonth)) {
+
+        while ($month <= $endDay) {
             $pastRows = $this->getWeekUserList($month);
             if (!empty(array_diff($users, array_column($pastRows, 'user')))) {
                 return false;
@@ -556,15 +557,6 @@ class ApprovalRepository extends ServiceEntityRepository
         });
     }
 
-    private function isTheSameMonthAndPastDate($month, $startMonth): bool
-    {
-        $monthName = (clone $month)->format('F');
-        $startMonthName = (clone $startMonth)->format('F');
-        $now = new DateTime('now');
-
-        return $monthName == $startMonthName && $month->format('Y-m-d') < $now->format('Y-m-d');
-    }
-
     private function generateURLtoApprovals(array $approvals): array
     {
         foreach ($approvals as &$approval) {
@@ -608,9 +600,11 @@ class ApprovalRepository extends ServiceEntityRepository
             return $user->getId();
         }, $users);
 
-        $approval_workflow_start = $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WORKFLOW_START);
+        $approval_workflow_start = $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WORKFLOW_START);        
         if ($approval_workflow_start == ""){
             $approval_workflow_start = "0000-01-01";
+        } else {
+            $approval_workflow_start = (new DateTime($approval_workflow_start))->modify('-7 day')->format('Y-m-d');
         }
         
         $em = $this->getEntityManager();        
@@ -619,7 +613,7 @@ class ApprovalRepository extends ServiceEntityRepository
             ->from(Approval::class, 'ap')
             ->join('ap.user', 'u')
             ->andWhere($em->getExpressionBuilder()->in('u.id', $usersId))
-            ->andWhere('ap.startDate >= :begin')
+            ->andWhere('ap.startDate > :begin')
             ->setParameter('begin', $approval_workflow_start)
             ->orderBy('ap.startDate', 'ASC')
             ->addOrderBy('u.username', 'ASC')
