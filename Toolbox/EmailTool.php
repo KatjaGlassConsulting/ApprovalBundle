@@ -64,7 +64,7 @@ class EmailTool
         $this->formatting = $formatting;
         $this->settingsTool = $settingsTool;
         $this->metaFieldRuleRepository = $metaFieldRuleRepository;
-    }
+    } 
 
     public function sendStatusChangedEmail(Approval $approval, string $approver, string $url): bool
     {
@@ -111,7 +111,7 @@ class EmailTool
             ];
             $email = (new TemplatedEmail())
                 ->to(new Address($user->getEmail()))
-                ->subject($this->translator->trans('email.subjectApproved') . ' ' . $submitter)
+                ->subject($submitter . $this->translator->trans('email.subjectSubmitted'))
                 ->htmlTemplate('@Approval/approved.email.twig')
                 ->context($context);
 

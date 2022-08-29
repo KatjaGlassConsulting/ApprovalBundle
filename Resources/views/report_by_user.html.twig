@@ -9,6 +9,14 @@
         {{ widgets.callout('danger', 'warning.add_to_approve_previous_weeks'|trans) }}
     {% endif %}
 
+    {% if selectedUserSundayIssue %}
+        {{ widgets.callout('danger', 'warning.selected_user_sunday_issue'|trans) }}
+    {% endif %}
+
+    {% if currentUserSundayIssue %}
+        {{ widgets.callout('danger', 'warning.currentUserSundayIssue'|trans) }}
+    {% endif %}
+
     {% block nav_row %}
         <div class="nav_row" style="float:left;width: 100%;background-color: {{ status == 'approved' ?
         '#32cd32c7' :

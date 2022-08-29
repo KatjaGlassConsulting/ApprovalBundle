@@ -150,6 +150,9 @@ class WeekReportController extends AbstractController
 
         [$timesheets, $errors] = $this->getTimesheets($selectedUser, $start, $end);
 
+        $selectedUserSundayIssue = $selectedUser->isFirstDayOfWeekSunday();
+        $currentUserSundayIssue = $this->getUser()->isFirstDayOfWeekSunday();
+ 
         return $this->render('@Approval/report_by_user.html.twig', [
             'approve' => $this->parseToHistoryView($userId, $startWeek),
             'week' => $this->formatting->parseDate(new DateTime($startWeek)),
@@ -178,7 +181,9 @@ class WeekReportController extends AbstractController
             'warningNoUsers' => empty($users),
             'errors' => $errors,
             'timesheet' => $timesheets,
-            'approvePreviousWeeksMessage' => $this->approvalRepository->getNextApproveWeek($selectedUser)
+            'approvePreviousWeeksMessage' => $this->approvalRepository->getNextApproveWeek($selectedUser),
+            'selectedUserSundayIssue' => $selectedUserSundayIssue,
+            'currentUserSundayIssue' => $currentUserSundayIssue
         ]);
     }
 

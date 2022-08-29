@@ -41,7 +41,7 @@
 			</trans-unit>
 			<trans-unit id="email.subjectSubmitted">
 				<source>email.subjectSubmitted</source>
-				<target>Genehmigung bereit für</target>
+				<target>Stundenzettel wurde eingereicht</target>
 			</trans-unit>
 			<trans-unit id="email.subjectApproved">
 				<source>email.subjectApproved</source>
@@ -65,11 +65,11 @@
 			</trans-unit>
 			<trans-unit id="email.approved.message">
 				<source>email.approved.message</source>
-				<target>has submitted a timesheet to get approved.</target>
+				<target>hat ihren Stundenzettel genehmigt - Woche:</target>
 			</trans-unit>
 			<trans-unit id="email.reject.message">
 				<source>email.reject.message</source>
-				<target>Ihr Stundenzettel wurde abgelehnt von: </target>
+				<target>hat ihren Stundenzettel abgelehnt - Woche:</target>
 			</trans-unit>
 			<trans-unit id="email.reason">
 				<source>email.reason</source>
@@ -149,6 +149,14 @@
 			<trans-unit id="warning.add_to_approve_previous_weeks">
 				<source>warning.add_to_approve_previous_weeks</source>
 				<target>Es gibt noch ungenehmigte frühere Wochen, daher kann diese Woche nicht bearbeitet werden</target>
+			</trans-unit>
+			<trans-unit id="warning.selected_user_sunday_issue">
+				<source>warning.selected_user_sunday_issue</source>
+				<target>Der gewählte Nutzer hat Sonntag als Wochenstart - dies wird vom Approval Plugin nicht unterstützt.</target>
+			</trans-unit>
+			<trans-unit id="warning.currentUserSundayIssue">
+				<source>warning.currentUserSundayIssue</source>
+				<target>Nutzereinstellung Sonntag als Wochenstart - dies wird vom Approval Plugin nicht unterstützt.</target>
 			</trans-unit>
 
 			<trans-unit id="label.meta_field_expected_working_time_on_monday">
