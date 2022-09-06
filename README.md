@@ -47,6 +47,39 @@ bin/console kimai:bundle:approval:install
 
 The plugin should appear now.
 
+## Settings
+
+### Meta-Field Setup
+
+The ApprovalBundle needs some meta fields and settings to be done. The daily and workly hours are displayed. For this the daily working time per day needs to be specified per user. Typically it might be 8h per week day. But there are very different situations, so someone might only work 4 days a week or less hours a day.
+
+The following meta-fields needs to be created ([Custom-Field-Plugin](https://www.kimai.org/store/custom-fields-bundle.html) is required):
+
+- Custom-Fields -> Users
+- The following fields must be from type = "duration", required field, visible, Role = "ROLE_SUPER_ADMIN", default for most should be default = "08:00", for Saturday/Sunday it should be "00:00" - the names could be anything, but the meaning is according those descriptions
+  - Daily working time Monday (daily_working_time_monday)
+  - Daily working time Tuesday (daily_working_time_tuesday)
+  - Daily working time Wednesday (daily_working_time_wednesday)
+  - Daily working time Thursday (daily_working_time_thursday)
+  - Daily working time Friday (daily_working_time_friday)
+  - Daily working time Saturday (daily_working_time_saturday)
+  - Daily working time Sunday (daily_working_time_sunday)
+
+It might be that the defaults are initially not automatically taken. Then you have to go through the System -> Users -> Select each user -> Settings -> "Save" (to store the defaults).
+
+**Remark LockdownBundle**
+
+The lockdown bundle also comes along with some custom user fields. In case an empty value is not accepted for start of approval timeframe, please enter "0000-01-01 00:00:01". The same you can enter for the other two time-settings.
+
+### Team Setup
+
+Next the teams needs to be setup. The teams define which person approves the time for what user. It is typically a picture of the organization. The teamlead is reponsible to approve times from it's team members. A teamlead can also be a member of a different team and for this has also an approver. The super user can perform approvals for all.
+
+### Approval Settings
+
+The final approval settings can be done via approval -> settings. Please enter the names of the daily_working_time_(day of the week) in the appropriate fields. A customer for off-days can also be set - then break times are not considered for those. The E-Mail link will be used as prefix to have the mails containing the correct links for approval views. You might want to enter something like `https://kimai.example.de/`. Finally the approval week start date defines a date where the approval workflow should start. All prior unapproved weeks are ignored. 
+
+
 ## APIs
 
 The following APIs are available. You might want to check out the API swagger documentation within Kimai where the API commands can directly be executed as well.
