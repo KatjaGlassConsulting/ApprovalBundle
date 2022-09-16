@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.2 to 0.9.3
+
+- error handling -> when the end date for break time is not available, don't through an error but give a user error message
+- usort optimization
 
 ## 0.9.1 to 0.9.2
 

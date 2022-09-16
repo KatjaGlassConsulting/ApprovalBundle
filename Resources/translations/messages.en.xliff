@@ -291,6 +291,10 @@
 				<source>error.six_hours_without_break</source>
 				<target>You worked more than 6 hours without taking 30 minute break!</target>
 			</trans-unit>
+            <trans-unit id="error.no_end_date">
+				<source>error.no_end_date</source>
+				<target>There is no end date for the time entry.</target>
+			</trans-unit>
 
 			<trans-unit id="label.customer_for_free_days">
 				<source>label.customer_for_free_days</source>
