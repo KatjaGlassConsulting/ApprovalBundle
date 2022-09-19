@@ -108,6 +108,10 @@ class WeekReportController extends AbstractController
         $values->setUser($firstUser);
         $values->setDate($dateTimeFactory->getStartOfWeek());
 
+        foreach ($users as $user) {
+            $user->setUsername($user->getDisplayName());
+        }
+
         $form = $this->createForm(WeekByUserForm::class, $values, [
             'timezone' => $dateTimeFactory->getTimezone()->getName(),
             'start_date' => $values->getDate(),
