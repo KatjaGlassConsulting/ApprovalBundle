@@ -3,6 +3,7 @@
 ## 0.9.3 to 0.9.4
 
 - display user-alias when available, otherwise use username
+- update translations - remove [ccnet-test2]
 
 ## 0.9.2 to 0.9.3
 
