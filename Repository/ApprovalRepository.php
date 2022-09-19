@@ -204,7 +204,7 @@ class ApprovalRepository extends ServiceEntityRepository
                     [
                         'userId' => $item->getUser()->getId(),
                         'startDate' => $item->getStartDate()->format('Y-m-d'),
-                        'user' => $item->getUser()->getUsername(),
+                        'user' => $item->getUser()->getDisplayName(),
                         'week' => $this->formatting->parseDate(clone $item->getStartDate()),
                         'status' => $item->getHistory()[0]->getStatus()->getName()
                     ];
@@ -334,7 +334,7 @@ class ApprovalRepository extends ServiceEntityRepository
                         [
                             'userId' => $user->getId(),
                             'startDate' => $week->value,
-                            'user' => $user->getUsername(),
+                            'user' => $user->getDisplayName(),
                             'week' => $week->label,
                             'status' => ApprovalStatus::NOT_SUBMITTED
                         ];

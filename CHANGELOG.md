@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.3 to 0.9.4
+
+- display user-alias when available, otherwise use username
+
 ## 0.9.2 to 0.9.3
 
 - error handling -> when the end date for break time is not available, don't through an error but give a user error message
