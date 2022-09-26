@@ -138,6 +138,7 @@ class ReportRepository extends ServiceEntityRepository
         $record['details'][$value['description']] = $value;
 
         $report[$title] = $record;
+
         return $report;
     }
 
@@ -147,7 +148,7 @@ class ReportRepository extends ServiceEntityRepository
 
         $days = $report[$title]['days'];
         $day = $days->getDayByReportDate($value['date']);
-        $day->setTotalDuration($day->getTotalDuration() + (int)$value['duration']);
+        $day->setTotalDuration($day->getTotalDuration() + (int) $value['duration']);
 
         if (isset($report[$title]['details'][$value['description']])) {
             $report = $this->updateExistingDescription($report, $title, $value);
@@ -155,6 +156,7 @@ class ReportRepository extends ServiceEntityRepository
             $report = $this->creatNewDescription($begin, $end, $user, $value, $report, $title);
         }
         $report[$title]['days'] = $days;
+
         return $report;
     }
 }

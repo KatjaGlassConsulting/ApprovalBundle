@@ -80,16 +80,16 @@ final class ApprovalBundleApiController extends AbstractController
     private $lockdownRepository;
 
     public function __construct(
-        ViewHandlerInterface          $viewHandler,
-        UserRepository                $userRepository,
-        EmailTool                     $emailTool,
-        UrlGeneratorInterface         $urlGenerator,
-        ApprovalRepository            $approvalRepository,
-        ApprovalHistoryRepository     $approvalHistoryRepository,
-        ApprovalStatusRepository      $approvalStatusRepository,
+        ViewHandlerInterface $viewHandler,
+        UserRepository $userRepository,
+        EmailTool $emailTool,
+        UrlGeneratorInterface $urlGenerator,
+        ApprovalRepository $approvalRepository,
+        ApprovalHistoryRepository $approvalHistoryRepository,
+        ApprovalStatusRepository $approvalStatusRepository,
         AuthorizationCheckerInterface $security,
-        TranslatorInterface           $translator,
-        LockdownRepository            $lockdownRepository
+        TranslatorInterface $translator,
+        LockdownRepository $lockdownRepository
     ) {
         $this->viewHandler = $viewHandler;
         $this->userRepository = $userRepository;
@@ -140,8 +140,7 @@ final class ApprovalBundleApiController extends AbstractController
 
         $nextApproveWeek = $this->approvalRepository->getNextApproveWeek($currentUser);
         $startOfWeek = $selectedDate->format('Y-m-d');
-        if($nextApproveWeek && $nextApproveWeek < $startOfWeek)
-        {
+        if ($nextApproveWeek && $nextApproveWeek < $startOfWeek) {
             return $this->error400($this->translator->trans('api.add_to_approve_previous_weeks'));
         }
 
@@ -241,6 +240,7 @@ final class ApprovalBundleApiController extends AbstractController
                 $this->approvalHistoryRepository->persistFlush($approveHistory);
             }
         }
+
         return $approval;
     }
 }

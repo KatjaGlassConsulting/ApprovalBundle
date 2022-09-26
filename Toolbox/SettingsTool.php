@@ -86,6 +86,7 @@ class SettingsTool
         if ($this->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_SUNDAY) === '') {
             return false;
         }
+
         return true;
     }
 }

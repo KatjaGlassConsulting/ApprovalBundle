@@ -168,7 +168,7 @@ class ApprovalRepository extends ServiceEntityRepository
     {
         $parseToViewArray = $this->getUserApprovals($users);
         $parseToViewArray = $this->addAllNotSubmittedUsers($parseToViewArray, $users);
-        
+
         $result = $parseToViewArray ? $this->sort($parseToViewArray) : [];
 
         return $this->getNewestPerUser($result);
@@ -251,8 +251,8 @@ class ApprovalRepository extends ServiceEntityRepository
         $firstDay = $firstDayWork ? $firstDayWork[0]->getBegin() : new DateTime('today');
 
         $approval_workflow_start = $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WORKFLOW_START);
-        if ($approval_workflow_start == ""){
-            $approval_workflow_start = "0000-01-01";
+        if ($approval_workflow_start == '') {
+            $approval_workflow_start = '0000-01-01';
         }
         $approval_ws_start_week = (new DateTime($approval_workflow_start))->modify('-7 day')->format('Y-m-d');
 
@@ -409,11 +409,11 @@ class ApprovalRepository extends ServiceEntityRepository
         $allRows = $this->findAllWeek([$user]);
         $allRows = $this->filterWeeksApprovedOrSubmitted($allRows);
         $allRows = $this->filterWeeksLaterThan($allRows, $date->format('Y-m-d'));
-        
+
         $result = [];
-        foreach ($allRows as $week){
+        foreach ($allRows as $week) {
             $approvalId = end($this->findHistoryForUserAndWeek($userId, $week['startDate']))->getId();
-            if ($approvalId){
+            if ($approvalId) {
                 array_push($result, $approvalId);
             }
         }
@@ -536,10 +536,11 @@ class ApprovalRepository extends ServiceEntityRepository
     {
         return array_reduce(
             $rowArray,
-            function ($response, $item)  use ($dateString) {
+            function ($response, $item) use ($dateString) {
                 if ($item['startDate'] > $dateString) {
                     $response[] = $item;
                 }
+
                 return $response;
             },
             []
@@ -600,14 +601,14 @@ class ApprovalRepository extends ServiceEntityRepository
             return $user->getId();
         }, $users);
 
-        $approval_workflow_start = $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WORKFLOW_START);        
-        if ($approval_workflow_start == ""){
-            $approval_workflow_start = "0000-01-01";
+        $approval_workflow_start = $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WORKFLOW_START);
+        if ($approval_workflow_start == '') {
+            $approval_workflow_start = '0000-01-01';
         } else {
             $approval_workflow_start = (new DateTime($approval_workflow_start))->modify('-7 day')->format('Y-m-d');
         }
-        
-        $em = $this->getEntityManager();        
+
+        $em = $this->getEntityManager();
         $approvedList = $em->createQueryBuilder()
             ->select('ap')
             ->from(Approval::class, 'ap')
@@ -659,20 +660,21 @@ class ApprovalRepository extends ServiceEntityRepository
     public function getNextApproveWeek(User $user): ?string
     {
         $allRows = $this->findAllWeek([$user]);
-        $allNotSubmittedRows = $this->filterWeeksNotSubmitted($allRows);         
+        $allNotSubmittedRows = $this->filterWeeksNotSubmitted($allRows);
 
         // When there are past/current not submitted rows, return that date
-        if (!empty($allNotSubmittedRows)){
+        if (!empty($allNotSubmittedRows)) {
             return $allNotSubmittedRows[0]['startDate'];
         }
 
         // If there are no initial values, return nothing
-        if (empty($allRows)){
+        if (empty($allRows)) {
             return null;
         }
 
         // Otherwise, when there are $allRows, get the one which would be next (located in the future)
         $prevWeekDay = end($allRows)['startDate'];
-        return date('Y-m-d', strtotime($prevWeekDay. ' + 7 days'));
+
+        return date('Y-m-d', strtotime($prevWeekDay . ' + 7 days'));
     }
 }

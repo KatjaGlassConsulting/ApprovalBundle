@@ -20,7 +20,6 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Address;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EmailTool
@@ -64,7 +63,7 @@ class EmailTool
         $this->formatting = $formatting;
         $this->settingsTool = $settingsTool;
         $this->metaFieldRuleRepository = $metaFieldRuleRepository;
-    } 
+    }
 
     public function sendStatusChangedEmail(Approval $approval, string $approver, string $url): bool
     {

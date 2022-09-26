@@ -9,7 +9,6 @@
 
 namespace KimaiPlugin\ApprovalBundle\Form;
 
-use App\Form\Type\UserType;
 use App\Form\Type\WeekPickerType;
 use App\Reporting\WeekByUser;
 use Symfony\Component\Form\AbstractType;

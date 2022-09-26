@@ -152,7 +152,7 @@ class WeekReportController extends AbstractController
 
         $selectedUserSundayIssue = $selectedUser->isFirstDayOfWeekSunday();
         $currentUserSundayIssue = $this->getUser()->isFirstDayOfWeekSunday();
- 
+
         return $this->render('@Approval/report_by_user.html.twig', [
             'approve' => $this->parseToHistoryView($userId, $startWeek),
             'week' => $this->formatting->parseDate(new DateTime($startWeek)),
@@ -385,10 +385,11 @@ class WeekReportController extends AbstractController
     {
         return array_reduce($rows, function ($toReturn, $row) {
             $currentUser = $this->getUser();
-            $isCurrentUserATeamLeader = in_array('ROLE_TEAMLEAD', $currentUser->getRoles());
-            if (!($row['user'] === $currentUser->getUsername() && $isCurrentUserATeamLeader && $row['status'] !== 'not_submitted' )) {
+            $isCurrentUserATeamLeader = \in_array('ROLE_TEAMLEAD', $currentUser->getRoles());
+            if (!($row['user'] === $currentUser->getUsername() && $isCurrentUserATeamLeader && $row['status'] !== 'not_submitted')) {
                 $toReturn[] = $row;
             }
+
             return $toReturn;
         }, []);
     }

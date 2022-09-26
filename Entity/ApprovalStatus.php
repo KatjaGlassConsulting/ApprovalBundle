@@ -18,7 +18,7 @@ use KimaiPlugin\ApprovalBundle\Repository\ApprovalStatusRepository;
  */
 class ApprovalStatus
 {
-    public const SUBMITTED = 'submitted'; 
+    public const SUBMITTED = 'submitted';
     public const GRANTED = 'granted'; //WRONG - only for migration
     public const DENIED = 'denied';
     public const APPROVED = 'approved';
