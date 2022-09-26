@@ -110,6 +110,13 @@ class LockdownRepository extends ServiceEntityRepository
         return $endDate;
     }
 
+    /**
+     * @param User $user
+     * @param ApprovalRepository $approvalRepository
+     * @return void
+     * @throws Exception
+     * @phpstan-ignore-next-line
+     */
     private function updateTeamleadersLock(User $user, ApprovalRepository $approvalRepository): void
     {
         foreach ($user->getTeams() as $team) {

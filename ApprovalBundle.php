@@ -10,8 +10,15 @@
 namespace KimaiPlugin\ApprovalBundle;
 
 use App\Plugin\PluginInterface;
+use KimaiPlugin\ApprovalBundle\DependencyInjection\Compiler\ApprovalSettingsCompilerPass;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class ApprovalBundle extends Bundle implements PluginInterface
 {
+    public function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new ApprovalSettingsCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION);
+    }
 }

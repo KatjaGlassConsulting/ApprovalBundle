@@ -9,7 +9,6 @@
 
 namespace KimaiPlugin\ApprovalBundle\API;
 
-use App\Entity\Team;
 use App\Repository\UserRepository;
 use DateTime;
 use Exception;
@@ -144,10 +143,10 @@ final class ApprovalBundleApiController extends AbstractController
             return $this->error400($this->translator->trans('api.add_to_approve_previous_weeks'));
         }
 
-        /** @var Approval $approval */
+        /** @var Approval|null $approval */
         $approval = $this->approvalRepository->findOneBy(['user' => $currentUser, 'startDate' => $selectedDate], ['creationDate' => 'DESC']);
 
-        if (!empty($approval)) {
+        if ($approval !== null) {
             $history = $approval->getHistory();
             $status = $history[\count($history) - 1]->getStatus()->getName();
             if ($status !== ApprovalStatus::NOT_SUBMITTED) {
@@ -156,7 +155,7 @@ final class ApprovalBundleApiController extends AbstractController
         }
 
         $approval = $this->approvalRepository->createApproval($selectedDate->format('Y-m-d'), $currentUser);
-        if ($approval) {
+        if ($approval !== null) {
             $approval = $this->createHistory($approval);
             $this->emailTool->sendApproveWeekEmail($approval, $this->approvalRepository);
             $this->lockdownRepository->updateLockWeek($approval, $this->approvalRepository);
@@ -188,7 +187,6 @@ final class ApprovalBundleApiController extends AbstractController
         return array_filter(
             $user->getTeams(),
             function ($team) use ($selectedUser) {
-                /** @var Team $team */
                 foreach ($team->getUsers() as $user) {
                     if ($user->getId() == $selectedUser) {
                         return true;

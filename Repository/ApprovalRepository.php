@@ -18,11 +18,10 @@ use KimaiPlugin\ApprovalBundle\Entity\Approval;
 use KimaiPlugin\ApprovalBundle\Entity\ApprovalHistory;
 use KimaiPlugin\ApprovalBundle\Entity\ApprovalStatus;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
+use KimaiPlugin\ApprovalBundle\Settings\ApprovalSettingsInterface;
 use KimaiPlugin\ApprovalBundle\Toolbox\Formatting;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
-use KimaiPlugin\MetaFieldsBundle\Repository\MetaFieldRuleRepository;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method Approval|null find($id, $lockMode = null, $lockVersion = null)
@@ -38,7 +37,7 @@ class ApprovalRepository extends ServiceEntityRepository
     private $settingsTool;
 
     /**
-     * @var MetaFieldRuleRepository
+     * @var ApprovalSettingsInterface
      */
     private $metaFieldRuleRepository;
 
@@ -54,7 +53,7 @@ class ApprovalRepository extends ServiceEntityRepository
 
     public function __construct(
         ManagerRegistry $registry,
-        MetaFieldRuleRepository $metaFieldRuleRepository,
+        ApprovalSettingsInterface $metaFieldRuleRepository,
         SettingsTool $settingsTool,
         Formatting $formatting,
         UrlGeneratorInterface $urlGenerator
@@ -97,50 +96,29 @@ class ApprovalRepository extends ServiceEntityRepository
         return $expected;
     }
 
-    private function getExpectTimeForDate(DateTime $i, $user, $expected)
+    private function getExpectTimeForDate(DateTime $i, User $user, $expected)
     {
         switch ($i->format('N')) {
             case (1):
-                $metaField = $this->metaFieldRuleRepository->find(
-                    $this->settingsTool->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_MONDAY)
-                );
-                $expected += $user->getPreferenceValue($metaField ? $metaField->getName() : 0);
+                $expected += $this->metaFieldRuleRepository->getWorkingTimeForMonday($user);
                 break;
             case (2):
-                $metaField = $this->metaFieldRuleRepository->find(
-                    $this->settingsTool->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_TUESDAY)
-                );
-                $expected += $user->getPreferenceValue($metaField ? $metaField->getName() : 0);
+                $expected += $this->metaFieldRuleRepository->getWorkingTimeForTuesday($user);
                 break;
             case (3):
-                $metaField = $this->metaFieldRuleRepository->find(
-                    $this->settingsTool->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_WEDNESDAY)
-                );
-                $expected += $user->getPreferenceValue($metaField ? $metaField->getName() : 0);
+                $expected += $this->metaFieldRuleRepository->getWorkingTimeForWednesday($user);
                 break;
             case (4):
-                $metaField = $this->metaFieldRuleRepository->find(
-                    $this->settingsTool->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_THURSDAY)
-                );
-                $expected += $user->getPreferenceValue($metaField ? $metaField->getName() : 0);
+                $expected += $this->metaFieldRuleRepository->getWorkingTimeForThursday($user);
                 break;
             case (5):
-                $metaField = $this->metaFieldRuleRepository->find(
-                    $this->settingsTool->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_FRIDAY)
-                );
-                $expected += $user->getPreferenceValue($metaField ? $metaField->getName() : 0);
+                $expected += $this->metaFieldRuleRepository->getWorkingTimeForFriday($user);
                 break;
             case (6):
-                $metaField = $this->metaFieldRuleRepository->find(
-                    $this->settingsTool->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_SATURDAY)
-                );
-                $expected += $user->getPreferenceValue($metaField ? $metaField->getName() : 0);
+                $expected += $this->metaFieldRuleRepository->getWorkingTimeForSaturday($user);
                 break;
             case (7):
-                $metaField = $this->metaFieldRuleRepository->find(
-                    $this->settingsTool->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_SUNDAY)
-                );
-                $expected += $user->getPreferenceValue($metaField ? $metaField->getName() : 0);
+                $expected += $this->metaFieldRuleRepository->getWorkingTimeForSunday($user);
                 break;
         }
 
@@ -412,16 +390,17 @@ class ApprovalRepository extends ServiceEntityRepository
 
         $result = [];
         foreach ($allRows as $week) {
-            $approvalId = end($this->findHistoryForUserAndWeek($userId, $week['startDate']))->getId();
+            $tmp = $this->findHistoryForUserAndWeek($userId, $week['startDate']);
+            $approvalId = end($tmp)->getId();
             if ($approvalId) {
-                array_push($result, $approvalId);
+                $result[] = $approvalId;
             }
         }
 
         return $result;
     }
 
-    public function findCurrentWeekToApprove(array $users, UserInterface $currentUser): int
+    public function findCurrentWeekToApprove(array $users, User $currentUser): int
     {
         $usersId = array_map(function ($user) {
             return $user->getId();
@@ -547,7 +526,7 @@ class ApprovalRepository extends ServiceEntityRepository
         );
     }
 
-    private function getWeekUserList($month): ?array
+    private function getWeekUserList($month): array
     {
         $week = $this->findBy(['startDate' => $month], ['startDate' => 'ASC', 'user' => 'ASC']);
         $this->parseHistoryToOneElement($week);

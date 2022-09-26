@@ -6,6 +6,7 @@ includes:
 parameters:
     excludePaths:
         - vendor/
+        - Settings/MetaFieldSettings.php
     treatPhpDocTypesAsCertain: false
     inferPrivatePropertyTypeFromConstructor: true
     checkMissingIterableValueType: false

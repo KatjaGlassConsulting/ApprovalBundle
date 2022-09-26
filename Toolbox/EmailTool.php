@@ -15,7 +15,6 @@ use App\Repository\UserRepository;
 use KimaiPlugin\ApprovalBundle\Entity\Approval;
 use KimaiPlugin\ApprovalBundle\Entity\ApprovalStatus;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
-use KimaiPlugin\MetaFieldsBundle\Repository\MetaFieldRuleRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -40,29 +39,17 @@ class EmailTool
      * @var Formatting
      */
     private $formatting;
-    /**
-     * @var SettingsTool
-     */
-    private $settingsTool;
-    /**
-     * @var MetaFieldRuleRepository
-     */
-    private $metaFieldRuleRepository;
 
     public function __construct(
         TranslatorInterface $translator,
         KimaiMailer $kimaiMailer,
         UserRepository $userRepository,
-        Formatting $formatting,
-        SettingsTool $settingsTool,
-        MetaFieldRuleRepository $metaFieldRuleRepository
+        Formatting $formatting
     ) {
         $this->kimaiMailer = $kimaiMailer;
         $this->translator = $translator;
         $this->userRepository = $userRepository;
         $this->formatting = $formatting;
-        $this->settingsTool = $settingsTool;
-        $this->metaFieldRuleRepository = $metaFieldRuleRepository;
     }
 
     public function sendStatusChangedEmail(Approval $approval, string $approver, string $url): bool
@@ -106,7 +93,7 @@ class EmailTool
                 'submitter' => $submitter,
                 'approver' => $approver,
                 'week' => $this->formatting->parseDate(clone $approval->getStartDate()),
-                'url' => $approvalRepository->getUrl($user->getId(), $approval->getStartDate()->format('Y-m-d'))
+                'url' => $approvalRepository->getUrl((string) $user->getId(), $approval->getStartDate()->format('Y-m-d'))
             ];
             $email = (new TemplatedEmail())
                 ->to(new Address($user->getEmail()))

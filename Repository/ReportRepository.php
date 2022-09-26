@@ -14,7 +14,6 @@ use App\Entity\User;
 use App\Model\DailyStatistic;
 use App\Repository\ActivityRepository;
 use App\Repository\ProjectRepository;
-use App\Repository\TimesheetRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -27,18 +26,20 @@ use Doctrine\Persistence\ManagerRegistry;
 class ReportRepository extends ServiceEntityRepository
 {
     /**
-     * @var TimesheetRepository
+     * @var ProjectRepository
      */
-    private $timesheetRepository;
+    private $projectRepository;
+    /**
+     * @var ActivityRepository
+     */
+    private $activityRepository;
 
     public function __construct(
         ManagerRegistry $registry,
-        TimesheetRepository $timesheetRepository,
         ProjectRepository $projectRepository,
         ActivityRepository $activityRepository
     ) {
         parent::__construct($registry, Timesheet::class);
-        $this->timesheetRepository = $timesheetRepository;
         $this->projectRepository = $projectRepository;
         $this->activityRepository = $activityRepository;
     }

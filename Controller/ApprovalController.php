@@ -115,7 +115,7 @@ class ApprovalController extends AbstractController
             $this->emailTool->sendStatusChangedEmail(
                 $approval,
                 $this->getUser()->getUsername(),
-                $this->approvalRepository->getUrl($approval->getUser()->getId(), $approval->getStartDate()->format('Y-m-d'))
+                $this->approvalRepository->getUrl((string) $approval->getUser()->getId(), $approval->getStartDate()->format('Y-m-d'))
             );
             $this->lockdownRepository->updateLockWeek($approval, $this->approvalRepository);
         }
@@ -177,7 +177,7 @@ class ApprovalController extends AbstractController
             $this->emailTool->sendStatusChangedEmail(
                 $approval,
                 $this->getUser()->getUsername(),
-                $this->approvalRepository->getUrl($approval->getUser()->getId(), $approval->getStartDate()->format('Y-m-d'))
+                $this->approvalRepository->getUrl((string) $approval->getUser()->getId(), $approval->getStartDate()->format('Y-m-d'))
             );
             $this->createNewApproveHistory($approveId, ApprovalStatus::NOT_SUBMITTED, '', (new DateTime())->modify('+2 second')->format('d.m.Y H:i:s'));
 

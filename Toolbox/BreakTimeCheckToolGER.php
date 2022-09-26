@@ -10,18 +10,12 @@
 namespace KimaiPlugin\ApprovalBundle\Toolbox;
 
 use App\Entity\Timesheet;
-use App\Repository\TimesheetRepository;
 use Exception;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BreakTimeCheckToolGER
 {
-    /**
-     * @var TimesheetRepository
-     */
-    private $timesheetRepository;
-
     /**
      * @var TranslatorInterface
      */
@@ -31,9 +25,8 @@ class BreakTimeCheckToolGER
      */
     private $settingsTool;
 
-    public function __construct(TimesheetRepository $timesheetRepository, TranslatorInterface $translator, SettingsTool $settingsTool)
+    public function __construct(TranslatorInterface $translator, SettingsTool $settingsTool)
     {
-        $this->timesheetRepository = $timesheetRepository;
         $this->translator = $translator;
         $this->settingsTool = $settingsTool;
     }
@@ -79,7 +72,7 @@ class BreakTimeCheckToolGER
 
             if ($timesheet->getEnd()) {
                 if (\array_key_exists($hash, $result)) {
-                    if (!\is_null($result[$hash]['lastEnd']->getTimestamp())) {
+                    if (\array_key_exists('lastEnd', $result[$hash])) {
                         $breakDuration = $timesheet->getBegin()->getTimestamp() - $result[$hash]['lastEnd']->getTimestamp();
 
                         $result[$hash]['duration'] += $timesheet->getDuration();

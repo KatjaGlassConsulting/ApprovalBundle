@@ -10,7 +10,6 @@
 namespace KimaiPlugin\ApprovalBundle\Entity;
 
 use App\Entity\User;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalHistoryRepository;
 
@@ -52,13 +51,6 @@ class ApprovalHistory
      * @ORM\Column(type="text", nullable=true)
      */
     private $message;
-
-    public function __construct()
-    {
-        $this->user = new ArrayCollection();
-        $this->approval = new ArrayCollection();
-        $this->status = new ArrayCollection();
-    }
 
     /**
      * @return mixed

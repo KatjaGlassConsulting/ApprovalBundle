@@ -9,7 +9,6 @@
 
 namespace KimaiPlugin\ApprovalBundle\API;
 
-use App\Entity\Team;
 use App\Repository\UserRepository;
 use DateTime;
 use Exception;
@@ -144,7 +143,6 @@ final class ApprovalStatusApiController extends AbstractController
         return array_filter(
             $user->getTeams(),
             function ($team) use ($selectedUserId) {
-                /** @var Team $team */
                 foreach ($team->getUsers() as $user) {
                     if ($user->getId() == $selectedUserId) {
                         return true;
@@ -167,9 +165,9 @@ final class ApprovalStatusApiController extends AbstractController
     {
         $status = ApprovalStatus::NOT_SUBMITTED;
 
-        /** @var Approval $approval */
+        /** @var Approval|null $approval */
         $approval = $this->approvalRepository->findOneBy(['user' => $currentUser, 'startDate' => $selectedDate], ['creationDate' => 'DESC']);
-        if (!empty($approval)) {
+        if ($approval !== null) {
             $history = $approval->getHistory();
             $status = $history[\count($history) - 1]->getStatus()->getName();
         }

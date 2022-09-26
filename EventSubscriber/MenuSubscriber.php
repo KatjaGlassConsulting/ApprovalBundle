@@ -10,6 +10,7 @@
 namespace KimaiPlugin\ApprovalBundle\EventSubscriber;
 
 use App\Entity\Team;
+use App\Entity\User;
 use App\Event\ConfigureMainMenuEvent;
 use App\Repository\UserRepository;
 use KevinPapst\AdminLTEBundle\Model\MenuItemModel;
@@ -40,9 +41,6 @@ class MenuSubscriber implements EventSubscriberInterface
         $this->userRepository = $userRepository;
     }
 
-    /**
-     * @return array
-     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -50,13 +48,14 @@ class MenuSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param ConfigureMainMenuEvent $event
-     */
-    public function onMenuConfigure(ConfigureMainMenuEvent $event)
+    public function onMenuConfigure(ConfigureMainMenuEvent $event): void
     {
+        $currentUser = $this->getUser();
+        if ($currentUser === null) {
+            return;
+        }
+
         $users = $this->getUsers();
-        $currentUser = $this->token->getToken()->getUser();
         $dataToMenuItem = $this->approvalRepository->findCurrentWeekToApprove($users, $currentUser);
 
         $date = date('Y-m-d', strtotime('this week'));
@@ -91,9 +90,19 @@ class MenuSubscriber implements EventSubscriberInterface
         }
     }
 
-    private function getUsers(): array
+    private function getUser(): ?User
     {
         $user = $this->token->getToken()->getUser();
+        if ($user instanceof User) {
+            return $user;
+        }
+
+        return null;
+    }
+
+    private function getUsers(): array
+    {
+        $user = $this->getUser();
         if ($this->security->isGranted('view_all_approval')) {
             $users = $this->userRepository->findAll();
         } elseif ($this->security->isGranted('view_team_approval')) {
