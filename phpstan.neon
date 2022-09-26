@@ -1,0 +1,14 @@
+includes:
+    - %rootDir%/../phpstan-doctrine/extension.neon
+    - %rootDir%/../phpstan-symfony/extension.neon
+    - %rootDir%/../phpstan-symfony/rules.neon
+
+parameters:
+    excludePaths:
+        - vendor/
+    treatPhpDocTypesAsCertain: false
+    inferPrivatePropertyTypeFromConstructor: true
+    ignoreErrors:
+        - '#Access to an undefined property Faker\\Generator::\$catchPhrase.#'
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
