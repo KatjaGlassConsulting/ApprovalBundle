@@ -8,7 +8,5 @@ parameters:
         - vendor/
     treatPhpDocTypesAsCertain: false
     inferPrivatePropertyTypeFromConstructor: true
-    ignoreErrors:
-        - '#Access to an undefined property Faker\\Generator::\$catchPhrase.#'
     checkMissingIterableValueType: false
     checkGenericClassInNonGenericObjectType: false
