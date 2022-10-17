@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.3 to 0.9.4
+
+- new CI tools
+- A new interface and service to use the bundle WITHOUT meta-fields and daily working times - fixes Approval without duration #4
+- Code style and fixes
+
 ## 0.9.2 to 0.9.3
 
 - error handling -> when the end date for break time is not available, don't through an error but give a user error message

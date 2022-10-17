@@ -11,6 +11,8 @@ Here is a short live demo:
 ## Requirements
 
 - Requires Kamai 2, V1.16.10 or higher
+
+Optional but recommended:
 - MetaFields plugin
 - LockdownPerUser plugin ([GitHub](https://github.com/kevinpapst/LockdownPerUserBundle)) 
 
@@ -49,11 +51,11 @@ The plugin should appear now.
 
 ## Settings
 
-### Meta-Field Setup
+### Meta-Field Setup (optional)
 
 The ApprovalBundle needs some meta fields and settings to be done. The daily and workly hours are displayed. For this the daily working time per day needs to be specified per user. Typically it might be 8h per week day. But there are very different situations, so someone might only work 4 days a week or less hours a day.
 
-The following meta-fields needs to be created ([Custom-Field-Plugin](https://www.kimai.org/store/custom-fields-bundle.html) is required):
+The following meta-fields can to be created ([Custom-Field-Plugin](https://www.kimai.org/store/custom-fields-bundle.html) is required for this):
 
 - Custom-Fields -> Users
 - The following fields must be from type = "duration", required field, visible, Role = "ROLE_SUPER_ADMIN", default for most should be default = "08:00", for Saturday/Sunday it should be "00:00" - the names could be anything, but the meaning is according those descriptions
@@ -178,3 +180,5 @@ E.g.
 ## Contribution
 
 Many thanks go to [HMR-IT](https://www.hmr-it.de) which had been highly involved in this project.
+
+Additional thanks go to Milo Ivir for additional translations and to Kevin Papst for code enhancements and the update to use this bundle with less pre-requisites.
