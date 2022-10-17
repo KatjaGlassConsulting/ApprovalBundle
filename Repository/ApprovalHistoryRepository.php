@@ -1,11 +1,17 @@
 <?php
 
+/*
+ * This file is part of the Kimai time-tracking app.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace KimaiPlugin\ApprovalBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use KimaiPlugin\ApprovalBundle\Entity\ApprovalHistory;
-use KimaiPlugin\ApprovalBundle\Entity\ApprovalStatus;
 
 /**
  * @method ApprovalHistory|null find($id, $lockMode = null, $lockVersion = null)

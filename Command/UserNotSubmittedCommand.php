@@ -15,7 +15,6 @@ use KimaiPlugin\ApprovalBundle\Toolbox\EmailTool;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class UserNotSubmittedCommand extends Command
 {
@@ -33,22 +32,16 @@ class UserNotSubmittedCommand extends Command
      * @var EmailTool
      */
     private $emailTool;
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $urlGenerator;
 
     public function __construct(
         UserRepository $userRepository,
         EmailTool $emailTool,
-        ApprovalRepository $approvalRepository,
-        UrlGeneratorInterface $urlGenerator
+        ApprovalRepository $approvalRepository
     ) {
         parent::__construct();
         $this->userRepository = $userRepository;
         $this->emailTool = $emailTool;
         $this->approvalRepository = $approvalRepository;
-        $this->urlGenerator = $urlGenerator;
     }
 
     protected function configure(): void

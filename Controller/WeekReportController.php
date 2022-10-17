@@ -17,13 +17,10 @@ use App\Entity\User;
 use App\Form\Model\DateRange;
 use App\Model\DailyStatistic;
 use App\Reporting\WeekByUser;
-use App\Repository\ActivityRepository;
-use App\Repository\ProjectRepository;
 use App\Repository\Query\BaseQuery;
 use App\Repository\Query\TimesheetQuery;
 use App\Repository\TimesheetRepository;
 use App\Repository\UserRepository;
-use App\Timesheet\TimesheetStatisticService;
 use DateTime;
 use Exception;
 use KimaiPlugin\ApprovalBundle\Entity\Approval;
@@ -34,6 +31,7 @@ use KimaiPlugin\ApprovalBundle\Form\WeekByUserForm;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalHistoryRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ReportRepository;
+use KimaiPlugin\ApprovalBundle\Settings\ApprovalSettingsInterface;
 use KimaiPlugin\ApprovalBundle\Toolbox\BreakTimeCheckToolGER;
 use KimaiPlugin\ApprovalBundle\Toolbox\Formatting;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
@@ -49,32 +47,26 @@ class WeekReportController extends AbstractController
 {
     private $settingsTool;
     private $approvalRepository;
-    private $statisticService;
-    private $projectRepository;
     private $approvalHistoryRepository;
-    private $activityRepository;
     private $userRepository;
     private $formatting;
     private $timesheetRepository;
     private $breakTimeCheckToolGER;
+    private $reportRepository;
+    private $approvalSettings;
 
     public function __construct(
         SettingsTool $settingsTool,
-        TimesheetStatisticService $statisticService,
-        ProjectRepository $projectRepository,
-        ActivityRepository $activityRepository,
         UserRepository $userRepository,
         ApprovalHistoryRepository $approvalHistoryRepository,
         ApprovalRepository $approvalRepository,
         Formatting $formatting,
         TimesheetRepository $timesheetRepository,
         BreakTimeCheckToolGER $breakTimeCheckToolGER,
-        ReportRepository $reportRepository
+        ReportRepository $reportRepository,
+        ApprovalSettingsInterface $approvalSettings
     ) {
         $this->settingsTool = $settingsTool;
-        $this->statisticService = $statisticService;
-        $this->projectRepository = $projectRepository;
-        $this->activityRepository = $activityRepository;
         $this->userRepository = $userRepository;
         $this->approvalHistoryRepository = $approvalHistoryRepository;
         $this->approvalRepository = $approvalRepository;
@@ -82,6 +74,7 @@ class WeekReportController extends AbstractController
         $this->timesheetRepository = $timesheetRepository;
         $this->breakTimeCheckToolGER = $breakTimeCheckToolGER;
         $this->reportRepository = $reportRepository;
+        $this->approvalSettings = $approvalSettings;
     }
 
     private function canManageTeam(): bool
@@ -152,7 +145,7 @@ class WeekReportController extends AbstractController
 
         $selectedUserSundayIssue = $selectedUser->isFirstDayOfWeekSunday();
         $currentUserSundayIssue = $this->getUser()->isFirstDayOfWeekSunday();
- 
+
         return $this->render('@Approval/report_by_user.html.twig', [
             'approve' => $this->parseToHistoryView($userId, $startWeek),
             'week' => $this->formatting->parseDate(new DateTime($startWeek)),
@@ -176,7 +169,7 @@ class WeekReportController extends AbstractController
             'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
             'expected_duration' => $expected_duration,
-            'settingsWarning' => !$this->settingsTool->isAllSettingsUpdated(),
+            'settingsWarning' => !$this->approvalSettings->isFullyConfigured(),
             'isSuperAdmin' => $this->getUser()->isSuperAdmin(),
             'warningNoUsers' => empty($users),
             'errors' => $errors,
@@ -217,7 +210,7 @@ class WeekReportController extends AbstractController
             'current_rows' => $currentRows,
             'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
-            'settingsWarning' => !$this->settingsTool->isAllSettingsUpdated(),
+            'settingsWarning' => !$this->approvalSettings->isFullyConfigured(),
             'warningNoUsers' => empty($users)
         ]);
     }
@@ -233,25 +226,29 @@ class WeekReportController extends AbstractController
             'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
             'form' => $this->createSettingsForm($request),
-            'settingsWarning' => !$this->settingsTool->isAllSettingsUpdated(),
+            'settingsWarning' => !$this->approvalSettings->isFullyConfigured(),
             'warningNoUsers' => empty($this->getUsers())
         ]);
     }
 
     private function createSettingsForm(Request $request)
     {
-        $form = $this->createForm(SettingsForm::class);
+        $form = $this->createForm(SettingsForm::class, null, [
+            'with_time' => $this->approvalSettings->canBeConfigured()
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $data = $form->getData();
 
-            $this->settingsTool->setConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_MONDAY, $this->collectMetaField($data, FormEnum::MONDAY));
-            $this->settingsTool->setConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_TUESDAY, $this->collectMetaField($data, FormEnum::TUESDAY));
-            $this->settingsTool->setConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_WEDNESDAY, $this->collectMetaField($data, FormEnum::WEDNESDAY));
-            $this->settingsTool->setConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_THURSDAY, $this->collectMetaField($data, FormEnum::THURSDAY));
-            $this->settingsTool->setConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_FRIDAY, $this->collectMetaField($data, FormEnum::FRIDAY));
-            $this->settingsTool->setConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_SATURDAY, $this->collectMetaField($data, FormEnum::SATURDAY));
-            $this->settingsTool->setConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_SUNDAY, $this->collectMetaField($data, FormEnum::SUNDAY));
+            if ($this->approvalSettings->canBeConfigured()) {
+                $this->settingsTool->setConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_MONDAY, $this->collectMetaField($data, FormEnum::MONDAY));
+                $this->settingsTool->setConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_TUESDAY, $this->collectMetaField($data, FormEnum::TUESDAY));
+                $this->settingsTool->setConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_WEDNESDAY, $this->collectMetaField($data, FormEnum::WEDNESDAY));
+                $this->settingsTool->setConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_THURSDAY, $this->collectMetaField($data, FormEnum::THURSDAY));
+                $this->settingsTool->setConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_FRIDAY, $this->collectMetaField($data, FormEnum::FRIDAY));
+                $this->settingsTool->setConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_SATURDAY, $this->collectMetaField($data, FormEnum::SATURDAY));
+                $this->settingsTool->setConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_SUNDAY, $this->collectMetaField($data, FormEnum::SUNDAY));
+            }
             $this->settingsTool->setConfiguration(ConfigEnum::META_FIELD_EMAIL_LINK_URL, $data[FormEnum::EMAIL_LINK_URL]);
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_WORKFLOW_START, $data[FormEnum::WORKFLOW_START]);
             $this->settingsTool->setConfiguration(ConfigEnum::CUSTOMER_FOR_FREE_DAYS, $this->collectCustomerForFreeDays($data));
@@ -273,8 +270,8 @@ class WeekReportController extends AbstractController
             $users = $this->userRepository->findAll();
         } elseif ($this->canManageTeam()) {
             $users = [];
-            /** @var Team $team */
             $user = $this->getUser();
+            /** @var Team $team */
             foreach ($user->getTeams() as $team) {
                 if (\in_array($user, $team->getTeamleads())) {
                     array_push($users, ...$team->getUsers());
@@ -385,10 +382,11 @@ class WeekReportController extends AbstractController
     {
         return array_reduce($rows, function ($toReturn, $row) {
             $currentUser = $this->getUser();
-            $isCurrentUserATeamLeader = in_array('ROLE_TEAMLEAD', $currentUser->getRoles());
-            if (!($row['user'] === $currentUser->getUsername() && $isCurrentUserATeamLeader && $row['status'] !== 'not_submitted' )) {
+            $isCurrentUserATeamLeader = \in_array('ROLE_TEAMLEAD', $currentUser->getRoles());
+            if (!($row['user'] === $currentUser->getUsername() && $isCurrentUserATeamLeader && $row['status'] !== 'not_submitted')) {
                 $toReturn[] = $row;
             }
+
             return $toReturn;
         }, []);
     }

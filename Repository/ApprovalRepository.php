@@ -18,11 +18,10 @@ use KimaiPlugin\ApprovalBundle\Entity\Approval;
 use KimaiPlugin\ApprovalBundle\Entity\ApprovalHistory;
 use KimaiPlugin\ApprovalBundle\Entity\ApprovalStatus;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
+use KimaiPlugin\ApprovalBundle\Settings\ApprovalSettingsInterface;
 use KimaiPlugin\ApprovalBundle\Toolbox\Formatting;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
-use KimaiPlugin\MetaFieldsBundle\Repository\MetaFieldRuleRepository;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method Approval|null find($id, $lockMode = null, $lockVersion = null)
@@ -38,7 +37,7 @@ class ApprovalRepository extends ServiceEntityRepository
     private $settingsTool;
 
     /**
-     * @var MetaFieldRuleRepository
+     * @var ApprovalSettingsInterface
      */
     private $metaFieldRuleRepository;
 
@@ -54,7 +53,7 @@ class ApprovalRepository extends ServiceEntityRepository
 
     public function __construct(
         ManagerRegistry $registry,
-        MetaFieldRuleRepository $metaFieldRuleRepository,
+        ApprovalSettingsInterface $metaFieldRuleRepository,
         SettingsTool $settingsTool,
         Formatting $formatting,
         UrlGeneratorInterface $urlGenerator
@@ -97,50 +96,29 @@ class ApprovalRepository extends ServiceEntityRepository
         return $expected;
     }
 
-    private function getExpectTimeForDate(DateTime $i, $user, $expected)
+    private function getExpectTimeForDate(DateTime $i, User $user, $expected)
     {
         switch ($i->format('N')) {
             case (1):
-                $metaField = $this->metaFieldRuleRepository->find(
-                    $this->settingsTool->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_MONDAY)
-                );
-                $expected += $user->getPreferenceValue($metaField ? $metaField->getName() : 0);
+                $expected += $this->metaFieldRuleRepository->getWorkingTimeForMonday($user);
                 break;
             case (2):
-                $metaField = $this->metaFieldRuleRepository->find(
-                    $this->settingsTool->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_TUESDAY)
-                );
-                $expected += $user->getPreferenceValue($metaField ? $metaField->getName() : 0);
+                $expected += $this->metaFieldRuleRepository->getWorkingTimeForTuesday($user);
                 break;
             case (3):
-                $metaField = $this->metaFieldRuleRepository->find(
-                    $this->settingsTool->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_WEDNESDAY)
-                );
-                $expected += $user->getPreferenceValue($metaField ? $metaField->getName() : 0);
+                $expected += $this->metaFieldRuleRepository->getWorkingTimeForWednesday($user);
                 break;
             case (4):
-                $metaField = $this->metaFieldRuleRepository->find(
-                    $this->settingsTool->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_THURSDAY)
-                );
-                $expected += $user->getPreferenceValue($metaField ? $metaField->getName() : 0);
+                $expected += $this->metaFieldRuleRepository->getWorkingTimeForThursday($user);
                 break;
             case (5):
-                $metaField = $this->metaFieldRuleRepository->find(
-                    $this->settingsTool->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_FRIDAY)
-                );
-                $expected += $user->getPreferenceValue($metaField ? $metaField->getName() : 0);
+                $expected += $this->metaFieldRuleRepository->getWorkingTimeForFriday($user);
                 break;
             case (6):
-                $metaField = $this->metaFieldRuleRepository->find(
-                    $this->settingsTool->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_SATURDAY)
-                );
-                $expected += $user->getPreferenceValue($metaField ? $metaField->getName() : 0);
+                $expected += $this->metaFieldRuleRepository->getWorkingTimeForSaturday($user);
                 break;
             case (7):
-                $metaField = $this->metaFieldRuleRepository->find(
-                    $this->settingsTool->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_SUNDAY)
-                );
-                $expected += $user->getPreferenceValue($metaField ? $metaField->getName() : 0);
+                $expected += $this->metaFieldRuleRepository->getWorkingTimeForSunday($user);
                 break;
         }
 
@@ -168,7 +146,7 @@ class ApprovalRepository extends ServiceEntityRepository
     {
         $parseToViewArray = $this->getUserApprovals($users);
         $parseToViewArray = $this->addAllNotSubmittedUsers($parseToViewArray, $users);
-        
+
         $result = $parseToViewArray ? $this->sort($parseToViewArray) : [];
 
         return $this->getNewestPerUser($result);
@@ -251,8 +229,8 @@ class ApprovalRepository extends ServiceEntityRepository
         $firstDay = $firstDayWork ? $firstDayWork[0]->getBegin() : new DateTime('today');
 
         $approval_workflow_start = $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WORKFLOW_START);
-        if ($approval_workflow_start == ""){
-            $approval_workflow_start = "0000-01-01";
+        if ($approval_workflow_start == '') {
+            $approval_workflow_start = '0000-01-01';
         }
         $approval_ws_start_week = (new DateTime($approval_workflow_start))->modify('-7 day')->format('Y-m-d');
 
@@ -409,19 +387,20 @@ class ApprovalRepository extends ServiceEntityRepository
         $allRows = $this->findAllWeek([$user]);
         $allRows = $this->filterWeeksApprovedOrSubmitted($allRows);
         $allRows = $this->filterWeeksLaterThan($allRows, $date->format('Y-m-d'));
-        
+
         $result = [];
-        foreach ($allRows as $week){
-            $approvalId = end($this->findHistoryForUserAndWeek($userId, $week['startDate']))->getId();
-            if ($approvalId){
-                array_push($result, $approvalId);
+        foreach ($allRows as $week) {
+            $tmp = $this->findHistoryForUserAndWeek($userId, $week['startDate']);
+            $approvalId = end($tmp)->getId();
+            if ($approvalId) {
+                $result[] = $approvalId;
             }
         }
 
         return $result;
     }
 
-    public function findCurrentWeekToApprove(array $users, UserInterface $currentUser): int
+    public function findCurrentWeekToApprove(array $users, User $currentUser): int
     {
         $usersId = array_map(function ($user) {
             return $user->getId();
@@ -536,17 +515,18 @@ class ApprovalRepository extends ServiceEntityRepository
     {
         return array_reduce(
             $rowArray,
-            function ($response, $item)  use ($dateString) {
+            function ($response, $item) use ($dateString) {
                 if ($item['startDate'] > $dateString) {
                     $response[] = $item;
                 }
+
                 return $response;
             },
             []
         );
     }
 
-    private function getWeekUserList($month): ?array
+    private function getWeekUserList($month): array
     {
         $week = $this->findBy(['startDate' => $month], ['startDate' => 'ASC', 'user' => 'ASC']);
         $this->parseHistoryToOneElement($week);
@@ -600,14 +580,14 @@ class ApprovalRepository extends ServiceEntityRepository
             return $user->getId();
         }, $users);
 
-        $approval_workflow_start = $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WORKFLOW_START);        
-        if ($approval_workflow_start == ""){
-            $approval_workflow_start = "0000-01-01";
+        $approval_workflow_start = $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WORKFLOW_START);
+        if ($approval_workflow_start == '') {
+            $approval_workflow_start = '0000-01-01';
         } else {
             $approval_workflow_start = (new DateTime($approval_workflow_start))->modify('-7 day')->format('Y-m-d');
         }
-        
-        $em = $this->getEntityManager();        
+
+        $em = $this->getEntityManager();
         $approvedList = $em->createQueryBuilder()
             ->select('ap')
             ->from(Approval::class, 'ap')
@@ -659,20 +639,21 @@ class ApprovalRepository extends ServiceEntityRepository
     public function getNextApproveWeek(User $user): ?string
     {
         $allRows = $this->findAllWeek([$user]);
-        $allNotSubmittedRows = $this->filterWeeksNotSubmitted($allRows);         
+        $allNotSubmittedRows = $this->filterWeeksNotSubmitted($allRows);
 
         // When there are past/current not submitted rows, return that date
-        if (!empty($allNotSubmittedRows)){
+        if (!empty($allNotSubmittedRows)) {
             return $allNotSubmittedRows[0]['startDate'];
         }
 
         // If there are no initial values, return nothing
-        if (empty($allRows)){
+        if (empty($allRows)) {
             return null;
         }
 
         // Otherwise, when there are $allRows, get the one which would be next (located in the future)
         $prevWeekDay = end($allRows)['startDate'];
-        return date('Y-m-d', strtotime($prevWeekDay. ' + 7 days'));
+
+        return date('Y-m-d', strtotime($prevWeekDay . ' + 7 days'));
     }
 }

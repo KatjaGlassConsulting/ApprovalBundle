@@ -10,18 +10,12 @@
 namespace KimaiPlugin\ApprovalBundle\Toolbox;
 
 use App\Entity\Timesheet;
-use App\Repository\TimesheetRepository;
 use Exception;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BreakTimeCheckToolGER
 {
-    /**
-     * @var TimesheetRepository
-     */
-    private $timesheetRepository;
-
     /**
      * @var TranslatorInterface
      */
@@ -31,9 +25,8 @@ class BreakTimeCheckToolGER
      */
     private $settingsTool;
 
-    public function __construct(TimesheetRepository $timesheetRepository, TranslatorInterface $translator, SettingsTool $settingsTool)
+    public function __construct(TranslatorInterface $translator, SettingsTool $settingsTool)
     {
-        $this->timesheetRepository = $timesheetRepository;
         $this->translator = $translator;
         $this->settingsTool = $settingsTool;
     }
@@ -79,7 +72,7 @@ class BreakTimeCheckToolGER
 
             if ($timesheet->getEnd()) {
                 if (\array_key_exists($hash, $result)) {
-                    if (!\is_null($result[$hash]['lastEnd']->getTimestamp())) {
+                    if (\array_key_exists('lastEnd', $result[$hash])) {
                         $breakDuration = $timesheet->getBegin()->getTimestamp() - $result[$hash]['lastEnd']->getTimestamp();
 
                         $result[$hash]['duration'] += $timesheet->getDuration();
@@ -158,7 +151,7 @@ class BreakTimeCheckToolGER
             for ($i = 0; $i < \count($value) - 1; $i++) {
                 $timesheetOne = $value[$i]->getEnd()->getTimestamp();
                 $timesheetTwo = $value[$i + 1]->getBegin()->getTimestamp();
-                if ($value[$i]->getEnd() == null){
+                if ($value[$i]->getEnd() == null) {
                     $errors[$value[$i + 1]->getBegin()->format('Y-m-d')][] = $this->translator->trans('error.no_end_date');
                 }
                 if (abs($timesheetOne - $timesheetTwo) < 11 * 60 * 60 && $value[$i]->getEnd()->format('Y-m-d') < $value[$i + 1]->getEnd()->format('Y-m-d')) {    // 11h * 60 * 60 -> to seconds

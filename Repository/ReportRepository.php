@@ -14,7 +14,6 @@ use App\Entity\User;
 use App\Model\DailyStatistic;
 use App\Repository\ActivityRepository;
 use App\Repository\ProjectRepository;
-use App\Repository\TimesheetRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -27,18 +26,20 @@ use Doctrine\Persistence\ManagerRegistry;
 class ReportRepository extends ServiceEntityRepository
 {
     /**
-     * @var TimesheetRepository
+     * @var ProjectRepository
      */
-    private $timesheetRepository;
+    private $projectRepository;
+    /**
+     * @var ActivityRepository
+     */
+    private $activityRepository;
 
     public function __construct(
         ManagerRegistry $registry,
-        TimesheetRepository $timesheetRepository,
         ProjectRepository $projectRepository,
         ActivityRepository $activityRepository
     ) {
         parent::__construct($registry, Timesheet::class);
-        $this->timesheetRepository = $timesheetRepository;
         $this->projectRepository = $projectRepository;
         $this->activityRepository = $activityRepository;
     }
@@ -138,6 +139,7 @@ class ReportRepository extends ServiceEntityRepository
         $record['details'][$value['description']] = $value;
 
         $report[$title] = $record;
+
         return $report;
     }
 
@@ -147,7 +149,7 @@ class ReportRepository extends ServiceEntityRepository
 
         $days = $report[$title]['days'];
         $day = $days->getDayByReportDate($value['date']);
-        $day->setTotalDuration($day->getTotalDuration() + (int)$value['duration']);
+        $day->setTotalDuration($day->getTotalDuration() + (int) $value['duration']);
 
         if (isset($report[$title]['details'][$value['description']])) {
             $report = $this->updateExistingDescription($report, $title, $value);
@@ -155,6 +157,7 @@ class ReportRepository extends ServiceEntityRepository
             $report = $this->creatNewDescription($begin, $end, $user, $value, $report, $title);
         }
         $report[$title]['days'] = $days;
+
         return $report;
     }
 }

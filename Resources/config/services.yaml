@@ -12,3 +12,9 @@ services:
     KimaiPlugin\ApprovalBundle\API\:
         resource: '../../API'
         tags: ['controller.service_arguments']
+
+    approval.settings:
+        class: KimaiPlugin\ApprovalBundle\Settings\MetaFieldSettings
+
+    KimaiPlugin\ApprovalBundle\Settings\ApprovalSettingsInterface:
+        alias: 'approval.settings'

@@ -9,7 +9,6 @@
 
 namespace KimaiPlugin\ApprovalBundle\API;
 
-use App\Entity\Team;
 use App\Repository\UserRepository;
 use Exception;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -142,7 +141,6 @@ final class ApprovalNextWeekApiController extends AbstractController
         return array_filter(
             $user->getTeams(),
             function ($team) use ($selectedUserId) {
-                /** @var Team $team */
                 foreach ($team->getUsers() as $user) {
                     if ($user->getId() == $selectedUserId) {
                         return true;

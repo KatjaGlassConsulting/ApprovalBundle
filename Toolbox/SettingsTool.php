@@ -19,6 +19,7 @@ class SettingsTool
      * @var ConfigurationRepository
      */
     private $configurationRepository;
+    private $cache = [];
 
     /**
      * @param ConfigurationRepository $configurationRepository
@@ -34,12 +35,15 @@ class SettingsTool
      */
     public function getConfiguration($key)
     {
-        $config = $this->configurationRepository->findOneBy(['name' => $key]);
-        if ($config) {
-            return $config->getValue() ?? '';
+        if (!array_key_exists($key, $this->cache)) {
+            $config = $this->configurationRepository->findOneBy(['name' => $key]);
+            if ($config === null) {
+                return '';
+            }
+            $this->cache[$key] = $config->getValue() ?? '';
         }
 
-        return '';
+        return $this->cache[$key];
     }
 
     /**
@@ -49,6 +53,8 @@ class SettingsTool
      */
     public function setConfiguration($key, $value)
     {
+        $this->cache = [];
+
         $configuration = $this->configurationRepository->findOneBy(['name' => $key]);
 
         if ($configuration === null) {
@@ -86,6 +92,7 @@ class SettingsTool
         if ($this->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_SUNDAY) === '') {
             return false;
         }
+
         return true;
     }
 }

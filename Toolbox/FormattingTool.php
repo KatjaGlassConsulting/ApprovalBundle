@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of the Kimai time-tracking app.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace KimaiPlugin\ApprovalBundle\Toolbox;
 
 use DateTime;
@@ -22,21 +29,21 @@ class FormattingTool
     }
 
     /**
-     * @param $duration
-     * @return float|int
+     * @param float|int $duration
+     * @return string
      */
-    public function formattingDurationToHours($duration)
+    public function formattingDurationToHours($duration): string
     {
         return $this->formattingNumber($duration / 60 / 60);
     }
 
     /**
-     * @param $duration
-     * @return string
+     * @param float|int $duration
+     * @return int
      */
     public function formattingDurationToSeconds($duration)
     {
-        return $duration * 60 * 60;
+        return (int) ($duration * 60 * 60);
     }
 
     /**
@@ -44,7 +51,7 @@ class FormattingTool
      * @param int $precision
      * @return string
      */
-    public function formattingNumber($number, $precision = 2)
+    public function formattingNumber($number, $precision = 2): string
     {
         return number_format(round($number, $precision), $precision, $this->translator->trans('format.decimal_separator'), $this->translator->trans('format.thousands_separator'));
     }

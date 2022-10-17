@@ -10,7 +10,7 @@
 namespace KimaiPlugin\ApprovalBundle\Toolbox;
 
 use Doctrine\ORM\EntityRepository;
-use KimaiPlugin\MetaFieldsBundle\Repository\MetaFieldRuleRepository;
+use KimaiPlugin\ApprovalBundle\Settings\ApprovalSettingsInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -22,15 +22,11 @@ class FormTool
     private $settingsTool;
 
     /**
-     * @var MetaFieldRuleRepository
+     * @var ApprovalSettingsInterface
      */
     private $metaFieldRuleRepository;
 
-    /**
-     * @param SettingsTool $settingsTool
-     * @param MetaFieldRuleRepository $metaFieldRuleRepository
-     */
-    public function __construct(SettingsTool $settingsTool, MetaFieldRuleRepository $metaFieldRuleRepository)
+    public function __construct(SettingsTool $settingsTool, ApprovalSettingsInterface $metaFieldRuleRepository)
     {
         $this->settingsTool = $settingsTool;
         $this->metaFieldRuleRepository = $metaFieldRuleRepository;
@@ -44,7 +40,7 @@ class FormTool
      */
     public function createMetaDataChoice($child, $label, $key, FormBuilderInterface $builder)
     {
-        $data = empty($this->settingsTool->getConfiguration($key)) ? null : $this->metaFieldRuleRepository->findOneBy(['id' => $this->settingsTool->getConfiguration($key)]);
+        $data = empty($this->settingsTool->getConfiguration($key)) ? null : $this->metaFieldRuleRepository->find($this->settingsTool->getConfiguration($key));
 
         $builder->add($child, ChoiceType::class, [
             'label' => $label,
