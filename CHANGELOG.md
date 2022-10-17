@@ -5,6 +5,8 @@
 - new CI tools
 - A new interface and service to use the bundle WITHOUT meta-fields and daily working times - fixes Approval without duration #4
 - Code style and fixes
+- display user-alias when available, otherwise use username
+- update translations - remove [ccnet-test2]
 
 ## 0.9.2 to 0.9.3
 
