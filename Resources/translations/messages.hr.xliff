@@ -17,7 +17,7 @@
 			</trans-unit>
 			<trans-unit id="menu.report_user_week">
 				<source>menu.report_user_week</source>
-				<target state="translated">Izvještaj o odobranim tjednima</target>
+				<target state="translated">Izvještaj o odobrenim tjednima</target>
 			</trans-unit>
 			<trans-unit id="table.history">
 				<source>table.history</source>
@@ -77,7 +77,7 @@
 			</trans-unit>
 			<trans-unit id="email.cronjob.adminNotSubmittedSubject">
 				<source>email.cronjob.adminNotSubmittedSubject</source>
-				<target state="translated">Popis neprijavljenih korisnika</target>
+				<target state="translated">[ccnet-test2] Popis neprijavljenih korisnika</target>
 			</trans-unit>
 			<trans-unit id="email.cronjob.adminNotSubmittedTitle">
 				<source>email.cronjob.adminNotSubmittedTitle</source>
@@ -85,7 +85,7 @@
 			</trans-unit>
 			<trans-unit id="email.cronjob.userNotSubmittedWeeksSubject">
 				<source>email.cronjob.userNotSubmittedWeeksSubject</source>
-				<target state="translated">Popis neprijavljenih tjedana</target>
+				<target state="translated">[ccnet-test2] Popis neprijavljenih tjedana</target>
 			</trans-unit>
 			<trans-unit id="email.cronjob.userNotSubmittedWeeksTitle">
 				<source>email.cronjob.userNotSubmittedWeeksTitle</source>
@@ -93,7 +93,7 @@
 			</trans-unit>
 			<trans-unit id="email.cronjob.teamleadNotSubmittedUsersSubject">
 				<source>email.cronjob.teamleadNotSubmittedUsersSubject</source>
-				<target state="translated">Popis neprijavljenih tjedana</target>
+				<target state="translated">[ccnet-test2] Popis neprijavljenih tjedana</target>
 			</trans-unit>
 			<trans-unit id="email.cronjob.teamleadNotSubmittedUsersTitle">
 				<source>email.cronjob.teamleadNotSubmittedUsersTitle</source>
