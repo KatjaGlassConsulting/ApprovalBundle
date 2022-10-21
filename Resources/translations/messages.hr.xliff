@@ -4,305 +4,305 @@
         <body>
             <trans-unit id="title.approval_bundle">
                 <source>title.approval_bundle</source>
-                <target state="translated">Odobravanje sati</target>
+                <target>Odobravanje sati</target>
             </trans-unit>
 
 			<trans-unit id="menu.approval_bundle">
 				<source>menu.approval_bundle</source>
-				<target state="translated">Odobravanje sati</target>
+				<target>Odobravanje sati</target>
 			</trans-unit>
 			<trans-unit id="menu.to_approve">
 				<source>menu.to_approve</source>
-				<target state="translated">Za odobravanje</target>
+				<target>Za odobravanje</target>
 			</trans-unit>
 			<trans-unit id="menu.report_user_week">
 				<source>menu.report_user_week</source>
-				<target state="translated">Izvještaj o odobrenim tjednima</target>
+				<target>Izvještaj o odobrenim tjednima</target>
 			</trans-unit>
 			<trans-unit id="table.history">
 				<source>table.history</source>
-				<target state="translated">Povijest za</target>
+				<target>Povijest za</target>
 			</trans-unit>
 			<trans-unit id="table.approver">
 				<source>table.approver</source>
-				<target state="translated">Odobravatelj</target>
+				<target>Odobravatelj</target>
 			</trans-unit>
 			<trans-unit id="table.status">
 				<source>table.status</source>
-				<target state="translated">Stanje</target>
+				<target>Stanje</target>
 			</trans-unit>
 			<trans-unit id="table.message">
 				<source>table.message</source>
-				<target state="translated">Poruka</target>
+				<target>Poruka</target>
 			</trans-unit>
 			<trans-unit id="table.dateOfApprove">
 				<source>table.dateOfApprove</source>
-				<target state="translated">Datum odobravanja</target>
+				<target>Datum odobravanja</target>
 			</trans-unit>
 			<trans-unit id="email.subjectSubmitted">
 				<source>email.subjectSubmitted</source>
-				<target state="translated">Zahtjev za odobravanje vremenske tablice</target>
+				<target>Zahtjev za odobravanje vremenske tablice</target>
 			</trans-unit>
 			<trans-unit id="email.subjectApproved">
 				<source>email.subjectApproved</source>
-				<target state="translated">Vremenska tablica je odobrena</target>
+				<target>Vremenska tablica je odobrena</target>
 			</trans-unit>
 			<trans-unit id="email.subjectReject">
 				<source>email.subjectReject</source>
-				<target state="translated">Vremenska tablica je odbijena</target>
+				<target>Vremenska tablica je odbijena</target>
 			</trans-unit>
 			<trans-unit id="email.closedMonth">
 				<source>email.closedMonth</source>
-				<target state="translated">Zaključani mjesec</target>
+				<target>Zaključani mjesec</target>
 			</trans-unit>
 			<trans-unit id="email.closedMonthMessage">
 				<source>email.closedMonthMessage</source>
-				<target state="translated">Mjesec je potpuno odobren – </target>
+				<target>Mjesec je potpuno odobren – </target>
 			</trans-unit>
 			<trans-unit id="email.hello">
 				<source>email.hello</source>
-				<target state="translated">Pozdrav</target>
+				<target>Pozdrav</target>
 			</trans-unit>
 			<trans-unit id="email.approved.message">
 				<source>email.approved.message</source>
-				<target state="translated">je odobrio/la tvoju vremensku tablicu za tjedan broj </target>
+				<target>je odobrio/la tvoju vremensku tablicu za tjedan broj </target>
 			</trans-unit>
 			<trans-unit id="email.reject.message">
 				<source>email.reject.message</source>
-				<target state="translated">je odbio/la tvoju vremensku tablicu za tjedan broj </target>
+				<target>je odbio/la tvoju vremensku tablicu za tjedan broj </target>
 			</trans-unit>
 			<trans-unit id="email.reason">
 				<source>email.reason</source>
-				<target state="translated">Razlog: </target>
+				<target>Razlog: </target>
 			</trans-unit>
 			<trans-unit id="email.cronjob.adminNotSubmittedSubject">
 				<source>email.cronjob.adminNotSubmittedSubject</source>
-				<target state="translated">[ccnet-test2] Popis neprijavljenih korisnika</target>
+				<target>Popis neprijavljenih korisnika</target>
 			</trans-unit>
 			<trans-unit id="email.cronjob.adminNotSubmittedTitle">
 				<source>email.cronjob.adminNotSubmittedTitle</source>
-				<target state="translated">Popis neprijavljenih korisnika:</target>
+				<target>Popis neprijavljenih korisnika:</target>
 			</trans-unit>
 			<trans-unit id="email.cronjob.userNotSubmittedWeeksSubject">
 				<source>email.cronjob.userNotSubmittedWeeksSubject</source>
-				<target state="translated">[ccnet-test2] Popis neprijavljenih tjedana</target>
+				<target>Popis neprijavljenih tjedana</target>
 			</trans-unit>
 			<trans-unit id="email.cronjob.userNotSubmittedWeeksTitle">
 				<source>email.cronjob.userNotSubmittedWeeksTitle</source>
-				<target state="translated">Popis neprijavljenih tjedana:</target>
+				<target>Popis neprijavljenih tjedana:</target>
 			</trans-unit>
 			<trans-unit id="email.cronjob.teamleadNotSubmittedUsersSubject">
 				<source>email.cronjob.teamleadNotSubmittedUsersSubject</source>
-				<target state="translated">[ccnet-test2] Popis neprijavljenih tjedana</target>
+				<target>Popis neprijavljenih tjedana</target>
 			</trans-unit>
 			<trans-unit id="email.cronjob.teamleadNotSubmittedUsersTitle">
 				<source>email.cronjob.teamleadNotSubmittedUsersTitle</source>
-				<target state="translated">Popis neprijavljenih tjedana:</target>
+				<target>Popis neprijavljenih tjedana:</target>
 			</trans-unit>
 
 			<trans-unit id="menu.settings">
 				<source>menu.settings</source>
-				<target state="translated">Postavke</target>
+				<target>Postavke</target>
 			</trans-unit>
 
             <trans-unit id="stats.duration_total">
 				<source>stats.duration_total</source>
-				<target state="translated">Ukupno trajanje</target>
+				<target>Ukupno trajanje</target>
             </trans-unit>
             <trans-unit id="stats.duration_expected">
 				<source>stats.duration_expected</source>
-				<target state="translated">Očekivano trajanje</target>
+				<target>Očekivano trajanje</target>
             </trans-unit>
             <trans-unit id="label.week">
 				<source>label.week</source>
-				<target state="translated">Tjedan</target>
+				<target>Tjedan</target>
             </trans-unit>
         	<trans-unit id="table.past_weeks">
 				<source>table.past_weeks</source>
-				<target state="translated">Prošli tjedan</target>
+				<target>Prošli tjedan</target>
             </trans-unit>
 			<trans-unit id="table.current_week">
 				<source>table.current_week</source>
-				<target state="translated">Aktualni tjedan</target>
+				<target>Aktualni tjedan</target>
 			</trans-unit>
 
         	<trans-unit id="table.approve_user">
 				<source>table.approve_user</source>
-				<target state="translated">Korisnik</target>
+				<target>Korisnik</target>
             </trans-unit>
 			<trans-unit id="table.approve_week">
 				<source>table.approve_week</source>
-				<target state="translated">Tjedan</target>
+				<target>Tjedan</target>
 			</trans-unit>
         	<trans-unit id="table.approve_status">
 				<source>table.approve_status</source>
-				<target state="translated">Stanje</target>
+				<target>Stanje</target>
             </trans-unit>
 			<trans-unit id="table.approve_action">
 				<source>table.approve_action</source>
-				<target state="translated">Radnja</target>
+				<target>Radnja</target>
 			</trans-unit>
 			<trans-unit id="warning.approval_settings_not_set">
 				<source>warning.approval_settings_not_set</source>
-				<target state="translated">Postavke još nisu potpuno postavljene</target>
+				<target>Postavke još nisu potpuno postavljene</target>
 			</trans-unit>
 			<trans-unit id="warning.add_to_approve_previous_weeks">
 				<source>warning.add_to_approve_previous_weeks</source>
-				<target state="translated">Za odobravanje dodaj prošle tjedne</target>
+				<target>Za odobravanje dodaj prošle tjedne</target>
 			</trans-unit>
 			<trans-unit id="warning.selected_user_sunday_issue">
 				<source>warning.selected_user_sunday_issue</source>
-				<target state="translated">Odabrani korisnik je odredio nedjelju kao početak tjedna – dodatak „Odobravanje vremena” to ne podržava.</target>
+				<target>Odabrani korisnik je odredio nedjelju kao početak tjedna – dodatak „Odobravanje vremena” to ne podržava.</target>
 			</trans-unit>
 			<trans-unit id="warning.currentUserSundayIssue">
 				<source>warning.currentUserSundayIssue</source>
-				<target state="translated">Nedjelja je određena kao početak tjedna – dodatak „Odobravanje vremena” to ne podržava.</target>
+				<target>Nedjelja je određena kao početak tjedna – dodatak „Odobravanje vremena” to ne podržava.</target>
 			</trans-unit>
 
 			<trans-unit id="label.meta_field_expected_working_time_on_monday">
 				<source>label.meta_field_expected_working_time_on_monday</source>
-				<target state="translated">Očekivano dnevno radno vrijeme za ponedjeljak</target>
+				<target>Očekivano dnevno radno vrijeme za ponedjeljak</target>
 			</trans-unit>
 			<trans-unit id="label.meta_field_expected_working_time_on_tuesday">
 				<source>label.meta_field_expected_working_time_on_tuesday</source>
-				<target state="translated">Očekivano dnevno radno vrijeme za utorak</target>
+				<target>Očekivano dnevno radno vrijeme za utorak</target>
 			</trans-unit>
 			<trans-unit id="label.meta_field_expected_working_time_on_wednesday">
 				<source>label.meta_field_expected_working_time_on_wednesday</source>
-				<target state="translated">Očekivano dnevno radno vrijeme za srijedu</target>
+				<target>Očekivano dnevno radno vrijeme za srijedu</target>
 			</trans-unit>
 			<trans-unit id="label.meta_field_expected_working_time_on_thursday">
 				<source>label.meta_field_expected_working_time_on_thursday</source>
-				<target state="translated">Očekivano dnevno radno vrijeme za četvrtak</target>
+				<target>Očekivano dnevno radno vrijeme za četvrtak</target>
 			</trans-unit>
 			<trans-unit id="label.meta_field_expected_working_time_on_friday">
 				<source>label.meta_field_expected_working_time_on_friday</source>
-				<target state="translated">Očekivano dnevno radno vrijeme za petak</target>
+				<target>Očekivano dnevno radno vrijeme za petak</target>
 			</trans-unit>
 			<trans-unit id="label.meta_field_expected_working_time_on_saturday">
 				<source>label.meta_field_expected_working_time_on_saturday</source>
-				<target state="translated">Očekivano dnevno radno vrijeme za subotu</target>
+				<target>Očekivano dnevno radno vrijeme za subotu</target>
 			</trans-unit>
 			<trans-unit id="label.meta_field_expected_working_time_on_sunday">
 				<source>label.meta_field_expected_working_time_on_sunday</source>
-				<target state="translated">Očekivano dnevno radno vrijeme za nedelju</target>
+				<target>Očekivano dnevno radno vrijeme za nedelju</target>
 			</trans-unit>
 
 			<trans-unit id="submitted">
 				<source>submitted</source>
-				<target state="translated">Podneseno</target>
+				<target>Podneseno</target>
 			</trans-unit>
 			<trans-unit id="denied">
 				<source>denied</source>
-				<target state="translated">Odbijeno</target>
+				<target>Odbijeno</target>
 			</trans-unit>
 			<trans-unit id="rejected">
 				<source>rejected</source>
-				<target state="translated">Odbijeno</target>
+				<target>Odbijeno</target>
 			</trans-unit>
 			<trans-unit id="approved">
 				<source>approved</source>
-				<target state="translated">Odobreno</target>
+				<target>Odobreno</target>
 			</trans-unit>
 			<trans-unit id="not_submitted">
 				<source>not_submitted</source>
-				<target state="translated">Nepodneseno</target>
+				<target>Nepodneseno</target>
 			</trans-unit>
 			<trans-unit id="label.undoMessage">
 				<source>label.undoMessage</source>
-				<target state="translated">Želiš li poništiti stanje „Nepodneseno”?</target>
+				<target>Želiš li poništiti stanje „Nepodneseno”?</target>
 			</trans-unit>
 			<trans-unit id="api.wrongTeam">
 				<source>api.wrongTeam</source>
-				<target state="translated">Korisnik koji nije član tvojeg tima</target>
+				<target>Korisnik koji nije član tvojeg tima</target>
 			</trans-unit>
 			<trans-unit id="api.accessDenied">
 				<source>api.accessDenied</source>
-				<target state="translated">Pristup odbijen</target>
+				<target>Pristup odbijen</target>
 			</trans-unit>
 			<trans-unit id="api.wrongUser">
 				<source>api.wrongUser</source>
-				<target state="translated">Korisnik ne postoji</target>
+				<target>Korisnik ne postoji</target>
 			</trans-unit>
 			<trans-unit id="api.alreadyExists">
 				<source>api.alreadyExists</source>
-				<target state="translated">Odobrenje već postoji</target>
+				<target>Odobrenje već postoji</target>
 			</trans-unit>
 			<trans-unit id="api.add_to_approve_previous_weeks">
 				<source>api.add_to_approve_previous_weeks</source>
-				<target state="translated">Za odobravanje dodaj prošle tjedne</target>
+				<target>Za odobravanje dodaj prošle tjedne</target>
 			</trans-unit>
 			<trans-unit id="api.noData">
 				<source>api.noData</source>
-				<target state="translated">Za ovog korisnika ne postoje podaci</target>
+				<target>Za ovog korisnika ne postoje podaci</target>
 			</trans-unit>
 
 			<trans-unit id="warning.noUserToApprove">
 				<source>warning.noUserToApprove</source>
-				<target state="translated">Nema korisnika za odobravanje</target>
+				<target>Nema korisnika za odobravanje</target>
 			</trans-unit>
 
 			<trans-unit id="header.date">
 				<source>header.date</source>
-				<target state="translated">Datum</target>
+				<target>Datum</target>
 			</trans-unit>
 			<trans-unit id="header.begin">
 				<source>header.begin</source>
-				<target state="translated">Početak</target>
+				<target>Početak</target>
 			</trans-unit>
 			<trans-unit id="header.end">
 				<source>header.end</source>
-				<target state="translated">Kraj</target>
+				<target>Kraj</target>
 			</trans-unit>
 			<trans-unit id="header.duration">
 				<source>header.duration</source>
-				<target state="translated">Trajanje</target>
+				<target>Trajanje</target>
 			</trans-unit>
 			<trans-unit id="header.customer">
 				<source>header.customer</source>
-				<target state="translated">Kupac</target>
+				<target>Kupac</target>
 			</trans-unit>
 			<trans-unit id="header.project">
 				<source>header.project</source>
-				<target state="translated">Projekt</target>
+				<target>Projekt</target>
 			</trans-unit>
 			<trans-unit id="header.activity">
 				<source>header.activity</source>
-				<target state="translated">Aktivnost</target>
+				<target>Aktivnost</target>
 			</trans-unit>
 			<trans-unit id="header.description">
 				<source>header.description</source>
-				<target state="translated">Opis</target>
+				<target>Opis</target>
 			</trans-unit>
 
 			<trans-unit id="error.less_than_eleven_hours_off">
 				<source>error.less_than_eleven_hours_off</source>
-				<target state="translated">Nisi poštovao/la odmor od 11 sati.</target>
+				<target>Nisi poštovao/la odmor od 11 sati.</target>
 			</trans-unit>
 			<trans-unit id="error.more_than_ten_hours_worked">
 				<source>error.more_than_ten_hours_worked</source>
-				<target state="translated">Radio/la si više od 10 sati!</target>
+				<target>Radio/la si više od 10 sati!</target>
 			</trans-unit>
 			<trans-unit id="error.nine_hours_without_break">
 				<source>error.nine_hours_without_break</source>
-				<target state="translated">Radio/la si više od 9 sati bez pauze od 45 minuta!</target>
+				<target>Radio/la si više od 9 sati bez pauze od 45 minuta!</target>
 			</trans-unit>
 			<trans-unit id="error.six_hours_without_break">
 				<source>error.six_hours_without_break</source>
-				<target state="translated">Radio/la si više od 6 sati bez pauze od 30 minuta!</target>
+				<target>Radio/la si više od 6 sati bez pauze od 30 minuta!</target>
 			</trans-unit>
 
 			<trans-unit id="label.customer_for_free_days">
 				<source>label.customer_for_free_days</source>
-				<target state="translated">Kupac za slobodne dane</target>
+				<target>Kupac za slobodne dane</target>
 			</trans-unit>
 			<trans-unit id="label.email_link_url">
 				<source>label.email_link_url</source>
-				<target state="translated">URL e-mail poveznice</target>
+				<target>URL e-mail poveznice</target>
 			</trans-unit>
 			<trans-unit id="label.workflow_start">
 				<source>label.workflow_start</source>
-				<target state="translated">Odobravanje početnog datuma toka rada</target>
+				<target>Odobravanje početnog datuma toka rada</target>
 			</trans-unit>
 
 			<!-- START formatting patterns form -->
@@ -316,93 +316,93 @@
 			</trans-unit>
 			<trans-unit id="format.decimal_separator">
 				<source>format.decimal_separator</source>
-				<target state="translated">,</target>
+				<target>,</target>
 			</trans-unit>
 			<trans-unit id="format.thousands_separator">
 				<source>format.thousands_separator</source>
-				<target state="translated">.</target>
+				<target>.</target>
 			</trans-unit>
 			<!-- END formatting patterns form -->
 
 			<!-- START month form -->
 			<trans-unit id="month.january">
 				<source>month.january</source>
-				<target state="translated">Siječanj</target>
+				<target>Siječanj</target>
 			</trans-unit>
 			<trans-unit id="month.february">
 				<source>month.february</source>
-				<target state="translated">Veljača</target>
+				<target>Veljača</target>
 			</trans-unit>
 			<trans-unit id="month.march">
 				<source>month.march</source>
-				<target state="translated">Ožujak</target>
+				<target>Ožujak</target>
 			</trans-unit>
 			<trans-unit id="month.april">
 				<source>month.april</source>
-				<target state="translated">Travanj</target>
+				<target>Travanj</target>
 			</trans-unit>
 			<trans-unit id="month.may">
 				<source>month.may</source>
-				<target state="translated">Svibanj</target>
+				<target>Svibanj</target>
 			</trans-unit>
 			<trans-unit id="month.june">
 				<source>month.june</source>
-				<target state="translated">Lipanj</target>
+				<target>Lipanj</target>
 			</trans-unit>
 			<trans-unit id="month.july">
 				<source>month.july</source>
-				<target state="translated">Srpanj</target>
+				<target>Srpanj</target>
 			</trans-unit>
 			<trans-unit id="month.august">
 				<source>month.august</source>
-				<target state="translated">Kolovoz</target>
+				<target>Kolovoz</target>
 			</trans-unit>
 			<trans-unit id="month.september">
 				<source>month.september</source>
-				<target state="translated">Rujan</target>
+				<target>Rujan</target>
 			</trans-unit>
 			<trans-unit id="month.october">
 				<source>month.october</source>
-				<target state="translated">Listopad</target>
+				<target>Listopad</target>
 			</trans-unit>
 			<trans-unit id="month.november">
 				<source>month.november</source>
-				<target state="translated">Studeni</target>
+				<target>Studeni</target>
 			</trans-unit>
 			<trans-unit id="month.december">
 				<source>month.december</source>
-				<target state="translated">Prosinac</target>
+				<target>Prosinac</target>
 			</trans-unit>
 			<!-- END month form -->
             
             <!-- START Tooltips for buttons -->
             <trans-unit id="tooltip.description">
 				<source>tooltip.description</source>
-				<target state="translated">Prikaži opise aktivnosti</target>
+				<target>Prikaži opise aktivnosti</target>
 			</trans-unit>
             <trans-unit id="tooltip.timesheets">
 				<source>tooltip.timesheets</source>
-				<target state="translated">Vremenske tablice</target>
+				<target>Vremenske tablice</target>
 			</trans-unit>
             <trans-unit id="tooltip.history">
 				<source>tooltip.history</source>
-				<target state="translated">Povijest</target>
+				<target>Povijest</target>
 			</trans-unit>
             <trans-unit id="tooltip.approve">
 				<source>tooltip.approve</source>
-				<target state="translated">Odobri</target>
+				<target>Odobri</target>
 			</trans-unit>
             <trans-unit id="tooltip.reject">
 				<source>tooltip.reject</source>
-				<target state="translated">Odbij</target>
+				<target>Odbij</target>
 			</trans-unit>
             <trans-unit id="tooltip.undo">
 				<source>tooltip.undo</source>
-				<target state="translated">Poništi odobrenje</target>
+				<target>Poništi odobrenje</target>
 			</trans-unit>
             <trans-unit id="tooltip.submit">
 				<source>tooltip.submit</source>
-				<target state="translated">Pošalji za odobravanje</target>
+				<target>Pošalji za odobravanje</target>
 			</trans-unit>
             <!-- END Tooltips for buttons -->
         </body>
