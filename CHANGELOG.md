@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.4 to 0.9.5
+
+- fix access bug caused by using user-display-name on weekly report selection
+
 ## 0.9.3 to 0.9.4
 
 - new CI tools
