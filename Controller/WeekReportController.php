@@ -30,6 +30,7 @@ use KimaiPlugin\ApprovalBundle\Form\SettingsForm;
 use KimaiPlugin\ApprovalBundle\Form\WeekByUserForm;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalHistoryRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
+use KimaiPlugin\ApprovalBundle\Repository\ApprovalWorkdayHistoryRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ReportRepository;
 use KimaiPlugin\ApprovalBundle\Settings\ApprovalSettingsInterface;
 use KimaiPlugin\ApprovalBundle\Toolbox\BreakTimeCheckToolGER;
@@ -48,6 +49,7 @@ class WeekReportController extends AbstractController
     private $settingsTool;
     private $approvalRepository;
     private $approvalHistoryRepository;
+    private $approvalWorkdayHistoryRepository;
     private $userRepository;
     private $formatting;
     private $timesheetRepository;
@@ -60,6 +62,7 @@ class WeekReportController extends AbstractController
         UserRepository $userRepository,
         ApprovalHistoryRepository $approvalHistoryRepository,
         ApprovalRepository $approvalRepository,
+        ApprovalWorkdayHistoryRepository $approvalWorkdayHistoryRepository,
         Formatting $formatting,
         TimesheetRepository $timesheetRepository,
         BreakTimeCheckToolGER $breakTimeCheckToolGER,
@@ -70,6 +73,7 @@ class WeekReportController extends AbstractController
         $this->userRepository = $userRepository;
         $this->approvalHistoryRepository = $approvalHistoryRepository;
         $this->approvalRepository = $approvalRepository;
+        $this->approvalWorkdayHistoryRepository = $approvalWorkdayHistoryRepository;
         $this->formatting = $formatting;
         $this->timesheetRepository = $timesheetRepository;
         $this->breakTimeCheckToolGER = $breakTimeCheckToolGER;
@@ -87,7 +91,7 @@ class WeekReportController extends AbstractController
         return $this->isGranted('view_all_approval');
     }
 
-    /**
+    /** 
      * @Route(path="/week_by_user", name="approval_bundle_report", methods={"GET","POST"})
      * @throws Exception
      */
@@ -223,6 +227,26 @@ class WeekReportController extends AbstractController
     {
         return $this->render('@Approval/settings.html.twig', [
             'current_tab' => 'settings',
+            'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
+            'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
+            'form' => $this->createSettingsForm($request),
+            'settingsWarning' => !$this->approvalSettings->isFullyConfigured(),
+            'warningNoUsers' => empty($this->getUsers())
+        ]);
+    }
+
+    /**
+     * @Route(path="/settings_workday_history", name="approval_bundle_settings_workday", methods={"GET","POST"})
+     * @throws Exception
+     */
+    public function settingsWorkdayHistory(Request $request): Response
+    {
+        $approvals = $this->approvalWorkdayHistoryRepository->findAll();
+        file_put_contents("C:/temp/blub.txt", "settingsWorkdayHistory\n");
+        file_put_contents("C:/temp/blub.txt", json_encode($approvals) . "\n", FILE_APPEND);
+        
+        return $this->render('@Approval/settings.html.twig', [
+            'current_tab' => 'approval_bundle_settings_workday',
             'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
             'form' => $this->createSettingsForm($request),

@@ -19,6 +19,10 @@
 				<source>menu.report_user_week</source>
 				<target>Wochenberichte</target>
 			</trans-unit>
+      <trans-unit id="menu.settings_workday_history">
+				<source>menu.settings_workday_history</source>
+				<target>Einstellungen Arbeitstage</target>
+			</trans-unit>
 			<trans-unit id="table.history">
 				<source>table.history</source>
 				<target>Historie für</target>

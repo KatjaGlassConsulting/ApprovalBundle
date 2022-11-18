@@ -24,6 +24,13 @@
                 {{ 'menu.settings' |trans }}
             </a>
         </li>
+        <li{% if current_tab == "settings_workday_history" %} class="active"{% endif %}>
+            <a href="{{ path('approval_bundle_settings_workday') }}"
+               style="cursor: pointer"
+               aria-expanded="false">
+                {{ 'menu.settings_workday_history' |trans }}
+            </a>
+        </li>
     {% endif %}
 </ul>
 {% endif %}
