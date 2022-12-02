@@ -19,6 +19,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -126,6 +127,13 @@ class SettingsForm extends AbstractType
             'label' => 'label.workflow_start',
             'data' => $workflowDate,
             'required' => false
+        ]); 
+
+        $workflowDate = $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY);
+        $builder->add(FormEnum::OVERTIME_NY, CheckboxType::class, [
+          'label' => 'label.approval_overtime_ny',
+          'data' => $this->formTool->isChecked(ConfigEnum::APPROVAL_OVERTIME_NY),
+          'required' => false
         ]);
 
         $builder->add(FormEnum::SUBMIT, SubmitType::class, [

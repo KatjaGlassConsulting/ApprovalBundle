@@ -28,39 +28,39 @@ class ApprovalWorkdayHistory
     private ?User $user = null;
 
     /**
-     * @ORM\Column(type="DateInterval")
+     * @ORM\Column(type="integer")
      */
-    private ?\DateInterval $monday = null;
+    private ?int $monday = null;
 
     /**
-     * @ORM\Column(type="DateInterval")
+     * @ORM\Column(type="integer")
      */
-    private ?\DateInterval $tuesday = null;
+    private ?int $tuesday = null;
 
     /**
-     * @ORM\Column(type="DateInterval")
+     * @ORM\Column(type="integer")
      */
-    private ?\DateInterval $wednesday = null;
+    private ?int $wednesday = null;
 
     /**
-     * @ORM\Column(type="DateInterval")
+     * @ORM\Column(type="integer")
      */
-    private ?\DateInterval $thursday = null;
+    private ?int $thursday = null;
 
     /**
-     * @ORM\Column(type="DateInterval")
+     * @ORM\Column(type="integer")
      */
-    private ?\DateInterval $friday = null;
+    private ?int $friday = null;
 
     /**
-     * @ORM\Column(type="DateInterval")
+     * @ORM\Column(type="integer")
      */
-    private ?\DateInterval $saturday = null;
+    private ?int $saturday = null;
 
     /**
-     * @ORM\Column(type="DateInterval")
+     * @ORM\Column(type="integer")
      */
-    private ?\DateInterval $sunday = null;
+    private ?int $sunday = null;
 
     /**
      * @ORM\Column(type="date")
@@ -89,84 +89,84 @@ class ApprovalWorkdayHistory
         return $this;
     }
 
-    public function getMonday(): ?\DateInterval
+    public function getMonday(): ?int
     {
         return $this->monday;
     }
 
-    public function setMonday(\DateInterval $monday): self
+    public function setMonday(int $monday): self
     {
         $this->monday = $monday;
 
         return $this;
     }
 
-    public function getTuesday(): ?\DateInterval
+    public function getTuesday(): ?int
     {
         return $this->tuesday;
     }
 
-    public function setTuesday(\DateInterval $tuesday): self
+    public function setTuesday(int $tuesday): self
     {
         $this->tuesday = $tuesday;
 
         return $this;
     }
 
-    public function getWednesday(): ?\DateInterval
+    public function getWednesday(): ?int
     {
         return $this->wednesday;
     }
 
-    public function setWednesday(\DateInterval $wednesday): self
+    public function setWednesday(int $wednesday): self
     {
         $this->wednesday = $wednesday;
 
         return $this;
     }
 
-    public function getThursday(): ?\DateInterval
+    public function getThursday(): ?int
     {
         return $this->thursday;
     }
 
-    public function setThursday(\DateInterval $thursday): self
+    public function setThursday(int $thursday): self
     {
         $this->thursday = $thursday;
 
         return $this;
     }
 
-    public function getFriday(): ?\DateInterval
+    public function getFriday(): ?int
     {
         return $this->friday;
     }
 
-    public function setFriday(\DateInterval $friday): self
+    public function setFriday(int $friday): self
     {
         $this->friday = $friday;
 
         return $this;
     }
 
-    public function getSaturday(): ?\DateInterval
+    public function getSaturday(): ?int
     {
         return $this->saturday;
     }
 
-    public function setSaturday(\DateInterval $saturday): self
+    public function setSaturday(int $saturday): self
     {
         $this->saturday = $saturday;
 
         return $this;
     }
 
-    public function getSunday(): ?\DateInterval
+    public function getSunday(): ?int
     {
         return $this->sunday;
     }
 
-    public function setSunday(\DateInterval $sunday): self
+    public function setSunday(int $sunday): self
     {
         $this->sunday = $sunday;
 

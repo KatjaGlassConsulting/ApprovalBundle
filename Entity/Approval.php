@@ -44,6 +44,10 @@ class Approval
      */
     private $expectedDuration;
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $actualDuration;
+    /**
      * @ORM\Column(type="datetime")
      */
     private $creationDate;
@@ -130,6 +134,22 @@ class Approval
     public function setExpectedDuration($expectedDuration): void
     {
         $this->expectedDuration = $expectedDuration;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getActualDuration()
+    {
+        return $this->actualDuration;
+    }
+
+    /**
+     * @param mixed $expectedDuration
+     */
+    public function setActualDuration($actualDuration): void
+    {
+        $this->actualDuration = $actualDuration;
     }
 
     /**

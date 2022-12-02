@@ -1,420 +1,425 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file date="2021-12-17T20:00:00Z" source-language="en" target-language="en" datatype="plaintext" original="none">
-        <body>
-            <trans-unit id="title.approval_bundle">
-                <source>title.approval_bundle</source>
-                <target>Hours approval</target>
-            </trans-unit>
+<xliff version="1.2"
+  xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file date="2021-12-17T20:00:00Z" source-language="en" target-language="en" datatype="plaintext" original="none">
+    <body>
+      <trans-unit id="title.approval_bundle">
+        <source>title.approval_bundle</source>
+        <target>Hours approval</target>
+      </trans-unit>
 
-			<trans-unit id="menu.approval_bundle">
-				<source>menu.approval_bundle</source>
-				<target>Hours approval</target>
-			</trans-unit>
-			<trans-unit id="menu.to_approve">
-				<source>menu.to_approve</source>
-				<target>To approve</target>
-			</trans-unit>
-			<trans-unit id="menu.report_user_week">
-				<source>menu.report_user_week</source>
-				<target>Approved weeks report</target>
-			</trans-unit>
+      <trans-unit id="menu.approval_bundle">
+        <source>menu.approval_bundle</source>
+        <target>Hours approval</target>
+      </trans-unit>
+      <trans-unit id="menu.to_approve">
+        <source>menu.to_approve</source>
+        <target>To approve</target>
+      </trans-unit>
+      <trans-unit id="menu.report_user_week">
+        <source>menu.report_user_week</source>
+        <target>Approved weeks report</target>
+      </trans-unit>
       <trans-unit id="menu.settings_workday_history">
-				<source>menu.settings_workday_history</source>
-				<target>Settings workdays</target>
-			</trans-unit>
-			<trans-unit id="table.history">
-				<source>table.history</source>
-				<target>History for</target>
-			</trans-unit>
-			<trans-unit id="table.approver">
-				<source>table.approver</source>
-				<target>Approver</target>
-			</trans-unit>
-			<trans-unit id="table.status">
-				<source>table.status</source>
-				<target>Status</target>
-			</trans-unit>
-			<trans-unit id="table.message">
-				<source>table.message</source>
-				<target>Message</target>
-			</trans-unit>
-			<trans-unit id="table.dateOfApprove">
-				<source>table.dateOfApprove</source>
-				<target>Date of approve</target>
-			</trans-unit>
-			<trans-unit id="email.subjectSubmitted">
-				<source>email.subjectSubmitted</source>
-				<target>Timesheet requests approval</target>
-			</trans-unit>
-			<trans-unit id="email.subjectApproved">
-				<source>email.subjectApproved</source>
-				<target>Timesheet has been approved</target>
-			</trans-unit>
-			<trans-unit id="email.subjectReject">
-				<source>email.subjectReject</source>
-				<target>Timesheet has been rejected</target>
-			</trans-unit>
-			<trans-unit id="email.closedMonth">
-				<source>email.closedMonth</source>
-				<target>Closed month</target>
-			</trans-unit>
-			<trans-unit id="email.closedMonthMessage">
-				<source>email.closedMonthMessage</source>
-				<target>The month is full approved - </target>
-			</trans-unit>
-			<trans-unit id="email.hello">
-				<source>email.hello</source>
-				<target>Hello</target>
-			</trans-unit>
-			<trans-unit id="email.approved.message">
-				<source>email.approved.message</source>
-				<target>approved your timesheet for week </target>
-			</trans-unit>
-			<trans-unit id="email.reject.message">
-				<source>email.reject.message</source>
-				<target>denied your timesheet for week </target>
-			</trans-unit>
-			<trans-unit id="email.reason">
-				<source>email.reason</source>
-				<target>Reason: </target>
-			</trans-unit>
-			<trans-unit id="email.cronjob.adminNotSubmittedSubject">
-				<source>email.cronjob.adminNotSubmittedSubject</source>
-				<target>List of not submitted users</target>
-			</trans-unit>
-			<trans-unit id="email.cronjob.adminNotSubmittedTitle">
-				<source>email.cronjob.adminNotSubmittedTitle</source>
-				<target>List of not submitted users:</target>
-			</trans-unit>
-			<trans-unit id="email.cronjob.userNotSubmittedWeeksSubject">
-				<source>email.cronjob.userNotSubmittedWeeksSubject</source>
-				<target>List of not submitted weeks</target>
-			</trans-unit>
-			<trans-unit id="email.cronjob.userNotSubmittedWeeksTitle">
-				<source>email.cronjob.userNotSubmittedWeeksTitle</source>
-				<target>List of not submitted weeks:</target>
-			</trans-unit>
-			<trans-unit id="email.cronjob.teamleadNotSubmittedUsersSubject">
-				<source>email.cronjob.teamleadNotSubmittedUsersSubject</source>
-				<target>List of not submitted weeks</target>
-			</trans-unit>
-			<trans-unit id="email.cronjob.teamleadNotSubmittedUsersTitle">
-				<source>email.cronjob.teamleadNotSubmittedUsersTitle</source>
-				<target>List of not submitted weeks:</target>
-			</trans-unit>
+        <source>menu.settings_workday_history</source>
+        <target>Settings workdays</target>
+      </trans-unit>
+      <trans-unit id="table.history">
+        <source>table.history</source>
+        <target>History for</target>
+      </trans-unit>
+      <trans-unit id="table.approver">
+        <source>table.approver</source>
+        <target>Approver</target>
+      </trans-unit>
+      <trans-unit id="table.status">
+        <source>table.status</source>
+        <target>Status</target>
+      </trans-unit>
+      <trans-unit id="table.message">
+        <source>table.message</source>
+        <target>Message</target>
+      </trans-unit>
+      <trans-unit id="table.dateOfApprove">
+        <source>table.dateOfApprove</source>
+        <target>Date of approve</target>
+      </trans-unit>
+      <trans-unit id="email.subjectSubmitted">
+        <source>email.subjectSubmitted</source>
+        <target>Timesheet requests approval</target>
+      </trans-unit>
+      <trans-unit id="email.subjectApproved">
+        <source>email.subjectApproved</source>
+        <target>Timesheet has been approved</target>
+      </trans-unit>
+      <trans-unit id="email.subjectReject">
+        <source>email.subjectReject</source>
+        <target>Timesheet has been rejected</target>
+      </trans-unit>
+      <trans-unit id="email.closedMonth">
+        <source>email.closedMonth</source>
+        <target>Closed month</target>
+      </trans-unit>
+      <trans-unit id="email.closedMonthMessage">
+        <source>email.closedMonthMessage</source>
+        <target>The month is full approved - </target>
+      </trans-unit>
+      <trans-unit id="email.hello">
+        <source>email.hello</source>
+        <target>Hello</target>
+      </trans-unit>
+      <trans-unit id="email.approved.message">
+        <source>email.approved.message</source>
+        <target>approved your timesheet for week </target>
+      </trans-unit>
+      <trans-unit id="email.reject.message">
+        <source>email.reject.message</source>
+        <target>denied your timesheet for week </target>
+      </trans-unit>
+      <trans-unit id="email.reason">
+        <source>email.reason</source>
+        <target>Reason: </target>
+      </trans-unit>
+      <trans-unit id="email.cronjob.adminNotSubmittedSubject">
+        <source>email.cronjob.adminNotSubmittedSubject</source>
+        <target>List of not submitted users</target>
+      </trans-unit>
+      <trans-unit id="email.cronjob.adminNotSubmittedTitle">
+        <source>email.cronjob.adminNotSubmittedTitle</source>
+        <target>List of not submitted users:</target>
+      </trans-unit>
+      <trans-unit id="email.cronjob.userNotSubmittedWeeksSubject">
+        <source>email.cronjob.userNotSubmittedWeeksSubject</source>
+        <target>List of not submitted weeks</target>
+      </trans-unit>
+      <trans-unit id="email.cronjob.userNotSubmittedWeeksTitle">
+        <source>email.cronjob.userNotSubmittedWeeksTitle</source>
+        <target>List of not submitted weeks:</target>
+      </trans-unit>
+      <trans-unit id="email.cronjob.teamleadNotSubmittedUsersSubject">
+        <source>email.cronjob.teamleadNotSubmittedUsersSubject</source>
+        <target>List of not submitted weeks</target>
+      </trans-unit>
+      <trans-unit id="email.cronjob.teamleadNotSubmittedUsersTitle">
+        <source>email.cronjob.teamleadNotSubmittedUsersTitle</source>
+        <target>List of not submitted weeks:</target>
+      </trans-unit>
 
-			<trans-unit id="menu.settings">
-				<source>menu.settings</source>
-				<target>Settings</target>
-			</trans-unit>
+      <trans-unit id="menu.settings">
+        <source>menu.settings</source>
+        <target>Settings</target>
+      </trans-unit>
 
-            <trans-unit id="stats.duration_total">
-				<source>stats.duration_total</source>
-				<target>Total duration</target>
-            </trans-unit>
-            <trans-unit id="stats.duration_expected">
-				<source>stats.duration_expected</source>
-				<target>Expected duration</target>
-            </trans-unit>
-            <trans-unit id="label.week">
-				<source>label.week</source>
-				<target>Week</target>
-            </trans-unit>
-        	<trans-unit id="table.past_weeks">
-				<source>table.past_weeks</source>
-				<target>Past weeks</target>
-            </trans-unit>
-			<trans-unit id="table.current_week">
-				<source>table.current_week</source>
-				<target>Current week</target>
-			</trans-unit>
+      <trans-unit id="stats.duration_total">
+        <source>stats.duration_total</source>
+        <target>Total duration</target>
+      </trans-unit>
+      <trans-unit id="stats.duration_expected">
+        <source>stats.duration_expected</source>
+        <target>Expected duration</target>
+      </trans-unit>
+      <trans-unit id="label.week">
+        <source>label.week</source>
+        <target>Week</target>
+      </trans-unit>
+      <trans-unit id="table.past_weeks">
+        <source>table.past_weeks</source>
+        <target>Past weeks</target>
+      </trans-unit>
+      <trans-unit id="table.current_week">
+        <source>table.current_week</source>
+        <target>Current week</target>
+      </trans-unit>
 
-        	<trans-unit id="table.approve_user">
-				<source>table.approve_user</source>
-				<target>User</target>
-            </trans-unit>
-			<trans-unit id="table.approve_week">
-				<source>table.approve_week</source>
-				<target>Week</target>
-			</trans-unit>
-        	<trans-unit id="table.approve_status">
-				<source>table.approve_status</source>
-				<target>Status</target>
-            </trans-unit>
-			<trans-unit id="table.approve_action">
-				<source>table.approve_action</source>
-				<target>Action</target>
-			</trans-unit>
-			<trans-unit id="warning.approval_settings_not_set">
-				<source>warning.approval_settings_not_set</source>
-				<target>Settings are not configured completely yet</target>
-			</trans-unit>
-			<trans-unit id="warning.add_to_approve_previous_weeks">
-				<source>warning.add_to_approve_previous_weeks</source>
-				<target>Please add previous weeks to approve</target>
-			</trans-unit>
-			<trans-unit id="warning.selected_user_sunday_issue">
-				<source>warning.selected_user_sunday_issue</source>
-				<target>Selected user has Sunday as start of the week - this is not supported for Approval Plugin.</target>
-			</trans-unit>
-			<trans-unit id="warning.currentUserSundayIssue">
-				<source>warning.currentUserSundayIssue</source>
-				<target>Sunday as start of the week setting available - this is not supported for Approval Plugin.</target>
-			</trans-unit>
+      <trans-unit id="table.approve_user">
+        <source>table.approve_user</source>
+        <target>User</target>
+      </trans-unit>
+      <trans-unit id="table.approve_week">
+        <source>table.approve_week</source>
+        <target>Week</target>
+      </trans-unit>
+      <trans-unit id="table.approve_status">
+        <source>table.approve_status</source>
+        <target>Status</target>
+      </trans-unit>
+      <trans-unit id="table.approve_action">
+        <source>table.approve_action</source>
+        <target>Action</target>
+      </trans-unit>
+      <trans-unit id="warning.approval_settings_not_set">
+        <source>warning.approval_settings_not_set</source>
+        <target>Settings are not configured completely yet</target>
+      </trans-unit>
+      <trans-unit id="warning.add_to_approve_previous_weeks">
+        <source>warning.add_to_approve_previous_weeks</source>
+        <target>Please add previous weeks to approve</target>
+      </trans-unit>
+      <trans-unit id="warning.selected_user_sunday_issue">
+        <source>warning.selected_user_sunday_issue</source>
+        <target>Selected user has Sunday as start of the week - this is not supported for Approval Plugin.</target>
+      </trans-unit>
+      <trans-unit id="warning.currentUserSundayIssue">
+        <source>warning.currentUserSundayIssue</source>
+        <target>Sunday as start of the week setting available - this is not supported for Approval Plugin.</target>
+      </trans-unit>
 
-			<trans-unit id="label.meta_field_expected_working_time_on_monday">
-				<source>label.meta_field_expected_working_time_on_monday</source>
-				<target>Daily working time Monday MetaField internal name</target>
-			</trans-unit>
-			<trans-unit id="label.meta_field_expected_working_time_on_tuesday">
-				<source>label.meta_field_expected_working_time_on_tuesday</source>
-				<target>Daily working time Tuesday MetaField internal name</target>
-			</trans-unit>
-			<trans-unit id="label.meta_field_expected_working_time_on_wednesday">
-				<source>label.meta_field_expected_working_time_on_wednesday</source>
-				<target>Daily working time Wednesday MetaField internal name</target>
-			</trans-unit>
-			<trans-unit id="label.meta_field_expected_working_time_on_thursday">
-				<source>label.meta_field_expected_working_time_on_thursday</source>
-				<target>Daily working time Thursday MetaField internal name</target>
-			</trans-unit>
-			<trans-unit id="label.meta_field_expected_working_time_on_friday">
-				<source>label.meta_field_expected_working_time_on_friday</source>
-				<target>Daily working time Friday MetaField internal name</target>
-			</trans-unit>
-			<trans-unit id="label.meta_field_expected_working_time_on_saturday">
-				<source>label.meta_field_expected_working_time_on_saturday</source>
-				<target>Daily working time Saturday MetaField internal name</target>
-			</trans-unit>
-			<trans-unit id="label.meta_field_expected_working_time_on_sunday">
-				<source>label.meta_field_expected_working_time_on_sunday</source>
-				<target>Daily working time Sunday MetaField internal name</target>
-			</trans-unit>
+      <trans-unit id="label.meta_field_expected_working_time_on_monday">
+        <source>label.meta_field_expected_working_time_on_monday</source>
+        <target>Daily working time Monday MetaField internal name</target>
+      </trans-unit>
+      <trans-unit id="label.meta_field_expected_working_time_on_tuesday">
+        <source>label.meta_field_expected_working_time_on_tuesday</source>
+        <target>Daily working time Tuesday MetaField internal name</target>
+      </trans-unit>
+      <trans-unit id="label.meta_field_expected_working_time_on_wednesday">
+        <source>label.meta_field_expected_working_time_on_wednesday</source>
+        <target>Daily working time Wednesday MetaField internal name</target>
+      </trans-unit>
+      <trans-unit id="label.meta_field_expected_working_time_on_thursday">
+        <source>label.meta_field_expected_working_time_on_thursday</source>
+        <target>Daily working time Thursday MetaField internal name</target>
+      </trans-unit>
+      <trans-unit id="label.meta_field_expected_working_time_on_friday">
+        <source>label.meta_field_expected_working_time_on_friday</source>
+        <target>Daily working time Friday MetaField internal name</target>
+      </trans-unit>
+      <trans-unit id="label.meta_field_expected_working_time_on_saturday">
+        <source>label.meta_field_expected_working_time_on_saturday</source>
+        <target>Daily working time Saturday MetaField internal name</target>
+      </trans-unit>
+      <trans-unit id="label.meta_field_expected_working_time_on_sunday">
+        <source>label.meta_field_expected_working_time_on_sunday</source>
+        <target>Daily working time Sunday MetaField internal name</target>
+      </trans-unit>
 
-			<trans-unit id="submitted">
-				<source>submitted</source>
-				<target>Submitted</target>
-			</trans-unit>
-			<trans-unit id="denied">
-				<source>denied</source>
-				<target>Denied</target>
-			</trans-unit>
-			<trans-unit id="rejected">
-				<source>rejected</source>
-				<target>Rejected</target>
-			</trans-unit>
-			<trans-unit id="approved">
-				<source>approved</source>
-				<target>Approved</target>
-			</trans-unit>
-			<trans-unit id="not_submitted">
-				<source>not_submitted</source>
-				<target>Not submitted</target>
-			</trans-unit>
-			<trans-unit id="label.undoMessage">
-				<source>label.undoMessage</source>
-				<target>Do you want to restore the status "Not submitted"?</target>
-			</trans-unit>
-			<trans-unit id="api.wrongTeam">
-				<source>api.wrongTeam</source>
-				<target>User not from your team</target>
-			</trans-unit>
-			<trans-unit id="api.accessDenied">
-				<source>api.accessDenied</source>
-				<target>Access denied</target>
-			</trans-unit>
-			<trans-unit id="api.wrongUser">
-				<source>api.wrongUser</source>
-				<target>User doesn\'t exists</target>
-			</trans-unit>
-			<trans-unit id="api.alreadyExists">
-				<source>api.alreadyExists</source>
-				<target>Approval already exists</target>
-			</trans-unit>
-			<trans-unit id="api.add_to_approve_previous_weeks">
-				<source>api.add_to_approve_previous_weeks</source>
-				<target>Please add previous weeks to approve</target>
-			</trans-unit>
-			<trans-unit id="api.noData">
-				<source>api.noData</source>
-				<target>No data for this user</target>
-			</trans-unit>
+      <trans-unit id="submitted">
+        <source>submitted</source>
+        <target>Submitted</target>
+      </trans-unit>
+      <trans-unit id="denied">
+        <source>denied</source>
+        <target>Denied</target>
+      </trans-unit>
+      <trans-unit id="rejected">
+        <source>rejected</source>
+        <target>Rejected</target>
+      </trans-unit>
+      <trans-unit id="approved">
+        <source>approved</source>
+        <target>Approved</target>
+      </trans-unit>
+      <trans-unit id="not_submitted">
+        <source>not_submitted</source>
+        <target>Not submitted</target>
+      </trans-unit>
+      <trans-unit id="label.undoMessage">
+        <source>label.undoMessage</source>
+        <target>Do you want to restore the status "Not submitted"?</target>
+      </trans-unit>
+      <trans-unit id="api.wrongTeam">
+        <source>api.wrongTeam</source>
+        <target>User not from your team</target>
+      </trans-unit>
+      <trans-unit id="api.accessDenied">
+        <source>api.accessDenied</source>
+        <target>Access denied</target>
+      </trans-unit>
+      <trans-unit id="api.wrongUser">
+        <source>api.wrongUser</source>
+        <target>User doesn\'t exists</target>
+      </trans-unit>
+      <trans-unit id="api.alreadyExists">
+        <source>api.alreadyExists</source>
+        <target>Approval already exists</target>
+      </trans-unit>
+      <trans-unit id="api.add_to_approve_previous_weeks">
+        <source>api.add_to_approve_previous_weeks</source>
+        <target>Please add previous weeks to approve</target>
+      </trans-unit>
+      <trans-unit id="api.noData">
+        <source>api.noData</source>
+        <target>No data for this user</target>
+      </trans-unit>
 
-			<trans-unit id="warning.noUserToApprove">
-				<source>warning.noUserToApprove</source>
-				<target>No users for approval</target>
-			</trans-unit>
+      <trans-unit id="warning.noUserToApprove">
+        <source>warning.noUserToApprove</source>
+        <target>No users for approval</target>
+      </trans-unit>
 
-			<trans-unit id="header.date">
-				<source>header.date</source>
-				<target>Date</target>
-			</trans-unit>
-			<trans-unit id="header.begin">
-				<source>header.begin</source>
-				<target>Begin</target>
-			</trans-unit>
-			<trans-unit id="header.end">
-				<source>header.end</source>
-				<target>End</target>
-			</trans-unit>
-			<trans-unit id="header.duration">
-				<source>header.duration</source>
-				<target>Duration</target>
-			</trans-unit>
-			<trans-unit id="header.customer">
-				<source>header.customer</source>
-				<target>Customer</target>
-			</trans-unit>
-			<trans-unit id="header.project">
-				<source>header.project</source>
-				<target>Project</target>
-			</trans-unit>
-			<trans-unit id="header.activity">
-				<source>header.activity</source>
-				<target>Activity</target>
-			</trans-unit>
-			<trans-unit id="header.description">
-				<source>header.description</source>
-				<target>Description</target>
-			</trans-unit>
+      <trans-unit id="header.date">
+        <source>header.date</source>
+        <target>Date</target>
+      </trans-unit>
+      <trans-unit id="header.begin">
+        <source>header.begin</source>
+        <target>Begin</target>
+      </trans-unit>
+      <trans-unit id="header.end">
+        <source>header.end</source>
+        <target>End</target>
+      </trans-unit>
+      <trans-unit id="header.duration">
+        <source>header.duration</source>
+        <target>Duration</target>
+      </trans-unit>
+      <trans-unit id="header.customer">
+        <source>header.customer</source>
+        <target>Customer</target>
+      </trans-unit>
+      <trans-unit id="header.project">
+        <source>header.project</source>
+        <target>Project</target>
+      </trans-unit>
+      <trans-unit id="header.activity">
+        <source>header.activity</source>
+        <target>Activity</target>
+      </trans-unit>
+      <trans-unit id="header.description">
+        <source>header.description</source>
+        <target>Description</target>
+      </trans-unit>
 
-			<trans-unit id="error.less_than_eleven_hours_off">
-				<source>error.less_than_eleven_hours_off</source>
-				<target>You have not respected the rest period of 11 hours.</target>
-			</trans-unit>
-			<trans-unit id="error.more_than_ten_hours_worked">
-				<source>error.more_than_ten_hours_worked</source>
-				<target>You worked more than 10 hours!</target>
-			</trans-unit>
-			<trans-unit id="error.nine_hours_without_break">
-				<source>error.nine_hours_without_break</source>
-				<target>You worked more than 9 hours without taking 45 minute break!</target>
-			</trans-unit>
-			<trans-unit id="error.six_hours_without_break">
-				<source>error.six_hours_without_break</source>
-				<target>You worked more than 6 hours without taking 30 minute break!</target>
-			</trans-unit>
-            <trans-unit id="error.no_end_date">
-				<source>error.no_end_date</source>
-				<target>There is no end date for the time entry.</target>
-			</trans-unit>
+      <trans-unit id="error.less_than_eleven_hours_off">
+        <source>error.less_than_eleven_hours_off</source>
+        <target>You have not respected the rest period of 11 hours.</target>
+      </trans-unit>
+      <trans-unit id="error.more_than_ten_hours_worked">
+        <source>error.more_than_ten_hours_worked</source>
+        <target>You worked more than 10 hours!</target>
+      </trans-unit>
+      <trans-unit id="error.nine_hours_without_break">
+        <source>error.nine_hours_without_break</source>
+        <target>You worked more than 9 hours without taking 45 minute break!</target>
+      </trans-unit>
+      <trans-unit id="error.six_hours_without_break">
+        <source>error.six_hours_without_break</source>
+        <target>You worked more than 6 hours without taking 30 minute break!</target>
+      </trans-unit>
+      <trans-unit id="error.no_end_date">
+        <source>error.no_end_date</source>
+        <target>There is no end date for the time entry.</target>
+      </trans-unit>
 
-			<trans-unit id="label.customer_for_free_days">
-				<source>label.customer_for_free_days</source>
-				<target>Customer for free days</target>
-			</trans-unit>
-			<trans-unit id="label.email_link_url">
-				<source>label.email_link_url</source>
-				<target>Email link url</target>
-			</trans-unit>
-			<trans-unit id="label.workflow_start">
-				<source>label.workflow_start</source>
-				<target>Approval Workflow Start Date</target>
-			</trans-unit>
+      <trans-unit id="label.customer_for_free_days">
+        <source>label.customer_for_free_days</source>
+        <target>Customer for free days</target>
+      </trans-unit>
+      <trans-unit id="label.email_link_url">
+        <source>label.email_link_url</source>
+        <target>Email link url</target>
+      </trans-unit>
+      <trans-unit id="label.workflow_start">
+        <source>label.workflow_start</source>
+        <target>Approval Workflow Start Date</target>
+      </trans-unit>
 
-			<!-- START formatting patterns form -->
-			<trans-unit id="format.full_datetime">
-				<source>format.full_datetime</source>
-				<target>Y-m-d H:i:s</target>
-			</trans-unit>
-			<trans-unit id="format.full_date">
-				<source>format.full_date</source>
-				<target>Y-m-d</target>
-			</trans-unit>
-			<trans-unit id="format.decimal_separator">
-				<source>format.decimal_separator</source>
-				<target>.</target>
-			</trans-unit>
-			<trans-unit id="format.thousands_separator">
-				<source>format.thousands_separator</source>
-				<target>,</target>
-			</trans-unit>
-			<!-- END formatting patterns form -->
+      <!-- START formatting patterns form -->
+      <trans-unit id="format.full_datetime">
+        <source>format.full_datetime</source>
+        <target>Y-m-d H:i:s</target>
+      </trans-unit>
+      <trans-unit id="format.full_date">
+        <source>format.full_date</source>
+        <target>Y-m-d</target>
+      </trans-unit>
+      <trans-unit id="format.decimal_separator">
+        <source>format.decimal_separator</source>
+        <target>.</target>
+      </trans-unit>
+      <trans-unit id="format.thousands_separator">
+        <source>format.thousands_separator</source>
+        <target>,</target>
+      </trans-unit>
+      <!-- END formatting patterns form -->
 
-			<!-- START month form -->
-			<trans-unit id="month.january">
-				<source>month.january</source>
-				<target>Januar</target>
-			</trans-unit>
-			<trans-unit id="month.february">
-				<source>month.february</source>
-				<target>Februar</target>
-			</trans-unit>
-			<trans-unit id="month.march">
-				<source>month.march</source>
-				<target>März</target>
-			</trans-unit>
-			<trans-unit id="month.april">
-				<source>month.april</source>
-				<target>April</target>
-			</trans-unit>
-			<trans-unit id="month.may">
-				<source>month.may</source>
-				<target>Mai</target>
-			</trans-unit>
-			<trans-unit id="month.june">
-				<source>month.june</source>
-				<target>Juni</target>
-			</trans-unit>
-			<trans-unit id="month.july">
-				<source>month.july</source>
-				<target>Juli</target>
-			</trans-unit>
-			<trans-unit id="month.august">
-				<source>month.august</source>
-				<target>August</target>
-			</trans-unit>
-			<trans-unit id="month.september">
-				<source>month.september</source>
-				<target>September</target>
-			</trans-unit>
-			<trans-unit id="month.october">
-				<source>month.october</source>
-				<target>Oktober</target>
-			</trans-unit>
-			<trans-unit id="month.november">
-				<source>month.november</source>
-				<target>November</target>
-			</trans-unit>
-			<trans-unit id="month.december">
-				<source>month.december</source>
-				<target>Dezember</target>
-			</trans-unit>
-			<!-- END month form -->
-            
-            <!-- START Tooltips for buttons -->
-            <trans-unit id="tooltip.description">
-				<source>tooltip.description</source>
-				<target>Show activity descriptions</target>
-			</trans-unit>
-            <trans-unit id="tooltip.timesheets">
-				<source>tooltip.timesheets</source>
-				<target>Timesheets</target>
-			</trans-unit>
-            <trans-unit id="tooltip.history">
-				<source>tooltip.history</source>
-				<target>History</target>
-			</trans-unit>
-            <trans-unit id="tooltip.approve">
-				<source>tooltip.approve</source>
-				<target>Approve</target>
-			</trans-unit>
-            <trans-unit id="tooltip.reject">
-				<source>tooltip.reject</source>
-				<target>Reject</target>
-			</trans-unit>
-            <trans-unit id="tooltip.undo">
-				<source>tooltip.undo</source>
-				<target>Undo Approval</target>
-			</trans-unit>
-            <trans-unit id="tooltip.submit">
-				<source>tooltip.submit</source>
-				<target>Submit for approval</target>
-			</trans-unit>
-            <!-- END Tooltips for buttons -->
-        </body>
-    </file>
+      <!-- START month form -->
+      <trans-unit id="month.january">
+        <source>month.january</source>
+        <target>Januar</target>
+      </trans-unit>
+      <trans-unit id="month.february">
+        <source>month.february</source>
+        <target>Februar</target>
+      </trans-unit>
+      <trans-unit id="month.march">
+        <source>month.march</source>
+        <target>März</target>
+      </trans-unit>
+      <trans-unit id="month.april">
+        <source>month.april</source>
+        <target>April</target>
+      </trans-unit>
+      <trans-unit id="month.may">
+        <source>month.may</source>
+        <target>Mai</target>
+      </trans-unit>
+      <trans-unit id="month.june">
+        <source>month.june</source>
+        <target>Juni</target>
+      </trans-unit>
+      <trans-unit id="month.july">
+        <source>month.july</source>
+        <target>Juli</target>
+      </trans-unit>
+      <trans-unit id="month.august">
+        <source>month.august</source>
+        <target>August</target>
+      </trans-unit>
+      <trans-unit id="month.september">
+        <source>month.september</source>
+        <target>September</target>
+      </trans-unit>
+      <trans-unit id="month.october">
+        <source>month.october</source>
+        <target>Oktober</target>
+      </trans-unit>
+      <trans-unit id="month.november">
+        <source>month.november</source>
+        <target>November</target>
+      </trans-unit>
+      <trans-unit id="month.december">
+        <source>month.december</source>
+        <target>Dezember</target>
+      </trans-unit>
+      <!-- END month form -->
+
+      <!-- START Tooltips for buttons -->
+      <trans-unit id="tooltip.description">
+        <source>tooltip.description</source>
+        <target>Show activity descriptions</target>
+      </trans-unit>
+      <trans-unit id="tooltip.timesheets">
+        <source>tooltip.timesheets</source>
+        <target>Timesheets</target>
+      </trans-unit>
+      <trans-unit id="tooltip.history">
+        <source>tooltip.history</source>
+        <target>History</target>
+      </trans-unit>
+      <trans-unit id="tooltip.approve">
+        <source>tooltip.approve</source>
+        <target>Approve</target>
+      </trans-unit>
+      <trans-unit id="tooltip.reject">
+        <source>tooltip.reject</source>
+        <target>Reject</target>
+      </trans-unit>
+      <trans-unit id="tooltip.undo">
+        <source>tooltip.undo</source>
+        <target>Undo Approval</target>
+      </trans-unit>
+      <trans-unit id="tooltip.submit">
+        <source>tooltip.submit</source>
+        <target>Submit for approval</target>
+      </trans-unit>
+      <!-- END Tooltips for buttons -->      
+      <trans-unit id="label.valid_till">
+        <source>label.valid_till</source>
+        <target>Valid till</target>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>
 
 

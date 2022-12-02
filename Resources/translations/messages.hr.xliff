@@ -1,412 +1,418 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file date="2021-12-17T20:00:00Z" source-language="en" target-language="hr" datatype="plaintext" original="none">
-        <body>
-            <trans-unit id="title.approval_bundle">
-                <source>title.approval_bundle</source>
-                <target>Odobravanje sati</target>
-            </trans-unit>
+<xliff version="1.2"
+  xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file date="2021-12-17T20:00:00Z" source-language="en" target-language="hr" datatype="plaintext" original="none">
+    <body>
+      <trans-unit id="title.approval_bundle">
+        <source>title.approval_bundle</source>
+        <target>Odobravanje sati</target>
+      </trans-unit>
 
-			<trans-unit id="menu.approval_bundle">
-				<source>menu.approval_bundle</source>
-				<target>Odobravanje sati</target>
-			</trans-unit>
-			<trans-unit id="menu.to_approve">
-				<source>menu.to_approve</source>
-				<target>Za odobravanje</target>
-			</trans-unit>
-			<trans-unit id="menu.report_user_week">
-				<source>menu.report_user_week</source>
-				<target>Izvještaj o odobrenim tjednima</target>
-			</trans-unit>
-			<trans-unit id="table.history">
-				<source>table.history</source>
-				<target>Povijest za</target>
-			</trans-unit>
-			<trans-unit id="table.approver">
-				<source>table.approver</source>
-				<target>Odobravatelj</target>
-			</trans-unit>
-			<trans-unit id="table.status">
-				<source>table.status</source>
-				<target>Stanje</target>
-			</trans-unit>
-			<trans-unit id="table.message">
-				<source>table.message</source>
-				<target>Poruka</target>
-			</trans-unit>
-			<trans-unit id="table.dateOfApprove">
-				<source>table.dateOfApprove</source>
-				<target>Datum odobravanja</target>
-			</trans-unit>
-			<trans-unit id="email.subjectSubmitted">
-				<source>email.subjectSubmitted</source>
-				<target>Zahtjev za odobravanje vremenske tablice</target>
-			</trans-unit>
-			<trans-unit id="email.subjectApproved">
-				<source>email.subjectApproved</source>
-				<target>Vremenska tablica je odobrena</target>
-			</trans-unit>
-			<trans-unit id="email.subjectReject">
-				<source>email.subjectReject</source>
-				<target>Vremenska tablica je odbijena</target>
-			</trans-unit>
-			<trans-unit id="email.closedMonth">
-				<source>email.closedMonth</source>
-				<target>Zaključani mjesec</target>
-			</trans-unit>
-			<trans-unit id="email.closedMonthMessage">
-				<source>email.closedMonthMessage</source>
-				<target>Mjesec je potpuno odobren – </target>
-			</trans-unit>
-			<trans-unit id="email.hello">
-				<source>email.hello</source>
-				<target>Pozdrav</target>
-			</trans-unit>
-			<trans-unit id="email.approved.message">
-				<source>email.approved.message</source>
-				<target>je odobrio/la tvoju vremensku tablicu za tjedan broj </target>
-			</trans-unit>
-			<trans-unit id="email.reject.message">
-				<source>email.reject.message</source>
-				<target>je odbio/la tvoju vremensku tablicu za tjedan broj </target>
-			</trans-unit>
-			<trans-unit id="email.reason">
-				<source>email.reason</source>
-				<target>Razlog: </target>
-			</trans-unit>
-			<trans-unit id="email.cronjob.adminNotSubmittedSubject">
-				<source>email.cronjob.adminNotSubmittedSubject</source>
-				<target>Popis neprijavljenih korisnika</target>
-			</trans-unit>
-			<trans-unit id="email.cronjob.adminNotSubmittedTitle">
-				<source>email.cronjob.adminNotSubmittedTitle</source>
-				<target>Popis neprijavljenih korisnika:</target>
-			</trans-unit>
-			<trans-unit id="email.cronjob.userNotSubmittedWeeksSubject">
-				<source>email.cronjob.userNotSubmittedWeeksSubject</source>
-				<target>Popis neprijavljenih tjedana</target>
-			</trans-unit>
-			<trans-unit id="email.cronjob.userNotSubmittedWeeksTitle">
-				<source>email.cronjob.userNotSubmittedWeeksTitle</source>
-				<target>Popis neprijavljenih tjedana:</target>
-			</trans-unit>
-			<trans-unit id="email.cronjob.teamleadNotSubmittedUsersSubject">
-				<source>email.cronjob.teamleadNotSubmittedUsersSubject</source>
-				<target>Popis neprijavljenih tjedana</target>
-			</trans-unit>
-			<trans-unit id="email.cronjob.teamleadNotSubmittedUsersTitle">
-				<source>email.cronjob.teamleadNotSubmittedUsersTitle</source>
-				<target>Popis neprijavljenih tjedana:</target>
-			</trans-unit>
+      <trans-unit id="menu.approval_bundle">
+        <source>menu.approval_bundle</source>
+        <target>Odobravanje sati</target>
+      </trans-unit>
+      <trans-unit id="menu.to_approve">
+        <source>menu.to_approve</source>
+        <target>Za odobravanje</target>
+      </trans-unit>
+      <trans-unit id="menu.report_user_week">
+        <source>menu.report_user_week</source>
+        <target>Izvještaj o odobrenim tjednima</target>
+      </trans-unit>
+      <trans-unit id="table.history">
+        <source>table.history</source>
+        <target>Povijest za</target>
+      </trans-unit>
+      <trans-unit id="table.approver">
+        <source>table.approver</source>
+        <target>Odobravatelj</target>
+      </trans-unit>
+      <trans-unit id="table.status">
+        <source>table.status</source>
+        <target>Stanje</target>
+      </trans-unit>
+      <trans-unit id="table.message">
+        <source>table.message</source>
+        <target>Poruka</target>
+      </trans-unit>
+      <trans-unit id="table.dateOfApprove">
+        <source>table.dateOfApprove</source>
+        <target>Datum odobravanja</target>
+      </trans-unit>
+      <trans-unit id="email.subjectSubmitted">
+        <source>email.subjectSubmitted</source>
+        <target>Zahtjev za odobravanje vremenske tablice</target>
+      </trans-unit>
+      <trans-unit id="email.subjectApproved">
+        <source>email.subjectApproved</source>
+        <target>Vremenska tablica je odobrena</target>
+      </trans-unit>
+      <trans-unit id="email.subjectReject">
+        <source>email.subjectReject</source>
+        <target>Vremenska tablica je odbijena</target>
+      </trans-unit>
+      <trans-unit id="email.closedMonth">
+        <source>email.closedMonth</source>
+        <target>Zaključani mjesec</target>
+      </trans-unit>
+      <trans-unit id="email.closedMonthMessage">
+        <source>email.closedMonthMessage</source>
+        <target>Mjesec je potpuno odobren – </target>
+      </trans-unit>
+      <trans-unit id="email.hello">
+        <source>email.hello</source>
+        <target>Pozdrav</target>
+      </trans-unit>
+      <trans-unit id="email.approved.message">
+        <source>email.approved.message</source>
+        <target>je odobrio/la tvoju vremensku tablicu za tjedan broj </target>
+      </trans-unit>
+      <trans-unit id="email.reject.message">
+        <source>email.reject.message</source>
+        <target>je odbio/la tvoju vremensku tablicu za tjedan broj </target>
+      </trans-unit>
+      <trans-unit id="email.reason">
+        <source>email.reason</source>
+        <target>Razlog: </target>
+      </trans-unit>
+      <trans-unit id="email.cronjob.adminNotSubmittedSubject">
+        <source>email.cronjob.adminNotSubmittedSubject</source>
+        <target>Popis neprijavljenih korisnika</target>
+      </trans-unit>
+      <trans-unit id="email.cronjob.adminNotSubmittedTitle">
+        <source>email.cronjob.adminNotSubmittedTitle</source>
+        <target>Popis neprijavljenih korisnika:</target>
+      </trans-unit>
+      <trans-unit id="email.cronjob.userNotSubmittedWeeksSubject">
+        <source>email.cronjob.userNotSubmittedWeeksSubject</source>
+        <target>Popis neprijavljenih tjedana</target>
+      </trans-unit>
+      <trans-unit id="email.cronjob.userNotSubmittedWeeksTitle">
+        <source>email.cronjob.userNotSubmittedWeeksTitle</source>
+        <target>Popis neprijavljenih tjedana:</target>
+      </trans-unit>
+      <trans-unit id="email.cronjob.teamleadNotSubmittedUsersSubject">
+        <source>email.cronjob.teamleadNotSubmittedUsersSubject</source>
+        <target>Popis neprijavljenih tjedana</target>
+      </trans-unit>
+      <trans-unit id="email.cronjob.teamleadNotSubmittedUsersTitle">
+        <source>email.cronjob.teamleadNotSubmittedUsersTitle</source>
+        <target>Popis neprijavljenih tjedana:</target>
+      </trans-unit>
 
-			<trans-unit id="menu.settings">
-				<source>menu.settings</source>
-				<target>Postavke</target>
-			</trans-unit>
+      <trans-unit id="menu.settings">
+        <source>menu.settings</source>
+        <target>Postavke</target>
+      </trans-unit>
 
-            <trans-unit id="stats.duration_total">
-				<source>stats.duration_total</source>
-				<target>Ukupno trajanje</target>
-            </trans-unit>
-            <trans-unit id="stats.duration_expected">
-				<source>stats.duration_expected</source>
-				<target>Očekivano trajanje</target>
-            </trans-unit>
-            <trans-unit id="label.week">
-				<source>label.week</source>
-				<target>Tjedan</target>
-            </trans-unit>
-        	<trans-unit id="table.past_weeks">
-				<source>table.past_weeks</source>
-				<target>Prošli tjedan</target>
-            </trans-unit>
-			<trans-unit id="table.current_week">
-				<source>table.current_week</source>
-				<target>Aktualni tjedan</target>
-			</trans-unit>
+      <trans-unit id="stats.duration_total">
+        <source>stats.duration_total</source>
+        <target>Ukupno trajanje</target>
+      </trans-unit>
+      <trans-unit id="stats.duration_expected">
+        <source>stats.duration_expected</source>
+        <target>Očekivano trajanje</target>
+      </trans-unit>
+      <trans-unit id="label.week">
+        <source>label.week</source>
+        <target>Tjedan</target>
+      </trans-unit>
+      <trans-unit id="table.past_weeks">
+        <source>table.past_weeks</source>
+        <target>Prošli tjedan</target>
+      </trans-unit>
+      <trans-unit id="table.current_week">
+        <source>table.current_week</source>
+        <target>Aktualni tjedan</target>
+      </trans-unit>
 
-        	<trans-unit id="table.approve_user">
-				<source>table.approve_user</source>
-				<target>Korisnik</target>
-            </trans-unit>
-			<trans-unit id="table.approve_week">
-				<source>table.approve_week</source>
-				<target>Tjedan</target>
-			</trans-unit>
-        	<trans-unit id="table.approve_status">
-				<source>table.approve_status</source>
-				<target>Stanje</target>
-            </trans-unit>
-			<trans-unit id="table.approve_action">
-				<source>table.approve_action</source>
-				<target>Radnja</target>
-			</trans-unit>
-			<trans-unit id="warning.approval_settings_not_set">
-				<source>warning.approval_settings_not_set</source>
-				<target>Postavke još nisu potpuno postavljene</target>
-			</trans-unit>
-			<trans-unit id="warning.add_to_approve_previous_weeks">
-				<source>warning.add_to_approve_previous_weeks</source>
-				<target>Za odobravanje dodaj prošle tjedne</target>
-			</trans-unit>
-			<trans-unit id="warning.selected_user_sunday_issue">
-				<source>warning.selected_user_sunday_issue</source>
-				<target>Odabrani korisnik je odredio nedjelju kao početak tjedna – dodatak „Odobravanje vremena” to ne podržava.</target>
-			</trans-unit>
-			<trans-unit id="warning.currentUserSundayIssue">
-				<source>warning.currentUserSundayIssue</source>
-				<target>Nedjelja je određena kao početak tjedna – dodatak „Odobravanje vremena” to ne podržava.</target>
-			</trans-unit>
+      <trans-unit id="table.approve_user">
+        <source>table.approve_user</source>
+        <target>Korisnik</target>
+      </trans-unit>
+      <trans-unit id="table.approve_week">
+        <source>table.approve_week</source>
+        <target>Tjedan</target>
+      </trans-unit>
+      <trans-unit id="table.approve_status">
+        <source>table.approve_status</source>
+        <target>Stanje</target>
+      </trans-unit>
+      <trans-unit id="table.approve_action">
+        <source>table.approve_action</source>
+        <target>Radnja</target>
+      </trans-unit>
+      <trans-unit id="warning.approval_settings_not_set">
+        <source>warning.approval_settings_not_set</source>
+        <target>Postavke još nisu potpuno postavljene</target>
+      </trans-unit>
+      <trans-unit id="warning.add_to_approve_previous_weeks">
+        <source>warning.add_to_approve_previous_weeks</source>
+        <target>Za odobravanje dodaj prošle tjedne</target>
+      </trans-unit>
+      <trans-unit id="warning.selected_user_sunday_issue">
+        <source>warning.selected_user_sunday_issue</source>
+        <target>Odabrani korisnik je odredio nedjelju kao početak tjedna – dodatak „Odobravanje vremena” to ne podržava.</target>
+      </trans-unit>
+      <trans-unit id="warning.currentUserSundayIssue">
+        <source>warning.currentUserSundayIssue</source>
+        <target>Nedjelja je određena kao početak tjedna – dodatak „Odobravanje vremena” to ne podržava.</target>
+      </trans-unit>
 
-			<trans-unit id="label.meta_field_expected_working_time_on_monday">
-				<source>label.meta_field_expected_working_time_on_monday</source>
-				<target>Očekivano dnevno radno vrijeme za ponedjeljak</target>
-			</trans-unit>
-			<trans-unit id="label.meta_field_expected_working_time_on_tuesday">
-				<source>label.meta_field_expected_working_time_on_tuesday</source>
-				<target>Očekivano dnevno radno vrijeme za utorak</target>
-			</trans-unit>
-			<trans-unit id="label.meta_field_expected_working_time_on_wednesday">
-				<source>label.meta_field_expected_working_time_on_wednesday</source>
-				<target>Očekivano dnevno radno vrijeme za srijedu</target>
-			</trans-unit>
-			<trans-unit id="label.meta_field_expected_working_time_on_thursday">
-				<source>label.meta_field_expected_working_time_on_thursday</source>
-				<target>Očekivano dnevno radno vrijeme za četvrtak</target>
-			</trans-unit>
-			<trans-unit id="label.meta_field_expected_working_time_on_friday">
-				<source>label.meta_field_expected_working_time_on_friday</source>
-				<target>Očekivano dnevno radno vrijeme za petak</target>
-			</trans-unit>
-			<trans-unit id="label.meta_field_expected_working_time_on_saturday">
-				<source>label.meta_field_expected_working_time_on_saturday</source>
-				<target>Očekivano dnevno radno vrijeme za subotu</target>
-			</trans-unit>
-			<trans-unit id="label.meta_field_expected_working_time_on_sunday">
-				<source>label.meta_field_expected_working_time_on_sunday</source>
-				<target>Očekivano dnevno radno vrijeme za nedelju</target>
-			</trans-unit>
+      <trans-unit id="label.meta_field_expected_working_time_on_monday">
+        <source>label.meta_field_expected_working_time_on_monday</source>
+        <target>Očekivano dnevno radno vrijeme za ponedjeljak</target>
+      </trans-unit>
+      <trans-unit id="label.meta_field_expected_working_time_on_tuesday">
+        <source>label.meta_field_expected_working_time_on_tuesday</source>
+        <target>Očekivano dnevno radno vrijeme za utorak</target>
+      </trans-unit>
+      <trans-unit id="label.meta_field_expected_working_time_on_wednesday">
+        <source>label.meta_field_expected_working_time_on_wednesday</source>
+        <target>Očekivano dnevno radno vrijeme za srijedu</target>
+      </trans-unit>
+      <trans-unit id="label.meta_field_expected_working_time_on_thursday">
+        <source>label.meta_field_expected_working_time_on_thursday</source>
+        <target>Očekivano dnevno radno vrijeme za četvrtak</target>
+      </trans-unit>
+      <trans-unit id="label.meta_field_expected_working_time_on_friday">
+        <source>label.meta_field_expected_working_time_on_friday</source>
+        <target>Očekivano dnevno radno vrijeme za petak</target>
+      </trans-unit>
+      <trans-unit id="label.meta_field_expected_working_time_on_saturday">
+        <source>label.meta_field_expected_working_time_on_saturday</source>
+        <target>Očekivano dnevno radno vrijeme za subotu</target>
+      </trans-unit>
+      <trans-unit id="label.meta_field_expected_working_time_on_sunday">
+        <source>label.meta_field_expected_working_time_on_sunday</source>
+        <target>Očekivano dnevno radno vrijeme za nedelju</target>
+      </trans-unit>
 
-			<trans-unit id="submitted">
-				<source>submitted</source>
-				<target>Podneseno</target>
-			</trans-unit>
-			<trans-unit id="denied">
-				<source>denied</source>
-				<target>Odbijeno</target>
-			</trans-unit>
-			<trans-unit id="rejected">
-				<source>rejected</source>
-				<target>Odbijeno</target>
-			</trans-unit>
-			<trans-unit id="approved">
-				<source>approved</source>
-				<target>Odobreno</target>
-			</trans-unit>
-			<trans-unit id="not_submitted">
-				<source>not_submitted</source>
-				<target>Nepodneseno</target>
-			</trans-unit>
-			<trans-unit id="label.undoMessage">
-				<source>label.undoMessage</source>
-				<target>Želiš li poništiti stanje „Nepodneseno”?</target>
-			</trans-unit>
-			<trans-unit id="api.wrongTeam">
-				<source>api.wrongTeam</source>
-				<target>Korisnik koji nije član tvojeg tima</target>
-			</trans-unit>
-			<trans-unit id="api.accessDenied">
-				<source>api.accessDenied</source>
-				<target>Pristup odbijen</target>
-			</trans-unit>
-			<trans-unit id="api.wrongUser">
-				<source>api.wrongUser</source>
-				<target>Korisnik ne postoji</target>
-			</trans-unit>
-			<trans-unit id="api.alreadyExists">
-				<source>api.alreadyExists</source>
-				<target>Odobrenje već postoji</target>
-			</trans-unit>
-			<trans-unit id="api.add_to_approve_previous_weeks">
-				<source>api.add_to_approve_previous_weeks</source>
-				<target>Za odobravanje dodaj prošle tjedne</target>
-			</trans-unit>
-			<trans-unit id="api.noData">
-				<source>api.noData</source>
-				<target>Za ovog korisnika ne postoje podaci</target>
-			</trans-unit>
+      <trans-unit id="submitted">
+        <source>submitted</source>
+        <target>Podneseno</target>
+      </trans-unit>
+      <trans-unit id="denied">
+        <source>denied</source>
+        <target>Odbijeno</target>
+      </trans-unit>
+      <trans-unit id="rejected">
+        <source>rejected</source>
+        <target>Odbijeno</target>
+      </trans-unit>
+      <trans-unit id="approved">
+        <source>approved</source>
+        <target>Odobreno</target>
+      </trans-unit>
+      <trans-unit id="not_submitted">
+        <source>not_submitted</source>
+        <target>Nepodneseno</target>
+      </trans-unit>
+      <trans-unit id="label.undoMessage">
+        <source>label.undoMessage</source>
+        <target>Želiš li poništiti stanje „Nepodneseno”?</target>
+      </trans-unit>
+      <trans-unit id="api.wrongTeam">
+        <source>api.wrongTeam</source>
+        <target>Korisnik koji nije član tvojeg tima</target>
+      </trans-unit>
+      <trans-unit id="api.accessDenied">
+        <source>api.accessDenied</source>
+        <target>Pristup odbijen</target>
+      </trans-unit>
+      <trans-unit id="api.wrongUser">
+        <source>api.wrongUser</source>
+        <target>Korisnik ne postoji</target>
+      </trans-unit>
+      <trans-unit id="api.alreadyExists">
+        <source>api.alreadyExists</source>
+        <target>Odobrenje već postoji</target>
+      </trans-unit>
+      <trans-unit id="api.add_to_approve_previous_weeks">
+        <source>api.add_to_approve_previous_weeks</source>
+        <target>Za odobravanje dodaj prošle tjedne</target>
+      </trans-unit>
+      <trans-unit id="api.noData">
+        <source>api.noData</source>
+        <target>Za ovog korisnika ne postoje podaci</target>
+      </trans-unit>
 
-			<trans-unit id="warning.noUserToApprove">
-				<source>warning.noUserToApprove</source>
-				<target>Nema korisnika za odobravanje</target>
-			</trans-unit>
+      <trans-unit id="warning.noUserToApprove">
+        <source>warning.noUserToApprove</source>
+        <target>Nema korisnika za odobravanje</target>
+      </trans-unit>
 
-			<trans-unit id="header.date">
-				<source>header.date</source>
-				<target>Datum</target>
-			</trans-unit>
-			<trans-unit id="header.begin">
-				<source>header.begin</source>
-				<target>Početak</target>
-			</trans-unit>
-			<trans-unit id="header.end">
-				<source>header.end</source>
-				<target>Kraj</target>
-			</trans-unit>
-			<trans-unit id="header.duration">
-				<source>header.duration</source>
-				<target>Trajanje</target>
-			</trans-unit>
-			<trans-unit id="header.customer">
-				<source>header.customer</source>
-				<target>Kupac</target>
-			</trans-unit>
-			<trans-unit id="header.project">
-				<source>header.project</source>
-				<target>Projekt</target>
-			</trans-unit>
-			<trans-unit id="header.activity">
-				<source>header.activity</source>
-				<target>Aktivnost</target>
-			</trans-unit>
-			<trans-unit id="header.description">
-				<source>header.description</source>
-				<target>Opis</target>
-			</trans-unit>
+      <trans-unit id="header.date">
+        <source>header.date</source>
+        <target>Datum</target>
+      </trans-unit>
+      <trans-unit id="header.begin">
+        <source>header.begin</source>
+        <target>Početak</target>
+      </trans-unit>
+      <trans-unit id="header.end">
+        <source>header.end</source>
+        <target>Kraj</target>
+      </trans-unit>
+      <trans-unit id="header.duration">
+        <source>header.duration</source>
+        <target>Trajanje</target>
+      </trans-unit>
+      <trans-unit id="header.customer">
+        <source>header.customer</source>
+        <target>Kupac</target>
+      </trans-unit>
+      <trans-unit id="header.project">
+        <source>header.project</source>
+        <target>Projekt</target>
+      </trans-unit>
+      <trans-unit id="header.activity">
+        <source>header.activity</source>
+        <target>Aktivnost</target>
+      </trans-unit>
+      <trans-unit id="header.description">
+        <source>header.description</source>
+        <target>Opis</target>
+      </trans-unit>
 
-			<trans-unit id="error.less_than_eleven_hours_off">
-				<source>error.less_than_eleven_hours_off</source>
-				<target>Nisi poštovao/la odmor od 11 sati.</target>
-			</trans-unit>
-			<trans-unit id="error.more_than_ten_hours_worked">
-				<source>error.more_than_ten_hours_worked</source>
-				<target>Radio/la si više od 10 sati!</target>
-			</trans-unit>
-			<trans-unit id="error.nine_hours_without_break">
-				<source>error.nine_hours_without_break</source>
-				<target>Radio/la si više od 9 sati bez pauze od 45 minuta!</target>
-			</trans-unit>
-			<trans-unit id="error.six_hours_without_break">
-				<source>error.six_hours_without_break</source>
-				<target>Radio/la si više od 6 sati bez pauze od 30 minuta!</target>
-			</trans-unit>
+      <trans-unit id="error.less_than_eleven_hours_off">
+        <source>error.less_than_eleven_hours_off</source>
+        <target>Nisi poštovao/la odmor od 11 sati.</target>
+      </trans-unit>
+      <trans-unit id="error.more_than_ten_hours_worked">
+        <source>error.more_than_ten_hours_worked</source>
+        <target>Radio/la si više od 10 sati!</target>
+      </trans-unit>
+      <trans-unit id="error.nine_hours_without_break">
+        <source>error.nine_hours_without_break</source>
+        <target>Radio/la si više od 9 sati bez pauze od 45 minuta!</target>
+      </trans-unit>
+      <trans-unit id="error.six_hours_without_break">
+        <source>error.six_hours_without_break</source>
+        <target>Radio/la si više od 6 sati bez pauze od 30 minuta!</target>
+      </trans-unit>
 
-			<trans-unit id="label.customer_for_free_days">
-				<source>label.customer_for_free_days</source>
-				<target>Kupac za slobodne dane</target>
-			</trans-unit>
-			<trans-unit id="label.email_link_url">
-				<source>label.email_link_url</source>
-				<target>URL e-mail poveznice</target>
-			</trans-unit>
-			<trans-unit id="label.workflow_start">
-				<source>label.workflow_start</source>
-				<target>Odobravanje početnog datuma toka rada</target>
-			</trans-unit>
+      <trans-unit id="label.customer_for_free_days">
+        <source>label.customer_for_free_days</source>
+        <target>Kupac za slobodne dane</target>
+      </trans-unit>
+      <trans-unit id="label.email_link_url">
+        <source>label.email_link_url</source>
+        <target>URL e-mail poveznice</target>
+      </trans-unit>
+      <trans-unit id="label.workflow_start">
+        <source>label.workflow_start</source>
+        <target>Odobravanje početnog datuma toka rada</target>
+      </trans-unit>
 
-			<!-- START formatting patterns form -->
-			<trans-unit id="format.full_datetime">
-				<source>format.full_datetime</source>
-				<target>Y-m-d H:i:s</target>
-			</trans-unit>
-			<trans-unit id="format.full_date">
-				<source>format.full_date</source>
-				<target>Y-m-d</target>
-			</trans-unit>
-			<trans-unit id="format.decimal_separator">
-				<source>format.decimal_separator</source>
-				<target>,</target>
-			</trans-unit>
-			<trans-unit id="format.thousands_separator">
-				<source>format.thousands_separator</source>
-				<target>.</target>
-			</trans-unit>
-			<!-- END formatting patterns form -->
+      <!-- START formatting patterns form -->
+      <trans-unit id="format.full_datetime">
+        <source>format.full_datetime</source>
+        <target>Y-m-d H:i:s</target>
+      </trans-unit>
+      <trans-unit id="format.full_date">
+        <source>format.full_date</source>
+        <target>Y-m-d</target>
+      </trans-unit>
+      <trans-unit id="format.decimal_separator">
+        <source>format.decimal_separator</source>
+        <target>,</target>
+      </trans-unit>
+      <trans-unit id="format.thousands_separator">
+        <source>format.thousands_separator</source>
+        <target>.</target>
+      </trans-unit>
+      <!-- END formatting patterns form -->
 
-			<!-- START month form -->
-			<trans-unit id="month.january">
-				<source>month.january</source>
-				<target>Siječanj</target>
-			</trans-unit>
-			<trans-unit id="month.february">
-				<source>month.february</source>
-				<target>Veljača</target>
-			</trans-unit>
-			<trans-unit id="month.march">
-				<source>month.march</source>
-				<target>Ožujak</target>
-			</trans-unit>
-			<trans-unit id="month.april">
-				<source>month.april</source>
-				<target>Travanj</target>
-			</trans-unit>
-			<trans-unit id="month.may">
-				<source>month.may</source>
-				<target>Svibanj</target>
-			</trans-unit>
-			<trans-unit id="month.june">
-				<source>month.june</source>
-				<target>Lipanj</target>
-			</trans-unit>
-			<trans-unit id="month.july">
-				<source>month.july</source>
-				<target>Srpanj</target>
-			</trans-unit>
-			<trans-unit id="month.august">
-				<source>month.august</source>
-				<target>Kolovoz</target>
-			</trans-unit>
-			<trans-unit id="month.september">
-				<source>month.september</source>
-				<target>Rujan</target>
-			</trans-unit>
-			<trans-unit id="month.october">
-				<source>month.october</source>
-				<target>Listopad</target>
-			</trans-unit>
-			<trans-unit id="month.november">
-				<source>month.november</source>
-				<target>Studeni</target>
-			</trans-unit>
-			<trans-unit id="month.december">
-				<source>month.december</source>
-				<target>Prosinac</target>
-			</trans-unit>
-			<!-- END month form -->
-            
-            <!-- START Tooltips for buttons -->
-            <trans-unit id="tooltip.description">
-				<source>tooltip.description</source>
-				<target>Prikaži opise aktivnosti</target>
-			</trans-unit>
-            <trans-unit id="tooltip.timesheets">
-				<source>tooltip.timesheets</source>
-				<target>Vremenske tablice</target>
-			</trans-unit>
-            <trans-unit id="tooltip.history">
-				<source>tooltip.history</source>
-				<target>Povijest</target>
-			</trans-unit>
-            <trans-unit id="tooltip.approve">
-				<source>tooltip.approve</source>
-				<target>Odobri</target>
-			</trans-unit>
-            <trans-unit id="tooltip.reject">
-				<source>tooltip.reject</source>
-				<target>Odbij</target>
-			</trans-unit>
-            <trans-unit id="tooltip.undo">
-				<source>tooltip.undo</source>
-				<target>Poništi odobrenje</target>
-			</trans-unit>
-            <trans-unit id="tooltip.submit">
-				<source>tooltip.submit</source>
-				<target>Pošalji za odobravanje</target>
-			</trans-unit>
-            <!-- END Tooltips for buttons -->
-        </body>
-    </file>
+      <!-- START month form -->
+      <trans-unit id="month.january">
+        <source>month.january</source>
+        <target>Siječanj</target>
+      </trans-unit>
+      <trans-unit id="month.february">
+        <source>month.february</source>
+        <target>Veljača</target>
+      </trans-unit>
+      <trans-unit id="month.march">
+        <source>month.march</source>
+        <target>Ožujak</target>
+      </trans-unit>
+      <trans-unit id="month.april">
+        <source>month.april</source>
+        <target>Travanj</target>
+      </trans-unit>
+      <trans-unit id="month.may">
+        <source>month.may</source>
+        <target>Svibanj</target>
+      </trans-unit>
+      <trans-unit id="month.june">
+        <source>month.june</source>
+        <target>Lipanj</target>
+      </trans-unit>
+      <trans-unit id="month.july">
+        <source>month.july</source>
+        <target>Srpanj</target>
+      </trans-unit>
+      <trans-unit id="month.august">
+        <source>month.august</source>
+        <target>Kolovoz</target>
+      </trans-unit>
+      <trans-unit id="month.september">
+        <source>month.september</source>
+        <target>Rujan</target>
+      </trans-unit>
+      <trans-unit id="month.october">
+        <source>month.october</source>
+        <target>Listopad</target>
+      </trans-unit>
+      <trans-unit id="month.november">
+        <source>month.november</source>
+        <target>Studeni</target>
+      </trans-unit>
+      <trans-unit id="month.december">
+        <source>month.december</source>
+        <target>Prosinac</target>
+      </trans-unit>
+      <!-- END month form -->
+
+      <!-- START Tooltips for buttons -->
+      <trans-unit id="tooltip.description">
+        <source>tooltip.description</source>
+        <target>Prikaži opise aktivnosti</target>
+      </trans-unit>
+      <trans-unit id="tooltip.timesheets">
+        <source>tooltip.timesheets</source>
+        <target>Vremenske tablice</target>
+      </trans-unit>
+      <trans-unit id="tooltip.history">
+        <source>tooltip.history</source>
+        <target>Povijest</target>
+      </trans-unit>
+      <trans-unit id="tooltip.approve">
+        <source>tooltip.approve</source>
+        <target>Odobri</target>
+      </trans-unit>
+      <trans-unit id="tooltip.reject">
+        <source>tooltip.reject</source>
+        <target>Odbij</target>
+      </trans-unit>
+      <trans-unit id="tooltip.undo">
+        <source>tooltip.undo</source>
+        <target>Poništi odobrenje</target>
+      </trans-unit>
+      <trans-unit id="tooltip.submit">
+        <source>tooltip.submit</source>
+        <target>Pošalji za odobravanje</target>
+      </trans-unit>
+      <!-- END Tooltips for buttons -->
+
+      <trans-unit id="label.valid_till">
+        <source>label.valid_till</source>
+        <target>rok trajanja</target>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>
 
 

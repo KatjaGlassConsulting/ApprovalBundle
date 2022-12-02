@@ -9,6 +9,7 @@
 
 namespace KimaiPlugin\ApprovalBundle\Controller;
 
+use Doctrine\ORM\ORMException;
 use App\Controller\AbstractController;
 use App\Entity\Customer;
 use App\Entity\Team;
@@ -24,10 +25,12 @@ use App\Repository\UserRepository;
 use DateTime;
 use Exception;
 use KimaiPlugin\ApprovalBundle\Entity\Approval;
+use KimaiPlugin\ApprovalBundle\Entity\ApprovalWorkdayHistory;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Enumeration\FormEnum;
 use KimaiPlugin\ApprovalBundle\Form\SettingsForm;
 use KimaiPlugin\ApprovalBundle\Form\WeekByUserForm;
+use KimaiPlugin\ApprovalBundle\Form\AddWorkdayHistoryForm;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalHistoryRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalWorkdayHistoryRepository;
@@ -172,6 +175,7 @@ class WeekReportController extends AbstractController
             'currentUser' => $this->getUser()->getId(),
             'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
+            'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'expected_duration' => $expected_duration,
             'settingsWarning' => !$this->approvalSettings->isFullyConfigured(),
             'isSuperAdmin' => $this->getUser()->isSuperAdmin(),
@@ -214,6 +218,7 @@ class WeekReportController extends AbstractController
             'current_rows' => $currentRows,
             'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
+            'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'settingsWarning' => !$this->approvalSettings->isFullyConfigured(),
             'warningNoUsers' => empty($users)
         ]);
@@ -229,6 +234,7 @@ class WeekReportController extends AbstractController
             'current_tab' => 'settings',
             'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
+            'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'form' => $this->createSettingsForm($request),
             'settingsWarning' => !$this->approvalSettings->isFullyConfigured(),
             'warningNoUsers' => empty($this->getUsers())
@@ -241,18 +247,68 @@ class WeekReportController extends AbstractController
      */
     public function settingsWorkdayHistory(Request $request): Response
     {
-        $approvals = $this->approvalWorkdayHistoryRepository->findAll();
+        $workdayHistory = $this->approvalWorkdayHistoryRepository->findAll();
+        // $approvals = null;
         file_put_contents("C:/temp/blub.txt", "settingsWorkdayHistory\n");
-        file_put_contents("C:/temp/blub.txt", json_encode($approvals) . "\n", FILE_APPEND);
+        file_put_contents("C:/temp/blub.txt", json_encode($workdayHistory) . "\n", FILE_APPEND);
+        file_put_contents("C:/temp/blub.txt", json_encode($workdayHistory[0]->getId()) . "\n", FILE_APPEND);
+        file_put_contents("C:/temp/blub.txt", json_encode($workdayHistory[0]->getUser()->getDisplayName()) . "\n", FILE_APPEND);
+        file_put_contents("C:/temp/blub.txt", json_encode($workdayHistory[0]->getMonday()) . "\n", FILE_APPEND);
         
-        return $this->render('@Approval/settings.html.twig', [
-            'current_tab' => 'approval_bundle_settings_workday',
+        return $this->render('@Approval/settings_workday_history.html.twig', [
+            'current_tab' => 'settings_workday_history',
+            'workdayHistory' => $workdayHistory,
             'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
-            'form' => $this->createSettingsForm($request),
-            'settingsWarning' => !$this->approvalSettings->isFullyConfigured(),
-            'warningNoUsers' => empty($this->getUsers())
+            'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)
         ]);
+    }
+
+    /**
+     * @Route(path="/create_workday_history", name="approval_create_workday_history", methods={"GET", "POST"})
+     *
+     * @param Request $request
+     * @return RedirectResponse|Response
+     * @throws DBALException
+     * @throws TransportExceptionInterface
+     */
+    public function createWorkdayHistory(Request $request)
+    {
+        if (!$this->isGranted('ROLE_SUPER_ADMIN')){
+            return;
+        }
+        
+        file_put_contents("C:/temp/blub.txt", "createWorkdayHistory\n", FILE_APPEND);
+        
+        $workdayHistory = new ApprovalWorkdayHistory();
+
+        file_put_contents("C:/temp/blub.txt", "next Create Form\n", FILE_APPEND);
+
+        $editForm = $this->createForm(AddWorkdayHistoryForm::class, $workdayHistory, [
+            'action' => $this->generateUrl('approval_create_workday_history'),
+            'method' => 'POST'
+        ]);       
+
+        file_put_contents("C:/temp/blub.txt", "next handle request\n", FILE_APPEND);
+
+        $editForm->handleRequest($request);    
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            try {
+                file_put_contents("C:/temp/blub.txt", "edit form is submitted" . "\n", FILE_APPEND);
+              
+                // TODO - blub
+            } catch (ORMException $e) {
+                $this->flashUpdateException($e);
+            }
+        }
+
+        // TODO - blub
+        
+        // return $this->render('@Approval/leaves/edit.html.twig', [
+        //     'leave' => $userHoliday,
+        //     'form' => $editForm->createView()
+        // ]); 
     }
 
     private function createSettingsForm(Request $request)
@@ -275,6 +331,7 @@ class WeekReportController extends AbstractController
             }
             $this->settingsTool->setConfiguration(ConfigEnum::META_FIELD_EMAIL_LINK_URL, $data[FormEnum::EMAIL_LINK_URL]);
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_WORKFLOW_START, $data[FormEnum::WORKFLOW_START]);
+            $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY, $data[FormEnum::OVERTIME_NY]);
             $this->settingsTool->setConfiguration(ConfigEnum::CUSTOMER_FOR_FREE_DAYS, $this->collectCustomerForFreeDays($data));
 
             $this->flashSuccess('action.update.success');
