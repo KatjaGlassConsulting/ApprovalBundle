@@ -9,7 +9,7 @@
 
 namespace KimaiPlugin\ApprovalBundle\Controller;
 
-use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Exception\ORMException;
 use App\Controller\AbstractController;
 use App\Entity\Customer;
 use App\Entity\Team;
@@ -43,6 +43,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use KimaiPlugin\VacationBundle\Form\VacationDaysForm;
 
 /**
  * @Route(path="/approval-report")
@@ -251,9 +252,7 @@ class WeekReportController extends AbstractController
         // $approvals = null;
         file_put_contents("C:/temp/blub.txt", "settingsWorkdayHistory\n");
         file_put_contents("C:/temp/blub.txt", json_encode($workdayHistory) . "\n", FILE_APPEND);
-        file_put_contents("C:/temp/blub.txt", json_encode($workdayHistory[0]->getId()) . "\n", FILE_APPEND);
         file_put_contents("C:/temp/blub.txt", json_encode($workdayHistory[0]->getUser()->getDisplayName()) . "\n", FILE_APPEND);
-        file_put_contents("C:/temp/blub.txt", json_encode($workdayHistory[0]->getMonday()) . "\n", FILE_APPEND);
         
         return $this->render('@Approval/settings_workday_history.html.twig', [
             'current_tab' => 'settings_workday_history',
@@ -274,41 +273,37 @@ class WeekReportController extends AbstractController
      */
     public function createWorkdayHistory(Request $request)
     {
-        if (!$this->isGranted('ROLE_SUPER_ADMIN')){
-            return;
-        }
-        
+        file_put_contents("C:/temp/blub.txt", "YES!" . "\n", FILE_APPEND);
         file_put_contents("C:/temp/blub.txt", "createWorkdayHistory\n", FILE_APPEND);
         
         $workdayHistory = new ApprovalWorkdayHistory();
 
         file_put_contents("C:/temp/blub.txt", "next Create Form\n", FILE_APPEND);
 
-        $editForm = $this->createForm(AddWorkdayHistoryForm::class, $workdayHistory, [
+        $form = $this->createForm(AddWorkdayHistoryForm::class, $workdayHistory, [
             'action' => $this->generateUrl('approval_create_workday_history'),
             'method' => 'POST'
         ]);       
 
         file_put_contents("C:/temp/blub.txt", "next handle request\n", FILE_APPEND);
 
-        $editForm->handleRequest($request);    
+        $form->handleRequest($request);    
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             try {
                 file_put_contents("C:/temp/blub.txt", "edit form is submitted" . "\n", FILE_APPEND);
               
+                $this->flashSuccess('action.update.success');
                 // TODO - blub
             } catch (ORMException $e) {
                 $this->flashUpdateException($e);
             }
         }
 
-        // TODO - blub
-        
-        // return $this->render('@Approval/leaves/edit.html.twig', [
-        //     'leave' => $userHoliday,
-        //     'form' => $editForm->createView()
-        // ]); 
+        return $this->render('@Approval/add_workday_history.html.twig', [
+            'title' => 'title.add_workday_history',
+            'form' => $form->createView()
+        ]); 
     }
 
     private function createSettingsForm(Request $request)
@@ -316,7 +311,9 @@ class WeekReportController extends AbstractController
         $form = $this->createForm(SettingsForm::class, null, [
             'with_time' => $this->approvalSettings->canBeConfigured()
         ]);
+
         $form->handleRequest($request);
+
         if ($form->isSubmitted()) {
             $data = $form->getData();
 

@@ -62,16 +62,12 @@ class ApprovalWorkdayHistoryRepository extends ServiceEntityRepository
      */
     public function findAll()
     {
-        
-        file_put_contents("C:/temp/blub.txt", "findall\n", FILE_APPEND);
         return $this->getEntityManager()->createQueryBuilder()
             ->select('aph')
             ->from(ApprovalWorkdayHistory::class, 'aph')
             ->orderBy('aph.validTill', 'DESC')
-            ->setMaxResults(500)
             ->getQuery()
             ->getResult();
-        file_put_contents("C:/temp/blub.txt", "after_findall\n", FILE_APPEND);
     }
 
 }
