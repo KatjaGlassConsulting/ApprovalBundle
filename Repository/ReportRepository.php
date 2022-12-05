@@ -12,6 +12,7 @@ namespace KimaiPlugin\ApprovalBundle\Repository;
 use App\Entity\Timesheet;
 use App\Entity\User;
 use App\Model\DailyStatistic;
+use App\Form\Type\DurationType;
 use App\Repository\ActivityRepository;
 use App\Repository\ProjectRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -93,6 +94,33 @@ class ReportRepository extends ServiceEntityRepository
         $result = $qb->getQuery()->getResult();
 
         return $result;
+    }
+
+    public function getActualWorkingDurationStatistic(User $user, \DateTime $begin, \DateTime $end): int
+    {
+        return $this->getActualWorkingDuration($begin, $end, $user);
+    }
+
+    private function getActualWorkingDuration(\DateTime $begin, \DateTime $end, User $user) : ?int
+    {
+        file_put_contents("C:/temp/blub.txt", "begin" . json_encode($begin) . "\n", FILE_APPEND);
+        file_put_contents("C:/temp/blub.txt", "end" . json_encode($end) . "\n", FILE_APPEND);
+
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb
+            ->select('COALESCE(SUM(t.duration), 0) as duration')
+            ->from(Timesheet::class, 't')
+            ->where($qb->expr()->isNotNull('t.end'))
+            ->andWhere($qb->expr()->between('t.begin', ':begin', ':end'))
+            ->andWhere($qb->expr()->in('t.user', ':user'))
+            ->setParameter('begin', $begin)
+            ->setParameter('end', $end)
+            ->setParameter('user', $user)
+            ->setMaxResults(1);
+
+        $result = $qb->getQuery()->getOneOrNullResult();
+
+        return intval($result["duration"]);
     }
 
     private function generateDailyStatistics(\DateTime $begin, \DateTime $end, User $user, $value, array $array): array

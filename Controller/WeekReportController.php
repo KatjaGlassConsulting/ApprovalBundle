@@ -43,7 +43,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use KimaiPlugin\VacationBundle\Form\VacationDaysForm;
 
 /**
  * @Route(path="/approval-report")
@@ -143,8 +142,15 @@ class WeekReportController extends AbstractController
             $expected_duration = $approvals->getExpectedDuration();
         } else {
             $status = '';
-            $expected_duration = null;
+            $expected_duration = $this->approvalRepository->calculateExpectedDurationByUserAndDate($firstUser, $start, $end);
         }
+
+        // BLUB
+        file_put_contents("C:/temp/blub.txt", "in WeekReportController" . "\n", FILE_APPEND);
+        $actual_duration = $this->reportRepository->getActualWorkingDurationStatistic($selectedUser,$start,$end);
+        file_put_contents("C:/temp/blub.txt", "actual_duration" . json_encode($actual_duration) . "\n", FILE_APPEND);
+        file_put_contents("C:/temp/blub.txt", "data" . json_encode($data) . "\n", FILE_APPEND);
+        file_put_contents("C:/temp/blub.txt", "daily stats" . json_encode(new DailyStatistic($start, $end, $selectedUser)) . "\n", FILE_APPEND);
 
         $userId = $request->query->get('user');
         $startWeek = $request->query->get('date');
@@ -249,10 +255,6 @@ class WeekReportController extends AbstractController
     public function settingsWorkdayHistory(Request $request): Response
     {
         $workdayHistory = $this->approvalWorkdayHistoryRepository->findAll();
-        // $approvals = null;
-        file_put_contents("C:/temp/blub.txt", "settingsWorkdayHistory\n");
-        file_put_contents("C:/temp/blub.txt", json_encode($workdayHistory) . "\n", FILE_APPEND);
-        file_put_contents("C:/temp/blub.txt", json_encode($workdayHistory[0]->getUser()->getDisplayName()) . "\n", FILE_APPEND);
         
         return $this->render('@Approval/settings_workday_history.html.twig', [
             'current_tab' => 'settings_workday_history',
@@ -273,28 +275,33 @@ class WeekReportController extends AbstractController
      */
     public function createWorkdayHistory(Request $request)
     {
-        file_put_contents("C:/temp/blub.txt", "YES!" . "\n", FILE_APPEND);
-        file_put_contents("C:/temp/blub.txt", "createWorkdayHistory\n", FILE_APPEND);
-        
-        $workdayHistory = new ApprovalWorkdayHistory();
+        $users = $this->userRepository->findAll();
 
-        file_put_contents("C:/temp/blub.txt", "next Create Form\n", FILE_APPEND);
-
-        $form = $this->createForm(AddWorkdayHistoryForm::class, $workdayHistory, [
+        $form = $this->createForm(AddWorkdayHistoryForm::class, $users, [
             'action' => $this->generateUrl('approval_create_workday_history'),
             'method' => 'POST'
-        ]);       
-
-        file_put_contents("C:/temp/blub.txt", "next handle request\n", FILE_APPEND);
+        ]);
 
         $form->handleRequest($request);    
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                file_put_contents("C:/temp/blub.txt", "edit form is submitted" . "\n", FILE_APPEND);
-              
+                $workdayHistory = new ApprovalWorkdayHistory();
+
+                $workdayHistory->setUserId($form->getData()['user']);
+                $workdayHistory->setMonday($form->getData()['monday']);
+                $workdayHistory->setTuesday($form->getData()['tuesday']);
+                $workdayHistory->setWednesday($form->getData()['wednesday']);
+                $workdayHistory->setThursday($form->getData()['thursday']);
+                $workdayHistory->setFriday($form->getData()['friday']);
+                $workdayHistory->setSaturday($form->getData()['saturday']);
+                $workdayHistory->setSunday($form->getData()['sunday']);
+                $workdayHistory->setValidTill($form->getData()['validTill']);
+
+                $this->approvalWorkdayHistoryRepository->save($workdayHistory, true);              
                 $this->flashSuccess('action.update.success');
-                // TODO - blub
+
+                return $this->redirectToRoute('approval_bundle_settings_workday');
             } catch (ORMException $e) {
                 $this->flashUpdateException($e);
             }

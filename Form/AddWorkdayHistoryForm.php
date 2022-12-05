@@ -14,10 +14,9 @@ use App\Form\Type\DatePickerType;
 use App\Form\Type\DurationType;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\Form\Type\UserType;
 
 class AddWorkdayHistoryForm extends AbstractType
 {
@@ -38,30 +37,32 @@ class AddWorkdayHistoryForm extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('user', ChoiceType::class, [
-            'label' => 'label.user',
-            'required' => true,
-            'multiple' => false,
-            'choices' => $options['users'],
-            'choice_value' => 'id',
-            'choice_label' => 'username'
+        $days = [
+          'Monday' => 'monday',
+          'Tuesday' => 'tuesday',
+          'Wednesday' => 'wednesday',
+          'Thursday' => 'thursday',
+          'Friday' => 'friday',
+          'Saturday' => 'saturday',
+          'Sunday' => 'sunday'
+        ];
+
+        $builder->add('user', UserType::class, [
+          'multiple' => false,
+          'required' => true,
         ]);
 
-        $builder->add('monday', DurationType::class, [
-          'label' => 'label.week',
-          'required' => true
-        ]);
+        foreach ($days as $key => $value) {
+            $builder->add($value, DurationType::class, [
+              'label' => $key,
+              'translation_domain' => 'system-configuration',
+              'required' => true
+            ]);
+        }
 
         $builder->add('validTill', DatePickerType::class, [
           'label' => 'label.validTill',
           'required' => true
-        ]);
-
-        $builder->add('submit', SubmitType::class, [
-            'label' => 'action.ok',
-            'attr' => [
-                'class' => 'btn btn-primary'
-            ]
         ]);
     }
 

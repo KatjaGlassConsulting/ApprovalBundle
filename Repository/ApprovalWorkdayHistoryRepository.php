@@ -48,7 +48,7 @@ class ApprovalWorkdayHistoryRepository extends ServiceEntityRepository
         return $this->getEntityManager()->createQueryBuilder()
             ->select('aph')
             ->from(ApprovalWorkdayHistory::class, 'aph')
-            ->andWhere('ap.user = :user')
+            ->andWhere('aph.user = :user')
             ->setParameter('user', $user)
             ->orderBy('aph.valid_till', 'DESC')
             ->setMaxResults(200)
@@ -58,6 +58,28 @@ class ApprovalWorkdayHistoryRepository extends ServiceEntityRepository
    }
 
    /**
+    * @return ApprovalWorkdayHistory - Returns null or an ApprovalWorkdayHistory objects
+    */
+    public function findByUserAndDateWorkdayHistory(User $user, \DateTime $date): ?ApprovalWorkdayHistory
+    { 
+        $day = $date->format('Y-m-d');
+
+        return $this->getEntityManager()->createQueryBuilder()
+            ->select('aph')
+            ->from(ApprovalWorkdayHistory::class, 'aph')
+            ->andWhere('aph.user = :user')
+            ->andWhere('aph.validTill > :date')
+            ->setParameter('user', $user)
+            ->setParameter('date', $day)
+            ->addOrderBy('aph.validTill', 'ASC')
+            ->addOrderBy('aph.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+   /**
      * @return array
      */
     public function findAll()
@@ -65,7 +87,8 @@ class ApprovalWorkdayHistoryRepository extends ServiceEntityRepository
         return $this->getEntityManager()->createQueryBuilder()
             ->select('aph')
             ->from(ApprovalWorkdayHistory::class, 'aph')
-            ->orderBy('aph.validTill', 'DESC')
+            ->addOrderBy('aph.validTill', 'DESC')
+            ->addOrderBy('aph.id', 'DESC')
             ->getQuery()
             ->getResult();
     }

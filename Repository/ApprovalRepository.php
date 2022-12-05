@@ -22,6 +22,8 @@ use KimaiPlugin\ApprovalBundle\Settings\ApprovalSettingsInterface;
 use KimaiPlugin\ApprovalBundle\Toolbox\Formatting;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use KimaiPlugin\ApprovalBundle\Repository\ApprovalWorkdayHistoryRepository;
+use KimaiPlugin\ApprovalBundle\Repository\ReportRepository;
 
 /**
  * @method Approval|null find($id, $lockMode = null, $lockVersion = null)
@@ -51,15 +53,29 @@ class ApprovalRepository extends ServiceEntityRepository
      */
     private $urlGenerator;
 
+    /**
+     * @var ApprovalWorkdayHistoryRepository
+     */
+    private $approvalWorkdayHistoryRepository;
+
+    /**
+     * @var ReportRepository
+     */
+    private $reportRepository;
+
     public function __construct(
         ManagerRegistry $registry,
         ApprovalSettingsInterface $metaFieldRuleRepository,
+        ApprovalWorkdayHistoryRepository $approvalWorkdayHistoryRepository,
+        ReportRepository $reportRepository,
         SettingsTool $settingsTool,
         Formatting $formatting,
         UrlGeneratorInterface $urlGenerator
     ) {
         parent::__construct($registry, Approval::class);
         $this->metaFieldRuleRepository = $metaFieldRuleRepository;
+        $this->approvalWorkdayHistoryRepository = $approvalWorkdayHistoryRepository;
+        $this->reportRepository = $reportRepository;
         $this->settingsTool = $settingsTool;
         $this->formatting = $formatting;
         $this->urlGenerator = $urlGenerator;
@@ -69,6 +85,7 @@ class ApprovalRepository extends ServiceEntityRepository
     {
         $startDate = new DateTime($data);
         $endDate = (clone $startDate)->modify('next sunday');
+        date_time_set($endDate,23,59,59);
 
         $approval = $this->checkLastStatus($startDate, $endDate, $user, ApprovalStatus::NOT_SUBMITTED, new Approval());
 
@@ -78,6 +95,7 @@ class ApprovalRepository extends ServiceEntityRepository
             $approval->setStartDate($startDate);
             $approval->setEndDate($endDate);
             $approval->setExpectedDuration($this->calculateExpectedDurationByUserAndDate($user, $startDate, $endDate));
+            $approval->setActualDuration($this->reportRepository->getActualWorkingDurationStatistic($user,$startDate,$endDate));
 
             $this->getEntityManager()->persist($approval);
             $this->getEntityManager()->flush();
@@ -98,29 +116,59 @@ class ApprovalRepository extends ServiceEntityRepository
 
     private function getExpectTimeForDate(DateTime $i, User $user, $expected)
     {
-        switch ($i->format('N')) {
-            case (1):
-                $expected += $this->metaFieldRuleRepository->getWorkingTimeForMonday($user);
-                break;
-            case (2):
-                $expected += $this->metaFieldRuleRepository->getWorkingTimeForTuesday($user);
-                break;
-            case (3):
-                $expected += $this->metaFieldRuleRepository->getWorkingTimeForWednesday($user);
-                break;
-            case (4):
-                $expected += $this->metaFieldRuleRepository->getWorkingTimeForThursday($user);
-                break;
-            case (5):
-                $expected += $this->metaFieldRuleRepository->getWorkingTimeForFriday($user);
-                break;
-            case (6):
-                $expected += $this->metaFieldRuleRepository->getWorkingTimeForSaturday($user);
-                break;
-            case (7):
-                $expected += $this->metaFieldRuleRepository->getWorkingTimeForSunday($user);
-                break;
-        }
+        $workdayHistory = $this->approvalWorkdayHistoryRepository->findByUserAndDateWorkdayHistory($user, $i);
+        
+        if (is_null($workdayHistory)){
+            // get information from meta fields
+            switch ($i->format('N')) {
+              case (1):
+                  $expected += $this->metaFieldRuleRepository->getWorkingTimeForMonday($user);
+                  break;
+              case (2):
+                  $expected += $this->metaFieldRuleRepository->getWorkingTimeForTuesday($user);
+                  break;
+              case (3):
+                  $expected += $this->metaFieldRuleRepository->getWorkingTimeForWednesday($user);
+                  break;
+              case (4):
+                  $expected += $this->metaFieldRuleRepository->getWorkingTimeForThursday($user);
+                  break;
+              case (5):
+                  $expected += $this->metaFieldRuleRepository->getWorkingTimeForFriday($user);
+                  break;
+              case (6):
+                  $expected += $this->metaFieldRuleRepository->getWorkingTimeForSaturday($user);
+                  break;
+              case (7):
+                  $expected += $this->metaFieldRuleRepository->getWorkingTimeForSunday($user);
+                  break;
+            }
+        } else {
+            // otherwise use hours according approvalWorkdayHistory
+            switch ($i->format('N')) {
+              case (1):
+                  $expected += $workdayHistory->getMonday();
+                  break;
+              case (2):
+                  $expected += $workdayHistory->getTuesday();
+                  break;
+              case (3):
+                  $expected += $workdayHistory->getWednesday();
+                  break;
+              case (4):
+                  $expected += $workdayHistory->getThursday();
+                  break;
+              case (5):
+                  $expected += $workdayHistory->getFriday();
+                  break;
+              case (6):
+                  $expected += $workdayHistory->getSaturday();
+                  break;
+              case (7):
+                  $expected += $workdayHistory->getSunday();
+                  break;
+            }
+        }       
 
         return $expected;
     }
