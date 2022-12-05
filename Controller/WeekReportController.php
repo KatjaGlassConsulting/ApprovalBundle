@@ -145,13 +145,6 @@ class WeekReportController extends AbstractController
             $expected_duration = $this->approvalRepository->calculateExpectedDurationByUserAndDate($firstUser, $start, $end);
         }
 
-        // BLUB
-        file_put_contents("C:/temp/blub.txt", "in WeekReportController" . "\n", FILE_APPEND);
-        $actual_duration = $this->reportRepository->getActualWorkingDurationStatistic($selectedUser,$start,$end);
-        file_put_contents("C:/temp/blub.txt", "actual_duration" . json_encode($actual_duration) . "\n", FILE_APPEND);
-        file_put_contents("C:/temp/blub.txt", "data" . json_encode($data) . "\n", FILE_APPEND);
-        file_put_contents("C:/temp/blub.txt", "daily stats" . json_encode(new DailyStatistic($start, $end, $selectedUser)) . "\n", FILE_APPEND);
-
         $userId = $request->query->get('user');
         $startWeek = $request->query->get('date');
 

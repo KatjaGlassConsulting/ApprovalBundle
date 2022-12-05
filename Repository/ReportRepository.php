@@ -103,9 +103,6 @@ class ReportRepository extends ServiceEntityRepository
 
     private function getActualWorkingDuration(\DateTime $begin, \DateTime $end, User $user) : ?int
     {
-        file_put_contents("C:/temp/blub.txt", "begin" . json_encode($begin) . "\n", FILE_APPEND);
-        file_put_contents("C:/temp/blub.txt", "end" . json_encode($end) . "\n", FILE_APPEND);
-
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb
             ->select('COALESCE(SUM(t.duration), 0) as duration')
