@@ -61,7 +61,7 @@ class AddWorkdayHistoryForm extends AbstractType
         }
 
         $builder->add('validTill', DatePickerType::class, [
-          'label' => 'label.validTill',
+          'label' => 'label.valid_till',
           'required' => true
         ]);
     }

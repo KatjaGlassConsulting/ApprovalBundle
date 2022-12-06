@@ -418,6 +418,21 @@
         <source>label.valid_till</source>
         <target>Gültig bis</target>
       </trans-unit>
+      <trans-unit id="label.approval_overtime_ny">
+        <source>label.approval_overtime_ny</source>
+        <target>Überstunden Darstellung</target>
+      </trans-unit>
+      <trans-unit id="description.workday_history">
+        <source>description.workday_history</source>
+        <target>
+          Arbeitstage Historie - wenn sich die Arbeitsstunden pro Tag ändern, kann hier die Historie eingetragen werden. 
+          Die eingetragenen Arbeitsstunden pro Tag gelten bis zum Tag "gültig bis".
+        </target>
+      </trans-unit>
+      <trans-unit id="label.addWorkdayHistory">
+        <source>label.addWorkdayHistory</source>
+        <target>Neue Arbeitstage Historie</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
