@@ -58,7 +58,7 @@ The ApprovalBundle needs some meta fields and settings to be done. The daily and
 The following meta-fields can be created ([Custom-Field-Plugin](https://www.kimai.org/store/custom-fields-bundle.html) is required for this):
 
 - Custom-Fields -> Users
-- The following fields must be from type = "duration", required field, visible, Role = "ROLE_SUPER_ADMIN", default for most should be default = "08:00", for Saturday/Sunday it should be "00:00" - the names could be anything, but the meaning is according those descriptions
+- The following fields must be from type = "duration", required field, visible, Role = "ROLE_SUPER_ADMIN", default for most should be default = "28800" (which is for 8 hours), for Saturday/Sunday it should be "0" - the names could be anything, but the meaning is according those descriptions
   - Daily working time Monday (daily_working_time_monday)
   - Daily working time Tuesday (daily_working_time_tuesday)
   - Daily working time Wednesday (daily_working_time_wednesday)
