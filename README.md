@@ -55,7 +55,7 @@ The plugin should appear now.
 
 The ApprovalBundle needs some meta fields and settings to be done. The daily and workly hours are displayed. For this the daily working time per day needs to be specified per user. Typically it might be 8h per week day. But there are very different situations, so someone might only work 4 days a week or less hours a day.
 
-The following meta-fields can to be created ([Custom-Field-Plugin](https://www.kimai.org/store/custom-fields-bundle.html) is required for this):
+The following meta-fields can be created ([Custom-Field-Plugin](https://www.kimai.org/store/custom-fields-bundle.html) is required for this):
 
 - Custom-Fields -> Users
 - The following fields must be from type = "duration", required field, visible, Role = "ROLE_SUPER_ADMIN", default for most should be default = "08:00", for Saturday/Sunday it should be "00:00" - the names could be anything, but the meaning is according those descriptions
@@ -67,11 +67,11 @@ The following meta-fields can to be created ([Custom-Field-Plugin](https://www.k
   - Daily working time Saturday (daily_working_time_saturday)
   - Daily working time Sunday (daily_working_time_sunday)
 
-It might be that the defaults are initially not automatically taken. Then you have to go through the System -> Users -> Select each user -> Settings -> "Save" (to store the defaults).
+These values must then be set for every active user. Go to System -> Users -> Select each user -> Settings -> edit daily working time if required -> "Save". To see that all users have that these values, you can checkout the overview ("system" -> "user" -> click the "exe" mark "daily working time" to see them all).
 
-**Remark LockdownBundle**
+### Remark LockdownBundle
 
-The lockdown bundle also comes along with some custom user fields. In case an empty value is not accepted for start of approval timeframe, please enter "0000-01-01 00:00:01". The same you can enter for the other two time-settings.
+The lockdown bundle also comes along with some custom user fields. An empty value is not accepted for start of approval timeframe, please enter "0000-01-01 00:00:01" for the three lockdockdown fields. The same you can enter for the other two time-settings. The ApprovalBundle will modify the "Lockdown period end" and the "Lockdown grace period".
 
 ### Team Setup
 
@@ -84,6 +84,18 @@ The final approval settings can be done via approval -> settings. Please enter t
 ### Role Settings
 
 There are two new roles available for the team approval. The `view_team_approval` ideally should be YES for all but the user. This allows up from the teamlead hierarchy to see the approvals of their team. The `view_all_approval` should either be YES for System-Admin only or for System-Admin and Admin, depending on your schema. 
+
+## Functionality of Lockdown:
+
+With the lockdown bundle the loockdown periods can be set per user and no longer per system option. For this it is possible that user 1 has a lockdown date as of 01.01.2022 whereas user 2 could have for example a lockdown date of 15.01.2022. Per user - a locktime frame can be defined by "Lockdown period start" and "Lockdown period end". Considering also the "Lockdown grace period" (how long after the locktime end it should still be possible to edit time entries) - this defines which time entries can be modified by the user. Please checkout the general lockdown period documentation [here](https://www.kimai.org/documentation/configurations.html#lockdown-period) for detailed information - the same principle is applied, but "per user".
+
+When a week is submitted for approval, then this or any prior week should be locked - no time modifications for that week should be possible. This timesheet lock must be available per user. The following graphic shows an example.
+
+![Example schema for lockdown](./_documentation/ApprovalLockdown.png)
+
+When "User A" has submitted weeks 1-3 for approval, then this user can submit week 4 next and can not modify any times including week 3 or prior. "User B" is a bit slower with week submission - only submitted week 1 and 2 - and has as current lock date the last day of week 2. For this "User B" is able to create/modify/delete time sheets in week 3 and 4.
+
+To have this functionality available, the ApprovalBundle changes the "Lockdown period end" and "Lockdown grace period". Typically both values will be set to the last day/second of the approval end date. In case this date is in the future (for example when submitting weeks which are upcoming) - then the end grace is the current day to prohibit any editing for the future.
 
 ## APIs
 
