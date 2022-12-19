@@ -229,6 +229,10 @@
         <source>api.wrongUser</source>
         <target>Benutzer existiert nicht</target>
       </trans-unit>
+      <trans-unit id="api.noOvertimeSetting">
+        <source>api.noOvertimeSetting</source>
+        <target>Überstunden sind in den Settings deaktiviert</target>
+      </trans-unit>
       <trans-unit id="api.alreadyExists">
         <source>api.alreadyExists</source>
         <target>Freigabe existiert bereits</target>

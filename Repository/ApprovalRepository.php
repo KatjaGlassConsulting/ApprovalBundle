@@ -130,10 +130,23 @@ class ApprovalRepository extends ServiceEntityRepository
 
     public function getExpectedActualDurations(User $user, \DateTime $startDate, \DateTime $endDate): ?array
     {
+        $expectedDuration = $this->calculateExpectedDurationByUserAndDate($user, $startDate, $endDate);
+        $actualDuration = $this->timesheetRepository->getActualDuration($user, $startDate, $endDate);
+        $overtime = $actualDuration - $expectedDuration;
+
+        $prefix = $overtime < 0 ? "-" : "";
+        $mins = abs($overtime) / 60; 
+        $hours = floor($mins / 60);
+        $mins = $mins - ($hours * 60);
+        $preZero = $mins < 9 ? "0" : "";
+        $overtimeFormatted = $prefix . $hours . ":" . $preZero . $mins;        
         $result =
         [
-            'expectedDuration' => $this->calculateExpectedDurationByUserAndDate($user, $startDate, $endDate),
-            'actualDuration' => $this->timesheetRepository->getActualDuration($user, $startDate, $endDate)
+            'expectedDuration' => $expectedDuration,
+            'actualDuration' => $actualDuration,
+            'overtime' => $overtime,
+            'overtimeFormatted' => $overtimeFormatted,
+            'endDay' => $endDate->format('Y-m-d')
         ];
 
         return $result;

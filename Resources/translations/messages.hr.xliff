@@ -225,6 +225,10 @@
         <source>api.wrongUser</source>
         <target>Korisnik ne postoji</target>
       </trans-unit>
+      <trans-unit id="api.noOvertimeSetting">
+        <source>api.noOvertimeSetting</source>
+        <target>Prekovremeni rad je onemogućen u postavkama</target>
+      </trans-unit>
       <trans-unit id="api.alreadyExists">
         <source>api.alreadyExists</source>
         <target>Odobrenje već postoji</target>

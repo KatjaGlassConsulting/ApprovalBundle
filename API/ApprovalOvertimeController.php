@@ -104,7 +104,12 @@ final class ApprovalOvertimeController extends AbstractController
         $seletedDate = new DateTime($request->query->get('date'));
 
         if (!$this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)) {
-            return $this->error400($this->translator->trans('api.noOvertimeSetting'));
+            return $this->viewHandler->handle(
+                new View(
+                    $this->translator->trans('api.noOvertimeSetting'),
+                    200
+                )
+            );
         }
 
         $currentUser = $this->userRepository->find($this->getUser()->getId());

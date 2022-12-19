@@ -28,9 +28,8 @@ class TimesheetRepository
         $this->timesheetRepository = $timesheetRepository;
     }
 
-    public function getActualDuration(User $user, DateTime $begin, DateTime $end): string
+    public function getActualDuration(User $user, DateTime $begin, DateTime $end): int
     {
-        return $this->timesheetRepository->getStatistic($this->timesheetRepository::STATS_QUERY_DURATION, $begin, $end, $user);
+        return intval($this->timesheetRepository->getStatistic($this->timesheetRepository::STATS_QUERY_DURATION, $begin, $end, $user));
     }
-
 }
