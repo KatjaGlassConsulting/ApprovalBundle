@@ -139,10 +139,10 @@ class WeekReportController extends AbstractController
         if ($approvals) {
             $approvalHistory = $this->approvalHistoryRepository->findLastStatus($approvals->getId());
             $status = $approvalHistory->getStatus()->getName();
-            $expected_duration = $approvals->getExpectedDuration();
+            $expectedDuration = $approvals->getExpectedDuration();
         } else {
             $status = '';
-            $expected_duration = $this->approvalRepository->calculateExpectedDurationByUserAndDate($firstUser, $start, $end);
+            $expectedDuration = $this->approvalRepository->calculateExpectedDurationByUserAndDate($firstUser, $start, $end);
         }
 
         $userId = $request->query->get('user');
@@ -152,6 +152,17 @@ class WeekReportController extends AbstractController
 
         $selectedUserSundayIssue = $selectedUser->isFirstDayOfWeekSunday();
         $currentUserSundayIssue = $this->getUser()->isFirstDayOfWeekSunday();
+
+        $yearlyTimeExpected = null;
+        $yearlyTimeActual = null;
+        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)){
+            // use actual year display, in case of "starting", use first approval date
+            $overtimeDuration = $this->approvalRepository->getExpectedActualDurationsForYear($selectedUser, $end); 
+            if ($overtimeDuration !== null){
+                $yearlyTimeExpected = $overtimeDuration['expectedDuration'];
+                $yearlyTimeActual = $overtimeDuration['actualDuration'];
+            }
+        }
 
         return $this->render('@Approval/report_by_user.html.twig', [
             'approve' => $this->parseToHistoryView($userId, $startWeek),
@@ -176,7 +187,9 @@ class WeekReportController extends AbstractController
             'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
             'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
-            'expected_duration' => $expected_duration,
+            'expectedDuration' => $expectedDuration,
+            'yearExpectedDuration' => $yearlyTimeExpected,
+            'yearActualDuration' => $yearlyTimeActual,
             'settingsWarning' => !$this->approvalSettings->isFullyConfigured(),
             'isSuperAdmin' => $this->getUser()->isSuperAdmin(),
             'warningNoUsers' => empty($users),

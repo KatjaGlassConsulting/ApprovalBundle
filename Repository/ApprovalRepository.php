@@ -24,6 +24,7 @@ use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalWorkdayHistoryRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ReportRepository;
+use KimaiPlugin\ApprovalBundle\Repository\TimesheetRepository;
 
 /**
  * @method Approval|null find($id, $lockMode = null, $lockVersion = null)
@@ -63,11 +64,17 @@ class ApprovalRepository extends ServiceEntityRepository
      */
     private $reportRepository;
 
+    /**
+     * @var TimesheetRepository
+     */
+    private $timesheetRepository;
+
     public function __construct(
         ManagerRegistry $registry,
         ApprovalSettingsInterface $metaFieldRuleRepository,
         ApprovalWorkdayHistoryRepository $approvalWorkdayHistoryRepository,
         ReportRepository $reportRepository,
+        TimesheetRepository $timesheetRepository,
         SettingsTool $settingsTool,
         Formatting $formatting,
         UrlGeneratorInterface $urlGenerator
@@ -76,6 +83,7 @@ class ApprovalRepository extends ServiceEntityRepository
         $this->metaFieldRuleRepository = $metaFieldRuleRepository;
         $this->approvalWorkdayHistoryRepository = $approvalWorkdayHistoryRepository;
         $this->reportRepository = $reportRepository;
+        $this->timesheetRepository = $timesheetRepository;
         $this->settingsTool = $settingsTool;
         $this->formatting = $formatting;
         $this->urlGenerator = $urlGenerator;
@@ -102,6 +110,33 @@ class ApprovalRepository extends ServiceEntityRepository
         }
 
         return $approval;
+    }
+
+    public function getExpectedActualDurationsForYear(User $user, \DateTime $endDate): ?array
+    {
+        $end = clone $endDate;
+        date_time_set($end,23,59,59);
+        $firstApprovalDate = $this->findFirstApprovalDateForUser($user);
+        if ($firstApprovalDate !== null){
+            $yearOfEnd = $endDate->format('Y');            
+            $firstOfYear = new \DateTime("$yearOfEnd-01-01");
+            $startDurationYear = max($firstApprovalDate, $firstOfYear);
+            $overtimeDuration = $this->getExpectedActualDurations($user, $startDurationYear, $end); 
+            return $overtimeDuration;
+        }
+
+        return null;
+    }
+
+    public function getExpectedActualDurations(User $user, \DateTime $startDate, \DateTime $endDate): ?array
+    {
+        $result =
+        [
+            'expectedDuration' => $this->calculateExpectedDurationByUserAndDate($user, $startDate, $endDate),
+            'actualDuration' => $this->timesheetRepository->getActualDuration($user, $startDate, $endDate)
+        ];
+
+        return $result;
     }
 
     public function calculateExpectedDurationByUserAndDate($user, $startDate, $endDate): int
@@ -188,6 +223,21 @@ class ApprovalRepository extends ServiceEntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function findFirstApprovalDateForUser(User $user): ?\DateTime
+    {
+        $result = $this->getEntityManager()->createQueryBuilder()
+            ->select('ap.startDate as startDate')
+            ->from(Approval::class, 'ap')
+            ->andWhere('ap.user = :user')
+            ->setParameter('user', $user)
+            ->orderBy('ap.startDate')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $result["startDate"];
     }
 
     public function findAllWeek(?array $users): ?array

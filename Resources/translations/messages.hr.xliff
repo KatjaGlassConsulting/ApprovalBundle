@@ -426,6 +426,10 @@
         <source>label.addWorkdayHistory</source>
         <target>Nova povijest radnih dana</target>
       </trans-unit>
+      <trans-unit id="label.yearly_overtime">
+        <source>label.yearly_overtime</source>
+        <target>Prekovremeni rad (Godina)</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

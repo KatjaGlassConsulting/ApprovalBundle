@@ -433,6 +433,10 @@
         <source>label.addWorkdayHistory</source>
         <target>New daily worktime history</target>
       </trans-unit>
+      <trans-unit id="label.yearly_overtime">
+        <source>label.yearly_overtime</source>
+        <target>Overtime (Year)</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

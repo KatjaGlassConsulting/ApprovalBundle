@@ -68,6 +68,14 @@ final class ApprovalNextWeekApiController extends AbstractController
      *     response=200,
      *     description="Status of selected week"
      * )
+     * 
+     * @SWG\Parameter(
+     *      name="user",
+     *      in="query",
+     *      type="integer",
+     *      description="User ID to get information for",
+     *      required=false,
+     * )
      *
      * @Rest\Get(path="/next-week")
      * @ApiSecurity(name="apiUser")
