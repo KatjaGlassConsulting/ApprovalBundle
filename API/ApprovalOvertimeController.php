@@ -129,13 +129,6 @@ final class ApprovalOvertimeController extends AbstractController
 
         $overtime = $this->approvalRepository->getExpectedActualDurationsForYear($currentUser, $seletedDate);
 
-        file_put_contents("C:/temp/blub.txt", "overtime " . json_encode($overtime) . "\n", FILE_APPEND);
-        file_put_contents("C:/temp/blub.txt", "currentUser " . json_encode($currentUser->getId()) . "\n", FILE_APPEND);
-        file_put_contents("C:/temp/blub.txt", "seletedDate " . json_encode($seletedDate) . "\n", FILE_APPEND);
-        file_put_contents("C:/temp/blub.txt", "query " . json_encode($request->query) . "\n", FILE_APPEND);
-        file_put_contents("C:/temp/blub.txt", "selectedUserId " . json_encode($selectedUserId) . "\n", FILE_APPEND);
-        
-
         if ($overtime) {
             return $this->viewHandler->handle(
                 new View(
@@ -144,22 +137,6 @@ final class ApprovalOvertimeController extends AbstractController
                 )
             );
         }
-
-        /*
-        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)){
-          // use actual year display, in case of "starting", use first approval date
-          $firstApprovalDate = $this->approvalRepository->findFirstApprovalDateForUser($selectedUser);
-          if ($firstApprovalDate !== null){
-              $yearOfEnd = $end->format('Y');
-              $firstOfYear = new \DateTime("$yearOfEnd-01-01");
-              $startDurationYear = max($firstApprovalDate, $firstOfYear);
-              $overtimeDuration = $this->approvalRepository->getExpectedActualDurations($selectedUser, $startDurationYear, $end); 
-              $yearlyTimeExpected = $overtimeDuration['expectedDuration'];
-              $yearlyTimeActual = $overtimeDuration['actualDuration'];          
-          }
-      }
-      */
-
         return $this->error404($this->translator->trans('api.noData'));
     }
 
