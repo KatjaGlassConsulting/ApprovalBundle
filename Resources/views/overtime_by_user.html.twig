@@ -1,0 +1,41 @@
+{% extends '@Approval/layout.html.twig' %}
+{% import "macros/widgets.html.twig" as widgets %}
+
+{% block report_title %}{{ report_title|trans({}, 'ApprovalBundle') }}{% endblock %}
+
+
+{% block report %}
+    {% block nav_row %}
+        <div class="nav_row" style="float:left;width: 100%;">
+            {% block nav_form %}
+                {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
+                {{ form_row(form.user, {'label': false}) }}
+                {{ form_end(form) }}
+            {% endblock %}
+        </div>
+    {% endblock %}
+
+    {% block table %}
+        <div id="history">
+            {{ userId }}
+            ---
+            {{ user.name }}
+        </div>
+    {% endblock %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+      document.addEventListener("kimai.initialized", function () {
+          {% if form.user is defined %}
+        jQuery('#{{ form.user.vars.id }}').on("change", function (ev) {
+          jQuery(this).closest("form").submit();
+        });
+          {% endif %}
+        jQuery('#{{ form.date.vars.id }}').on("change", function (ev) {
+          jQuery(this).closest("form").submit();
+        });
+      });
+    </script>
+{% endblock %}

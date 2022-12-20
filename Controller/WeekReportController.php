@@ -261,7 +261,7 @@ class WeekReportController extends AbstractController
     public function settingsWorkdayHistory(Request $request): Response
     {
         $workdayHistory = $this->approvalWorkdayHistoryRepository->findAll();
-        
+         
         return $this->render('@Approval/settings_workday_history.html.twig', [
             'current_tab' => 'settings_workday_history',
             'workdayHistory' => $workdayHistory,
