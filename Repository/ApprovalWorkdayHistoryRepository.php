@@ -68,7 +68,7 @@ class ApprovalWorkdayHistoryRepository extends ServiceEntityRepository
             ->select('aph')
             ->from(ApprovalWorkdayHistory::class, 'aph')
             ->andWhere('aph.user = :user')
-            ->andWhere('aph.validTill > :date')
+            ->andWhere('aph.validTill >= :date')
             ->setParameter('user', $user)
             ->setParameter('date', $day)
             ->addOrderBy('aph.validTill', 'ASC')

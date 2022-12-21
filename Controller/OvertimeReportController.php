@@ -9,38 +9,16 @@
 
 namespace KimaiPlugin\ApprovalBundle\Controller;
 
-use Doctrine\ORM\Exception\ORMException;
 use App\Controller\AbstractController;
-use App\Entity\Customer;
 use App\Entity\Team;
-use App\Entity\Timesheet;
 use App\Entity\User;
-use App\Form\Model\DateRange;
-use App\Model\DailyStatistic;
 use App\Reporting\WeekByUser;
-use App\Repository\Query\BaseQuery;
-use App\Repository\Query\TimesheetQuery;
-use App\Repository\TimesheetRepository;
 use App\Repository\UserRepository;
-use DateTime;
 use Exception;
-use KimaiPlugin\ApprovalBundle\Entity\Approval;
-use KimaiPlugin\ApprovalBundle\Entity\ApprovalWorkdayHistory;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
-use KimaiPlugin\ApprovalBundle\Enumeration\FormEnum;
-use KimaiPlugin\ApprovalBundle\Form\SettingsForm;
-use KimaiPlugin\ApprovalBundle\Form\WeekByUserForm;
-use KimaiPlugin\ApprovalBundle\Form\AddWorkdayHistoryForm;
 use KimaiPlugin\ApprovalBundle\Form\OvertimeByUserForm;
-use KimaiPlugin\ApprovalBundle\Repository\ApprovalHistoryRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
-use KimaiPlugin\ApprovalBundle\Repository\ApprovalWorkdayHistoryRepository;
-use KimaiPlugin\ApprovalBundle\Repository\ReportRepository;
-use KimaiPlugin\ApprovalBundle\Settings\ApprovalSettingsInterface;
-use KimaiPlugin\ApprovalBundle\Toolbox\BreakTimeCheckToolGER;
-use KimaiPlugin\ApprovalBundle\Toolbox\Formatting;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -52,37 +30,16 @@ class OvertimeReportController extends AbstractController
 {
     private $settingsTool;
     private $approvalRepository;
-    private $approvalHistoryRepository;
-    private $approvalWorkdayHistoryRepository;
     private $userRepository;
-    private $formatting;
-    private $timesheetRepository;
-    private $breakTimeCheckToolGER;
-    private $reportRepository;
-    private $approvalSettings;
 
     public function __construct(
         SettingsTool $settingsTool,
         UserRepository $userRepository,
-        ApprovalHistoryRepository $approvalHistoryRepository,
         ApprovalRepository $approvalRepository,
-        ApprovalWorkdayHistoryRepository $approvalWorkdayHistoryRepository,
-        Formatting $formatting,
-        TimesheetRepository $timesheetRepository,
-        BreakTimeCheckToolGER $breakTimeCheckToolGER,
-        ReportRepository $reportRepository,
-        ApprovalSettingsInterface $approvalSettings
     ) {
         $this->settingsTool = $settingsTool;
         $this->userRepository = $userRepository;
-        $this->approvalHistoryRepository = $approvalHistoryRepository;
         $this->approvalRepository = $approvalRepository;
-        $this->approvalWorkdayHistoryRepository = $approvalWorkdayHistoryRepository;
-        $this->formatting = $formatting;
-        $this->timesheetRepository = $timesheetRepository;
-        $this->breakTimeCheckToolGER = $breakTimeCheckToolGER;
-        $this->reportRepository = $reportRepository;
-        $this->approvalSettings = $approvalSettings;
     }
 
     private function canManageTeam(): bool

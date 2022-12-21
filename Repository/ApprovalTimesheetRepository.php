@@ -13,7 +13,7 @@ use App\Repository\TimesheetRepository as CoreTimesheetRepository;
 use App\Entity\User;
 use DateTime;
 
-class TimesheetRepository
+class ApprovalTimesheetRepository
 {
     /**
      * @var CoreTimesheetRepository

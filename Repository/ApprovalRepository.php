@@ -24,7 +24,7 @@ use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalWorkdayHistoryRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ReportRepository;
-use KimaiPlugin\ApprovalBundle\Repository\TimesheetRepository;
+use KimaiPlugin\ApprovalBundle\Repository\ApprovalTimesheetRepository;
 
 /**
  * @method Approval|null find($id, $lockMode = null, $lockVersion = null)
@@ -65,16 +65,16 @@ class ApprovalRepository extends ServiceEntityRepository
     private $reportRepository;
 
     /**
-     * @var TimesheetRepository
+     * @var ApprovalTimesheetRepository
      */
-    private $timesheetRepository;
+    private $approvalTimesheetRepository;
 
     public function __construct(
         ManagerRegistry $registry,
         ApprovalSettingsInterface $metaFieldRuleRepository,
         ApprovalWorkdayHistoryRepository $approvalWorkdayHistoryRepository,
         ReportRepository $reportRepository,
-        TimesheetRepository $timesheetRepository,
+        ApprovalTimesheetRepository $approvalTimesheetRepository,
         SettingsTool $settingsTool,
         Formatting $formatting,
         UrlGeneratorInterface $urlGenerator
@@ -83,7 +83,7 @@ class ApprovalRepository extends ServiceEntityRepository
         $this->metaFieldRuleRepository = $metaFieldRuleRepository;
         $this->approvalWorkdayHistoryRepository = $approvalWorkdayHistoryRepository;
         $this->reportRepository = $reportRepository;
-        $this->timesheetRepository = $timesheetRepository;
+        $this->approvalTimesheetRepository = $approvalTimesheetRepository;
         $this->settingsTool = $settingsTool;
         $this->formatting = $formatting;
         $this->urlGenerator = $urlGenerator;
@@ -131,15 +131,10 @@ class ApprovalRepository extends ServiceEntityRepository
     public function getExpectedActualDurations(User $user, \DateTime $startDate, \DateTime $endDate): ?array
     {
         $expectedDuration = $this->calculateExpectedDurationByUserAndDate($user, $startDate, $endDate);
-        $actualDuration = $this->timesheetRepository->getActualDuration($user, $startDate, $endDate);
+        $actualDuration = $this->approvalTimesheetRepository->getActualDuration($user, $startDate, $endDate);
         $overtime = $actualDuration - $expectedDuration;
 
-        $prefix = $overtime < 0 ? "-" : "";
-        $mins = abs($overtime) / 60; 
-        $hours = floor($mins / 60);
-        $mins = $mins - ($hours * 60);
-        $preZero = $mins < 9 ? "0" : "";
-        $overtimeFormatted = $prefix . $hours . ":" . $preZero . $mins;        
+        $overtimeFormatted = $this->formatting->formatDuration($overtime);
         $result =
         [
             'expectedDuration' => $expectedDuration,
@@ -155,7 +150,7 @@ class ApprovalRepository extends ServiceEntityRepository
     public function calculateExpectedDurationByUserAndDate($user, $startDate, $endDate): int
     {
         $expected = 0;
-        for ($i = clone $startDate; $i <= clone $endDate; $i->modify('+1 day')) {
+        for ($i = clone $startDate; $i <= $endDate; $i->modify('+1 day')) {
             $expected = $this->getExpectTimeForDate($i, $user, $expected);
         }
 
