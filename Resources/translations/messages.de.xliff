@@ -24,6 +24,10 @@
         <source>menu.settings_workday_history</source>
         <target>Einstellungen Arbeitstage</target>
       </trans-unit>
+      <trans-unit id="menu.report_overtime">
+        <source>menu.report_overtime</source>
+        <target>Überstunden</target>
+      </trans-unit>
       <trans-unit id="table.history">
         <source>table.history</source>
         <target>Historie für</target>

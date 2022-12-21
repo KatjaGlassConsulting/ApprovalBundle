@@ -15,6 +15,7 @@ use App\Entity\User;
 use App\Reporting\WeekByUser;
 use App\Repository\UserRepository;
 use Exception;
+use Doctrine\Common\Collections\Criteria;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Form\OvertimeByUserForm;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
@@ -75,16 +76,13 @@ class OvertimeReportController extends AbstractController
         }
 
         $selectedUser = $values->getUser();
-        $userId = $request->query->get('user');
-
-        $weeklyEntries = $this->approvalRepository->findBy(['user' => $selectedUser]);
-        file_put_contents("C:/temp/blub.txt", "blub " . json_encode($weeklyEntries) . "\n", FILE_APPEND);
+        $weeklyEntries = $this->approvalRepository->findBy(['user' => $selectedUser], ['startDate' => Criteria::DESC]);
 
         return $this->render('@Approval/overtime_by_user.html.twig', [
             'current_tab' => 'overtime_by_user',
             'form' => $form->createView(),
             'user' => $selectedUser,    
-            'userId' => $userId,
+            'weeklyEntries' => $weeklyEntries,
             'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
             'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),

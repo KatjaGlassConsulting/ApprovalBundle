@@ -12,14 +12,37 @@
                 {{ form_row(form.user, {'label': false}) }}
                 {{ form_end(form) }}
             {% endblock %}
+            <br/>
         </div>
     {% endblock %}
 
     {% block table %}
         <div id="history">
-            {{ userId }}
-            ---
-            {{ user.name }}
+
+            <table class="table table-bordered dataTable">
+            <thead>
+                <tr>
+                    <th class="text-center">{{ 'Week Start'|trans}}</th>
+                    <th class="text-center">{{ 'Week Stop'|trans}}</th>
+                    <th class="text-center">{{ 'Expected Duruation'|trans}}</th>
+                    <th class="text-center">{{ 'Actual Duration'|trans}}</th>
+                    <th class="text-center">{{ 'Overtime'|trans}}</th>
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in weeklyEntries %}
+                    <tr>
+                        {% set overtime = entry.getActualDuration - entry.getExpectedDuration %}
+                        <td class="text-center">{{ entry.getStartDate | date('Y-m-d')}}</td>
+                        <td class="text-center">{{ entry.getEndDate | date('Y-m-d')}}</td>
+                        <td class="text-center">{{ entry.getExpectedDuration | formatHours }}</td>
+                        <td class="text-center">{{ entry.getActualDuration | formatHours }}</td>
+                        <td class="text-center">{{ overtime | duration }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            </table>
         </div>
     {% endblock %}
 {% endblock %}

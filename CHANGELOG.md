@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.9.5 to 0.9.6
+
+- new overtime handling
+  - new option under settings "Display Overtime"
+  - if active - new tab "Overtime" to display the approval weeks including expected and actual hours
+  - if active - new tab "Setting Workdays" to allow different daily working hours on specific shift dates, for example when an employee works 40 hours and beginning with a specific time frame 20 hours
+  - new API endpoint "/overtime_year" to get overtime for a date starting with the beginning of the year
+- fix for Kimai 1.30 "mixed" caused an issue
+
 ## 0.9.4 to 0.9.5
 
 - fix access bug caused by using user-display-name on weekly report selection
