@@ -33,6 +33,7 @@ use KimaiPlugin\ApprovalBundle\Form\WeekByUserForm;
 use KimaiPlugin\ApprovalBundle\Form\AddWorkdayHistoryForm;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalHistoryRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
+use KimaiPlugin\ApprovalBundle\Repository\ApprovalTimesheetRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalWorkdayHistoryRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ReportRepository;
 use KimaiPlugin\ApprovalBundle\Settings\ApprovalSettingsInterface;
@@ -56,6 +57,7 @@ class WeekReportController extends AbstractController
     private $userRepository;
     private $formatting;
     private $timesheetRepository;
+    private $approvalTimesheetRepository;
     private $breakTimeCheckToolGER;
     private $reportRepository;
     private $approvalSettings;
@@ -68,6 +70,7 @@ class WeekReportController extends AbstractController
         ApprovalWorkdayHistoryRepository $approvalWorkdayHistoryRepository,
         Formatting $formatting,
         TimesheetRepository $timesheetRepository,
+        ApprovalTimesheetRepository $approvalTimesheetRepository,
         BreakTimeCheckToolGER $breakTimeCheckToolGER,
         ReportRepository $reportRepository,
         ApprovalSettingsInterface $approvalSettings
@@ -79,6 +82,7 @@ class WeekReportController extends AbstractController
         $this->approvalWorkdayHistoryRepository = $approvalWorkdayHistoryRepository;
         $this->formatting = $formatting;
         $this->timesheetRepository = $timesheetRepository;
+        $this->approvalTimesheetRepository = $approvalTimesheetRepository;
         $this->breakTimeCheckToolGER = $breakTimeCheckToolGER;
         $this->reportRepository = $reportRepository;
         $this->approvalSettings = $approvalSettings;
@@ -304,7 +308,9 @@ class WeekReportController extends AbstractController
                 $workdayHistory->setSunday($form->getData()['sunday']);
                 $workdayHistory->setValidTill($form->getData()['validTill']);
 
-                $this->approvalWorkdayHistoryRepository->save($workdayHistory, true);              
+                $this->approvalWorkdayHistoryRepository->save($workdayHistory, true);  
+                $this->approvalRepository->updateExpectedActualDurationForUser($form->getData()['user']);
+                $this->approvalTimesheetRepository->updateDaysOff($form->getData()['user']);
                 $this->flashSuccess('action.update.success');
 
                 return $this->redirectToRoute('approval_bundle_settings_workday');

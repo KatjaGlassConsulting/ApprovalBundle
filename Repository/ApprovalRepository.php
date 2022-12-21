@@ -11,6 +11,7 @@ namespace KimaiPlugin\ApprovalBundle\Repository;
 
 use App\Entity\Timesheet;
 use App\Entity\User;
+use App\Repository\TimesheetRepository;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -24,7 +25,6 @@ use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalWorkdayHistoryRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ReportRepository;
-use KimaiPlugin\ApprovalBundle\Repository\ApprovalTimesheetRepository;
 
 /**
  * @method Approval|null find($id, $lockMode = null, $lockVersion = null)
@@ -65,16 +65,16 @@ class ApprovalRepository extends ServiceEntityRepository
     private $reportRepository;
 
     /**
-     * @var ApprovalTimesheetRepository
+     * @var TimesheetRepository
      */
-    private $approvalTimesheetRepository;
+    private $timesheetRepository;
 
     public function __construct(
         ManagerRegistry $registry,
         ApprovalSettingsInterface $metaFieldRuleRepository,
         ApprovalWorkdayHistoryRepository $approvalWorkdayHistoryRepository,
         ReportRepository $reportRepository,
-        ApprovalTimesheetRepository $approvalTimesheetRepository,
+        TimesheetRepository $timesheetRepository,
         SettingsTool $settingsTool,
         Formatting $formatting,
         UrlGeneratorInterface $urlGenerator
@@ -83,7 +83,7 @@ class ApprovalRepository extends ServiceEntityRepository
         $this->metaFieldRuleRepository = $metaFieldRuleRepository;
         $this->approvalWorkdayHistoryRepository = $approvalWorkdayHistoryRepository;
         $this->reportRepository = $reportRepository;
-        $this->approvalTimesheetRepository = $approvalTimesheetRepository;
+        $this->timesheetRepository = $timesheetRepository;
         $this->settingsTool = $settingsTool;
         $this->formatting = $formatting;
         $this->urlGenerator = $urlGenerator;
@@ -131,7 +131,7 @@ class ApprovalRepository extends ServiceEntityRepository
     public function getExpectedActualDurations(User $user, \DateTime $startDate, \DateTime $endDate): ?array
     {
         $expectedDuration = $this->calculateExpectedDurationByUserAndDate($user, $startDate, $endDate);
-        $actualDuration = $this->approvalTimesheetRepository->getActualDuration($user, $startDate, $endDate);
+        $actualDuration = intval($this->timesheetRepository->getStatistic($this->timesheetRepository::STATS_QUERY_DURATION, $startDate, $endDate, $user));
         $overtime = $actualDuration - $expectedDuration;
 
         $overtimeFormatted = $this->formatting->formatDuration($overtime);
@@ -157,7 +157,7 @@ class ApprovalRepository extends ServiceEntityRepository
         return $expected;
     }
 
-    private function getExpectTimeForDate(DateTime $i, User $user, $expected)
+    public function getExpectTimeForDate(DateTime $i, User $user, $expected)
     {
         $workdayHistory = $this->approvalWorkdayHistoryRepository->findByUserAndDateWorkdayHistory($user, $i);
         
@@ -761,5 +761,28 @@ class ApprovalRepository extends ServiceEntityRepository
         $prevWeekDay = end($allRows)['startDate'];
 
         return date('Y-m-d', strtotime($prevWeekDay . ' + 7 days'));
+    }
+
+    public function updateExpectedActualDurationForUser(User $user)
+    {
+        $approvals = $this->findBy(['user' => $user]);
+
+        foreach ($approvals as $approval) {
+            $start = $approval->getStartDate();
+            $end = $approval->getEndDate();
+            $expected = $approval->getExpectedDuration();
+            $actual = $approval->getActualDuration();
+            $stats = $this->getExpectedActualDurations($user, $start, $end);
+
+            if ($stats['actualDuration'] !== $actual){
+                $approval->setActualDuration($stats['actualDuration']);
+                $this->getEntityManager()->persist($approval);
+            }
+            if ($stats['expectedDuration'] !== $expected){
+                $approval->setExpectedDuration($stats['expectedDuration']);
+                $this->getEntityManager()->persist($approval);
+            }
+            $this->getEntityManager()->flush();
+        }
     }
 }
