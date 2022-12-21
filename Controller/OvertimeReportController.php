@@ -36,7 +36,7 @@ class OvertimeReportController extends AbstractController
     public function __construct(
         SettingsTool $settingsTool,
         UserRepository $userRepository,
-        ApprovalRepository $approvalRepository,
+        ApprovalRepository $approvalRepository
     ) {
         $this->settingsTool = $settingsTool;
         $this->userRepository = $userRepository;
