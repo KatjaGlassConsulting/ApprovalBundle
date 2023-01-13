@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.5 to 0.9.05
+
+- fix BreakTimeCheck on Null issue
+
 ## 0.9.4 to 0.9.5
 
 - fix access bug caused by using user-display-name on weekly report selection
