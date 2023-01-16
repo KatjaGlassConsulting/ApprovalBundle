@@ -218,9 +218,14 @@ class WeekReportController extends AbstractController
 
         $pastRows = [];
         $currentRows = [];
+        $futureRows = [];
         $currentWeek = (new DateTime('now'))->modify('next monday')->modify('-2 week')->format('Y-m-d');
+        $futureWeek = (new DateTime('now'))->modify('next monday')->modify('-1 week')->format('Y-m-d');
         foreach ($allRows as $row) {
-            if ($row['startDate'] >= $currentWeek) {
+            if ($row['startDate'] >= $futureWeek) {
+                $futureRows[] = $row;
+            }
+            else if ($row['startDate'] >= $currentWeek) {
                 $currentRows[] = $row;
             } else {
                 $pastRows[] = $row;
@@ -229,11 +234,13 @@ class WeekReportController extends AbstractController
         $pastRows = $this->approvalRepository->filterPastWeeksNotApproved($pastRows);
         $pastRows = $this->reduceRows($pastRows);
         $currentRows = $this->reduceRows($currentRows);
+        $futureRows = $this->reduceRows($futureRows);
 
         return $this->render('@Approval/to_approve.html.twig', [
             'current_tab' => 'to_approve',
             'past_rows' => $pastRows,
             'current_rows' => $currentRows,
+            'future_rows' => $futureRows,
             'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
             'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
@@ -352,6 +359,7 @@ class WeekReportController extends AbstractController
             $this->settingsTool->setConfiguration(ConfigEnum::META_FIELD_EMAIL_LINK_URL, $data[FormEnum::EMAIL_LINK_URL]);
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_WORKFLOW_START, $data[FormEnum::WORKFLOW_START]);
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY, $data[FormEnum::OVERTIME_NY]);
+            $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY, $data[FormEnum::BREAKCHECKS_NY]);
             $this->settingsTool->setConfiguration(ConfigEnum::CUSTOMER_FOR_FREE_DAYS, $this->collectCustomerForFreeDays($data));
 
             $this->flashSuccess('action.update.success');
@@ -438,7 +446,13 @@ class WeekReportController extends AbstractController
         $timesheetQuery->setOrder(BaseQuery::ORDER_ASC);
 
         $timesheets = $this->timesheetRepository->getTimesheetsForQuery($timesheetQuery);
-        $errors = $this->breakTimeCheckToolGER->checkBreakTime($timesheets);
+
+        if ($this->settingsTool->isInConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY) == false or
+            $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY)){
+            $errors = $this->breakTimeCheckToolGER->checkBreakTime($timesheets);
+        } else {
+            $errors = [];
+        }
 
         return [
             array_reduce(

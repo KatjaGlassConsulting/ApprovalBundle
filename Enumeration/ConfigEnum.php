@@ -24,4 +24,5 @@ abstract class ConfigEnum
     public const CUSTOMER_FOR_FREE_DAYS = 'approval.customer_for_free_days';
     public const APPROVAL_WORKFLOW_START = 'approval.workflow_start';
     public const APPROVAL_OVERTIME_NY = 'approval.overtime_ny';
+    public const APPROVAL_BREAKCHECKS_NY = 'approval.breakchecks_ny';
 }

@@ -138,6 +138,10 @@
         <source>table.current_week</source>
         <target>Current week</target>
       </trans-unit>
+      <trans-unit id="table.future_week">
+        <source>table.future_week</source>
+        <target>Upcoming weeks</target>
+      </trans-unit>
 
       <trans-unit id="table.approve_user">
         <source>table.approve_user</source>
@@ -433,6 +437,10 @@
       <trans-unit id="label.approval_overtime_ny">
         <source>label.approval_overtime_ny</source>
         <target>Display Overtime</target>
+      </trans-unit>
+      <trans-unit id="label.approval_breakchecks_ny">
+        <source>label.approval_breakchecks_ny</source>
+        <target>Calculate breaktime issues</target>
       </trans-unit>
       <trans-unit id="description.workday_history">
         <source>description.workday_history</source>

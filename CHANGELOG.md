@@ -4,6 +4,9 @@
 
 - enhance overtime display & API overtime overview
 - use display name for user selections
+- new setting "Calculate breaktime issues" to allow to disable the breaktime issue calculation and display (german law has different rules for breaks)
+- added security checks for overtime display
+- overview of weeks with approval has new category "future weeks", for this "current week" only displays the last finished week (previous Monday weeks)
 
 ## 0.9.5 to 0.9.6
 

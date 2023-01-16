@@ -24,4 +24,5 @@ abstract class FormEnum
     public const EMAIL_LINK_URL = 'email_link_url';
     public const WORKFLOW_START = 'workflow_start';
     public const OVERTIME_NY = 'approval_overtime_ny';
+    public const BREAKCHECKS_NY = 'approval_breakchecks_ny';
 }

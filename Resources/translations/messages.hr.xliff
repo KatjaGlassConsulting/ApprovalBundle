@@ -134,6 +134,10 @@
         <source>table.current_week</source>
         <target>Aktualni tjedan</target>
       </trans-unit>
+      <trans-unit id="table.future_week">
+        <source>table.future_week</source>
+        <target>Nadolazećih tjedana</target>
+      </trans-unit>
 
       <trans-unit id="table.approve_user">
         <source>table.approve_user</source>
@@ -425,6 +429,10 @@
       <trans-unit id="label.approval_overtime_ny">
         <source>label.approval_overtime_ny</source>
         <target>Prekovremena reprezentacija</target>
+      </trans-unit>      
+      <trans-unit id="label.approval_breakchecks_ny">
+        <source>label.approval_breakchecks_ny</source>
+        <target>Izračunajte probleme vremena pauze</target>
       </trans-unit>
       <trans-unit id="description.workday_history">
         <source>description.workday_history</source>

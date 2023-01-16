@@ -15,7 +15,7 @@ use App\Entity\User;
 use App\Reporting\WeekByUser;
 use App\Repository\UserRepository;
 use Exception;
-use Doctrine\Common\Collections\Criteria;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Form\OvertimeByUserForm;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
@@ -55,10 +55,15 @@ class OvertimeReportController extends AbstractController
 
     /** 
      * @Route(path="/overtime_by_user", name="overtime_bundle_report", methods={"GET","POST"})
+     * @Security("is_granted('view_team_approval') or is_granted('view_all_approval') ")
      * @throws Exception
      */
     public function overtimeByUser(Request $request): Response
     {
+        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY) == false){
+          return $this->redirectToRoute('approval_bundle_report');
+        }
+
         $users = $this->getUsers();
         $firstUser = empty($users) ? $this->getUser() : $users[0];
 

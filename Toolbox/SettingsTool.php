@@ -33,6 +33,19 @@ class SettingsTool
      * @param $key
      * @return mixed|string
      */
+    public function isInConfiguration($key)
+    {
+        if ($this->configurationRepository->findOneBy(['name' => $key]) == null){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * @param $key
+     * @return mixed|string
+     */
     public function getConfiguration($key)
     {
         if (!array_key_exists($key, $this->cache)) {
@@ -45,6 +58,8 @@ class SettingsTool
 
         return $this->cache[$key];
     }
+
+
 
     /**
      * @param $key

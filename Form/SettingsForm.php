@@ -129,10 +129,20 @@ class SettingsForm extends AbstractType
             'required' => false
         ]); 
 
-        $workflowDate = $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY);
         $builder->add(FormEnum::OVERTIME_NY, CheckboxType::class, [
           'label' => 'label.approval_overtime_ny',
           'data' => $this->formTool->isChecked(ConfigEnum::APPROVAL_OVERTIME_NY),
+          'required' => false
+        ]);
+
+        if ($this->settingsTool->isInConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY)) {
+            $breakchecks = $this->formTool->isChecked(ConfigEnum::APPROVAL_BREAKCHECKS_NY);
+        } else {
+            $breakchecks = true;            
+        }
+        $builder->add(FormEnum::BREAKCHECKS_NY, CheckboxType::class, [
+          'label' => 'label.approval_breakchecks_ny',
+          'data' => $breakchecks,
           'required' => false
         ]);
 
