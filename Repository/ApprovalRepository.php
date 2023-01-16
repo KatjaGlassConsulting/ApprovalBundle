@@ -263,7 +263,11 @@ class ApprovalRepository extends ServiceEntityRepository
         $parseToViewArray = $this->getUserApprovals([$user], $startDate);
         $result = $parseToViewArray ? $this->sort($parseToViewArray) : [];
         $newestPerUser = $this->getNewestPerUser($result);
-        return $this->addYearlyOvertimeToAllWeek($newestPerUser, $user);
+        $noUnsubmitted = array_filter($newestPerUser, 
+            function($val){ 
+                return $val['status'] !== 'not_submitted';
+            });
+        return $this->addYearlyOvertimeToAllWeek($noUnsubmitted, $user);
     }
 
     private function addYearlyOvertimeToAllWeek(?array $allWeekArray, User $user): ?array
