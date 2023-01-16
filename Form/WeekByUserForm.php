@@ -45,7 +45,7 @@ class WeekByUserForm extends AbstractType
             'multiple' => false,
             'choices' => $options['users'],
             'choice_value' => 'id',
-            'choice_label' => 'username',
+            'choice_label' => 'getDisplayName',
             'width' => false
         ]);
     }

@@ -3,6 +3,7 @@
 ## 0.9.6 to 0.9.7
 
 - enhance overtime display & API overtime overview
+- use display name for user selections
 
 ## 0.9.5 to 0.9.6
 
