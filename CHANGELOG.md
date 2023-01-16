@@ -8,6 +8,7 @@
   - if active - new tab "Setting Workdays" to allow different daily working hours on specific shift dates, for example when an employee works 40 hours and beginning with a specific time frame 20 hours
   - new API endpoint "/overtime_year" to get overtime for a date starting with the beginning of the year
 - fix for Kimai 1.30 "mixed" caused an issue
+- fix BreakTimeCheck on Null issue
 
 ## 0.9.4 to 0.9.5
 
