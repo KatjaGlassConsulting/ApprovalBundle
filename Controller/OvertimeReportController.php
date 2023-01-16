@@ -76,13 +76,13 @@ class OvertimeReportController extends AbstractController
         }
 
         $selectedUser = $values->getUser();
-        $weeklyEntries = $this->approvalRepository->findBy(['user' => $selectedUser], ['startDate' => Criteria::DESC]);
+        $weeklyEntries = $this->approvalRepository->findAllWeekForUser($selectedUser,null);
 
         return $this->render('@Approval/overtime_by_user.html.twig', [
             'current_tab' => 'overtime_by_user',
             'form' => $form->createView(),
             'user' => $selectedUser,    
-            'weeklyEntries' => $weeklyEntries,
+            'weeklyEntries' => array_reverse($weeklyEntries),
             'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
             'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),

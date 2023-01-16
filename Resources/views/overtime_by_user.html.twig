@@ -22,23 +22,26 @@
             <table class="table table-bordered dataTable">
             <thead>
                 <tr>
-                    <th class="text-center">{{ 'Week Start'|trans}}</th>
-                    <th class="text-center">{{ 'Week Stop'|trans}}</th>
-                    <th class="text-center">{{ 'Expected Duruation'|trans}}</th>
-                    <th class="text-center">{{ 'Actual Duration'|trans}}</th>
-                    <th class="text-center">{{ 'Overtime'|trans}}</th>
-                    <th class="text-center"></th>
+                    <th class="text-center">{{ 'header.begin'|trans}}</th>
+                    <th class="text-center">{{ 'header.end'|trans}}</th>
+                    <th class="text-center">{{ 'stats.duration_expected'|trans}}</th>
+                    <th class="text-center">{{ 'stats.duration_actual'|trans}}</th>
+                    <th class="text-center">{{ 'label.overtime'|trans}}</th>
+                    <th class="text-center">{{ 'label.yearly_overtime'|trans}}</th>
+                    <th class="text-center">{{ 'table.status'|trans}}</th>
                 </tr>
             </thead>
             <tbody>
                 {% for entry in weeklyEntries %}
                     <tr>
-                        {% set overtime = entry.getActualDuration - entry.getExpectedDuration %}
-                        <td class="text-center">{{ entry.getStartDate | date('Y-m-d')}}</td>
-                        <td class="text-center">{{ entry.getEndDate | date('Y-m-d')}}</td>
-                        <td class="text-center">{{ entry.getExpectedDuration | formatHours }}</td>
-                        <td class="text-center">{{ entry.getActualDuration | formatHours }}</td>
+                        {% set overtime = entry.actualDuration - entry.expectedDuration %}
+                        <td class="text-center">{{ entry.startDate }}</td>
+                        <td class="text-center">{{ entry.endDate }}</td>
+                        <td class="text-center">{{ entry.expectedDuration | formatHours }}</td>
+                        <td class="text-center">{{ entry.actualDuration | formatHours }}</td>
                         <td class="text-center">{{ overtime | duration }}</td>
+                        <td class="text-center">{{ entry.overtimeYearly | duration }}</td>
+                        <td class="text-center">{{ entry.status }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

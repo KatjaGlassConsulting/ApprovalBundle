@@ -262,7 +262,29 @@ class ApprovalRepository extends ServiceEntityRepository
     {
         $parseToViewArray = $this->getUserApprovals([$user], $startDate);
         $result = $parseToViewArray ? $this->sort($parseToViewArray) : [];
-        return $this->getNewestPerUser($result);
+        $newestPerUser = $this->getNewestPerUser($result);
+        return $this->addYearlyOvertimeToAllWeek($newestPerUser, $user);
+    }
+
+    private function addYearlyOvertimeToAllWeek(?array $allWeekArray, User $user): ?array
+    {
+        $sumOvertime = 0;
+        $currentYear = '0';
+        for($i=0; $i < count($allWeekArray); $i++)
+        {
+            $entryYear = substr($allWeekArray[$i]['endDate'],0,4);
+            if ($currentYear != $entryYear){
+                $endDate = new \DateTime($allWeekArray[$i]['endDate']);
+                $overtimeYearly = $this->getExpectedActualDurationsForYear($user, $endDate);
+                $sumOvertime = $overtimeYearly['overtime'];
+                $allWeekArray[$i]['overtimeYearly'] = $sumOvertime;                
+            }
+            else {
+                $sumOvertime = $sumOvertime + $allWeekArray[$i]['actualDuration'] - $allWeekArray[$i]['expectedDuration'];
+                $allWeekArray[$i]['overtimeYearly'] = $sumOvertime;
+            }
+        }
+        return $allWeekArray;
     }
 
     private function deleteHistoryFromArray(array $array): array

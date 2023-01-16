@@ -122,6 +122,10 @@
         <source>stats.duration_expected</source>
         <target>Erwartete Dauer</target>
       </trans-unit>
+      <trans-unit id="stats.duration_actual">
+        <source>stats.duration_actual</source>
+        <target>Erfasste Dauer</target>
+      </trans-unit>
       <trans-unit id="label.week">
         <source>label.week</source>
         <target>Woche</target>
@@ -444,6 +448,10 @@
       <trans-unit id="label.yearly_overtime">
         <source>label.yearly_overtime</source>
         <target>Überstunden (Jahr)</target>
+      </trans-unit>
+      <trans-unit id="label.overtime">
+        <source>label.overtime</source>
+        <target>Überstunden</target>
       </trans-unit>
     </body>
   </file>
