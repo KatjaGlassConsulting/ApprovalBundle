@@ -285,7 +285,7 @@ class WeekReportController extends AbstractController
         }
 
         $users = array_reduce($users, function ($current, $user) {
-            if ($user->isEnabled() && !$user->isSuperAdmin()) {
+            if ($user->isEnabled() /*&& !$user->isSuperAdmin()*/) {
                 $current[] = $user;
             }
 
