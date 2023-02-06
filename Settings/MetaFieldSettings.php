@@ -58,6 +58,10 @@ class MetaFieldSettings implements ApprovalSettingsInterface
             return 0;
         }
 
+        if ($user->getPreferenceValue($metaField->getName()) === null) {
+            return 0;
+        }
+
         return $user->getPreferenceValue($metaField->getName());
     }
 
