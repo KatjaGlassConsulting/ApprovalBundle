@@ -146,7 +146,7 @@ class WeekReportController extends AbstractController
             $expectedDuration = $approvals->getExpectedDuration();
         } else {
             $status = '';
-            $expectedDuration = $this->approvalRepository->calculateExpectedDurationByUserAndDate($firstUser, $start, $end);
+            $expectedDuration = $this->approvalRepository->calculateExpectedDurationByUserAndDate($selectedUser, $start, $end);
         }
 
         $userId = $request->query->get('user');
