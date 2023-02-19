@@ -17,13 +17,14 @@
     {% block history %}
         <p>{{ 'description.workday_history'|trans }}</p>
 
-        <div class="row">
-            <div class="col-md-12">
-                {{ tables.data_table_column_modal(tableName, columns) }}
-
-                {{ tables.datatable_header(tableName, columns, query, {'reload': 'kimai.leaveUpdate'}) }}
-            </div>
-        </div>
+        {% if tables is defined %}
+          <div class="row">
+              <div class="col-md-12">
+                  {{ tables.data_table_column_modal(tableName, columns) }}
+                  {{ tables.datatable_header(tableName, columns, query, {'reload': 'kimai.leaveUpdate'}) }}
+              </div>
+          </div>
+        {% endif %}
 
         <table class="table table-bordered dataTable">
             <thead>

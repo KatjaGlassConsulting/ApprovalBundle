@@ -1,4 +1,4 @@
-{% if not warningNoUsers %}
+{% if warningNoUsers is not defined or not warningNoUsers %}
 <ul class="nav nav-tabs">
     {% if showToApproveTab %}
         <li{% if current_tab == "to_approve" %} class="active"{% endif %}>

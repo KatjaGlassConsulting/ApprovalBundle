@@ -55,13 +55,15 @@
     <script type="text/javascript">
       document.addEventListener("kimai.initialized", function () {
           {% if form.user is defined %}
-        jQuery('#{{ form.user.vars.id }}').on("change", function (ev) {
-          jQuery(this).closest("form").submit();
-        });
+            jQuery('#{{ form.user.vars.id }}').on("change", function (ev) {
+              jQuery(this).closest("form").submit();
+            });
           {% endif %}
-        jQuery('#{{ form.date.vars.id }}').on("change", function (ev) {
-          jQuery(this).closest("form").submit();
-        });
+          {% if form.date is defined %}
+            jQuery('#{{ form.date.vars.id }}').on("change", function (ev) {
+              jQuery(this).closest("form").submit();
+            });
+          {% endif %}
       });
     </script>
 {% endblock %}
