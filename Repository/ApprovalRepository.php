@@ -245,6 +245,10 @@ class ApprovalRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
 
+        if ($result === null){
+            return null;
+        }
+
         return $result["startDate"];
     }
 
@@ -809,7 +813,7 @@ class ApprovalRepository extends ServiceEntityRepository
     {
         $approvals = $this->findBy(['user' => $user]);
 
-        foreach ($approvals as $approval) {
+        foreach ($approvals as $approval) { 
             $start = $approval->getStartDate();
             $end = $approval->getEndDate();
             $expected = $approval->getExpectedDuration();

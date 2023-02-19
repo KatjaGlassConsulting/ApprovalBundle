@@ -81,7 +81,13 @@ Next the teams needs to be setup. The teams define which person approves the tim
 
 ### Approval Settings
 
-The final approval settings can be done via approval -> settings. Please enter the names of the daily_working_time_(day of the week) in the appropriate fields. A customer for off-days can also be set - then break times are not considered for those. The E-Mail link will be used as prefix to have the mails containing the correct links for approval views. You might want to enter something like `https://kimai.example.de/`. Finally the approval week start date defines a date where the approval workflow should start. All prior unapproved weeks are ignored.
+The final approval settings can be done via approval -> settings. Please enter the names of the daily_working_time_(day of the week) in the appropriate fields. A customer for off-days can also be set - then break times are not considered for those. The E-Mail link will be used as prefix to have the mails containing the correct links for approval views. You might want to enter something like `https://kimai.example.de/`. The approval week start date defines a date where the approval workflow should start. All prior unapproved weeks are ignored.
+
+Then there are two toggle options available. "Calculate breaktime issues" can be used to deactivate the calculation of breaktime issues. In Germany, there is a law available that sepcific break times must be available. For this in the "Apporoved weeks report" there are red hints when the German worktime rules are not followed, e.g. someone worked 8 hours without an appropriate break. If you are not located in Germany, you can switch it off as this might be irrelevant for you.
+
+The "Display Overtime" options allows to calculate and display expected hours and overtime hours. For example, a colleague is working 40 hours a week. When she is working the concrete week 45 hours, she has 5 hours overtime for that week. The expected hours are to be entered in the "Daily Working time" per day and/or in the "Settings workdays". Remark: if you set all expected working hours to zero, you see the summed up actual working hours. When this option is active, there is also an overview tab for "Overtime" showing the submitted/approved weeks including their times. If you are not interested in "Overtime" at all, then this can be deactivated.
+
+![Screenshot Settings](./_documentation/Screenshot_Settings.png)
 
 ### Role Settings
 

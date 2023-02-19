@@ -320,8 +320,8 @@ class WeekReportController extends AbstractController
                 $workdayHistory->setValidTill($form->getData()['validTill']);
 
                 $this->approvalWorkdayHistoryRepository->save($workdayHistory, true);  
-                $this->approvalRepository->updateExpectedActualDurationForUser($form->getData()['user']);
                 $this->approvalTimesheetRepository->updateDaysOff($form->getData()['user']);
+                $this->approvalRepository->updateExpectedActualDurationForUser($form->getData()['user']);
                 $this->flashSuccess('action.update.success');
 
                 return $this->redirectToRoute('approval_bundle_settings_workday');

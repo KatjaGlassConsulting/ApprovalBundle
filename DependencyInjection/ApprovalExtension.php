@@ -36,10 +36,8 @@ class ApprovalExtension extends Extension implements PrependExtensionInterface
                         'view_team_approval',
                         'view_all_approval'
                     ],
-                ],
-                'roles' => [
-                  'ROLE_TEAMLEAD' => [
-                      'view_team_approval'
+                    'ROLE_TEAMLEAD' => [
+                        'view_team_approval'
                   ],
               ],
             ],
