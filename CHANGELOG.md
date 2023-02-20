@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.9.7 to 0.9.8
+
+- Documentation update
+- Default Role "view_team_approval" for Teamleads
+- Update: on updated working weekdays, update days-off-hours timesheets beginning with last-year on 1st Jan (not older)
+- Fix: for teamlead view on teammembers, "expected" is no longer using the hours from the "first-in-list", but the selected user
+- Fix: MetaFieldSettings-Issue - return 0 if not available for this user
+- Fix: on updated working weekdays, update first days-off-hours and then recalculate approval expected/actual hours
+- Fix: enhanced null handling
+
 ## 0.9.6 to 0.9.7
 
 - enhance overtime display & API overtime overview
