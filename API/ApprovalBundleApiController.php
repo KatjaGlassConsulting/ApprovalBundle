@@ -107,6 +107,21 @@ final class ApprovalBundleApiController extends AbstractController
      *     response=200,
      *     description="URL to submitted week"
      * )
+     * 
+     * @SWG\Parameter(
+     *      name="user",
+     *      in="query",
+     *      type="integer",
+     *      description="User ID to get information for",
+     *      required=false,
+     * ),
+     * @SWG\Parameter(
+     *      name="date",
+     *      in="query",
+     *      type="string",
+     *      description="Date as monday of selected week: Y-m-d",
+     *      required=true,
+     * )
      *
      * @Rest\Post(path="/add_to_approve")
      * @ApiSecurity(name="apiUser")

@@ -11,6 +11,7 @@ namespace KimaiPlugin\ApprovalBundle\Repository;
 
 use App\Entity\Timesheet;
 use App\Entity\User;
+use App\Repository\TimesheetRepository;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -22,6 +23,8 @@ use KimaiPlugin\ApprovalBundle\Settings\ApprovalSettingsInterface;
 use KimaiPlugin\ApprovalBundle\Toolbox\Formatting;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use KimaiPlugin\ApprovalBundle\Repository\ApprovalWorkdayHistoryRepository;
+use KimaiPlugin\ApprovalBundle\Repository\ReportRepository;
 
 /**
  * @method Approval|null find($id, $lockMode = null, $lockVersion = null)
@@ -51,15 +54,36 @@ class ApprovalRepository extends ServiceEntityRepository
      */
     private $urlGenerator;
 
+    /**
+     * @var ApprovalWorkdayHistoryRepository
+     */
+    private $approvalWorkdayHistoryRepository;
+
+    /**
+     * @var ReportRepository
+     */
+    private $reportRepository;
+
+    /**
+     * @var TimesheetRepository
+     */
+    private $timesheetRepository;
+
     public function __construct(
         ManagerRegistry $registry,
         ApprovalSettingsInterface $metaFieldRuleRepository,
+        ApprovalWorkdayHistoryRepository $approvalWorkdayHistoryRepository,
+        ReportRepository $reportRepository,
+        TimesheetRepository $timesheetRepository,
         SettingsTool $settingsTool,
         Formatting $formatting,
         UrlGeneratorInterface $urlGenerator
     ) {
         parent::__construct($registry, Approval::class);
         $this->metaFieldRuleRepository = $metaFieldRuleRepository;
+        $this->approvalWorkdayHistoryRepository = $approvalWorkdayHistoryRepository;
+        $this->reportRepository = $reportRepository;
+        $this->timesheetRepository = $timesheetRepository;
         $this->settingsTool = $settingsTool;
         $this->formatting = $formatting;
         $this->urlGenerator = $urlGenerator;
@@ -69,6 +93,7 @@ class ApprovalRepository extends ServiceEntityRepository
     {
         $startDate = new DateTime($data);
         $endDate = (clone $startDate)->modify('next sunday');
+        date_time_set($endDate,23,59,59);
 
         $approval = $this->checkLastStatus($startDate, $endDate, $user, ApprovalStatus::NOT_SUBMITTED, new Approval());
 
@@ -78,6 +103,7 @@ class ApprovalRepository extends ServiceEntityRepository
             $approval->setStartDate($startDate);
             $approval->setEndDate($endDate);
             $approval->setExpectedDuration($this->calculateExpectedDurationByUserAndDate($user, $startDate, $endDate));
+            $approval->setActualDuration($this->reportRepository->getActualWorkingDurationStatistic($user,$startDate,$endDate));
 
             $this->getEntityManager()->persist($approval);
             $this->getEntityManager()->flush();
@@ -86,41 +112,106 @@ class ApprovalRepository extends ServiceEntityRepository
         return $approval;
     }
 
+    public function getExpectedActualDurationsForYear(User $user, \DateTime $endDate): ?array
+    {
+        $end = clone $endDate;
+        date_time_set($end,23,59,59);
+        $firstApprovalDate = $this->findFirstApprovalDateForUser($user);
+        if ($firstApprovalDate !== null){
+            $yearOfEnd = $endDate->format('Y');            
+            $firstOfYear = new \DateTime("$yearOfEnd-01-01");
+            $startDurationYear = max($firstApprovalDate, $firstOfYear);
+            $overtimeDuration = $this->getExpectedActualDurations($user, $startDurationYear, $end); 
+            return $overtimeDuration;
+        }
+
+        return null;
+    }
+
+    public function getExpectedActualDurations(User $user, \DateTime $startDate, \DateTime $endDate): ?array
+    {
+        $expectedDuration = $this->calculateExpectedDurationByUserAndDate($user, $startDate, $endDate);
+        $actualDuration = intval($this->timesheetRepository->getStatistic($this->timesheetRepository::STATS_QUERY_DURATION, $startDate, $endDate, $user));
+        $overtime = $actualDuration - $expectedDuration;
+
+        $overtimeFormatted = $this->formatting->formatDuration($overtime);
+        $result =
+        [
+            'expectedDuration' => $expectedDuration,
+            'actualDuration' => $actualDuration,
+            'overtime' => $overtime,
+            'overtimeFormatted' => $overtimeFormatted,
+            'endDay' => $endDate->format('Y-m-d')
+        ];
+
+        return $result;
+    }
+
     public function calculateExpectedDurationByUserAndDate($user, $startDate, $endDate): int
     {
         $expected = 0;
-        for ($i = clone $startDate; $i <= clone $endDate; $i->modify('+1 day')) {
+        for ($i = clone $startDate; $i <= $endDate; $i->modify('+1 day')) {
             $expected = $this->getExpectTimeForDate($i, $user, $expected);
         }
 
         return $expected;
     }
 
-    private function getExpectTimeForDate(DateTime $i, User $user, $expected)
+    public function getExpectTimeForDate(DateTime $i, User $user, $expected)
     {
-        switch ($i->format('N')) {
-            case (1):
-                $expected += $this->metaFieldRuleRepository->getWorkingTimeForMonday($user);
-                break;
-            case (2):
-                $expected += $this->metaFieldRuleRepository->getWorkingTimeForTuesday($user);
-                break;
-            case (3):
-                $expected += $this->metaFieldRuleRepository->getWorkingTimeForWednesday($user);
-                break;
-            case (4):
-                $expected += $this->metaFieldRuleRepository->getWorkingTimeForThursday($user);
-                break;
-            case (5):
-                $expected += $this->metaFieldRuleRepository->getWorkingTimeForFriday($user);
-                break;
-            case (6):
-                $expected += $this->metaFieldRuleRepository->getWorkingTimeForSaturday($user);
-                break;
-            case (7):
-                $expected += $this->metaFieldRuleRepository->getWorkingTimeForSunday($user);
-                break;
-        }
+        $workdayHistory = $this->approvalWorkdayHistoryRepository->findByUserAndDateWorkdayHistory($user, $i);
+        
+        if (is_null($workdayHistory)){
+            // get information from meta fields
+            switch ($i->format('N')) {
+              case (1):
+                  $expected += $this->metaFieldRuleRepository->getWorkingTimeForMonday($user);
+                  break;
+              case (2):
+                  $expected += $this->metaFieldRuleRepository->getWorkingTimeForTuesday($user);
+                  break;
+              case (3):
+                  $expected += $this->metaFieldRuleRepository->getWorkingTimeForWednesday($user);
+                  break;
+              case (4):
+                  $expected += $this->metaFieldRuleRepository->getWorkingTimeForThursday($user);
+                  break;
+              case (5):
+                  $expected += $this->metaFieldRuleRepository->getWorkingTimeForFriday($user);
+                  break;
+              case (6):
+                  $expected += $this->metaFieldRuleRepository->getWorkingTimeForSaturday($user);
+                  break;
+              case (7):
+                  $expected += $this->metaFieldRuleRepository->getWorkingTimeForSunday($user);
+                  break;
+            }
+        } else {
+            // otherwise use hours according approvalWorkdayHistory
+            switch ($i->format('N')) {
+              case (1):
+                  $expected += $workdayHistory->getMonday();
+                  break;
+              case (2):
+                  $expected += $workdayHistory->getTuesday();
+                  break;
+              case (3):
+                  $expected += $workdayHistory->getWednesday();
+                  break;
+              case (4):
+                  $expected += $workdayHistory->getThursday();
+                  break;
+              case (5):
+                  $expected += $workdayHistory->getFriday();
+                  break;
+              case (6):
+                  $expected += $workdayHistory->getSaturday();
+                  break;
+              case (7):
+                  $expected += $workdayHistory->getSunday();
+                  break;
+            }
+        }       
 
         return $expected;
     }
@@ -142,6 +233,25 @@ class ApprovalRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    public function findFirstApprovalDateForUser(User $user): ?\DateTime
+    {
+        $result = $this->getEntityManager()->createQueryBuilder()
+            ->select('ap.startDate as startDate')
+            ->from(Approval::class, 'ap')
+            ->andWhere('ap.user = :user')
+            ->setParameter('user', $user)
+            ->orderBy('ap.startDate')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if ($result === null){
+            return null;
+        }
+
+        return $result["startDate"];
+    }
+
     public function findAllWeek(?array $users): ?array
     {
         $parseToViewArray = $this->getUserApprovals($users);
@@ -150,6 +260,39 @@ class ApprovalRepository extends ServiceEntityRepository
         $result = $parseToViewArray ? $this->sort($parseToViewArray) : [];
 
         return $this->getNewestPerUser($result);
+    }
+
+    public function findAllWeekForUser(User $user, $startDate): ?array
+    {
+        $parseToViewArray = $this->getUserApprovals([$user], $startDate);
+        $result = $parseToViewArray ? $this->sort($parseToViewArray) : [];
+        $newestPerUser = $this->getNewestPerUser($result);
+        $noUnsubmitted = array_filter($newestPerUser, 
+            function($val){ 
+                return $val['status'] !== 'not_submitted';
+            });
+        return $this->addYearlyOvertimeToAllWeek($noUnsubmitted, $user);
+    }
+
+    private function addYearlyOvertimeToAllWeek(?array $allWeekArray, User $user): ?array
+    {
+        $sumOvertime = 0;
+        $currentYear = '0';
+        for($i=0; $i < count($allWeekArray); $i++)
+        {
+            $entryYear = substr($allWeekArray[$i]['endDate'],0,4);
+            if ($currentYear != $entryYear){
+                $endDate = new \DateTime($allWeekArray[$i]['endDate']);
+                $overtimeYearly = $this->getExpectedActualDurationsForYear($user, $endDate);
+                $sumOvertime = $overtimeYearly['overtime'];
+                $allWeekArray[$i]['overtimeYearly'] = $sumOvertime;                
+            }
+            else {
+                $sumOvertime = $sumOvertime + $allWeekArray[$i]['actualDuration'] - $allWeekArray[$i]['expectedDuration'];
+                $allWeekArray[$i]['overtimeYearly'] = $sumOvertime;
+            }
+        }
+        return $allWeekArray;
     }
 
     private function deleteHistoryFromArray(array $array): array
@@ -182,6 +325,9 @@ class ApprovalRepository extends ServiceEntityRepository
                     [
                         'userId' => $item->getUser()->getId(),
                         'startDate' => $item->getStartDate()->format('Y-m-d'),
+                        'endDate' => $item->getEndDate()->format('Y-m-d'),
+                        'expectedDuration' => $item->getExpectedDuration(),
+                        'actualDuration' => $item->getActualDuration(),
                         'user' => $item->getUser()->getDisplayName(),
                         'week' => $this->formatting->parseDate(clone $item->getStartDate()),
                         'status' => $item->getHistory()[0]->getStatus()->getName()
@@ -574,7 +720,7 @@ class ApprovalRepository extends ServiceEntityRepository
         );
     }
 
-    public function getUserApprovals(?array $users)
+    public function getUserApprovals(?array $users, $startDate = null)
     {
         $usersId = array_map(function ($user) {
             return $user->getId();
@@ -587,14 +733,20 @@ class ApprovalRepository extends ServiceEntityRepository
             $approval_workflow_start = (new DateTime($approval_workflow_start))->modify('-7 day')->format('Y-m-d');
         }
 
+        if ($startDate !== null){
+            $start = $startDate;
+        } else {
+            $start = $approval_workflow_start;
+        }
+
         $em = $this->getEntityManager();
         $approvedList = $em->createQueryBuilder()
             ->select('ap')
             ->from(Approval::class, 'ap')
             ->join('ap.user', 'u')
             ->andWhere($em->getExpressionBuilder()->in('u.id', $usersId))
-            ->andWhere('ap.startDate > :begin')
-            ->setParameter('begin', $approval_workflow_start)
+            ->andWhere('ap.startDate >= :begin')
+            ->setParameter('begin', $start)
             ->orderBy('ap.startDate', 'ASC')
             ->addOrderBy('u.username', 'ASC')
             ->addOrderBy('ap.creationDate', 'ASC')
@@ -655,5 +807,28 @@ class ApprovalRepository extends ServiceEntityRepository
         $prevWeekDay = end($allRows)['startDate'];
 
         return date('Y-m-d', strtotime($prevWeekDay . ' + 7 days'));
+    }
+
+    public function updateExpectedActualDurationForUser(User $user)
+    {
+        $approvals = $this->findBy(['user' => $user]);
+
+        foreach ($approvals as $approval) { 
+            $start = $approval->getStartDate();
+            $end = $approval->getEndDate();
+            $expected = $approval->getExpectedDuration();
+            $actual = $approval->getActualDuration();
+            $stats = $this->getExpectedActualDurations($user, $start, $end);
+
+            if ($stats['actualDuration'] !== $actual){
+                $approval->setActualDuration($stats['actualDuration']);
+                $this->getEntityManager()->persist($approval);
+            }
+            if ($stats['expectedDuration'] !== $expected){
+                $approval->setExpectedDuration($stats['expectedDuration']);
+                $this->getEntityManager()->persist($approval);
+            }
+            $this->getEntityManager()->flush();
+        }
     }
 }

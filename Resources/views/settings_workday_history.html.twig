@@ -1,0 +1,62 @@
+{% extends '@Approval/layout.html.twig' %}
+{% import "macros/widgets.html.twig" as widgets %}
+
+{% block report_title %}{{ report_title|trans({}, 'ApprovalBundle') }}{% endblock %}
+
+{% block page_actions %}
+    {% import "macros/widgets.html.twig" as widgets %}
+    {% if (is_granted('ROLE_SUPER_ADMIN')) %}
+        {% set actions = {'create': {'url': path('approval_create_workday_history'), 'class': 'modal-ajax-form', 'attr': {'data-event': 'kimai.appWorkdayHistory'}}} %}
+        {% set event = trigger('actions.create_workday_history', {'actions': actions, 'view': 'create'}) %}
+        {{ widgets.page_actions(event.payload.actions) }}
+    {% endif %}
+{% endblock %}
+
+{% set tableName = 'workday_history' %}
+{% block report %}
+    {% block history %}
+        <p>{{ 'description.workday_history'|trans }}</p>
+
+        {% if tables is defined %}
+          <div class="row">
+              <div class="col-md-12">
+                  {{ tables.data_table_column_modal(tableName, columns) }}
+                  {{ tables.datatable_header(tableName, columns, query, {'reload': 'kimai.leaveUpdate'}) }}
+              </div>
+          </div>
+        {% endif %}
+
+        <table class="table table-bordered dataTable">
+            <thead>
+                <tr>
+                    <th>{{ 'label.user'|trans }}</th>
+                    <th class="text-center">{{ 'Monday'|trans({},'system-configuration')}}</th>
+                    <th class="text-center">{{ 'Tuesday'|trans({},'system-configuration')}}</th>
+                    <th class="text-center">{{ 'Wednesday'|trans({},'system-configuration')}}</th>
+                    <th class="text-center">{{ 'Thursday'|trans({},'system-configuration')}}</th>
+                    <th class="text-center">{{ 'Friday'|trans({},'system-configuration')}}</th>
+                    <th class="text-center">{{ 'Saturday'|trans({},'system-configuration')}}</th>
+                    <th class="text-center">{{ 'Sunday'|trans({},'system-configuration')}}</th>
+                    <th class="text-center">{{ 'label.valid_till'|trans}}</th>
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in workdayHistory %}
+                    <tr>
+                        <td class="text-center">{{ entry.user.displayName }}</td>
+                        <td class="text-center">{{ entry.monday | formatHours }}</td>
+                        <td class="text-center">{{ entry.tuesday | formatHours }}</td>
+                        <td class="text-center">{{ entry.wednesday | formatHours }}</td>
+                        <td class="text-center">{{ entry.thursday | formatHours }}</td>
+                        <td class="text-center">{{ entry.friday | formatHours }}</td>
+                        <td class="text-center">{{ entry.saturday | formatHours }}</td>
+                        <td class="text-center">{{ entry.sunday | formatHours }}</td>
+                        <td class="text-center">{{ entry.validTill | date_format('Y-m-d') }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% endblock %}
+{% endblock %}

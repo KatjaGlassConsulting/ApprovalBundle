@@ -24,9 +24,8 @@ interface ApprovalSettingsInterface
      * Find data for the given ID.
      *
      * @param string|int $id
-     * @return mixed
      */
-    public function find($id): mixed;
+    public function find($id);
 
     /**
      * Whether this setting repository can be configured.

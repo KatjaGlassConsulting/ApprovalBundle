@@ -2,7 +2,7 @@
 
 A plugin for [Kimai](https://www.kimai.org/) - a timetracking open source tool - to approve timesheets of users on a weekly basis including APIs.
 
-Checkout the [Documentation](./documentation.md) for content information.
+Checkout the [Documentation](./documentation.md) for content information and [Troubleshooting](./doc_troubleshooting.md) if you have issues.
 
 Here is a short live demo:
 
@@ -13,8 +13,8 @@ Here is a short live demo:
 - Requires Kamai 2, V1.16.10 or higher
 
 Optional but recommended:
-- MetaFields plugin
-- LockdownPerUser plugin ([GitHub](https://github.com/kevinpapst/LockdownPerUserBundle)) 
+- MetaFields plugin - without "overtime" will not be shown unless "Display Overtime" is activated and "Settings workdays" are set for the future )
+- LockdownPerUser plugin ([GitHub](https://github.com/kevinpapst/LockdownPerUserBundle)) - without the lockdown functionality will not work
 
 ## Features
 
@@ -26,11 +26,13 @@ Optional but recommended:
 
 ## Status
 
-The approval bundle is already working pretty well. Some updates will be done soon, as some functionality and checks are not final yet. Unless these things are implemented the version is below 1.
+The approval bundle is working pretty well. There had been lately updates to support overtime hours and also store the actual duration along. The bundle is been used and issues received (GitHub issues) are handled. A detailed testing is NOT performed. For this the release is pretty stable, but there might be issues due to different settings, environment etc.
 
 ## Issues
 
 It is highly recommended to use the **same timezone** setting for all users. Furthermore all users should use the **same "Start day of the week"** setting - ideally everybody should use "Monday". Otherwise issues could appear as, e.g. Monday times can be located on a Sunday when the teamlead and the user using different timezones. Furthermore the "Start day" is used to store the approval week. When the "Start day" is Sunday for a user and Monday for the teamlead, the approval will not work appropriately.
+
+Please checkout [doc_troubleshooting.md](./doc_troubleshooting.md) for troubleshooting.
 
 ## Installation
 
@@ -79,13 +81,19 @@ Next the teams needs to be setup. The teams define which person approves the tim
 
 ### Approval Settings
 
-The final approval settings can be done via approval -> settings. Please enter the names of the daily_working_time_(day of the week) in the appropriate fields. A customer for off-days can also be set - then break times are not considered for those. The E-Mail link will be used as prefix to have the mails containing the correct links for approval views. You might want to enter something like `https://kimai.example.de/`. Finally the approval week start date defines a date where the approval workflow should start. All prior unapproved weeks are ignored.
+The final approval settings can be done via approval -> settings. Please enter the names of the daily_working_time_(day of the week) in the appropriate fields. A customer for off-days can also be set - then break times are not considered for those. The E-Mail link will be used as prefix to have the mails containing the correct links for approval views. You might want to enter something like `https://kimai.example.de/`. The approval week start date defines a date where the approval workflow should start. All prior unapproved weeks are ignored.
+
+Then there are two toggle options available. "Calculate breaktime issues" can be used to deactivate the calculation of breaktime issues. In Germany, there is a law available that sepcific break times must be available. For this in the "Apporoved weeks report" there are red hints when the German worktime rules are not followed, e.g. someone worked 8 hours without an appropriate break. If you are not located in Germany, you can switch it off as this might be irrelevant for you.
+
+The "Display Overtime" options allows to calculate and display expected hours and overtime hours. For example, a colleague is working 40 hours a week. When she is working the concrete week 45 hours, she has 5 hours overtime for that week. The expected hours are to be entered in the "Daily Working time" per day and/or in the "Settings workdays". Remark: if you set all expected working hours to zero, you see the summed up actual working hours. When this option is active, there is also an overview tab for "Overtime" showing the submitted/approved weeks including their times. If you are not interested in "Overtime" at all, then this can be deactivated.
+
+![Screenshot Settings](./_documentation/Screenshot_Settings.png)
 
 ### Role Settings
 
 There are two new roles available for the team approval. The `view_team_approval` ideally should be YES for all but the user. This allows up from the teamlead hierarchy to see the approvals of their team. The `view_all_approval` should either be YES for System-Admin only or for System-Admin and Admin, depending on your schema. 
 
-## Functionality of Lockdown:
+## Functionality of Lockdown (requires LockdownBundle)
 
 With the lockdown bundle the loockdown periods can be set per user and no longer per system option. For this it is possible that user 1 has a lockdown date as of 01.01.2022 whereas user 2 could have for example a lockdown date of 15.01.2022. Per user - a locktime frame can be defined by "Lockdown period start" and "Lockdown period end". Considering also the "Lockdown grace period" (how long after the locktime end it should still be possible to edit time entries) - this defines which time entries can be modified by the user. Please checkout the general lockdown period documentation [here](https://www.kimai.org/documentation/configurations.html#lockdown-period) for detailed information - the same principle is applied, but "per user".
 
@@ -105,7 +113,7 @@ The following APIs are available. You might want to check out the API swagger do
 
 ## Add to approve API
 
-It's possible to "add to approve" the selected week by API.
+It's possible to "add to approve" the selected week by API. User is optional - per default the data for the user who submitted the request is provided.
 
 request method: **POST**
 
@@ -129,7 +137,7 @@ Normal users can "add to approve" only their own.
 
 ## Week status API
 
-It's possible to check status of selected week
+It's possible to check status of selected week. User is optional - per default the data for the user who submitted the request is provided.
 
 request method: **GET**
 
@@ -153,7 +161,7 @@ Normal users can check their status
 
 ## Next week API
 
-It's possible to check which week can be currently submitted
+It's possible to check which week can be currently submitted. User is optional - per default the data for the user who submitted the request is provided.
 
 request method: **GET**
 
@@ -168,6 +176,46 @@ X-AUTH-TOKEN: token/password
 response:
 
 - response code 200 - information about the week
+- response 403 - by bad authentication header
+- response 404 - wrong user / no data
+
+## Overtime for Year
+
+This will get the overtime for that year considering all submitted/approved approval weeks. User is optional - per default the data for the user who submitted the request is provided.
+
+request method: **GET**
+
+url: `{your url address}/api/overtime_year?user={user ID}&date={monday of selected week: Y-m-d}`
+
+headers:
+```
+X-AUTH-USER: login
+X-AUTH-TOKEN: token/password
+```
+
+response:
+
+- response code 200 - information about overtime for that year
+- response 403 - by bad authentication header
+- response 404 - wrong user / no data
+
+## Overtime on Weekly Bases 
+
+This will get a the overtime on a weekly bases up until that date for the corresponding year (content of "Overtime", but in JSON format). User is optional - per default the data for the user who submitted the request is provided.
+
+request method: **GET**
+
+url: `{your url address}/api/weekly_overtime?user={user ID}&date={monday of selected week: Y-m-d}`
+
+headers:
+```
+X-AUTH-USER: login
+X-AUTH-TOKEN: token/password
+```
+
+response:
+
+- response code 200 - information about overtime for that year
 - response 403 - by bad authentication header
 - response 404 - wrong user / no data
 

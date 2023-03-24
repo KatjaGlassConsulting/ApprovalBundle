@@ -185,8 +185,8 @@
                 </tbody>
                 <tfoot>
                 <tr class="summary">
-                    <td>{{ 'stats.duration_total'|trans }} {% if expected_duration is not empty %}[{{ 'stats.duration_expected'|trans }}] {% endif %}</td>
-                    <td class="text-nowrap text-center total">{{ totals['totals']|duration }}{% if expected_duration is not empty %} [{{ expected_duration|duration }}]{% endif %}</td>
+                    <td>{{ 'stats.duration_total'|trans }} {% if expectedDuration is not empty %}[{{ 'stats.duration_expected'|trans }}] {% endif %}</td>
+                    <td class="text-nowrap text-center total">{{ totals['totals']|duration }}{% if expectedDuration is not empty %} [{{ expectedDuration|duration }}]{% endif %}</td>
                     {% for day in days.dateTimes %}
                         <td class="text-nowrap text-center day-total{% if day is weekend %} weekend{% endif %}">
                             {{ totals[day|report_date]|duration }}
@@ -200,6 +200,16 @@
                         </td>
                     {% endfor %}
                 </tr>
+                {% if yearExpectedDuration is not null and yearActualDuration is not null %}
+                    {% set yearDiff = yearActualDuration - yearExpectedDuration %}
+                    <tr class="summary">
+                    <td>{{ 'label.yearly_overtime'|trans }}</td>
+                    <td class="text-nowrap text-center total{% if yearDiff < 0 %} redText{% endif %}">{{ yearDiff|duration }}</td>
+                    {% for day in days.dateTimes %}
+                        <td></td>
+                    {% endfor %}
+                </tr>
+                {% endif %}
                 </tfoot>
 
             </table>
@@ -333,6 +343,10 @@
 
         .pointer {
             cursor: pointer;
+        }
+
+        .redText {
+            color: red;
         }
 
         #deniedMessage {

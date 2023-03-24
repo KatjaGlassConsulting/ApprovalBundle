@@ -5,12 +5,16 @@
 {% block page_subtitle %}{{ 'menu.report_user_week'|trans }}{% endblock %}
 
 {% block main %}
-    {% if warningNoUsers %}
+    {% if warningNoUsers is defined %}
+      {% if warningNoUsers %}
         {{ widgets.callout('danger', 'warning.noUserToApprove'|trans) }}
+      {% endif %}
     {% endif %}
 
-    {% if settingsWarning %}
+    {% if settingsWarning is defined %}
+      {% if settingsWarning %}
         {{ widgets.callout('danger', 'warning.approval_settings_not_set'|trans) }}
+      {% endif %}
     {% endif %}
 
     <div class="row">

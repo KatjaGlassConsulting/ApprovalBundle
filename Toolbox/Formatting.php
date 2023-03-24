@@ -38,4 +38,14 @@ class Formatting
 
         return (clone $dateTime)->format('F Y') . ' - ' . $this->translator->trans('label.week') . ' ' . $weekNumber . ' [' . $startWeekDay . ' - ' . $endWeekDay . ']';
     }
+
+    public function formatDuration(int $duration) : string
+    {
+        $prefix = $duration < 0 ? "-" : "";
+        $mins = abs($duration) / 60; 
+        $hours = floor($mins / 60);
+        $mins = $mins - ($hours * 60);
+        $preZero = $mins < 9 ? "0" : "";
+        return $prefix . $hours . ":" . $preZero . $mins;  
+    }
 }

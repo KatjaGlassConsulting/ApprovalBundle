@@ -43,7 +43,7 @@ class MetaFieldSettings implements ApprovalSettingsInterface
         return $this->metaFieldRuleRepository->getRules();
     }
 
-    public function find($id): mixed
+    public function find($id)
     {
         return $this->metaFieldRuleRepository->find($id);
     }
