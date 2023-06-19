@@ -10,7 +10,7 @@ Here is a short live demo:
 
 ## Requirements
 
-- Requires Kamai 2, V1.16.10 or higher
+- Requires Kimai 2, V1.16.10 - V1.30.11 (Kimai2 Version 2 is currently not supported, it might come in Q3/Q4 2023) 
 
 Optional but recommended:
 - MetaFields plugin - without "overtime" will not be shown unless "Display Overtime" is activated and "Settings workdays" are set for the future )
