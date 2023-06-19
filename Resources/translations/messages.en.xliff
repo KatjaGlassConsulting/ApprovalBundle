@@ -312,6 +312,18 @@
         <source>error.six_hours_without_break</source>
         <target>You worked more than 6 hours without taking 30 minute break!</target>
       </trans-unit>
+      <trans-unit id="error.six_hours_without_stop_break">
+        <source>error.six_hours_without_stop_break</source>
+        <target>You worked more than 6 Stunden without break!</target>
+      </trans-unit>
+      <trans-unit id="error.work_on_sunday">
+        <source>error.work_on_sunday</source>
+        <target>You worked on Sunday!</target>
+      </trans-unit>
+      <trans-unit id="error.work_offdays">
+        <source>error.work_offdays</source>
+        <target>You worked on a day off!</target>
+      </trans-unit>
       <trans-unit id="error.no_end_date">
         <source>error.no_end_date</source>
         <target>There is no end date for the time entry.</target>

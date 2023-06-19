@@ -39,22 +39,79 @@ class BreakTimeCheckToolGER
         $errors = [];
 
         $customerId = $this->settingsTool->getConfiguration(ConfigEnum::CUSTOMER_FOR_FREE_DAYS);
+        $offdays = [];
+        foreach ($timesheets as $timesheet) {            
+            if ($timesheet->getProject()->getCustomer()->getId() == $customerId) {
+                $offdays[] = $timesheet->getBegin()->format('Y-m-d');
+            }
+        }
         $timesheets = array_filter(
             $timesheets,
             function (Timesheet $timesheet) use ($customerId) {
                 return $timesheet->getProject()->getCustomer()->getId() != $customerId;
             }
         );
-
+        
         $this->checkSixHoursWithoutBreak($timesheets, $errors);
+        $this->checkSixHoursAndBreak($timesheets, $errors);
         $this->checkNineHoursWithoutBreak($timesheets, $errors);
         $this->checkMoreThanTenHours($timesheets, $errors);
         $this->checkElevenHoursBreak($timesheets, $errors);
+        $this->checkSundayWork($timesheets, $errors);
+        $this->checkOffdayWork($timesheets, $errors, $offdays);
 
         return $this->addEmptyErrorsDays($timesheets, $errors);
     }
 
+    private function checkOffdayWork($timesheets, &$errors, $offdays)
+    {
+        foreach ($timesheets as $timesheet) {            
+            if (in_array($timesheet->getBegin()->format('Y-m-d'), $offdays) &&
+                  ($errors[$timesheet->getBegin()->format('Y-m-d')] == null ||
+                   in_array($this->translator->trans("error.work_offdays"), $errors[$timesheet->getBegin()->format('Y-m-d')]) == false)){
+                $errors[$timesheet->getBegin()->format('Y-m-d')][] = $this->translator->trans("error.work_offdays");
+            }
+        }
+    }
+
+    private function checkSundayWork($timesheets, &$errors)
+    {
+        foreach ($timesheets as $timesheet) {            
+            if ($timesheet->getBegin()->format('w') == 0) {
+                $errors[$timesheet->getBegin()->format('Y-m-d')][] = $this->translator->trans("error.work_on_sunday");
+            }
+        }
+    }
+
     private function checkSixHoursWithoutBreak($timesheets, &$errors)
+    {
+        $sixHoursInSeconds = 6 * 60 * 60;
+        $thirtyMinutesBreakInSeconds = 30 * 60;
+        //'error.six_hours_without_stop_break'
+        $lastDay = '0';
+        $blockStart = 0;
+        $blockEnd = 0;
+        foreach ($timesheets as $timesheet) {            
+            if ($lastDay != $timesheet->getBegin()->format('Y-m-d')){
+                $lastDay = $timesheet->getBegin()->format('Y-m-d');
+                $blockStart = $timesheet->getBegin()->getTimestamp();                
+            } else {
+                // if block-end + 30 mins >= new start -> set new block-start to current
+                if ($blockEnd + $thirtyMinutesBreakInSeconds >= $timesheet->getBegin()->getTimestamp()){
+                    $blockStart = $timesheet->getBegin()->getTimestamp();
+                }
+            }
+            $blockEnd = $timesheet->getEnd()->getTimestamp();
+            if ($blockEnd - $blockStart > $sixHoursInSeconds) {
+                if ($errors[$timesheet->getBegin()->format('Y-m-d')] == null || 
+                        in_array($this->translator->trans("error.six_hours_without_stop_break"), $errors[$timesheet->getBegin()->format('Y-m-d')]) == false) {                    
+                    $errors[$timesheet->getBegin()->format('Y-m-d')][] = $this->translator->trans("error.six_hours_without_stop_break");
+                }
+            }
+        }
+    }
+
+    private function checkSixHoursAndBreak($timesheets, &$errors)
     {
         $sixHoursInSeconds = 6 * 60 * 60;
         $thirtyMinutesBreakInSeconds = 30 * 60;

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.9.8 to 0.9.9
+
+- Break worktime check updates
+  - check to not work on Sundays
+  - check to not work of days off
+  - check to not work more than 6 hours at a row without 30 minute break
+
 ## 0.9.7 to 0.9.8
 
 - Documentation update

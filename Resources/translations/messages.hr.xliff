@@ -307,6 +307,18 @@
       <trans-unit id="error.six_hours_without_break">
         <source>error.six_hours_without_break</source>
         <target>Radio/la si više od 6 sati bez pauze od 30 minuta!</target>
+      </trans-unit>      
+      <trans-unit id="error.six_hours_without_stop_break">
+        <source>error.six_hours_without_stop_break</source>
+        <target>Radio/la si više od 6 sati neprekidno!</target>
+      </trans-unit>
+      <trans-unit id="error.work_on_sunday">
+        <source>error.work_on_sunday</source>
+        <target>Radio/la si nedjelju!</target>
+      </trans-unit>
+      <trans-unit id="error.work_offdays">
+        <source>error.work_offdays</source>
+        <target>Radili ste na slobodan dan!</target>
       </trans-unit>
 
       <trans-unit id="label.customer_for_free_days">
