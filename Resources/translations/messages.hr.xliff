@@ -171,6 +171,14 @@
         <source>warning.currentUserSundayIssue</source>
         <target>Nedjelja je određena kao početak tjedna – dodatak „Odobravanje vremena” to ne podržava.</target>
       </trans-unit>
+      <trans-unit id="warning.selected_user_monday_issue">
+        <source>warning.selected_user_monday_issue</source>
+        <target>Odabrani korisnik ima ponedjeljak kao početak tjedna - to ne podržava dodatak za odobrenje (pogledajte postavke).</target>
+      </trans-unit>
+      <trans-unit id="warning.currentUserMondayIssue">
+        <source>warning.currentUserMondayIssue</source>
+        <target>Korisnik postavlja nedjelju kao početak tjedna - to ne podržava dodatak za odobrenje (pogledajte postavke).</target>
+      </trans-unit>
 
       <trans-unit id="label.meta_field_expected_working_time_on_monday">
         <source>label.meta_field_expected_working_time_on_monday</source>

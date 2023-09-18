@@ -212,7 +212,7 @@ class WeekReportController extends AbstractController
             'approvePreviousWeeksMessage' => $this->approvalRepository->getNextApproveWeek($selectedUser),
             'selectedUserSundayIssue' => $selectedUserSundayIssue,
             'currentUserSundayIssue' => $currentUserSundayIssue,
-            'SundayIssueIsMondayIssue' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WEEKSTART_SUNDAY_NY)
+            'sundayIssueIsMondayIssue' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WEEKSTART_SUNDAY_NY)
         ]);
     }
 

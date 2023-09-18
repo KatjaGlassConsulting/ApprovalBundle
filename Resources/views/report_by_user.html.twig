@@ -10,11 +10,20 @@
     {% endif %}
 
     {% if selectedUserSundayIssue %}
-        {{ widgets.callout('danger', 'warning.selected_user_sunday_issue'|trans) }}
+        {% if not sundayIssueIsMondayIssue %}
+            {{ widgets.callout('danger', 'warning.selected_user_sunday_issue'|trans) }}
+        {% else %}
+            {{ widgets.callout('danger', 'warning.selected_user_monday_issue'|trans) }}
+        {% endif %}    
     {% endif %}
 
     {% if currentUserSundayIssue %}
-        {{ widgets.callout('danger', 'warning.currentUserSundayIssue'|trans) }}
+        {% if not sundayIssueIsMondayIssue %}
+            {{ widgets.callout('danger', 'warning.currentUserSundayIssue'|trans) }}
+        {% else %}
+            {{ widgets.callout('danger', 'warning.currentUserMondayIssue'|trans) }}
+        {% endif %}
+        
     {% endif %}
 
     {% block nav_row %}

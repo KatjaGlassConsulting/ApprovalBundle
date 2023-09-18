@@ -175,6 +175,14 @@
         <source>warning.currentUserSundayIssue</source>
         <target>Sunday as start of the week setting available - this is not supported for Approval Plugin.</target>
       </trans-unit>
+      <trans-unit id="warning.selected_user_monday_issue">
+        <source>warning.selected_user_monday_issue</source>
+        <target>Selected user has Monday as start of the week - this is not supported for Approval Plugin (see setting).</target>
+      </trans-unit>
+      <trans-unit id="warning.currentUserMondayIssue">
+        <source>warning.currentUserMondayIssue</source>
+        <target>Monday as start of the week setting available - this is not supported for Approval Plugin (see setting).</target>
+      </trans-unit>
 
       <trans-unit id="label.meta_field_expected_working_time_on_monday">
         <source>label.meta_field_expected_working_time_on_monday</source>
