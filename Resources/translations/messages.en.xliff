@@ -450,6 +450,10 @@
         <source>label.approval_overtime_ny</source>
         <target>Display Overtime</target>
       </trans-unit>
+      <trans-unit id="label.weekstart_sunday_ny">
+        <source>label.weekstart_sunday_ny</source>
+        <target>Weekstart Sunday</target>
+      </trans-unit>
       <trans-unit id="label.approval_breakchecks_ny">
         <source>label.approval_breakchecks_ny</source>
         <target>Calculate breaktime issues</target>

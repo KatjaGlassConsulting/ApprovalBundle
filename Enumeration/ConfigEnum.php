@@ -25,4 +25,5 @@ abstract class ConfigEnum
     public const APPROVAL_WORKFLOW_START = 'approval.workflow_start';
     public const APPROVAL_OVERTIME_NY = 'approval.overtime_ny';
     public const APPROVAL_BREAKCHECKS_NY = 'approval.breakchecks_ny';
+    public const APPROVAL_WEEKSTART_SUNDAY_NY = 'approval.weekstart_sunday_ny';
 }

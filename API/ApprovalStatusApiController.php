@@ -18,6 +18,8 @@ use FOS\RestBundle\View\ViewHandlerInterface;
 use KimaiPlugin\ApprovalBundle\Entity\Approval;
 use KimaiPlugin\ApprovalBundle\Entity\ApprovalStatus;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
+use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
+use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use Nelmio\ApiDocBundle\Annotation\Security as ApiSecurity;
 use Swagger\Annotations as SWG;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -51,19 +53,25 @@ final class ApprovalStatusApiController extends AbstractController
      * @var TranslatorInterface
      */
     private $translator;
+    /**
+     * @var SettingsTool
+     */
+    private $settingsTool;
 
     public function __construct(
         ViewHandlerInterface $viewHandler,
         UserRepository $userRepository,
         ApprovalRepository $approvalRepository,
         AuthorizationCheckerInterface $security,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        SettingsTool $settingsTool
     ) {
         $this->viewHandler = $viewHandler;
         $this->userRepository = $userRepository;
         $this->approvalRepository = $approvalRepository;
         $this->security = $security;
         $this->translator = $translator;
+        $this->settingsTool = $settingsTool;
     }
 
     /**
@@ -83,7 +91,7 @@ final class ApprovalStatusApiController extends AbstractController
      *      name="date",
      *      in="query",
      *      type="string",
-     *      description="Date as monday of selected week: Y-m-d",
+     *      description="Date as monday/sunday of selected week: Y-m-d (depends on setting)",
      *      required=true,
      * )
      * 
@@ -128,9 +136,16 @@ final class ApprovalStatusApiController extends AbstractController
 
     protected function getSelectedDate(Request $request): DateTime
     {
-        $selectedDate = new DateTime($request->query->get('date', 'today'));
-        if ($selectedDate->format('N') != 1) {
-            $selectedDate->modify('previous Monday');
+        $selectedDate = new DateTime($request->query->get('date'));
+        if (!$this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WEEKSTART_SUNDAY_NY)){
+            if ($selectedDate->format('N') != 1) {
+                $selectedDate->modify('previous Monday');
+            }
+        }
+        else {
+            if ($selectedDate->format('N') != 0) {
+                $selectedDate->modify('previous Sunday');
+            }
         }
 
         return $selectedDate;

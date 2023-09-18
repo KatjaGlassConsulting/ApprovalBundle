@@ -454,6 +454,10 @@
         <source>label.approval_breakchecks_ny</source>
         <target>Berechne Pausenzeiten-Probleme</target>
       </trans-unit>
+      <trans-unit id="label.weekstart_sunday_ny">
+        <source>label.weekstart_sunday_ny</source>
+        <target>Wochenstart Sonntag</target>
+      </trans-unit>
       <trans-unit id="description.workday_history">
         <source>description.workday_history</source>
         <target>

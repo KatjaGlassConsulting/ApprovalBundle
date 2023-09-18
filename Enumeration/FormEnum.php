@@ -25,4 +25,5 @@ abstract class FormEnum
     public const WORKFLOW_START = 'workflow_start';
     public const OVERTIME_NY = 'approval_overtime_ny';
     public const BREAKCHECKS_NY = 'approval_breakchecks_ny';
+    public const WEEKSTART_SUNDAY_NY = 'approval_weekstart_sunday_ny';
 }

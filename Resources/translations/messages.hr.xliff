@@ -442,6 +442,10 @@
         <source>label.approval_overtime_ny</source>
         <target>Prekovremena reprezentacija</target>
       </trans-unit>      
+      <trans-unit id="label.weekstart_sunday_ny">
+        <source>label.weekstart_sunday_ny</source>
+        <target>Početak tjedna nedjelja</target>
+      </trans-unit>
       <trans-unit id="label.approval_breakchecks_ny">
         <source>label.approval_breakchecks_ny</source>
         <target>Izračunajte probleme vremena pauze</target>

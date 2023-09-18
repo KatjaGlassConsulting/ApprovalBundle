@@ -146,6 +146,17 @@ class SettingsForm extends AbstractType
           'required' => false
         ]);
 
+        if ($this->settingsTool->isInConfiguration(ConfigEnum::APPROVAL_WEEKSTART_SUNDAY_NY)) {
+            $weekstartSunday = $this->formTool->isChecked(ConfigEnum::APPROVAL_WEEKSTART_SUNDAY_NY);
+        } else {
+            $weekstartSunday = false;            
+        }
+        $builder->add(FormEnum::WEEKSTART_SUNDAY_NY, CheckboxType::class, [
+          'label' => 'label.weekstart_sunday_ny',
+          'data' => $weekstartSunday,
+          'required' => false
+        ]);
+
         $builder->add(FormEnum::SUBMIT, SubmitType::class, [
             'label' => 'action.save',
             'attr' => ['class' => 'btn btn-primary']

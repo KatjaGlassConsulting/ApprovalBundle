@@ -17,6 +17,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use KimaiPlugin\ApprovalBundle\Entity\Approval;
+use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
+use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 
 class LockdownRepository extends ServiceEntityRepository
 {
@@ -24,10 +26,16 @@ class LockdownRepository extends ServiceEntityRepository
     private const LOCKDOWN_PERIOD_END = 'timesheet.rules.lockdown_period_end';
     private const LOCKDOWN_PERIOD_TIMEZONE = 'timesheet.rules.lockdown_period_timezone';
     private const LOCKDOWN_GRACE_PERIOD = 'timesheet.rules.lockdown_grace_period';
+    
+    /**
+     * @var SettingsTool
+     */
+    private $settingsTool;
 
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, SettingsTool $settingsTool)
     {
         parent::__construct($registry, Approval::class);
+        $this->settingsTool = $settingsTool;
     }
 
     /**
@@ -74,7 +82,11 @@ class LockdownRepository extends ServiceEntityRepository
             if ($week['status'] === 'not_submitted') {
                 $startDate = $week['startDate'];
 
-                return (new DateTime($startDate, $timezone))->modify('previous sunday');
+                if (!$this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WEEKSTART_SUNDAY_NY)) {
+                    return (new DateTime($startDate, $timezone))->modify('previous sunday');
+                } else {
+                    return (new DateTime($startDate, $timezone))->modify('previous saturday');
+                }
             }
         }
 
@@ -83,8 +95,12 @@ class LockdownRepository extends ServiceEntityRepository
         } else {
             $startDate = (new DateTime())->format('Y-m-d');
         }
-
-        return (new DateTime($startDate, $timezone))->modify('next sunday');
+        
+        if (!$this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WEEKSTART_SUNDAY_NY)) {
+            return (new DateTime($startDate, $timezone))->modify('next sunday');
+        } else {
+            return (new DateTime($startDate, $timezone))->modify('next saturday');
+        }
     }
 
     private function updateLockPreference(User $user, $endDate, $graceDate): void

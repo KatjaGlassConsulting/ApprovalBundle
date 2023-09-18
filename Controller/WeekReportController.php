@@ -104,6 +104,9 @@ class WeekReportController extends AbstractController
      */
     public function weekByUser(Request $request): Response
     {
+
+        file_put_contents("C:/temp/blub.txt", "sunday = " . json_encode($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WEEKSTART_SUNDAY_NY)) . "\n", FILE_APPEND);
+        file_put_contents("C:/temp/blub.txt", "not sunday = " . json_encode(!$this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WEEKSTART_SUNDAY_NY)) . "\n", FILE_APPEND);
         $users = $this->getUsers();
         $firstUser = empty($users) ? $this->getUser() : $users[0];
         $dateTimeFactory = $this->getDateTimeFactory($firstUser);
@@ -154,8 +157,14 @@ class WeekReportController extends AbstractController
 
         [$timesheets, $errors] = $this->getTimesheets($selectedUser, $start, $end);
 
-        $selectedUserSundayIssue = $selectedUser->isFirstDayOfWeekSunday();
-        $currentUserSundayIssue = $this->getUser()->isFirstDayOfWeekSunday();
+        if (!$this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WEEKSTART_SUNDAY_NY)) {
+            $selectedUserSundayIssue = $selectedUser->isFirstDayOfWeekSunday();
+            $currentUserSundayIssue = $this->getUser()->isFirstDayOfWeekSunday();
+        }
+        else {
+            $selectedUserSundayIssue = !$selectedUser->isFirstDayOfWeekSunday();
+            $currentUserSundayIssue = !$this->getUser()->isFirstDayOfWeekSunday();
+        }
 
         $yearlyTimeExpected = null;
         $yearlyTimeActual = null;
@@ -202,7 +211,8 @@ class WeekReportController extends AbstractController
             'timesheet' => $timesheets,
             'approvePreviousWeeksMessage' => $this->approvalRepository->getNextApproveWeek($selectedUser),
             'selectedUserSundayIssue' => $selectedUserSundayIssue,
-            'currentUserSundayIssue' => $currentUserSundayIssue
+            'currentUserSundayIssue' => $currentUserSundayIssue,
+            'SundayIssueIsMondayIssue' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WEEKSTART_SUNDAY_NY)
         ]);
     }
 
@@ -219,8 +229,14 @@ class WeekReportController extends AbstractController
         $pastRows = [];
         $currentRows = [];
         $futureRows = [];
-        $currentWeek = (new DateTime('now'))->modify('next monday')->modify('-2 week')->format('Y-m-d');
-        $futureWeek = (new DateTime('now'))->modify('next monday')->modify('-1 week')->format('Y-m-d');
+        if (!$this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WEEKSTART_SUNDAY_NY)) { 
+            $currentWeek = (new DateTime('now'))->modify('next monday')->modify('-2 week')->format('Y-m-d');
+            $futureWeek = (new DateTime('now'))->modify('next monday')->modify('-1 week')->format('Y-m-d');
+        }
+        else {
+            $currentWeek = (new DateTime('now'))->modify('next sunday')->modify('-2 week')->format('Y-m-d');
+            $futureWeek = (new DateTime('now'))->modify('next sunday')->modify('-1 week')->format('Y-m-d');
+        }
         foreach ($allRows as $row) {
             if ($row['startDate'] >= $futureWeek) {
                 $futureRows[] = $row;
@@ -347,6 +363,12 @@ class WeekReportController extends AbstractController
         if ($form->isSubmitted()) {
             $data = $form->getData();
 
+            # setting for APPROVAL_WEEKSTART_SUNDAY_NY can only be changed, when no approvals are available
+            file_put_contents("C:/temp/blub.txt", json_encode($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WEEKSTART_SUNDAY_NY)) . "\n", FILE_APPEND);
+            if ($data[FormEnum::WEEKSTART_SUNDAY_NY] != $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WEEKSTART_SUNDAY_NY)){
+              file_put_contents("C:/temp/blub.txt", json_encode("setting changed") . "\n", FILE_APPEND);
+            }
+
             if ($this->approvalSettings->canBeConfigured()) {
                 $this->settingsTool->setConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_MONDAY, $this->collectMetaField($data, FormEnum::MONDAY));
                 $this->settingsTool->setConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_TUESDAY, $this->collectMetaField($data, FormEnum::TUESDAY));
@@ -360,6 +382,7 @@ class WeekReportController extends AbstractController
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_WORKFLOW_START, $data[FormEnum::WORKFLOW_START]);
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY, $data[FormEnum::OVERTIME_NY]);
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY, $data[FormEnum::BREAKCHECKS_NY]);
+            $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_WEEKSTART_SUNDAY_NY, $data[FormEnum::WEEKSTART_SUNDAY_NY]);
             $this->settingsTool->setConfiguration(ConfigEnum::CUSTOMER_FOR_FREE_DAYS, $this->collectCustomerForFreeDays($data));
 
             $this->flashSuccess('action.update.success');

@@ -38,7 +38,6 @@ class ApprovalRepository extends ServiceEntityRepository
      * @var SettingsTool
      */
     private $settingsTool;
-
     /**
      * @var ApprovalSettingsInterface
      */
@@ -92,7 +91,12 @@ class ApprovalRepository extends ServiceEntityRepository
     public function createApproval(string $data, User $user): ?Approval
     {
         $startDate = new DateTime($data);
-        $endDate = (clone $startDate)->modify('next sunday');
+        if ($this->settingsTool->isInConfiguration(ConfigEnum::APPROVAL_WEEKSTART_SUNDAY_NY)) {
+            $endDate = (clone $startDate)->modify('next sunday');
+        } else {
+            $endDate = (clone $startDate)->modify('next saturday');
+        }
+        
         date_time_set($endDate,23,59,59);
 
         $approval = $this->checkLastStatus($startDate, $endDate, $user, ApprovalStatus::NOT_SUBMITTED, new Approval());
@@ -380,19 +384,35 @@ class ApprovalRepository extends ServiceEntityRepository
         }
         $approval_ws_start_week = (new DateTime($approval_workflow_start))->modify('-7 day')->format('Y-m-d');
 
-        if ($firstDay->format('D') !== 'Mon') {
-            $firstDay = clone new DateTime($firstDay->modify('last monday')->format('Y-m-d H:i:s'));
-        }
-        while ($firstDay <= new DateTime('today')) {
-            if (!\in_array($firstDay, $approvedWeeks) && $firstDay->format('Y-m-d') > $approval_ws_start_week) {
-                $weeks[] = (object) [
-                    'label' => $this->formatting->parseDate($firstDay),
-                    'value' => (clone $firstDay)->format('Y-m-d')
-                ];
+        if (!$this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WEEKSTART_SUNDAY_NY)) {
+            if ($firstDay->format('D') !== 'Mon') {
+                $firstDay = clone new DateTime($firstDay->modify('last monday')->format('Y-m-d H:i:s'));
             }
-            $firstDay->modify('next monday');
+            while ($firstDay <= new DateTime('today')) {
+                if (!in_array($firstDay, $approvedWeeks) && $firstDay->format('Y-m-d') > $approval_ws_start_week) {
+                    $weeks[] = (object) [
+                        'label' => $this->formatting->parseDate($firstDay),
+                        'value' => (clone $firstDay)->format('Y-m-d')
+                    ];
+                }
+                $firstDay->modify('next monday');
+            }
         }
-
+        else {
+            if ($firstDay->format('D') !== 'Sun') {
+              $firstDay = clone new DateTime($firstDay->modify('last sunday')->format('Y-m-d H:i:s'));
+            }
+            while ($firstDay <= new DateTime('today')) {
+                if (!in_array($firstDay, $approvedWeeks) && $firstDay->format('Y-m-d') > $approval_ws_start_week) {
+                    $weeks[] = (object) [
+                        'label' => $this->formatting->parseDate($firstDay),
+                        'value' => (clone $firstDay)->format('Y-m-d')
+                    ];
+                }
+                $firstDay->modify('next sunday');
+            }
+        }
+          
         array_pop($weeks);
 
         return $weeks;
@@ -588,16 +608,32 @@ class ApprovalRepository extends ServiceEntityRepository
         });
         $month = (new DateTime($date))->modify('first day of this month');
         $endDay = (new DateTime($date))->modify('last day of this month');
-        if ($month->format('N') !== '1') {
-            $month->modify('previous monday');
-        }
 
-        while ($month <= $endDay) {
-            $pastRows = $this->getWeekUserList($month);
-            if (!empty(array_diff($users, array_column($pastRows, 'user')))) {
-                return false;
+        if (!$this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WEEKSTART_SUNDAY_NY)) {
+            if ($month->format('N') !== '1') {
+                $month->modify('previous monday');
             }
-            $month->modify('next monday');
+
+            while ($month <= $endDay) {
+                $pastRows = $this->getWeekUserList($month);
+                if (!empty(array_diff($users, array_column($pastRows, 'user')))) {
+                    return false;
+                }
+                $month->modify('next monday');
+            }
+        }
+        else {
+            if ($month->format('N') !== '0') {
+                $month->modify('previous sunday');
+            }
+
+            while ($month <= $endDay) {
+                $pastRows = $this->getWeekUserList($month);
+                if (!empty(array_diff($users, array_column($pastRows, 'user')))) {
+                    return false;
+                }
+                $month->modify('next sunday');
+            }
         }
 
         return true;

@@ -23,6 +23,8 @@ use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalStatusRepository;
 use KimaiPlugin\ApprovalBundle\Repository\LockdownRepository;
 use KimaiPlugin\ApprovalBundle\Toolbox\EmailTool;
+use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
+use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use Nelmio\ApiDocBundle\Annotation\Security as ApiSecurity;
 use Swagger\Annotations as SWG;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -77,6 +79,10 @@ final class ApprovalBundleApiController extends AbstractController
      * @var LockdownRepository
      */
     private $lockdownRepository;
+    /**
+     * @var SettingsTool
+     */
+    private $settingsTool;
 
     public function __construct(
         ViewHandlerInterface $viewHandler,
@@ -88,7 +94,8 @@ final class ApprovalBundleApiController extends AbstractController
         ApprovalStatusRepository $approvalStatusRepository,
         AuthorizationCheckerInterface $security,
         TranslatorInterface $translator,
-        LockdownRepository $lockdownRepository
+        LockdownRepository $lockdownRepository,
+        SettingsTool $settingsTool
     ) {
         $this->viewHandler = $viewHandler;
         $this->userRepository = $userRepository;
@@ -100,6 +107,7 @@ final class ApprovalBundleApiController extends AbstractController
         $this->approvalStatusRepository = $approvalStatusRepository;
         $this->translator = $translator;
         $this->lockdownRepository = $lockdownRepository;
+        $this->settingsTool = $settingsTool;
     }
 
     /**
@@ -119,7 +127,7 @@ final class ApprovalBundleApiController extends AbstractController
      *      name="date",
      *      in="query",
      *      type="string",
-     *      description="Date as monday of selected week: Y-m-d",
+     *      description="Date as monday/sunday of selected week: Y-m-d (depends on setting)",
      *      required=true,
      * )
      *
@@ -190,8 +198,15 @@ final class ApprovalBundleApiController extends AbstractController
     protected function getSelectedDate(Request $request): DateTime
     {
         $selectedDate = new DateTime($request->query->get('date'));
-        if ($selectedDate->format('N') != 1) {
-            $selectedDate->modify('previous Monday');
+        if (!$this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WEEKSTART_SUNDAY_NY)){
+            if ($selectedDate->format('N') != 1) {
+                $selectedDate->modify('previous Monday');
+            }
+        }
+        else {
+            if ($selectedDate->format('N') != 0) {
+                $selectedDate->modify('previous Sunday');
+            }
         }
 
         return $selectedDate;
