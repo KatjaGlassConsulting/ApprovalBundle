@@ -28,6 +28,10 @@
         <source>menu.report_overtime</source>
         <target>Overtime</target>
       </trans-unit>
+      <trans-unit id="menu.settings_overtime_history">
+        <source>menu.settings_overtime_history</source>
+        <target>Settings overtime</target>
+      </trans-unit>
       <trans-unit id="table.history">
         <source>table.history</source>
         <target>History for</target>
@@ -472,6 +476,13 @@
       <trans-unit id="label.overtime">
         <source>label.overtime</source>
         <target>Overtime</target>
+      </trans-unit>
+      <trans-unit id="description.overtime_history">
+        <source>description.overtime_history</source>
+        <target>
+          Overtime History - if manual overtime adjustments should be performed, these can be entered here. The total overtime per year
+          consider these positive or negative values.
+        </target>
       </trans-unit>
     </body>
   </file>

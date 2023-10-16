@@ -24,6 +24,10 @@
         <source>menu.report_overtime</source>
         <target>Tijekom vremena</target>
       </trans-unit>
+      <trans-unit id="menu.settings_overtime_history">
+        <source>menu.settings_overtime_history</source>
+        <target>Postavke prekovremenog rada</target>
+      </trans-unit>
       <trans-unit id="table.history">
         <source>table.history</source>
         <target>Povijest za</target>
@@ -465,6 +469,13 @@
       <trans-unit id="label.overtime">
         <source>label.overtime</source>
         <target>Tijekom vremena</target>
+      </trans-unit>
+      <trans-unit id="description.overtime_history">
+        <source>description.overtime_history</source>
+        <target>
+          Povijest prekovremenog rada - ako je potrebno izvršiti ručna podešavanja prekovremenog rada, ona se mogu unijeti ovdje. Ukupni prekovremeni rad po godini
+          uzeti u obzir te pozitivne ili negativne vrijednosti.
+        </target>
       </trans-unit>
     </body>
   </file>

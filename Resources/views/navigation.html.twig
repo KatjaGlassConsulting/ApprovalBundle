@@ -41,5 +41,12 @@
                 {{ 'menu.settings_workday_history' |trans }}
             </a>
         </li>
+        <li{% if current_tab == "settings_overtime_history" %} class="active"{% endif %}>
+            <a href="{{ path('approval_settings_overtime_history') }}"
+               style="cursor: pointer"
+               aria-expanded="false">
+                {{ 'menu.settings_overtime_history' |trans }}
+            </a>
+        </li>
     {% endif %}
 </ul>

@@ -1,0 +1,105 @@
+{% extends '@Approval/layout.html.twig' %}
+{% import "macros/widgets.html.twig" as widgets %}
+
+{% block report_title %}{{ report_title|trans({}, 'ApprovalBundle') }}{% endblock %}
+
+{% block page_actions %}
+    {% import "macros/widgets.html.twig" as widgets %}
+    {% if (is_granted('ROLE_SUPER_ADMIN')) %}
+        {% set actions = {'create': {'url': path('approval_create_overtime_history'), 'class': 'modal-ajax-form', 'attr': {'data-event': 'kimai.appOvertimeHistory'}}} %}
+        {% set event = trigger('actions.create_overtime_history', {'actions': actions, 'view': 'create'}) %}
+        {{ widgets.page_actions(event.payload.actions) }}
+    {% endif %}
+{% endblock %}
+
+{% set tableName = 'overtime_history' %}
+{% block report %}
+    {% block history %}
+        <p>{{ 'description.overtime_history'|trans }}</p>
+
+        <table class="table table-bordered dataTable">
+            <thead>
+                <tr>
+                    <th>{{ 'label.user'|trans }}</th>
+                    <th>{{ 'label.date'|trans }}</th>
+                    <th>{{ 'label.duration'|trans }}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in overtimeHistory %}
+                    <tr>
+                        <td class="text-center">{{ entry.user.displayName }}</td>
+                        <td class="text-center">{{ entry.applyDate | date_format('Y-m-d') }}</td>
+                        <td class="text-center">{{ entry.duration | formatHours }}</td>
+                        <td>
+                            {% set deleteLinkPath = path('delete_overtime_history', {'entryId': entry.id }) %}
+                            <button type="button" class="btn btn-sm btn-warning closeModal" 
+                                    onclick="$('#deniedLink').attr('href', '{{ deleteLinkPath }}');">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% endblock %}
+    <div id="deleteMessage" hidden>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="text-right">
+                        <span aria-hidden="true" class="closeModal pointer">×</span>
+                    </div>
+                    <h4 class="modal-title" id="form_modal_label">
+                        Delete?
+                    </h4>
+                </div>
+                <div class="modal-footer">
+                    <a href=""
+                        class="btn btn-primary btn-create" id="deniedLink"
+                        style="float: left;">
+                        Delete
+                    </a>
+                    <button type="button" class="btn btn-default btn-cancel closeModal" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#deleteMessage").hide();
+            $(document).on("click", ".closeModal", function () {
+                if ($("#deleteMessage").css("display") == "none") {
+                    $("#deleteMessage").show();
+                } else {
+                    $("#deleteMessage").hide();
+                }
+              });
+        });    
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+    #deleteMessage {
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        #deleteMessage > * {
+            margin-top: 20%;
+        }
+    </style>
+{% endblock %}

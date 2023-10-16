@@ -24,6 +24,7 @@ use KimaiPlugin\ApprovalBundle\Toolbox\Formatting;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalWorkdayHistoryRepository;
+use KimaiPlugin\ApprovalBundle\Repository\ApprovalOvertimeHistoryRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ReportRepository;
 
 /**
@@ -60,6 +61,11 @@ class ApprovalRepository extends ServiceEntityRepository
     private $approvalWorkdayHistoryRepository;
 
     /**
+     * @var ApprovalOvertimeHistoryRepository
+     */
+    private $approvalOvertimeHistoryRepository;
+
+    /**
      * @var ReportRepository
      */
     private $reportRepository;
@@ -73,6 +79,7 @@ class ApprovalRepository extends ServiceEntityRepository
         ManagerRegistry $registry,
         ApprovalSettingsInterface $metaFieldRuleRepository,
         ApprovalWorkdayHistoryRepository $approvalWorkdayHistoryRepository,
+        ApprovalOvertimeHistoryRepository $approvalOvertimeHistoryRepository,
         ReportRepository $reportRepository,
         TimesheetRepository $timesheetRepository,
         SettingsTool $settingsTool,
@@ -82,6 +89,7 @@ class ApprovalRepository extends ServiceEntityRepository
         parent::__construct($registry, Approval::class);
         $this->metaFieldRuleRepository = $metaFieldRuleRepository;
         $this->approvalWorkdayHistoryRepository = $approvalWorkdayHistoryRepository;
+        $this->approvalOvertimeHistoryRepository = $approvalOvertimeHistoryRepository;
         $this->reportRepository = $reportRepository;
         $this->timesheetRepository = $timesheetRepository;
         $this->settingsTool = $settingsTool;

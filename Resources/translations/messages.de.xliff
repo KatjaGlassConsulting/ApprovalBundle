@@ -28,6 +28,10 @@
         <source>menu.report_overtime</source>
         <target>Überstunden</target>
       </trans-unit>
+      <trans-unit id="menu.settings_overtime_history">
+        <source>menu.settings_overtime_history</source>
+        <target>Einstellungen Überstunden</target>
+      </trans-unit>
       <trans-unit id="table.history">
         <source>table.history</source>
         <target>Historie für</target>
@@ -472,6 +476,13 @@
       <trans-unit id="label.overtime">
         <source>label.overtime</source>
         <target>Überstunden</target>
+      </trans-unit>
+      <trans-unit id="description.overtime_history">
+        <source>description.overtime_history</source>
+        <target>
+          Überstunden Historie - wenn es einen manuellen Überstundenausgleich geben soll, so kann dieser hier eingetragen werden. Die Gesammtüberstunden pro
+          Jahr werden entsprechend dieser positiven / negativen Werte berechnet.
+        </target>
       </trans-unit>
     </body>
   </file>
