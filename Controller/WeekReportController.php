@@ -40,7 +40,9 @@ use KimaiPlugin\ApprovalBundle\Settings\ApprovalSettingsInterface;
 use KimaiPlugin\ApprovalBundle\Toolbox\BreakTimeCheckToolGER;
 use KimaiPlugin\ApprovalBundle\Toolbox\Formatting;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
+use PhpOffice\PhpSpreadsheet\Calculation\Logical\Boolean;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -213,7 +215,14 @@ class WeekReportController extends AbstractController
      */
     public function toApprove(): Response
     {
-        $users = $this->getUsers();
+        $users = $this->getUsers(false);
+
+        $warningNoUsers = false;
+        if (empty($users)){
+            $warningNoUsers = true;
+            $users = [$this->getUser()];
+        }
+
         $allRows = $this->approvalRepository->findAllWeek($users);
 
         $pastRows = [];
@@ -246,7 +255,7 @@ class WeekReportController extends AbstractController
             'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'showOvertime' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'settingsWarning' => !$this->approvalSettings->isFullyConfigured(),
-            'warningNoUsers' => empty($users)
+            'warningNoUsers' => $warningNoUsers
         ]);
     }
 
@@ -336,6 +345,29 @@ class WeekReportController extends AbstractController
         ]); 
     }
 
+    /**
+     * @Route(path="/deleteWorkdayHistory", name="delete_workday_history", methods={"GET"})
+     *
+     * @param Request $request
+     * @return Response
+     * @throws Exception
+     */
+    public function deleteWorkdayHistoryAction(Request $request)
+    {
+        $entryId = $request->get('entryId');
+
+        $workdayHistory = $this->approvalWorkdayHistoryRepository->find($entryId);
+        if ($workdayHistory) {
+            $user = $workdayHistory->getUser();
+
+            $this->approvalWorkdayHistoryRepository->remove($workdayHistory, true);
+            $this->approvalTimesheetRepository->updateDaysOff($user);
+            $this->approvalRepository->updateExpectedActualDurationForUser($user);
+        }
+
+        return $this->redirectToRoute('approval_bundle_settings_workday');
+    }
+
     private function createSettingsForm(Request $request)
     {
         $form = $this->createForm(SettingsForm::class, null, [
@@ -373,7 +405,7 @@ class WeekReportController extends AbstractController
         return !empty($data[$key]) ? ($data[$key])->getId() : '';
     }
 
-    private function getUsers(): array
+    private function getUsers(bool $includeOwnForTeam = true): array
     {
         if ($this->canManageAllPerson()) {
             $users = $this->userRepository->findAll();
@@ -388,7 +420,21 @@ class WeekReportController extends AbstractController
                     $users[] = $user;
                 }
             }
+
+            if (empty($users)) {
+                $users = [$user];
+            }
+
             $users = array_unique($users);
+
+            if (!$includeOwnForTeam)
+            {
+                // remove the active user from the list
+                $index = array_search($this->getUser(), $users);
+                if ($index !== false) {
+                    unset($users[$index]);
+                }
+            }
         } else {
             $users = [$this->getUser()];
         }

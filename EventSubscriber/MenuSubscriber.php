@@ -115,6 +115,12 @@ class MenuSubscriber implements EventSubscriberInterface
                     $users[] = $user;
                 }
             }
+
+            if (empty($users)) {
+                $users = [$user];
+            }
+            
+            $users = array_unique($users);
         } else {
             $users = [$user];
         }

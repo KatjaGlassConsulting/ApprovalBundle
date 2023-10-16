@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.9.9 to 0.9.10
+
+- Teamlead does not see the own entry for "to approval" tab
+- Users can see the overtime also without beeing teamlead or admin
+- Teamlead (according role) having no team, see only tabs with the own entries
+- Settings for workdays - entries can now also be deleted (recalculation of vacation/holidays/hours done)
+
 ## 0.9.8 to 0.9.9
 
 - Break worktime check updates

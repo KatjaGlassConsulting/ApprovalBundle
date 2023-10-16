@@ -55,7 +55,6 @@ class OvertimeReportController extends AbstractController
 
     /** 
      * @Route(path="/overtime_by_user", name="overtime_bundle_report", methods={"GET","POST"})
-     * @Security("is_granted('view_team_approval') or is_granted('view_all_approval') ")
      * @throws Exception
      */
     public function overtimeByUser(Request $request): Response
@@ -109,6 +108,9 @@ class OvertimeReportController extends AbstractController
                 } else {
                     $users[] = $user;
                 }
+            }
+            if (empty($users)) {
+                $users = [$user];
             }
             $users = array_unique($users);
         } else {
