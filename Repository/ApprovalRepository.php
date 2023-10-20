@@ -129,18 +129,28 @@ class ApprovalRepository extends ServiceEntityRepository
             $yearOfEnd = $endDate->format('Y');            
             $firstOfYear = new \DateTime("$yearOfEnd-01-01");
             $startDurationYear = max($firstApprovalDate, $firstOfYear);
-            $overtimeDuration = $this->getExpectedActualDurations($user, $startDurationYear, $end); 
+
+            $adoptionUntil = clone $startDurationYear;
+            $adoptionUntil->modify('-1 day');
+            $manualAdoption = $this->approvalOvertimeHistoryRepository->getOvertimeCorrectionForUserByStardEndDate($user, $firstOfYear, $adoptionUntil);
+
+            $overtimeDuration = $this->getExpectedActualDurations($user, $startDurationYear, $end, $manualAdoption); 
+            file_put_contents("C:/temp/blub.txt", "blub - " . json_encode($startDurationYear) . 
+                              json_encode($overtimeDuration) . "\n", FILE_APPEND);
             return $overtimeDuration;
         }
 
         return null;
     }
 
-    public function getExpectedActualDurations(User $user, \DateTime $startDate, \DateTime $endDate): ?array
+    public function getExpectedActualDurations(User $user, \DateTime $startDate, \DateTime $endDate, $additionalAdd = 0): ?array
     {
         $expectedDuration = $this->calculateExpectedDurationByUserAndDate($user, $startDate, $endDate);
         $actualDuration = intval($this->timesheetRepository->getStatistic($this->timesheetRepository::STATS_QUERY_DURATION, $startDate, $endDate, $user));
         $overtime = $actualDuration - $expectedDuration;
+
+        $manualAdoption = $this->approvalOvertimeHistoryRepository->getOvertimeCorrectionForUserByStardEndDate($user, $startDate, $endDate);
+        $overtime = $overtime + $manualAdoption + $additionalAdd;
 
         $overtimeFormatted = $this->formatting->formatDuration($overtime);
         $result =
@@ -149,6 +159,7 @@ class ApprovalRepository extends ServiceEntityRepository
             'actualDuration' => $actualDuration,
             'overtime' => $overtime,
             'overtimeFormatted' => $overtimeFormatted,
+            'manualAdoption' => $manualAdoption,
             'endDay' => $endDate->format('Y-m-d')
         ];
 
@@ -293,7 +304,8 @@ class ApprovalRepository extends ServiceEntityRepository
                 $endDate = new \DateTime($allWeekArray[$i]['endDate']);
                 $overtimeYearly = $this->getExpectedActualDurationsForYear($user, $endDate);
                 $sumOvertime = $overtimeYearly['overtime'];
-                $allWeekArray[$i]['overtimeYearly'] = $sumOvertime;                
+                $allWeekArray[$i]['overtimeYearly'] = $sumOvertime;
+                $allWeekArray[$i]['manualAdoption'] = $overtimeYearly['manualAdoption'];
             }
             else {
                 $sumOvertime = $sumOvertime + $allWeekArray[$i]['actualDuration'] - $allWeekArray[$i]['expectedDuration'];

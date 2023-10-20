@@ -37,8 +37,8 @@
                         {% set overtime = entry.actualDuration - entry.expectedDuration %}
                         <td class="text-center">{{ entry.startDate }}</td>
                         <td class="text-center">{{ entry.endDate }}</td>
-                        <td class="text-center">{{ entry.expectedDuration | formatHours }}</td>
-                        <td class="text-center">{{ entry.actualDuration | formatHours }}</td>
+                        <td class="text-center">{{ entry.expectedDuration | duration }}</td>
+                        <td class="text-center">{{ entry.actualDuration | duration }}</td>
                         <td class="text-center">{{ overtime | duration }}</td>
                         <td class="text-center">{{ entry.overtimeYearly | duration }}</td>
                         <td class="text-center">{{ entry.status }}</td>

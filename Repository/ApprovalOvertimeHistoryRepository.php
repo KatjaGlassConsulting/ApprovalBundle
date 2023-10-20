@@ -40,28 +40,43 @@ class ApprovalOvertimeHistoryRepository extends ServiceEntityRepository
         }
     }
 
+    
+
+    /**
+     * @return array
+     */
+    public function findAll()
+    {
+        return $this->getEntityManager()->createQueryBuilder()
+            ->select('aoh')
+            ->from(ApprovalOvertimeHistory::class, 'aoh')
+            ->addOrderBy('aoh.user')
+            ->addOrderBy('aoh.applyDate', 'DESC')
+            ->addOrderBy('aoh.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     /**
      * @return int - Returns duration according overtimeHistory for a subject for the selected year until including date
      */
-    public function getOvertimeCorrectionForUserByDateInYear(User $user, \DateTime $date): int
+    public function getOvertimeCorrectionForUserByStardEndDate(User $user, \DateTime $startDate, \DateTime $endDate): int
     {
-        $firstYearDate = clone $date;
-        $firstYearDate->setDate($firstYearDate->format('Y'), 1, 1);
 
         $result = $this->getEntityManager()->createQueryBuilder()
-            ->select('sum(duration)')
+            ->select('sum(aoh.duration)')
             ->from(ApprovalOvertimeHistory::class, 'aoh')
             ->andWhere('aoh.user = :user')
-            ->andWhere('aoh.applyDate <= :date')
-            ->andWhere('aoh.applyDate >= :firstYearDate')
+            ->andWhere('aoh.applyDate <= :endDate')
+            ->andWhere('aoh.applyDate >= :startDate')
             ->setParameter('user', $user)
-            ->setParameter('date', $date)
-            ->setParameter('firstYearDate', $firstYearDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('startDate', $startDate)
             ->setMaxResults(1)
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getSingleScalarResult()
         ;
 
-        return ($result !== null) ? $result : 0;
+        return $result ?? 0;
     }
 }

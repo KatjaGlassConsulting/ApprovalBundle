@@ -95,7 +95,7 @@ class SettingsOvertimeController extends AbstractController
                 $this->approvalOvertimeHistoryRepository->save($overtimeHistory, true);  
                 $this->flashSuccess('action.update.success');
 
-                return $this->redirectToRoute('approval_settings_overtime');
+                return $this->redirectToRoute('approval_settings_overtime_history');
             } catch (ORMException $e) {
                 $this->flashUpdateException($e);
             }
@@ -126,6 +126,6 @@ class SettingsOvertimeController extends AbstractController
 
             $this->approvalOvertimeHistoryRepository->remove($overtimeHistory, true);
         }
-        return $this->redirectToRoute('approval_settings_overtime');
+        return $this->redirectToRoute('approval_settings_overtime_history');
     }
 }
