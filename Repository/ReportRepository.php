@@ -17,6 +17,7 @@ use App\Repository\ActivityRepository;
 use App\Repository\ProjectRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use DateTime;
 
 /**
  * @method Timesheet|null find($id, $lockMode = null, $lockVersion = null)
@@ -98,7 +99,15 @@ class ReportRepository extends ServiceEntityRepository
 
     public function getActualWorkingDurationStatistic(User $user, \DateTime $begin, \DateTime $end): int
     {
-        return $this->getActualWorkingDuration($begin, $end, $user);
+        if ($end->format('H:i:s') == "00:00:00"){
+            $maxEndTime = clone $end;
+            $maxEndTime->setTime(23, 59, 59);
+            return $this->getActualWorkingDuration($begin, $maxEndTime, $user);
+        }
+        else {
+            return $this->getActualWorkingDuration($begin, $end, $user);
+        }
+        
     }
 
     private function getActualWorkingDuration(\DateTime $begin, \DateTime $end, User $user) : ?int

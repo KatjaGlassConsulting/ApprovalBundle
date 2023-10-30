@@ -6,6 +6,7 @@
 - Users can see the overtime also without beeing teamlead or admin
 - Teamlead (according role) having no team, see only tabs with the own entries
 - Settings for workdays - entries can now also be deleted (recalculation of vacation/holidays/hours done)
+- Bugfix: Overtime storage along approvals corrected - sunday working times had been excluded before
 
 ## 0.9.8 to 0.9.9
 

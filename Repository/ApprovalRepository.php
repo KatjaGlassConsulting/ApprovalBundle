@@ -134,9 +134,7 @@ class ApprovalRepository extends ServiceEntityRepository
             $adoptionUntil->modify('-1 day');
             $manualAdoption = $this->approvalOvertimeHistoryRepository->getOvertimeCorrectionForUserByStardEndDate($user, $firstOfYear, $adoptionUntil);
 
-            $overtimeDuration = $this->getExpectedActualDurations($user, $startDurationYear, $end, $manualAdoption); 
-            file_put_contents("C:/temp/blub.txt", "blub - " . json_encode($startDurationYear) . 
-                              json_encode($overtimeDuration) . "\n", FILE_APPEND);
+            $overtimeDuration = $this->getExpectedActualDurations($user, $startDurationYear, $end, $manualAdoption);
             return $overtimeDuration;
         }
 
