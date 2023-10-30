@@ -3,10 +3,11 @@
 ## 0.9.9 to 0.9.10
 
 - Teamlead does not see the own entry for "to approval" tab
-- Users can see the overtime also without beeing teamlead or admin
+- Users can see the overtime also without being teamlead or admin
 - Teamlead (according role) having no team, see only tabs with the own entries
 - Settings for workdays - entries can now also be deleted (recalculation of vacation/holidays/hours done)
 - Bugfix: Overtime storage along approvals corrected - sunday working times had been excluded before
+- new overtime settings to allow manual +/- updates
 
 ## 0.9.8 to 0.9.9
 
