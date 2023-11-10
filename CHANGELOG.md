@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.10 to 0.9.11
+
+- manual overtime adoption is now also considered for the "week_by_user" view when the approval is performed on
+
 ## 0.9.9 to 0.9.10
 
 - Teamlead does not see the own entry for "to approval" tab

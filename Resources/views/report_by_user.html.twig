@@ -200,8 +200,8 @@
                         </td>
                     {% endfor %}
                 </tr>
-                {% if yearExpectedDuration is not null and yearActualDuration is not null %}
-                    {% set yearDiff = yearActualDuration - yearExpectedDuration %}
+                {% if yearDuration is not null %}
+                    {% set yearDiff = yearDuration.actualDuration - yearDuration.expectedDuration + yearDuration.manualAdoption %}
                     <tr class="summary">
                     <td>{{ 'label.yearly_overtime'|trans }}</td>
                     <td class="text-nowrap text-center total{% if yearDiff < 0 %} redText{% endif %}">{{ yearDiff|duration }}</td>

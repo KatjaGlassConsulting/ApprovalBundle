@@ -159,15 +159,10 @@ class WeekReportController extends AbstractController
         $selectedUserSundayIssue = $selectedUser->isFirstDayOfWeekSunday();
         $currentUserSundayIssue = $this->getUser()->isFirstDayOfWeekSunday();
 
-        $yearlyTimeExpected = null;
-        $yearlyTimeActual = null;
+        $overtimeDuration = null;
         if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)){
             // use actual year display, in case of "starting", use first approval date
             $overtimeDuration = $this->approvalRepository->getExpectedActualDurationsForYear($selectedUser, $end); 
-            if ($overtimeDuration !== null){
-                $yearlyTimeExpected = $overtimeDuration['expectedDuration'];
-                $yearlyTimeActual = $overtimeDuration['actualDuration'];
-            }
         }
 
         return $this->render('@Approval/report_by_user.html.twig', [
@@ -195,8 +190,7 @@ class WeekReportController extends AbstractController
             'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'showOvertime' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'expectedDuration' => $expectedDuration,
-            'yearExpectedDuration' => $yearlyTimeExpected,
-            'yearActualDuration' => $yearlyTimeActual,
+            'yearDuration' => $overtimeDuration,
             'settingsWarning' => !$this->approvalSettings->isFullyConfigured(),
             'isSuperAdmin' => $this->getUser()->isSuperAdmin(),
             'warningNoUsers' => empty($users),

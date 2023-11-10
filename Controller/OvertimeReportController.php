@@ -69,6 +69,8 @@ class OvertimeReportController extends AbstractController
         $values = new WeekByUser();
         $values->setUser($firstUser);
 
+        file_put_contents("C:/temp/blub.txt", "users - " . json_encode($users) . "\n", FILE_APPEND);
+
         $form = $this->createForm(OvertimeByUserForm::class, $values, [
             'users' => $users,
         ]);
