@@ -19,16 +19,14 @@ use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
 use Nelmio\ApiDocBundle\Annotation\Security as ApiSecurity;
-use Swagger\Annotations as SWG;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @SWG\Tag(name="ApprovalBundleApi")
- */
+#[OA\Tag(name: 'ApprovalBundleApi')]
 final class ApprovalOvertimeController extends AbstractController
 {
     /**
@@ -73,28 +71,27 @@ final class ApprovalOvertimeController extends AbstractController
     }
 
     /**
-     * @SWG\Response(
-     *     response=200,
-     *     description="Get overtime for that year"
-     * )
-     *
-     * @SWG\Parameter(
-     *      name="user",
-     *      in="query",
-     *      type="integer",
-     *      description="User ID to get information for",
-     *      required=false,
-     * ),
-     * @SWG\Parameter(
-     *      name="date",
-     *      in="query",
-     *      type="string",
-     *      description="Date to get overtime until/including this date: Y-m-d",
-     *      required=true,
-     * )
      *
      * @throws Exception
      */
+    #[OA\Response(
+        response: 200,
+        description: 'Get overtime for that year',
+    )]
+    #[OA\Parameter(
+        name: 'user',
+        in: 'query',
+        type: 'integer',
+        description: 'User ID to get information for',
+        required: false,
+    )]
+    #[OA\Parameter(
+        name: 'date',
+        in: 'query',
+        type: 'string',
+        description: 'Date to get overtime until/including this date: Y-m-d',
+        required: true,
+    )]
     #[Rest\Get(path: '/overtime_year')]
     #[ApiSecurity(name: 'apiUser')]
     #[ApiSecurity(name: 'apiToken')]

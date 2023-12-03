@@ -19,16 +19,14 @@ use KimaiPlugin\ApprovalBundle\Entity\Approval;
 use KimaiPlugin\ApprovalBundle\Entity\ApprovalStatus;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use Nelmio\ApiDocBundle\Annotation\Security as ApiSecurity;
-use Swagger\Annotations as SWG;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @SWG\Tag(name="ApprovalStatusApi")
- */
+#[OA\Tag(name: 'ApprovalStatusApi')]
 final class ApprovalStatusApiController extends AbstractController
 {
     /**
@@ -67,28 +65,27 @@ final class ApprovalStatusApiController extends AbstractController
     }
 
     /**
-     * @SWG\Response(
-     *     response=200,
-     *     description="Status of selected week"
-     * )
-     *
-     * @SWG\Parameter(
-     *      name="user",
-     *      in="query",
-     *      type="integer",
-     *      description="User ID to get information for",
-     *      required=false,
-     * ),
-     * @SWG\Parameter(
-     *      name="date",
-     *      in="query",
-     *      type="string",
-     *      description="Date as monday of selected week: Y-m-d",
-     *      required=true,
-     * )
      *
      * @throws Exception
      */
+    #[OA\Response(
+        response: 200,
+        description: 'Status of selected week',
+    )]
+    #[OA\Parameter(
+        name: 'user',
+        in: 'query',
+        type: 'integer',
+        description: 'User ID to get information for',
+        required: false,
+    )]
+    #[OA\Parameter(
+        name: 'date',
+        in: 'query',
+        type: 'string',
+        description: 'Date as monday of selected week: Y-m-d',
+        required: true,
+    )]
     #[Rest\Get(path: '/week-status')]
     #[ApiSecurity(name: 'apiUser')]
     #[ApiSecurity(name: 'apiToken')]

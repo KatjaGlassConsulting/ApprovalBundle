@@ -16,16 +16,14 @@ use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use Nelmio\ApiDocBundle\Annotation\Security as ApiSecurity;
-use Swagger\Annotations as SWG;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @SWG\Tag(name="ApprovalNextWeekApi")
- */
+#[OA\Tag(name: 'ApprovalNextWeekApi')]
 final class ApprovalNextWeekApiController extends AbstractController
 {
     /**
@@ -63,22 +61,21 @@ final class ApprovalNextWeekApiController extends AbstractController
         $this->translator = $translator;
     }
 
-    /**
-     * @SWG\Response(
-     *     response=200,
-     *     description="Status of selected week"
-     * )
-     *
-     * @SWG\Parameter(
-     *      name="user",
-     *      in="query",
-     *      type="integer",
-     *      description="User ID to get information for",
-     *      required=false,
-     * )
+    /*
      *
      * @throws Exception
      */
+    #[OA\Response(
+        response: 200,
+        description: 'Status of selected week',
+    )]
+    #[OA\Parameter(
+        name: 'user',
+        in: 'query',
+        type: 'integer',
+        description: 'User ID to get information for',
+        required: false,
+    )]
     #[Rest\Get(path: '/next-week')]
     #[ApiSecurity(name: 'apiUser')]
     #[ApiSecurity(name: 'apiToken')]

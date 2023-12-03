@@ -19,16 +19,14 @@ use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
 use Nelmio\ApiDocBundle\Annotation\Security as ApiSecurity;
-use Swagger\Annotations as SWG;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @SWG\Tag(name="ApprovalBundleApi")
- */
+#[OA\Tag(name: 'ApprovalBundleApi')]
 final class ApprovalOvertimeWeeklyController extends AbstractController
 {
     /**
@@ -73,28 +71,26 @@ final class ApprovalOvertimeWeeklyController extends AbstractController
     }
 
     /**
-     * @SWG\Response(
-     *     response=200,
-     *     description="Get weekly overtime overview for all weeks from 'date' and later"
-     * )
-     *
-     * @SWG\Parameter(
-     *      name="user",
-     *      in="query",
-     *      type="integer",
-     *      description="User ID to get information for",
-     *      required=false,
-     * ),
-     * @SWG\Parameter(
-     *      name="date",
-     *      in="query",
-     *      type="string",
-     *      description="Date to get weekly overtime overview up from this date: Y-m-d",
-     *      required=true,
-     * )
-     *
      * @throws Exception
      */
+    #[OA\Response(
+        response: 200,
+        description: "Get weekly overtime overview for all weeks from 'date' and later",
+    )]
+    #[OA\Parameter(
+        name: 'user',
+        in: 'query',
+        type: 'integer',
+        description: 'User ID to get information for',
+        required: false,
+    )]
+    #[OA\Parameter(
+        name: 'date',
+        in: 'query',
+        type: 'string',
+        description: 'Date to get weekly overtime overview up from this date: Y-m-d',
+        required: true,
+    )]
     #[Rest\Get(path: '/weekly_overtime')]
     #[ApiSecurity(name: 'apiUser')]
     #[ApiSecurity(name: 'apiToken')]

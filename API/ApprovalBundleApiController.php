@@ -24,7 +24,7 @@ use KimaiPlugin\ApprovalBundle\Repository\ApprovalStatusRepository;
 use KimaiPlugin\ApprovalBundle\Repository\LockdownRepository;
 use KimaiPlugin\ApprovalBundle\Toolbox\EmailTool;
 use Nelmio\ApiDocBundle\Annotation\Security as ApiSecurity;
-use Swagger\Annotations as SWG;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,9 +32,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @SWG\Tag(name="ApprovalBundleApi")
- */
+#[OA\Tag(name: 'ApprovalBundleApi')]
 final class ApprovalBundleApiController extends AbstractController
 {
     /**
@@ -103,28 +101,26 @@ final class ApprovalBundleApiController extends AbstractController
     }
 
     /**
-     * @SWG\Response(
-     *     response=200,
-     *     description="URL to submitted week"
-     * )
-     *
-     * @SWG\Parameter(
-     *      name="user",
-     *      in="query",
-     *      type="integer",
-     *      description="User ID to get information for",
-     *      required=false,
-     * ),
-     * @SWG\Parameter(
-     *      name="date",
-     *      in="query",
-     *      type="string",
-     *      description="Date as monday of selected week: Y-m-d",
-     *      required=true,
-     * )
-     *
      * @throws Exception
      */
+    #[OA\Response(
+        response: 200,
+        description: 'URL to submitted week',
+    )]
+    #[OA\Parameter(
+        name: 'user',
+        in: 'query',
+        type: 'integer',
+        description: 'User ID to get information for',
+        required: false,
+    )]
+    #[OA\Parameter(
+        name: 'date',
+        in: 'query',
+        type: 'string',
+        description: 'Date as monday of selected week: Y-m-d',
+        required: true,
+    )]
     #[Rest\Post(path: '/add_to_approve')]
     #[ApiSecurity(name: 'apiUser')]
     #[ApiSecurity(name: 'apiToken')]
