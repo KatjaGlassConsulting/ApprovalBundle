@@ -29,6 +29,11 @@
             "@phpstan"
         ]
     },
+    "autoload": {
+        "psr-4": {
+            "KimaiPlugin\\ApprovalBundle\\": ""
+        }
+    },
     "require": {
         "doctrine/dbal": "^2.1"
     },
