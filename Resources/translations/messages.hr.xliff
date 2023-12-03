@@ -457,7 +457,6 @@
           Uneseno radno vrijeme po danu vrijedi do dana "vrijedi do".
         </target>
       </trans-unit>
-      </trans-unit>
       <trans-unit id="label.addWorkdayHistory">
         <source>label.addWorkdayHistory</source>
         <target>Nova povijest radnih dana</target>
