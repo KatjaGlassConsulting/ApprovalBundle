@@ -13,7 +13,7 @@ use App\Entity\Team;
 use App\Entity\User;
 use App\Event\ConfigureMainMenuEvent;
 use App\Repository\UserRepository;
-use KevinPapst\AdminLTEBundle\Model\MenuItemModel;
+use App\Utils\MenuItemModel;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -63,7 +63,7 @@ class MenuSubscriber implements EventSubscriberInterface
         $isTeamLeadOrAdmin = $this->security->isGranted('view_all_approval') || $this->security->isGranted('view_team_approval');
         $menu = $event->getMenu();
         if (empty($users)) {
-            $menu->addItem(
+            $menu->addChild(
                 new MenuItemModel(
                     'approvalBundle',
                     'title.approval_bundle',
@@ -73,7 +73,7 @@ class MenuSubscriber implements EventSubscriberInterface
                 )
             );
         } else {
-            $menu->addItem(
+            $menu->addChild(
                 new MenuItemModel(
                     'approvalBundle',
                     'title.approval_bundle',
