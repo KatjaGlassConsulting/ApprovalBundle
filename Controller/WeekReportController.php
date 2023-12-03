@@ -16,7 +16,7 @@ use App\Entity\Timesheet;
 use App\Entity\User;
 use App\Form\Model\DateRange;
 use App\Model\DailyStatistic;
-use App\Reporting\WeekByUser;
+use App\Reporting\WeekByUser\WeekByUser;
 use App\Repository\Query\BaseQuery;
 use App\Repository\Query\TimesheetQuery;
 use App\Repository\TimesheetRepository;

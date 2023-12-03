@@ -9,7 +9,7 @@
 
 namespace KimaiPlugin\ApprovalBundle\Form;
 
-use App\Reporting\WeekByUser;
+use App\Reporting\WeekByUser\WeekByUser;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;

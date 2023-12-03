@@ -12,7 +12,7 @@ namespace KimaiPlugin\ApprovalBundle\Controller;
 use App\Controller\AbstractController;
 use App\Entity\Team;
 use App\Entity\User;
-use App\Reporting\WeekByUser;
+use App\Reporting\WeekByUser\WeekByUser;
 use App\Repository\UserRepository;
 use Exception;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
@@ -65,8 +65,6 @@ class OvertimeReportController extends AbstractController
 
         $values = new WeekByUser();
         $values->setUser($firstUser);
-
-        file_put_contents('C:/temp/blub.txt', 'users - ' . json_encode($users) . "\n", FILE_APPEND);
 
         $form = $this->createForm(OvertimeByUserForm::class, $values, [
             'users' => $users,
