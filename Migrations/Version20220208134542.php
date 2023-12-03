@@ -45,4 +45,9 @@ final class Version20220208134542 extends AbstractMigration
         $this->addSql('DROP TABLE kimai2_ext_approval_history');
         $this->addSql('DROP TABLE kimai2_ext_approval_status');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

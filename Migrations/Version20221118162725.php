@@ -46,4 +46,9 @@ final class Version20221118162725 extends AbstractMigration
         $this->addSql('DROP TABLE kimai2_ext_approval_workday_history');
         $this->addSql('ALTER TABLE kimai2_ext_approval DROP actual_duration');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

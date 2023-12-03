@@ -44,4 +44,9 @@ final class Version20231016134127 extends AbstractMigration
         $this->addSql('ALTER TABLE kimai2_ext_approval_overtime_history DROP FOREIGN KEY FK_785SHOC0A96ED141');
         $this->addSql('DROP TABLE kimai2_ext_approval_overtime_history');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

@@ -35,4 +35,9 @@ final class Version20220303134149 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE kimai2_ext_approval_history DROP message');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }
