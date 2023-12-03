@@ -1,19 +1,26 @@
 <?php
 
+/*
+ * This file is part of the Kimai time-tracking app.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace KimaiPlugin\ApprovalBundle\Repository;
 
-use KimaiPlugin\ApprovalBundle\Entity\ApprovalOvertimeHistory;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Entity\User;
- 
+use KimaiPlugin\ApprovalBundle\Entity\ApprovalOvertimeHistory;
+
 /**
  * @extends ServiceEntityRepository<ApprovalOvertimeHistory>
  *
  * @method ApprovalOvertimeHistory|null find($id, $lockMode = null, $lockVersion = null)
  * @method ApprovalOvertimeHistory|null findOneBy(array $criteria, array $orderBy = null)
- * @method ApprovalOvertimeHistory[]    findAll()
- * @method ApprovalOvertimeHistory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ApprovalOvertimeHistory[] findAll()
+ * @method ApprovalOvertimeHistory[] findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ApprovalOvertimeHistoryRepository extends ServiceEntityRepository
 {
@@ -40,8 +47,6 @@ class ApprovalOvertimeHistoryRepository extends ServiceEntityRepository
         }
     }
 
-    
-
     /**
      * @return array
      */
@@ -62,7 +67,6 @@ class ApprovalOvertimeHistoryRepository extends ServiceEntityRepository
      */
     public function getOvertimeCorrectionForUserByStardEndDate(User $user, \DateTime $startDate, \DateTime $endDate): int
     {
-
         $result = $this->getEntityManager()->createQueryBuilder()
             ->select('sum(aoh.duration)')
             ->from(ApprovalOvertimeHistory::class, 'aoh')

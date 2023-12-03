@@ -9,18 +9,16 @@
 
 namespace KimaiPlugin\ApprovalBundle\Repository;
 
+use App\Entity\Timesheet;
+use App\Entity\User;
+use App\Repository\CustomerRepository;
+use App\Repository\TimesheetRepository as CoreTimesheetRepository;
 use DateInterval;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Entity\User;
-use App\Repository\TimesheetRepository as CoreTimesheetRepository;
-use App\Repository\CustomerRepository;
-use App\Entity\Timesheet;
+use KimaiPlugin\ApprovalBundle\Entity\Approval;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
-use KimaiPlugin\ApprovalBundle\Entity\Approval;
-use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
-
 
 class ApprovalTimesheetRepository extends ServiceEntityRepository
 {
@@ -65,41 +63,39 @@ class ApprovalTimesheetRepository extends ServiceEntityRepository
     {
         $customer = $this->customerRepository->find($this->settingsTool->getConfiguration(ConfigEnum::CUSTOMER_FOR_FREE_DAYS));
 
-        $currentYear = date('Y'); 
-        $start = "01-01-" . strval($currentYear - 1);
+        $currentYear = date('Y');
+        $start = '01-01-' . \strval($currentYear - 1);
 
-        if ($customer != null){
-          $freeDaysTimesheetsQuery = $this->getEntityManager()->createQueryBuilder()
-                ->select('t')
-                ->from(Timesheet::class, 't')
-                ->where('t.user = :user')
-                ->setParameter('user', $user)
-                ->join('t.project', 'p')
-                ->join('p.customer', 'c')
-                ->andWhere('c.id = :customerId')
-                ->andWhere('t.begin >= :begin')
-                ->setParameter('begin', $start)
-                ->setParameter('customerId', $customer->getId());        
+        if ($customer != null) {
+            $freeDaysTimesheetsQuery = $this->getEntityManager()->createQueryBuilder()
+                  ->select('t')
+                  ->from(Timesheet::class, 't')
+                  ->where('t.user = :user')
+                  ->setParameter('user', $user)
+                  ->join('t.project', 'p')
+                  ->join('p.customer', 'c')
+                  ->andWhere('c.id = :customerId')
+                  ->andWhere('t.begin >= :begin')
+                  ->setParameter('begin', $start)
+                  ->setParameter('customerId', $customer->getId());
             $freeDaysTimesheets = $freeDaysTimesheetsQuery->getQuery()->getResult();
 
             foreach ($freeDaysTimesheets as $timesheet) {
                 $timeSheetDuration = $timesheet->getDuration();
                 $expectedCurrent = 0;
                 $expectedCurrent = $this->approvalRepository->getExpectTimeForDate($timesheet->getBegin(), $user, $expectedCurrent);
-                if ($timeSheetDuration != $expectedCurrent){
+                if ($timeSheetDuration != $expectedCurrent) {
                     // if duration differs, then update end and duration
                     $newEnd = clone $timesheet->getBegin();
-                    $newEnd->add(new DateInterval('PT' . $expectedCurrent. 'S'));                
+                    $newEnd->add(new DateInterval('PT' . $expectedCurrent . 'S'));
                     $timesheet->setEnd(null);   // reset rates if available (this should not be the case)
                     $timesheet->setEnd($newEnd);
                     $timesheet->setDuration($expectedCurrent);
                     $this->getEntityManager()->persist($timesheet);
-              }
-          }
+                }
+            }
 
-          $this->getEntityManager()->flush();
+            $this->getEntityManager()->flush();
         }
-
-        
     }
 }

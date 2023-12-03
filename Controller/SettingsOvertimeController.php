@@ -9,16 +9,16 @@
 
 namespace KimaiPlugin\ApprovalBundle\Controller;
 
-use Doctrine\ORM\Exception\ORMException;
 use App\Controller\AbstractController;
+use App\Repository\UserRepository;
+use Doctrine\ORM\Exception\ORMException;
 use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use KimaiPlugin\ApprovalBundle\Entity\ApprovalOvertimeHistory;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
+use KimaiPlugin\ApprovalBundle\Form\AddOvertimeHistoryForm;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalOvertimeHistoryRepository;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
-use KimaiPlugin\ApprovalBundle\Form\AddOvertimeHistoryForm;
-use App\Repository\UserRepository;
-use KimaiPlugin\ApprovalBundle\Entity\ApprovalOvertimeHistory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -47,12 +47,12 @@ class SettingsOvertimeController extends AbstractController
     #[Security("is_granted('view_team_approval') or is_granted('view_all_approval') ")]
     public function settingsOvertime(Request $request): Response
     {
-        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY) == false){
+        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY) == false) {
             return $this->redirectToRoute('approval_bundle_report');
         }
 
         $overtimeHistory = $this->approvalOvertimeHistoryRepository->findAll();
-         
+
         return $this->render('@Approval/settings_overtime_history.html.twig', [
             'current_tab' => 'settings_overtime_history',
             'overtimeHistory' => $overtimeHistory,
@@ -61,10 +61,9 @@ class SettingsOvertimeController extends AbstractController
             'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'showOvertime' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)
         ]);
-    }  
+    }
 
     /**
-     *
      * @param Request $request
      * @return RedirectResponse|Response
      * @throws DBALException
@@ -80,7 +79,7 @@ class SettingsOvertimeController extends AbstractController
             'method' => 'POST'
         ]);
 
-        $form->handleRequest($request);    
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
@@ -90,7 +89,7 @@ class SettingsOvertimeController extends AbstractController
                 $overtimeHistory->setDuration($form->getData()['duration']);
                 $overtimeHistory->setApplyDate($form->getData()['applyDate']);
 
-                $this->approvalOvertimeHistoryRepository->save($overtimeHistory, true);  
+                $this->approvalOvertimeHistoryRepository->save($overtimeHistory, true);
                 $this->flashSuccess('action.update.success');
 
                 return $this->redirectToRoute('approval_settings_overtime_history');
@@ -102,13 +101,12 @@ class SettingsOvertimeController extends AbstractController
         return $this->render('@Approval/add_overtime_history.html.twig', [
             'title' => 'title.add_overtime_history',
             'form' => $form->createView()
-        ]); 
+        ]);
 
         return null;
     }
 
     /**
-     *
      * @param Request $request
      * @return Response
      * @throws Exception
@@ -124,6 +122,7 @@ class SettingsOvertimeController extends AbstractController
 
             $this->approvalOvertimeHistoryRepository->remove($overtimeHistory, true);
         }
+
         return $this->redirectToRoute('approval_settings_overtime_history');
     }
 }

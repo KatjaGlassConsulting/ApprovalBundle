@@ -9,7 +9,6 @@
 
 namespace KimaiPlugin\ApprovalBundle\Controller;
 
-use Doctrine\ORM\Exception\ORMException;
 use App\Controller\AbstractController;
 use App\Entity\Customer;
 use App\Entity\Team;
@@ -23,14 +22,15 @@ use App\Repository\Query\TimesheetQuery;
 use App\Repository\TimesheetRepository;
 use App\Repository\UserRepository;
 use DateTime;
+use Doctrine\ORM\Exception\ORMException;
 use Exception;
 use KimaiPlugin\ApprovalBundle\Entity\Approval;
 use KimaiPlugin\ApprovalBundle\Entity\ApprovalWorkdayHistory;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Enumeration\FormEnum;
+use KimaiPlugin\ApprovalBundle\Form\AddWorkdayHistoryForm;
 use KimaiPlugin\ApprovalBundle\Form\SettingsForm;
 use KimaiPlugin\ApprovalBundle\Form\WeekByUserForm;
-use KimaiPlugin\ApprovalBundle\Form\AddWorkdayHistoryForm;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalHistoryRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalTimesheetRepository;
@@ -40,7 +40,6 @@ use KimaiPlugin\ApprovalBundle\Settings\ApprovalSettingsInterface;
 use KimaiPlugin\ApprovalBundle\Toolbox\BreakTimeCheckToolGER;
 use KimaiPlugin\ApprovalBundle\Toolbox\Formatting;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
-use PhpOffice\PhpSpreadsheet\Calculation\Logical\Boolean;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -158,9 +157,9 @@ class WeekReportController extends AbstractController
         $currentUserSundayIssue = $this->getUser()->isFirstDayOfWeekSunday();
 
         $overtimeDuration = null;
-        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)){
+        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)) {
             // use actual year display, in case of "starting", use first approval date
-            $overtimeDuration = $this->approvalRepository->getExpectedActualDurationsForYear($selectedUser, $end); 
+            $overtimeDuration = $this->approvalRepository->getExpectedActualDurationsForYear($selectedUser, $end);
         }
 
         return $this->render('@Approval/report_by_user.html.twig', [
@@ -210,7 +209,7 @@ class WeekReportController extends AbstractController
         $users = $this->getUsers(false);
 
         $warningNoUsers = false;
-        if (empty($users)){
+        if (empty($users)) {
             $warningNoUsers = true;
             $users = [$this->getUser()];
         }
@@ -225,8 +224,7 @@ class WeekReportController extends AbstractController
         foreach ($allRows as $row) {
             if ($row['startDate'] >= $futureWeek) {
                 $futureRows[] = $row;
-            }
-            else if ($row['startDate'] >= $currentWeek) {
+            } elseif ($row['startDate'] >= $currentWeek) {
                 $currentRows[] = $row;
             } else {
                 $pastRows[] = $row;
@@ -276,7 +274,7 @@ class WeekReportController extends AbstractController
     public function settingsWorkdayHistory(Request $request): Response
     {
         $workdayHistory = $this->approvalWorkdayHistoryRepository->findAll();
-         
+
         return $this->render('@Approval/settings_workday_history.html.twig', [
             'current_tab' => 'settings_workday_history',
             'workdayHistory' => $workdayHistory,
@@ -288,7 +286,6 @@ class WeekReportController extends AbstractController
     }
 
     /**
-     *
      * @param Request $request
      * @return RedirectResponse|Response
      * @throws DBALException
@@ -304,7 +301,7 @@ class WeekReportController extends AbstractController
             'method' => 'POST'
         ]);
 
-        $form->handleRequest($request);    
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
@@ -320,7 +317,7 @@ class WeekReportController extends AbstractController
                 $workdayHistory->setSunday($form->getData()['sunday']);
                 $workdayHistory->setValidTill($form->getData()['validTill']);
 
-                $this->approvalWorkdayHistoryRepository->save($workdayHistory, true);  
+                $this->approvalWorkdayHistoryRepository->save($workdayHistory, true);
                 $this->approvalTimesheetRepository->updateDaysOff($form->getData()['user']);
                 $this->approvalRepository->updateExpectedActualDurationForUser($form->getData()['user']);
                 $this->flashSuccess('action.update.success');
@@ -334,11 +331,10 @@ class WeekReportController extends AbstractController
         return $this->render('@Approval/add_workday_history.html.twig', [
             'title' => 'title.add_workday_history',
             'form' => $form->createView()
-        ]); 
+        ]);
     }
 
     /**
-     *
      * @param Request $request
      * @return Response
      * @throws Exception
@@ -419,8 +415,7 @@ class WeekReportController extends AbstractController
 
             $users = array_unique($users);
 
-            if (!$includeOwnForTeam)
-            {
+            if (!$includeOwnForTeam) {
                 // remove the active user from the list
                 $index = array_search($this->getUser(), $users);
                 if ($index !== false) {
@@ -486,7 +481,7 @@ class WeekReportController extends AbstractController
         $timesheets = $this->timesheetRepository->getTimesheetsForQuery($timesheetQuery);
 
         if ($this->settingsTool->isInConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY) == false or
-            $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY)){
+            $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY)) {
             $errors = $this->breakTimeCheckToolGER->checkBreakTime($timesheets);
         } else {
             $errors = [];

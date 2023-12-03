@@ -15,7 +15,6 @@ use App\Entity\User;
 use App\Reporting\WeekByUser;
 use App\Repository\UserRepository;
 use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Form\OvertimeByUserForm;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
@@ -57,8 +56,8 @@ class OvertimeReportController extends AbstractController
     #[Route(path: '/overtime_by_user', name: 'overtime_bundle_report', methods: ['GET', 'POST'])]
     public function overtimeByUser(Request $request): Response
     {
-        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY) == false){
-          return $this->redirectToRoute('approval_bundle_report');
+        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY) == false) {
+            return $this->redirectToRoute('approval_bundle_report');
         }
 
         $users = $this->getUsers();
@@ -67,7 +66,7 @@ class OvertimeReportController extends AbstractController
         $values = new WeekByUser();
         $values->setUser($firstUser);
 
-        file_put_contents("C:/temp/blub.txt", "users - " . json_encode($users) . "\n", FILE_APPEND);
+        file_put_contents('C:/temp/blub.txt', 'users - ' . json_encode($users) . "\n", FILE_APPEND);
 
         $form = $this->createForm(OvertimeByUserForm::class, $values, [
             'users' => $users,
@@ -80,12 +79,12 @@ class OvertimeReportController extends AbstractController
         }
 
         $selectedUser = $values->getUser();
-        $weeklyEntries = $this->approvalRepository->findAllWeekForUser($selectedUser,null);
+        $weeklyEntries = $this->approvalRepository->findAllWeekForUser($selectedUser, null);
 
         return $this->render('@Approval/overtime_by_user.html.twig', [
             'current_tab' => 'overtime_by_user',
             'form' => $form->createView(),
-            'user' => $selectedUser,    
+            'user' => $selectedUser,
             'weeklyEntries' => array_reverse($weeklyEntries),
             'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),

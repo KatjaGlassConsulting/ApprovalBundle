@@ -1,19 +1,26 @@
 <?php
 
+/*
+ * This file is part of the Kimai time-tracking app.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace KimaiPlugin\ApprovalBundle\Repository;
 
-use KimaiPlugin\ApprovalBundle\Entity\ApprovalWorkdayHistory;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Entity\User;
- 
+use KimaiPlugin\ApprovalBundle\Entity\ApprovalWorkdayHistory;
+
 /**
  * @extends ServiceEntityRepository<ApprovalWorkdayHistory>
  *
  * @method ApprovalWorkdayHistory|null find($id, $lockMode = null, $lockVersion = null)
  * @method ApprovalWorkdayHistory|null findOneBy(array $criteria, array $orderBy = null)
- * @method ApprovalWorkdayHistory[]    findAll()
- * @method ApprovalWorkdayHistory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ApprovalWorkdayHistory[] findAll()
+ * @method ApprovalWorkdayHistory[] findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ApprovalWorkdayHistoryRepository extends ServiceEntityRepository
 {
@@ -40,22 +47,22 @@ class ApprovalWorkdayHistoryRepository extends ServiceEntityRepository
         }
     }
 
-   /**
-    * @return ApprovalWorkdayHistory[] Returns an array of ApprovalWorkdayHistory objects
-    */
-   public function findByUserWorkdayHistory(User $user): array
-   {
-       return $this->getEntityManager()->createQueryBuilder()
-           ->select('aph')
-           ->from(ApprovalWorkdayHistory::class, 'aph')
-           ->andWhere('aph.user = :user')
-           ->setParameter('user', $user)
-           ->orderBy('aph.valid_till', 'DESC')
-           ->setMaxResults(200)
-           ->getQuery()
-           ->getResult()
-       ;
-   }
+    /**
+     * @return ApprovalWorkdayHistory[] Returns an array of ApprovalWorkdayHistory objects
+     */
+    public function findByUserWorkdayHistory(User $user): array
+    {
+        return $this->getEntityManager()->createQueryBuilder()
+            ->select('aph')
+            ->from(ApprovalWorkdayHistory::class, 'aph')
+            ->andWhere('aph.user = :user')
+            ->setParameter('user', $user)
+            ->orderBy('aph.valid_till', 'DESC')
+            ->setMaxResults(200)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
     /**
      * @return ApprovalWorkdayHistory - Returns null or an ApprovalWorkdayHistory objects

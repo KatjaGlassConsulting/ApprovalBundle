@@ -10,12 +10,14 @@
 namespace KimaiPlugin\ApprovalBundle\API;
 
 use App\Repository\UserRepository;
-use Exception;
 use DateTime;
+use Exception;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandlerInterface;
+use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
+use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
 use Nelmio\ApiDocBundle\Annotation\Security as ApiSecurity;
 use Swagger\Annotations as SWG;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,8 +25,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
-use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
 
 /**
  * @SWG\Tag(name="ApprovalBundleApi")
@@ -142,6 +142,7 @@ final class ApprovalOvertimeController extends AbstractController
                 )
             );
         }
+
         return $this->error404($this->translator->trans('api.noData'));
     }
 

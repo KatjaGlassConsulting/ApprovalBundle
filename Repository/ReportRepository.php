@@ -12,12 +12,10 @@ namespace KimaiPlugin\ApprovalBundle\Repository;
 use App\Entity\Timesheet;
 use App\Entity\User;
 use App\Model\DailyStatistic;
-use App\Form\Type\DurationType;
 use App\Repository\ActivityRepository;
 use App\Repository\ProjectRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use DateTime;
 
 /**
  * @method Timesheet|null find($id, $lockMode = null, $lockVersion = null)
@@ -99,18 +97,17 @@ class ReportRepository extends ServiceEntityRepository
 
     public function getActualWorkingDurationStatistic(User $user, \DateTime $begin, \DateTime $end): int
     {
-        if ($end->format('H:i:s') == "00:00:00"){
+        if ($end->format('H:i:s') == '00:00:00') {
             $maxEndTime = clone $end;
             $maxEndTime->setTime(23, 59, 59);
+
             return $this->getActualWorkingDuration($begin, $maxEndTime, $user);
-        }
-        else {
+        } else {
             return $this->getActualWorkingDuration($begin, $end, $user);
         }
-        
     }
 
-    private function getActualWorkingDuration(\DateTime $begin, \DateTime $end, User $user) : ?int
+    private function getActualWorkingDuration(\DateTime $begin, \DateTime $end, User $user): ?int
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb
@@ -126,7 +123,7 @@ class ReportRepository extends ServiceEntityRepository
 
         $result = $qb->getQuery()->getOneOrNullResult();
 
-        return intval($result["duration"]);
+        return \intval($result['duration']);
     }
 
     private function generateDailyStatistics(\DateTime $begin, \DateTime $end, User $user, $value, array $array): array
