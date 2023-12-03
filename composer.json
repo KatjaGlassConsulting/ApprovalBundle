@@ -14,7 +14,7 @@
     ],
     "extra": {
         "kimai": {
-            "require": "1.17",
+            "require": 20000,
             "name": "ApprovalBundle"
         }
     },
