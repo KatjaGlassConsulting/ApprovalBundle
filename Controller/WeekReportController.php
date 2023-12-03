@@ -47,9 +47,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route(path="/approval")
- */
+#[Route(path: '/approval')]
 class WeekReportController extends AbstractController
 {
     private $settingsTool;
@@ -100,10 +98,10 @@ class WeekReportController extends AbstractController
         return $this->isGranted('view_all_approval');
     }
 
-    /** 
-     * @Route(path="/week_by_user", name="approval_bundle_report", methods={"GET","POST"})
+    /**
      * @throws Exception
      */
+    #[Route(path: '/week_by_user', name: 'approval_bundle_report', methods: ['GET', 'POST'])]
     public function weekByUser(Request $request): Response
     {
         $users = $this->getUsers();
@@ -203,10 +201,10 @@ class WeekReportController extends AbstractController
     }
 
     /**
-     * @Route(path="/to_approve", name="approval_bundle_to_approve", methods={"GET","POST"})
-     * @Security("is_granted('view_team_approval') or is_granted('view_all_approval') ")
      * @throws Exception
      */
+    #[Route(path: '/to_approve', name: 'approval_bundle_to_approve', methods: ['GET', 'POST'])]
+    #[Security("is_granted('view_team_approval') or is_granted('view_all_approval') ")]
     public function toApprove(): Response
     {
         $users = $this->getUsers(false);
@@ -254,9 +252,9 @@ class WeekReportController extends AbstractController
     }
 
     /**
-     * @Route(path="/settings", name="approval_bundle_settings", methods={"GET","POST"})
      * @throws Exception
      */
+    #[Route(path: '/settings', name: 'approval_bundle_settings', methods: ['GET', 'POST'])]
     public function settings(Request $request): Response
     {
         return $this->render('@Approval/settings.html.twig', [
@@ -272,9 +270,9 @@ class WeekReportController extends AbstractController
     }
 
     /**
-     * @Route(path="/settings_workday_history", name="approval_bundle_settings_workday", methods={"GET","POST"})
      * @throws Exception
      */
+    #[Route(path: '/settings_workday_history', name: 'approval_bundle_settings_workday', methods: ['GET', 'POST'])]
     public function settingsWorkdayHistory(Request $request): Response
     {
         $workdayHistory = $this->approvalWorkdayHistoryRepository->findAll();
@@ -290,13 +288,13 @@ class WeekReportController extends AbstractController
     }
 
     /**
-     * @Route(path="/create_workday_history", name="approval_create_workday_history", methods={"GET", "POST"})
      *
      * @param Request $request
      * @return RedirectResponse|Response
      * @throws DBALException
      * @throws TransportExceptionInterface
      */
+    #[Route(path: '/create_workday_history', name: 'approval_create_workday_history', methods: ['GET', 'POST'])]
     public function createWorkdayHistory(Request $request)
     {
         $users = $this->userRepository->findAll();
@@ -340,12 +338,12 @@ class WeekReportController extends AbstractController
     }
 
     /**
-     * @Route(path="/deleteWorkdayHistory", name="delete_workday_history", methods={"GET"})
      *
      * @param Request $request
      * @return Response
      * @throws Exception
      */
+    #[Route(path: '/deleteWorkdayHistory', name: 'delete_workday_history', methods: ['GET'])]
     public function deleteWorkdayHistoryAction(Request $request)
     {
         $entryId = $request->get('entryId');
@@ -443,7 +441,7 @@ class WeekReportController extends AbstractController
         if (!empty($users)) {
             usort(
                 $users,
-                function (User $userA, User $userB) {
+                function (User $userA, User $userB): int {
                     return strcmp(strtoupper($userA->getUsername()), strtoupper($userB->getUsername()));
                 }
             );

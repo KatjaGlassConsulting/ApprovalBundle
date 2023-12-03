@@ -24,7 +24,7 @@ class Formatting
         $this->translator = $translator;
     }
 
-    public function parseDate(DateTime $dateTime)
+    public function parseDate(DateTime $dateTime): string
     {
         $weekNumber = (clone $dateTime)->format('W');
 

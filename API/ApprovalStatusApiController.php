@@ -71,7 +71,7 @@ final class ApprovalStatusApiController extends AbstractController
      *     response=200,
      *     description="Status of selected week"
      * )
-     * 
+     *
      * @SWG\Parameter(
      *      name="user",
      *      in="query",
@@ -86,12 +86,12 @@ final class ApprovalStatusApiController extends AbstractController
      *      description="Date as monday of selected week: Y-m-d",
      *      required=true,
      * )
-     * 
-     * @Rest\Get(path="/week-status")
-     * @ApiSecurity(name="apiUser")
-     * @ApiSecurity(name="apiToken")
+     *
      * @throws Exception
      */
+    #[Rest\Get(path: '/week-status')]
+    #[ApiSecurity(name: 'apiUser')]
+    #[ApiSecurity(name: 'apiToken')]
     public function submitWeekAction(Request $request): Response
     {
         $selectedUserId = $request->query->get('user', -1);
@@ -157,7 +157,7 @@ final class ApprovalStatusApiController extends AbstractController
     {
         return array_filter(
             $user->getTeams(),
-            function ($team) use ($selectedUserId) {
+            function ($team) use ($selectedUserId): bool {
                 foreach ($team->getUsers() as $user) {
                     if ($user->getId() == $selectedUserId) {
                         return true;

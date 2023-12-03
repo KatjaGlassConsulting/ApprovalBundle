@@ -64,14 +64,14 @@ class TeamleadNotSubmittedCommand extends Command
             }
         }
 
-        return 0;
+        return \Symfony\Component\Console\Command\Command::SUCCESS;
     }
 
     protected function getUsers(Team $team): array
     {
         return array_filter(
             $team->getUsers(),
-            function ($user) {
+            function ($user): bool {
                 return $user->isEnabled() && !$user->isSuperAdmin();
             }
         );
@@ -81,7 +81,7 @@ class TeamleadNotSubmittedCommand extends Command
     {
         return array_filter(
             $team->getTeamleads(),
-            function ($user) {
+            function ($user): bool {
                 return $user->isEnabled() && !$user->isSuperAdmin();
             }
         );

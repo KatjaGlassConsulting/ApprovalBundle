@@ -12,10 +12,8 @@ namespace KimaiPlugin\ApprovalBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalStatusRepository;
 
-/**
- * @ORM\Entity(repositoryClass=ApprovalStatusRepository::class)
- * @ORM\Table(name="kimai2_ext_approval_status")
- */
+#[ORM\Entity(repositoryClass: ApprovalStatusRepository::class)]
+#[ORM\Table(name: 'kimai2_ext_approval_status')]
 class ApprovalStatus
 {
     public const SUBMITTED = 'submitted';
@@ -24,19 +22,13 @@ class ApprovalStatus
     public const APPROVED = 'approved';
     public const NOT_SUBMITTED = 'not_submitted';
 
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $name;
-    /**
-     * @ORM\OneToMany(targetEntity="KimaiPlugin\ApprovalBundle\Entity\ApprovalHistory", mappedBy="status")
-     */
+    #[ORM\OneToMany(targetEntity: 'KimaiPlugin\ApprovalBundle\Entity\ApprovalHistory', mappedBy: 'status')]
     private $history;
 
     /**

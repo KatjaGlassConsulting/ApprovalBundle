@@ -41,7 +41,7 @@ class FormattingTool
      * @param float|int $duration
      * @return int
      */
-    public function formattingDurationToSeconds($duration)
+    public function formattingDurationToSeconds($duration): int
     {
         return (int) ($duration * 60 * 60);
     }
@@ -71,7 +71,7 @@ class FormattingTool
      * @return string
      * @throws Exception
      */
-    public function formattingYearMonth($date)
+    public function formattingYearMonth($date): string
     {
         $year = $this->formattingDateOrDateTimeByPattern($date, 'Y');
         $month = $this->formattingMonthIntToMonthString($this->formattingDateOrDateTimeByPattern($date, 'm'));

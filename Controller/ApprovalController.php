@@ -26,9 +26,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-/**
- * @Route(path="/approval")
- */
+#[Route(path: '/approval')]
 class ApprovalController extends AbstractController
 {
     /**
@@ -79,9 +77,9 @@ class ApprovalController extends AbstractController
     }
 
     /**
-     * @Route(path="/add_to_approve", name="add_to_approve", methods={"GET", "POST"})
      * @throws Exception
      */
+    #[Route(path: '/add_to_approve', name: 'add_to_approve', methods: ['GET', 'POST'])]
     public function addToApprove(Request $request): RedirectResponse
     {
         $userId = $request->query->get('user');
@@ -97,9 +95,9 @@ class ApprovalController extends AbstractController
     }
 
     /**
-     * @Route(path="/approve/{approveId}", defaults={"approveId": 0}, name="approve", methods={"GET"})
      * @throws Exception
      */
+    #[Route(path: '/approve/{approveId}', defaults: ['approveId' => 0], name: 'approve', methods: ['GET'])]
     public function approveAction(Request $request, string $approveId): RedirectResponse
     {
         $approval = $this->approvalRepository->find($approveId);
@@ -130,9 +128,9 @@ class ApprovalController extends AbstractController
     }
 
     /**
-     * @Route(path="/not_approved/{approveId}", defaults={"approveId": 0}, name="not_approved", methods={"GET"})
      * @throws Exception
      */
+    #[Route(path: '/not_approved/{approveId}', defaults: ['approveId' => 0], name: 'not_approved', methods: ['GET'])]
     public function notApprovedAction(Request $request, string $approveId): RedirectResponse
     {
         $approval = $this->approvalRepository->find($approveId);
@@ -159,9 +157,9 @@ class ApprovalController extends AbstractController
     }
 
     /**
-     * @Route(path="/denied/{approveId}", defaults={"approveId": 0}, name="denied", methods={"GET"})
      * @throws Exception
      */
+    #[Route(path: '/denied/{approveId}', defaults: ['approveId' => 0], name: 'denied', methods: ['GET'])]
     public function deniedAction(Request $request, string $approveId): RedirectResponse
     {
         $approval = $this->approvalRepository->find($approveId);
@@ -255,7 +253,7 @@ class ApprovalController extends AbstractController
 
         if ($dateFirstMonthDay < $todayFirstMonthDay) {
             $users = $this->userRepository->findAll();
-            $users = array_filter($users, function ($user) {
+            $users = array_filter($users, function ($user): bool {
                 return $user->isEnabled() && !$user->isSuperAdmin();
             });
             if ($this->approvalRepository->areAllUsersApproved($date, $users)) {

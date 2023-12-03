@@ -285,7 +285,7 @@ class ApprovalRepository extends ServiceEntityRepository
         $result = $parseToViewArray ? $this->sort($parseToViewArray) : [];
         $newestPerUser = $this->getNewestPerUser($result);
         $noUnsubmitted = array_filter($newestPerUser, 
-            function($val){ 
+            function($val): bool{ 
                 return $val['status'] !== 'not_submitted';
             });
         return $this->addYearlyOvertimeToAllWeek($noUnsubmitted, $user);
@@ -465,7 +465,7 @@ class ApprovalRepository extends ServiceEntityRepository
 
     private function addAllNotSubmittedUsers($parseToViewArray, array $users)
     {
-        $usedUsersWeeks = array_map(function ($approve) {
+        $usedUsersWeeks = array_map(function ($approve): string {
             return $approve['userId'] . '-' . $approve['startDate'];
         }, $parseToViewArray ?: []);
         foreach ($users as $user) {
@@ -583,7 +583,7 @@ class ApprovalRepository extends ServiceEntityRepository
 
         $this->parseHistoryToOneElementCurrentWeek($approvedList);
 
-        $array_filter = array_filter($approvedList, function ($approval) {
+        $array_filter = array_filter($approvedList, function ($approval): bool {
             /* @var Approval $approval */
             return !empty($approval->getHistory()) && !empty($approval->getHistory()[0]) && $approval->getHistory()[0]->getStatus()->getName() === ApprovalStatus::SUBMITTED;
         });
@@ -696,7 +696,7 @@ class ApprovalRepository extends ServiceEntityRepository
         $this->parseHistoryToOneElement($week);
         $parseToViewArray = $this->parseToViewArray($week);
 
-        return array_filter($this->getNewestPerUser($parseToViewArray), function ($user) {
+        return array_filter($this->getNewestPerUser($parseToViewArray), function ($user): bool {
             return $user['status'] === ApprovalStatus::APPROVED;
         });
     }

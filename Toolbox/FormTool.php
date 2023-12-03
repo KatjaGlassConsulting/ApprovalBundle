@@ -56,7 +56,7 @@ class FormTool
      * @param $prefix
      * @return bool
      */
-    public function isChecked($prefix)
+    public function isChecked($prefix): bool
     {
         return !empty($this->settingsTool->getConfiguration($prefix));
     }
@@ -67,7 +67,7 @@ class FormTool
      * @param string $columnName
      * @return array
      */
-    public function collectElementsToExclude($prefix, EntityRepository $repository, $columnName = 'id')
+    public function collectElementsToExclude($prefix, EntityRepository $repository, $columnName = 'id'): array
     {
         $elementsToExclude = [];
 

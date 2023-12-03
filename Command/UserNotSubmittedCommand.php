@@ -53,7 +53,7 @@ class UserNotSubmittedCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $users = $this->userRepository->findAll();
-        $users = array_filter($users, function ($user) {
+        $users = array_filter($users, function ($user): bool {
             return $user->isEnabled() && !$user->isSuperAdmin();
         });
 
@@ -64,6 +64,6 @@ class UserNotSubmittedCommand extends Command
             }
         }
 
-        return 0;
+        return \Symfony\Component\Console\Command\Command::SUCCESS;
     }
 }

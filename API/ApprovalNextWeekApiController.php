@@ -68,7 +68,7 @@ final class ApprovalNextWeekApiController extends AbstractController
      *     response=200,
      *     description="Status of selected week"
      * )
-     * 
+     *
      * @SWG\Parameter(
      *      name="user",
      *      in="query",
@@ -77,11 +77,11 @@ final class ApprovalNextWeekApiController extends AbstractController
      *      required=false,
      * )
      *
-     * @Rest\Get(path="/next-week")
-     * @ApiSecurity(name="apiUser")
-     * @ApiSecurity(name="apiToken")
      * @throws Exception
      */
+    #[Rest\Get(path: '/next-week')]
+    #[ApiSecurity(name: 'apiUser')]
+    #[ApiSecurity(name: 'apiToken')]
     public function nextWeekAction(Request $request): Response
     {
         $selectedUserId = $request->query->get('user', -1);
@@ -148,7 +148,7 @@ final class ApprovalNextWeekApiController extends AbstractController
     {
         return array_filter(
             $user->getTeams(),
-            function ($team) use ($selectedUserId) {
+            function ($team) use ($selectedUserId): bool {
                 foreach ($team->getUsers() as $user) {
                     if ($user->getId() == $selectedUserId) {
                         return true;

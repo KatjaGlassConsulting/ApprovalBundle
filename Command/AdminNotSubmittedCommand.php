@@ -68,14 +68,14 @@ class AdminNotSubmittedCommand extends Command
             );
         }
 
-        return 0;
+        return \Symfony\Component\Console\Command\Command::SUCCESS;
     }
 
     protected function getUserList(): array
     {
         return array_filter(
             $this->userRepository->findAll(),
-            function ($user) {
+            function ($user): bool {
                 return !$user->isSuperAdmin() && $user->isEnabled();
             }
         );

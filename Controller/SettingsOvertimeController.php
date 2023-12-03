@@ -23,9 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route(path="/approval")
- */
+#[Route(path: '/approval')]
 class SettingsOvertimeController extends AbstractController
 {
     private $settingsTool;
@@ -43,10 +41,10 @@ class SettingsOvertimeController extends AbstractController
     }
 
     /**
-     * @Route(path="/settings_overtime", name="approval_settings_overtime_history", methods={"GET","POST"})
-     * @Security("is_granted('view_team_approval') or is_granted('view_all_approval') ")
      * @throws Exception
      */
+    #[Route(path: '/settings_overtime', name: 'approval_settings_overtime_history', methods: ['GET', 'POST'])]
+    #[Security("is_granted('view_team_approval') or is_granted('view_all_approval') ")]
     public function settingsOvertime(Request $request): Response
     {
         if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY) == false){
@@ -66,13 +64,13 @@ class SettingsOvertimeController extends AbstractController
     }  
 
     /**
-     * @Route(path="/create_overtime_history", name="approval_create_overtime_history", methods={"GET", "POST"})
      *
      * @param Request $request
      * @return RedirectResponse|Response
      * @throws DBALException
      * @throws TransportExceptionInterface
      */
+    #[Route(path: '/create_overtime_history', name: 'approval_create_overtime_history', methods: ['GET', 'POST'])]
     public function createOvertimeHistory(Request $request)
     {
         $users = $this->userRepository->findAll();
@@ -110,12 +108,12 @@ class SettingsOvertimeController extends AbstractController
     }
 
     /**
-     * @Route(path="/deleteOvertimeHistory", name="delete_overtime_history", methods={"GET"})
      *
      * @param Request $request
      * @return Response
      * @throws Exception
      */
+    #[Route(path: '/deleteOvertimeHistory', name: 'delete_overtime_history', methods: ['GET'])]
     public function deleteOvertimeHistoryAction(Request $request)
     {
         $entryId = $request->get('entryId');

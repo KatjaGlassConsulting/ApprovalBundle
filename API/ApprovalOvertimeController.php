@@ -77,7 +77,7 @@ final class ApprovalOvertimeController extends AbstractController
      *     response=200,
      *     description="Get overtime for that year"
      * )
-     * 
+     *
      * @SWG\Parameter(
      *      name="user",
      *      in="query",
@@ -93,11 +93,11 @@ final class ApprovalOvertimeController extends AbstractController
      *      required=true,
      * )
      *
-     * @Rest\Get(path="/overtime_year")
-     * @ApiSecurity(name="apiUser")
-     * @ApiSecurity(name="apiToken")
      * @throws Exception
      */
+    #[Rest\Get(path: '/overtime_year')]
+    #[ApiSecurity(name: 'apiUser')]
+    #[ApiSecurity(name: 'apiToken')]
     public function overtimeForYearUntil(Request $request): Response
     {
         $selectedUserId = $request->query->get('user', -1);
@@ -173,7 +173,7 @@ final class ApprovalOvertimeController extends AbstractController
     {
         return array_filter(
             $user->getTeams(),
-            function ($team) use ($selectedUserId) {
+            function ($team) use ($selectedUserId): bool {
                 foreach ($team->getUsers() as $user) {
                     if ($user->getId() == $selectedUserId) {
                         return true;

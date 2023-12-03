@@ -47,7 +47,7 @@ class BreakTimeCheckToolGER
         }
         $timesheets = array_filter(
             $timesheets,
-            function (Timesheet $timesheet) use ($customerId) {
+            function (Timesheet $timesheet) use ($customerId): bool {
                 return $timesheet->getProject()->getCustomer()->getId() != $customerId;
             }
         );

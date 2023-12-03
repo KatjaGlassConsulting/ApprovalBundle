@@ -6,34 +6,26 @@ use App\Repository\ApprovalOvertimeHistoryRepository;
 use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=ApprovalOvertimeHistoryRepository::class)
- * @ORM\Table(name="kimai2_ext_approval_overtime_history")
- */
+#[ORM\Entity(repositoryClass: ApprovalOvertimeHistoryRepository::class)]
+#[ORM\Table(name: 'kimai2_ext_approval_overtime_history')]
 class ApprovalOvertimeHistory
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\User')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE', nullable: false)]
     private ?User $user = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private ?int $duration = null;
 
-    /**
-     * @ORM\Column(type="date")
-     */
+    #[ORM\Column(type: 'date')]
     private $applyDate;
 
     public function getId(): ?int

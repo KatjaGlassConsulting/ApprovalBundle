@@ -66,7 +66,7 @@ class SettingsTool
      * @param $value
      * @return bool
      */
-    public function setConfiguration($key, $value)
+    public function setConfiguration($key, $value): bool
     {
         $this->cache = [];
 
@@ -84,7 +84,7 @@ class SettingsTool
         return true;
     }
 
-    public function isAllSettingsUpdated()
+    public function isAllSettingsUpdated(): bool
     {
         if ($this->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_MONDAY) === '') {
             return false;

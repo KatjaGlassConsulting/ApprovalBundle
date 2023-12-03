@@ -13,43 +13,35 @@ use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalHistoryRepository;
 
-/**
- * @ORM\Entity(repositoryClass=ApprovalHistoryRepository::class)
- * @ORM\Table(name="kimai2_ext_approval_history")
- */
+#[ORM\Entity(repositoryClass: ApprovalHistoryRepository::class)]
+#[ORM\Table(name: 'kimai2_ext_approval_history')]
 class ApprovalHistory
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
     /**
      * @var Approval
-     * @ORM\ManyToOne(targetEntity="KimaiPlugin\ApprovalBundle\Entity\Approval", inversedBy="history")
-     * @ORM\JoinColumn(nullable=false)
      */
+    #[ORM\ManyToOne(targetEntity: 'KimaiPlugin\ApprovalBundle\Entity\Approval', inversedBy: 'history')]
+    #[ORM\JoinColumn(nullable: false)]
     private $approval;
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\User')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE', nullable: false)]
     private $user;
     /**
      * @var ApprovalStatus
-     * @ORM\ManyToOne(targetEntity="KimaiPlugin\ApprovalBundle\Entity\ApprovalStatus", inversedBy="history")
-     * @ORM\JoinColumn(nullable=false)
      */
+    #[ORM\ManyToOne(targetEntity: 'KimaiPlugin\ApprovalBundle\Entity\ApprovalStatus', inversedBy: 'history')]
+    #[ORM\JoinColumn(nullable: false)]
     private $status;
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $date;
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $message;
 
     /**

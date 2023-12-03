@@ -107,7 +107,7 @@ final class ApprovalBundleApiController extends AbstractController
      *     response=200,
      *     description="URL to submitted week"
      * )
-     * 
+     *
      * @SWG\Parameter(
      *      name="user",
      *      in="query",
@@ -123,11 +123,11 @@ final class ApprovalBundleApiController extends AbstractController
      *      required=true,
      * )
      *
-     * @Rest\Post(path="/add_to_approve")
-     * @ApiSecurity(name="apiUser")
-     * @ApiSecurity(name="apiToken")
      * @throws Exception
      */
+    #[Rest\Post(path: '/add_to_approve')]
+    #[ApiSecurity(name: 'apiUser')]
+    #[ApiSecurity(name: 'apiToken')]
     public function submitWeekAction(Request $request): Response
     {
         $selectedUserId = $request->query->get('user', -1);
@@ -201,7 +201,7 @@ final class ApprovalBundleApiController extends AbstractController
     {
         return array_filter(
             $user->getTeams(),
-            function ($team) use ($selectedUser) {
+            function ($team) use ($selectedUser): bool {
                 foreach ($team->getUsers() as $user) {
                     if ($user->getId() == $selectedUser) {
                         return true;
