@@ -7,7 +7,10 @@ services:
 
     KimaiPlugin\ApprovalBundle\:
         resource: '../../*'
-        exclude: '../../{Resources}'
+        exclude:
+            - '../../{Resources}'
+            - '../../vendor'
+            - '../../vendor-bin'
 
     KimaiPlugin\ApprovalBundle\API\:
         resource: '../../API'
