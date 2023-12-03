@@ -16,9 +16,14 @@
         "kimai": {
             "require": 20000,
             "name": "ApprovalBundle"
+        },
+        "bamarni-bin": {
+            "bin-links": true,
+            "forward-command": true
         }
     },
     "scripts": {
+        "bin": "echo 'bin not installed'",
         "codestyle": "vendor/bin/php-cs-fixer fix --dry-run --verbose --show-progress=none",
         "codestyle-fix": "vendor/bin/php-cs-fixer fix",
         "codestyle-check": "vendor/bin/php-cs-fixer fix --dry-run --verbose --using-cache=no --show-progress=none --format=checkstyle",
@@ -27,6 +32,14 @@
             "composer validate --strict --no-check-version",
             "@codestyle-check",
             "@phpstan"
+        ],
+        "post-install-cmd": [
+            "@composer bin all install --ansi",
+            "composer dump-autoload"
+        ],
+        "post-update-cmd": [
+            "@composer bin all update --ansi",
+            "composer dump-autoload"
         ]
     },
     "autoload": {
@@ -38,10 +51,13 @@
         "doctrine/dbal": "^2.1"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.0",
-        "kevinpapst/kimai2": "^1.17",
-        "phpstan/phpstan": "^1.0",
-        "phpstan/phpstan-doctrine": "^1.0",
-        "phpstan/phpstan-symfony": "^1.0"
+        "bamarni/composer-bin-plugin": "^1.8"
+    },
+    "config": {
+        "allow-plugins": {
+            "symfony/runtime": true,
+            "symfony/flex": true,
+            "bamarni/composer-bin-plugin": true
+        }
     }
 }
