@@ -4,6 +4,13 @@
 {% block page_title %}{{ 'menu.approval_bundle'|trans }}{% endblock %}
 {% block page_subtitle %}{{ 'menu.report_user_week'|trans }}{% endblock %}
 
+{% block javascripts %}
+    <script
+        src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"></script>
+{% endblock %}
+
 {% block main %}
     {% if warningNoUsers is defined %}
       {% if warningNoUsers %}
