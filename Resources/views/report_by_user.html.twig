@@ -154,7 +154,7 @@
 
                 {% for title, project in rows %}
                     {% set totals = totals|merge({'totals': (totals['totals'] + project.duration)}) %}
-                    <tr class="activity" style="background-color: whitesmoke">
+                    <tr class="activity" style="background-color: var(--tblr-bg-surface-secondary);">
                         <td class="text-nowrap">
                             <strong> {{ title }}  </strong>
                         </td>
