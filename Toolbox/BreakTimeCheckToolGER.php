@@ -101,9 +101,12 @@ class BreakTimeCheckToolGER
                     $blockStart = $timesheet->getBegin()->getTimestamp();
                 }
             }
+            if (empty($timesheet->getEnd())) {
+                continue;
+            }
             $blockEnd = $timesheet->getEnd()->getTimestamp();
             if ($blockEnd - $blockStart > $sixHoursInSeconds) {
-                if ($errors[$timesheet->getBegin()->format('Y-m-d')] == null ||
+                if (empty($errors[$timesheet->getBegin()->format('Y-m-d')]) ||
                         \in_array($this->translator->trans('error.six_hours_without_stop_break'), $errors[$timesheet->getBegin()->format('Y-m-d')]) == false) {
                     $errors[$timesheet->getBegin()->format('Y-m-d')][] = $this->translator->trans('error.six_hours_without_stop_break');
                 }
