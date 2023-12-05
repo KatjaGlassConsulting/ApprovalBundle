@@ -1,7 +1,8 @@
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs btn-list">
     {% if showToApproveTab %}
         <li{% if current_tab == "to_approve" %} class="active"{% endif %}>
             <a href="{{ path('approval_bundle_to_approve') }}"
+               class="btn btn-primary"
                style="cursor: pointer"
                aria-expanded="false">
                 {{ 'menu.to_approve' |trans }}
@@ -10,6 +11,7 @@
     {% endif %}
     <li{% if current_tab == "weekly_report" %} class="active"{% endif %}>
         <a href="{{ path('approval_bundle_report') }}"
+           class="btn btn-primary"
            style="cursor: pointer"
            aria-expanded="false">
             {{ 'menu.report_user_week' |trans }}
@@ -18,6 +20,7 @@
     {% if showOvertime %}
         <li{% if current_tab == "overtime_by_user" %} class="active"{% endif %}>
             <a href="{{ path('overtime_bundle_report') }}"
+              class="btn btn-primary"
               style="cursor: pointer"
               aria-expanded="false">
                 {{ 'menu.report_overtime' |trans }}
@@ -27,6 +30,7 @@
     {% if showSettings %}
         <li{% if current_tab == "settings" %} class="active"{% endif %}>
             <a href="{{ path('approval_bundle_settings') }}"
+               class="btn btn-primary"
                style="cursor: pointer"
                aria-expanded="false">
                 {{ 'menu.settings' |trans }}
@@ -36,6 +40,7 @@
     {% if showSettingsWorkdays %}
         <li{% if current_tab == "settings_workday_history" %} class="active"{% endif %}>
             <a href="{{ path('approval_bundle_settings_workday') }}"
+               class="btn btn-primary"
                style="cursor: pointer"
                aria-expanded="false">
                 {{ 'menu.settings_workday_history' |trans }}
@@ -43,6 +48,7 @@
         </li>
         <li{% if current_tab == "settings_overtime_history" %} class="active"{% endif %}>
             <a href="{{ path('approval_settings_overtime_history') }}"
+               class="btn btn-primary"
                style="cursor: pointer"
                aria-expanded="false">
                 {{ 'menu.settings_overtime_history' |trans }}
