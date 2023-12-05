@@ -24,7 +24,7 @@
         '#ff4500b8' :
         status == 'submitted' ?
         '#ff8c00a6' :
-        '#cccccc' }}">
+        'var(--tblr-bg-surface-secondary);' }}">
 
             {% block nav_form %}
                 {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
@@ -94,7 +94,7 @@
                     '#ff4500b8' :
                     ap['status'] == 'submitted' ?
                     '#ff8c00a6' :
-                    '#cccccc' }}">
+                    'var(--tblr-bg-surface-secondary);' }}">
                         <td>{{ ap['username'] }}</td>
                         <td>{{ ap['status'] | trans }}</td>
                         <td>{{ ap['message'] }}</td>
