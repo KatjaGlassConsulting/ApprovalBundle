@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Kimai time-tracking app.
+ * This file is derived from Kimai2 version 1 using MIT license and now part of the ApprovalBundle Plugin
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,6 +15,7 @@ use Exception;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandlerInterface;
+use FOS\RestBundle\Request\ParamFetcherInterface;
 use KimaiPlugin\ApprovalBundle\Entity\Approval;
 use KimaiPlugin\ApprovalBundle\Entity\ApprovalHistory;
 use KimaiPlugin\ApprovalBundle\Entity\ApprovalStatus;
@@ -26,13 +27,12 @@ use KimaiPlugin\ApprovalBundle\Toolbox\EmailTool;
 use Nelmio\ApiDocBundle\Annotation\Security as ApiSecurity;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[OA\Tag(name: 'ApprovalBundleApi')]
+#[OA\Tag(name: 'Approval')]
 final class ApprovalBundleApiController extends AbstractController
 {
     /**
@@ -107,30 +107,18 @@ final class ApprovalBundleApiController extends AbstractController
         response: 200,
         description: 'URL to submitted week',
     )]
-    #[OA\Parameter(
-        name: 'user',
-        in: 'query',
-        type: 'integer',
-        description: 'User ID to get information for',
-        required: false,
-    )]
-    #[OA\Parameter(
-        name: 'date',
-        in: 'query',
-        type: 'string',
-        description: 'Date as monday of selected week: Y-m-d',
-        required: true,
-    )]
+    #[Rest\QueryParam(name: 'user', requirements: '\d+', strict: true, nullable: true, description: 'User ID to get information for')]
+    #[Rest\QueryParam(name: 'date', nullable: false, description: 'Date as monday of selected week: Y-m-d')]
     #[Rest\Post(path: '/add_to_approve')]
     #[ApiSecurity(name: 'apiUser')]
     #[ApiSecurity(name: 'apiToken')]
-    public function submitWeekAction(Request $request): Response
+    public function submitWeekAction(ParamFetcherInterface $paramFetcher): Response
     {
-        $selectedUserId = $request->query->get('user', -1);
-        $selectedDate = $this->getSelectedDate($request);
+        $selectedUserId = $paramFetcher->get('user');
+        $selectedDate = new DateTime($paramFetcher->get('date'));
         $currentUser = $this->userRepository->find($this->getUser()->getId());
 
-        if ($selectedUserId !== -1) {
+        if ($selectedUserId !== null) {
             if (!$this->isGrantedViewAllApproval() && !$this->isGrantedViewTeamApproval()) {
                 return $this->error400($this->translator->trans('api.accessDenied'));
             }
