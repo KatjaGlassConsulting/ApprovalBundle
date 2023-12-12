@@ -316,10 +316,20 @@
           window.location.href = '{{ path('not_approved',{'approveId':approveId,'user':user.id,'date':current|date('Y-m-d')}) }}'.replace(/&amp;/g,'&');
         }
       }
+      function denyAction() {
+        if (confirm('{{ 'label.undoMessage'|trans }}'.replace(/&quot;/g,'"')) === true) {
+          window.location.href = '{{ path('denied',{'approveId':approveId,'user':user.id,'date':current|date('Y-m-d')}) }}'.replace(/&amp;/g,'&');
+        }
+      }
 
       let undoButton = document.getElementById("undoButton");
       if (undoButton) {
         undoButton.addEventListener("click", undoAction);
+      }
+
+      let deniedButton = document.getElementById("deniedButton");
+      if (deniedButton) {
+        deniedButton.addEventListener("click", denyAction);
       }
 
     </script>
