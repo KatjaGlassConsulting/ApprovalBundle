@@ -56,7 +56,7 @@
                         <td>
                             {% set deleteLinkPath = path('delete_workday_history', {'entryId': entry.id }) %}
                             <button type="button" class="btn btn-sm btn-warning closeModal" 
-                                    onclick="$('#deniedLink').attr('href', '{{ deleteLinkPath }}');">
+                                    onclick="window.location.href='{{deleteLinkPath}}'">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </td>

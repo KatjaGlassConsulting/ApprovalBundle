@@ -477,6 +477,18 @@
         <source>label.overtime</source>
         <target>Überstunden</target>
       </trans-unit>
+      <trans-unit id="label.user">
+        <source>label.user</source>
+        <target>Benutzer</target>
+      </trans-unit>
+      <trans-unit id="label.date">
+        <source>label.date</source>
+        <target>Datum</target>
+      </trans-unit>
+      <trans-unit id="label.duration">
+        <source>label.duration</source>
+        <target>Dauer</target>
+      </trans-unit>
       <trans-unit id="description.overtime_history">
         <source>description.overtime_history</source>
         <target>

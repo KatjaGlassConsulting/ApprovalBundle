@@ -19,12 +19,10 @@ class OvertimeByUserForm extends AbstractType
 {
     /**
      * Simplify cross linking between pages by removing the block prefix.
-     *
-     * @return null|string
      */
     public function getBlockPrefix(): string
     {
-        return null;
+        return '';
     }
 
     /**
