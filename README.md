@@ -8,9 +8,14 @@ Here is a short live demo:
 
 ![Example process for Teamleads](./_documentation/ApprovalTeamlead.gif)
 
+## Kimai2 Version 1 vs. Version 2
+
+The Plugin as located in the `main` branch, supports the version 1 of Kimai. Version 2 which is live is currently (december 2023) not fully supported, thanks to 
+Vitor Mattos and Sam MacLennan which are contributing for this update. The branch for the Kimai version 2 is available in the branch `kimai_v2_update`.
+
 ## Requirements
 
-- Requires Kimai 2, V1.16.10 - V1.30.11 (Kimai2 Version 2 is currently not supported, it might come in Q3/Q4 2023) 
+- Requires Kimai 2, V1.16.10 - V1.30.11 (Kimai2 Version 2 is under development by collaborators in branch `kimai_v2_update`) 
 
 Optional but recommended:
 - MetaFields plugin - without "overtime" will not be shown unless "Display Overtime" is activated and "Settings workdays" are set for the future )
@@ -242,3 +247,5 @@ E.g.
 Many thanks go to [HMR-IT](https://www.hmr-it.de) which had been highly involved in this project.
 
 Additional thanks go to Milo Ivir for additional translations and to Kevin Papst for code enhancements and the update to use this bundle with less pre-requisites.
+
+Furthermore thanks to Vitor Mattos and Sam MacLennan which are working on the migration for the ApprovalBundle supporting Kimai Version 2.
