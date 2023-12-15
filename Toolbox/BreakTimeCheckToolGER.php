@@ -96,8 +96,8 @@ class BreakTimeCheckToolGER
                 $lastDay = $timesheet->getBegin()->format('Y-m-d');
                 $blockStart = $timesheet->getBegin()->getTimestamp();
             } else {
-                // if block-end + 30 mins >= new start -> set new block-start to current
-                if ($blockEnd + $thirtyMinutesBreakInSeconds >= $timesheet->getBegin()->getTimestamp()) {
+                // if block-end (previous) + 30 mins >= new start -> set new block-start to current
+                if ($blockEnd + $thirtyMinutesBreakInSeconds <= $timesheet->getBegin()->getTimestamp()){
                     $blockStart = $timesheet->getBegin()->getTimestamp();
                 }
             }
