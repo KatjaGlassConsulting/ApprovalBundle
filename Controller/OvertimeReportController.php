@@ -24,9 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route(path="/approval")
- */
+#[Route(path: '/approval')]
 class OvertimeReportController extends AbstractController
 {
     private $settingsTool;
@@ -53,10 +51,7 @@ class OvertimeReportController extends AbstractController
         return $this->isGranted('view_all_approval');
     }
 
-    /** 
-     * @Route(path="/overtime_by_user", name="overtime_bundle_report", methods={"GET","POST"})
-     * @throws Exception
-     */
+    #[Route(path: '/overtime_by_user', name: 'overtime_bundle_report', methods: ["GET","POST"])]
     public function overtimeByUser(Request $request): Response
     {
         if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY) == false){

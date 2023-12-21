@@ -19,13 +19,13 @@ use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
 use KimaiPlugin\ApprovalBundle\Form\AddOvertimeHistoryForm;
 use App\Repository\UserRepository;
 use KimaiPlugin\ApprovalBundle\Entity\ApprovalOvertimeHistory;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-/**
- * @Route(path="/approval")
- */
+#[Route(path: '/approval')]
 class SettingsOvertimeController extends AbstractController
 {
     private $settingsTool;
@@ -42,11 +42,8 @@ class SettingsOvertimeController extends AbstractController
         $this->userRepository = $userRepository;
     }
 
-    /**
-     * @Route(path="/settings_overtime", name="approval_settings_overtime_history", methods={"GET","POST"})
-     * @Security("is_granted('view_team_approval') or is_granted('view_all_approval') ")
-     * @throws Exception
-     */
+    #[Route(path: '/settings_overtime', name: 'approval_settings_overtime_history', methods: ["GET","POST"])]
+    #[IsGranted(new Expression("is_granted('view_team_approval') or is_granted('view_all_approval')"))]
     public function settingsOvertime(Request $request): Response
     {
         if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY) == false){
@@ -65,15 +62,8 @@ class SettingsOvertimeController extends AbstractController
         ]);
     }  
 
-    /**
-     * @Route(path="/create_overtime_history", name="approval_create_overtime_history", methods={"GET", "POST"})
-     *
-     * @param Request $request
-     * @return RedirectResponse|Response
-     * @throws DBALException
-     * @throws TransportExceptionInterface
-     */
-    public function createOvertimeHistory(Request $request)
+    #[Route(path: '/create_overtime_history', name: 'approval_create_overtime_history', methods: ["GET", "POST"])]
+    public function createOvertimeHistory(Request $request): Response
     {
         $users = $this->userRepository->findAll();
 
@@ -105,18 +95,10 @@ class SettingsOvertimeController extends AbstractController
             'title' => 'title.add_overtime_history',
             'form' => $form->createView()
         ]); 
-
-        return null;
     }
 
-    /**
-     * @Route(path="/deleteOvertimeHistory", name="delete_overtime_history", methods={"GET"})
-     *
-     * @param Request $request
-     * @return Response
-     * @throws Exception
-     */
-    public function deleteOvertimeHistoryAction(Request $request)
+    #[Route(path: '/deleteOvertimeHistory', name: 'delete_overtime_history', methods: ["GET"])]
+    public function deleteOvertimeHistoryAction(Request $request): Response
     {
         $entryId = $request->get('entryId');
 

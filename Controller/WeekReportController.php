@@ -42,14 +42,14 @@ use KimaiPlugin\ApprovalBundle\Toolbox\Formatting;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
 use PhpOffice\PhpSpreadsheet\Calculation\Logical\Boolean;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-/**
- * @Route(path="/approval")
- */
+#[Route(path: '/approval')]
 class WeekReportController extends AbstractController
 {
     private $settingsTool;
@@ -100,10 +100,7 @@ class WeekReportController extends AbstractController
         return $this->isGranted('view_all_approval');
     }
 
-    /** 
-     * @Route(path="/week_by_user", name="approval_bundle_report", methods={"GET","POST"})
-     * @throws Exception
-     */
+    #[Route(path: '/week_by_user', name: 'approval_bundle_report', methods: ["GET","POST"])]
     public function weekByUser(Request $request): Response
     {
         $users = $this->getUsers();
@@ -202,11 +199,8 @@ class WeekReportController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route(path="/to_approve", name="approval_bundle_to_approve", methods={"GET","POST"})
-     * @Security("is_granted('view_team_approval') or is_granted('view_all_approval') ")
-     * @throws Exception
-     */
+    #[Route(path: '/to_approve', name: 'approval_bundle_to_approve', methods: ["GET","POST"])]
+    #[IsGranted(new Expression("is_granted('view_team_approval') or is_granted('view_all_approval')"))]
     public function toApprove(): Response
     {
         $users = $this->getUsers(false);
@@ -253,10 +247,7 @@ class WeekReportController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route(path="/settings", name="approval_bundle_settings", methods={"GET","POST"})
-     * @throws Exception
-     */
+    #[Route(path: '/settings', name: 'approval_bundle_settings', methods: ["GET","POST"])]
     public function settings(Request $request): Response
     {
         return $this->render('@Approval/settings.html.twig', [
@@ -271,10 +262,7 @@ class WeekReportController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route(path="/settings_workday_history", name="approval_bundle_settings_workday", methods={"GET","POST"})
-     * @throws Exception
-     */
+    #[Route(path: '/settings_workday_history', name: 'approval_bundle_settings_workday', methods: ["GET","POST"])]
     public function settingsWorkdayHistory(Request $request): Response
     {
         $workdayHistory = $this->approvalWorkdayHistoryRepository->findAll();
@@ -289,15 +277,8 @@ class WeekReportController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route(path="/create_workday_history", name="approval_create_workday_history", methods={"GET", "POST"})
-     *
-     * @param Request $request
-     * @return RedirectResponse|Response
-     * @throws DBALException
-     * @throws TransportExceptionInterface
-     */
-    public function createWorkdayHistory(Request $request)
+    #[Route(path: '/create_workday_history', name: 'approval_create_workday_history', methods: ["GET", "POST"])]
+    public function createWorkdayHistory(Request $request): Response
     {
         $users = $this->userRepository->findAll();
 
@@ -339,14 +320,8 @@ class WeekReportController extends AbstractController
         ]); 
     }
 
-    /**
-     * @Route(path="/deleteWorkdayHistory", name="delete_workday_history", methods={"GET"})
-     *
-     * @param Request $request
-     * @return Response
-     * @throws Exception
-     */
-    public function deleteWorkdayHistoryAction(Request $request)
+    #[Route(path: '/deleteWorkdayHistory', name: 'delete_workday_history', methods: ["GET"])]
+    public function deleteWorkdayHistoryAction(Request $request): Response
     {
         $entryId = $request->get('entryId');
 
@@ -471,10 +446,7 @@ class WeekReportController extends AbstractController
         return $approveArray;
     }
 
-    /**
-     * @throws Exception
-     */
-    protected function getTimesheets(?User $selectedUser, DateTime $start, DateTime $end)
+    protected function getTimesheets(?User $selectedUser, DateTime $start, DateTime $end): array
     {
         $timesheetQuery = new TimesheetQuery();
         $timesheetQuery->setUser($selectedUser);
