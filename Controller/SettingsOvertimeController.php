@@ -28,18 +28,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/approval')]
 class SettingsOvertimeController extends AbstractController
 {
-    private $settingsTool;
-    private $approvalOvertimeHistoryRepository;
-    private $userRepository;
-
     public function __construct(
-        SettingsTool $settingsTool,
-        ApprovalOvertimeHistoryRepository $approvalOvertimeHistoryRepository,
-        UserRepository $userRepository
+        private SettingsTool $settingsTool,
+        private ApprovalOvertimeHistoryRepository $approvalOvertimeHistoryRepository,
+        private UserRepository $userRepository
     ) {
-        $this->settingsTool = $settingsTool;
-        $this->approvalOvertimeHistoryRepository = $approvalOvertimeHistoryRepository;
-        $this->userRepository = $userRepository;
     }
 
     #[Route(path: '/settings_overtime', name: 'approval_settings_overtime_history', methods: ["GET","POST"])]

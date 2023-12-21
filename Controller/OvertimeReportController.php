@@ -27,18 +27,11 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/approval')]
 class OvertimeReportController extends AbstractController
 {
-    private $settingsTool;
-    private $approvalRepository;
-    private $userRepository;
-
     public function __construct(
-        SettingsTool $settingsTool,
-        UserRepository $userRepository,
-        ApprovalRepository $approvalRepository
+        private SettingsTool $settingsTool,
+        private UserRepository $userRepository,
+        private ApprovalRepository $approvalRepository
     ) {
-        $this->settingsTool = $settingsTool;
-        $this->userRepository = $userRepository;
-        $this->approvalRepository = $approvalRepository;
     }
 
     private function canManageTeam(): bool

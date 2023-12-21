@@ -37,69 +37,18 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 final class ApprovalBundleApiController extends AbstractController
 {
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
-    /**
-     * @var EmailTool
-     */
-    private $emailTool;
-    /**
-     * @var ViewHandlerInterface
-     */
-    private $viewHandler;
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $urlGenerator;
-    /**
-     * @var ApprovalRepository
-     */
-    private $approvalRepository;
-    /**
-     * @var ApprovalHistoryRepository
-     */
-    private $approvalHistoryRepository;
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    private $security;
-    /**
-     * @var ApprovalStatusRepository
-     */
-    private $approvalStatusRepository;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-    /**
-     * @var LockdownRepository
-     */
-    private $lockdownRepository;
-
     public function __construct(
-        ViewHandlerInterface $viewHandler,
-        UserRepository $userRepository,
-        EmailTool $emailTool,
-        UrlGeneratorInterface $urlGenerator,
-        ApprovalRepository $approvalRepository,
-        ApprovalHistoryRepository $approvalHistoryRepository,
-        ApprovalStatusRepository $approvalStatusRepository,
-        AuthorizationCheckerInterface $security,
-        TranslatorInterface $translator,
-        LockdownRepository $lockdownRepository
+        private ViewHandlerInterface $viewHandler,
+        private UserRepository $userRepository,
+        private EmailTool $emailTool,
+        private UrlGeneratorInterface $urlGenerator,
+        private ApprovalRepository $approvalRepository,
+        private ApprovalHistoryRepository $approvalHistoryRepository,
+        private ApprovalStatusRepository $approvalStatusRepository,
+        private AuthorizationCheckerInterface $security,
+        private TranslatorInterface $translator,
+        private LockdownRepository $lockdownRepository
     ) {
-        $this->viewHandler = $viewHandler;
-        $this->userRepository = $userRepository;
-        $this->emailTool = $emailTool;
-        $this->urlGenerator = $urlGenerator;
-        $this->approvalRepository = $approvalRepository;
-        $this->approvalHistoryRepository = $approvalHistoryRepository;
-        $this->security = $security;
-        $this->approvalStatusRepository = $approvalStatusRepository;
-        $this->translator = $translator;
-        $this->lockdownRepository = $lockdownRepository;
     }
 
     /**

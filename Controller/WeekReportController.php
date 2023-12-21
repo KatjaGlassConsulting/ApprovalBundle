@@ -52,42 +52,19 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/approval')]
 class WeekReportController extends AbstractController
 {
-    private $settingsTool;
-    private $approvalRepository;
-    private $approvalHistoryRepository;
-    private $approvalWorkdayHistoryRepository;
-    private $userRepository;
-    private $formatting;
-    private $timesheetRepository;
-    private $approvalTimesheetRepository;
-    private $breakTimeCheckToolGER;
-    private $reportRepository;
-    private $approvalSettings;
-
     public function __construct(
-        SettingsTool $settingsTool,
-        UserRepository $userRepository,
-        ApprovalHistoryRepository $approvalHistoryRepository,
-        ApprovalRepository $approvalRepository,
-        ApprovalWorkdayHistoryRepository $approvalWorkdayHistoryRepository,
-        Formatting $formatting,
-        TimesheetRepository $timesheetRepository,
-        ApprovalTimesheetRepository $approvalTimesheetRepository,
-        BreakTimeCheckToolGER $breakTimeCheckToolGER,
-        ReportRepository $reportRepository,
-        ApprovalSettingsInterface $approvalSettings
+        private SettingsTool $settingsTool,
+        private UserRepository $userRepository,
+        private ApprovalHistoryRepository $approvalHistoryRepository,
+        private ApprovalRepository $approvalRepository,
+        private ApprovalWorkdayHistoryRepository $approvalWorkdayHistoryRepository,
+        private Formatting $formatting,
+        private TimesheetRepository $timesheetRepository,
+        private ApprovalTimesheetRepository $approvalTimesheetRepository,
+        private BreakTimeCheckToolGER $breakTimeCheckToolGER,
+        private ReportRepository $reportRepository,
+        private ApprovalSettingsInterface $approvalSettings
     ) {
-        $this->settingsTool = $settingsTool;
-        $this->userRepository = $userRepository;
-        $this->approvalHistoryRepository = $approvalHistoryRepository;
-        $this->approvalRepository = $approvalRepository;
-        $this->approvalWorkdayHistoryRepository = $approvalWorkdayHistoryRepository;
-        $this->formatting = $formatting;
-        $this->timesheetRepository = $timesheetRepository;
-        $this->approvalTimesheetRepository = $approvalTimesheetRepository;
-        $this->breakTimeCheckToolGER = $breakTimeCheckToolGER;
-        $this->reportRepository = $reportRepository;
-        $this->approvalSettings = $approvalSettings;
     }
 
     private function canManageTeam(): bool

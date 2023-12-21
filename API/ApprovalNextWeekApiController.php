@@ -28,39 +28,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 final class ApprovalNextWeekApiController extends AbstractController
 {
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
-    /**
-     * @var ViewHandlerInterface
-     */
-    private $viewHandler;
-    /**
-     * @var ApprovalRepository
-     */
-    private $approvalRepository;
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    private $security;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
     public function __construct(
-        ViewHandlerInterface $viewHandler,
-        UserRepository $userRepository,
-        ApprovalRepository $approvalRepository,
-        AuthorizationCheckerInterface $security,
-        TranslatorInterface $translator
+        private ViewHandlerInterface $viewHandler,
+        private UserRepository $userRepository,
+        private ApprovalRepository $approvalRepository,
+        private AuthorizationCheckerInterface $security,
+        private TranslatorInterface $translator
     ) {
-        $this->viewHandler = $viewHandler;
-        $this->userRepository = $userRepository;
-        $this->approvalRepository = $approvalRepository;
-        $this->security = $security;
-        $this->translator = $translator;
     }
 
     /**

@@ -29,51 +29,15 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 #[Route(path: '/approval')]
 class ApprovalController extends AbstractController
 {
-    /**
-     * @var ApprovalRepository
-     */
-    private $approvalRepository;
-    /**
-     * @var ApprovalHistoryRepository
-     */
-    private $approvalHistoryRepository;
-    /**
-     * @var ApprovalStatusRepository
-     */
-    private $approvalStatusRepository;
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $urlGenerator;
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
-    /**
-     * @var EmailTool
-     */
-    private $emailTool;
-    /**
-     * @var LockdownRepository
-     */
-    private $lockdownRepository;
-
     public function __construct(
-        ApprovalRepository $approvalRepository,
-        ApprovalHistoryRepository $approvalHistoryRepository,
-        ApprovalStatusRepository $approvalStatusRepository,
-        UrlGeneratorInterface $urlGenerator,
-        UserRepository $userRepository,
-        EmailTool $emailTool,
-        LockdownRepository $lockdownRepository
+        private ApprovalRepository $approvalRepository,
+        private ApprovalHistoryRepository $approvalHistoryRepository,
+        private ApprovalStatusRepository $approvalStatusRepository,
+        private UrlGeneratorInterface $urlGenerator,
+        private UserRepository $userRepository,
+        private EmailTool $emailTool,
+        private LockdownRepository $lockdownRepository
     ) {
-        $this->approvalRepository = $approvalRepository;
-        $this->approvalHistoryRepository = $approvalHistoryRepository;
-        $this->approvalStatusRepository = $approvalStatusRepository;
-        $this->urlGenerator = $urlGenerator;
-        $this->userRepository = $userRepository;
-        $this->emailTool = $emailTool;
-        $this->lockdownRepository = $lockdownRepository;
     }
 
     #[Route(path: '/add_to_approve', name: 'add_to_approve', methods: ["GET", "POST"])]
