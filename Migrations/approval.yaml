@@ -10,4 +10,4 @@
 table_storage:
     table_name: 'bundle_migration_approval'
 migrations_paths:
-    'KimaiPlugin\ApprovalBundle\Migrations': 'var/plugins/ApprovalBundle/Migrations'
+    'ApprovalBundle\Migrations': 'var/plugins/ApprovalBundle/Migrations'
