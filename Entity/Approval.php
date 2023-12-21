@@ -13,47 +13,28 @@ use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 
-/**
- * @ORM\Entity(repositoryClass=ApprovalRepository::class)
- * @ORM\Table(name="kimai2_ext_approval")
- */
+#[ORM\Entity(repositoryClass: ApprovalRepository::class)]
+#[ORM\Table(name: 'kimai2_ext_approval')]
 class Approval
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+     #[ORM\Id]
+     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+     #[ORM\Column(type: 'integer')]
     private $id;
-    /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
-     */
-    private $user;
-    /**
-     * @ORM\Column(type="date")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    private ?User $user = null;
+     #[ORM\Column(type: 'date')]
     private $startDate;
-    /**
-     * @ORM\Column(type="date")
-     */
+     #[ORM\Column(type: 'date')]
     private $endDate;
-    /**
-     * @ORM\Column(type="integer")
-     */
+     #[ORM\Column(type: 'integer')]
     private $expectedDuration;
-    /**
-     * @ORM\Column(type="integer")
-     */
+     #[ORM\Column(type: 'integer')]
     private $actualDuration;
-    /**
-     * @ORM\Column(type="datetime")
-     */
+     #[ORM\Column(type: 'datetime')]
     private $creationDate;
-    /**
-     * @ORM\OneToMany(targetEntity="KimaiPlugin\ApprovalBundle\Entity\ApprovalHistory", mappedBy="approval")
-     */
+    #[ORM\OneToMany(mappedBy: 'approval', targetEntity: ApprovalHistory::class)]
     private $history;
 
     /**
