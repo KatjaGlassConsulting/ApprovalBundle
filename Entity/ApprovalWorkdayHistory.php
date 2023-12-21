@@ -3,7 +3,6 @@
 namespace KimaiPlugin\ApprovalBundle\Entity;
 
 use App\Entity\User;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalWorkdayHistoryRepository;
 
@@ -43,12 +42,6 @@ class ApprovalWorkdayHistory
 
      #[ORM\Column(type: 'date')]
     private $validTill = null;
-
-    public function __construct()
-    {
-        // FIXME remove in additional commit
-        //$this->workdayHistory = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
