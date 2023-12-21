@@ -160,10 +160,11 @@ $fixer
             ->in([
                 __DIR__
             ])->exclude([
+                __DIR__ . '/.github/',
                 __DIR__ . '/_documentation/',
                 __DIR__ . '/Resources/',
+                __DIR__ . '/Scripts/',
                 __DIR__ . '/vendor/',
-                __DIR__ . '/.github/',
             ])
     )
     ->setFormat('checkstyle')

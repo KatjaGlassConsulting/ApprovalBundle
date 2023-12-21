@@ -3,11 +3,14 @@ services:
         autowire: true
         autoconfigure: true
         public: false
-        bind:
 
     KimaiPlugin\ApprovalBundle\:
         resource: '../../*'
-        exclude: '../../{Resources}'
+        exclude:
+            - '../../Entity/'
+            - '../../Migrations/'
+            - '../../Resources/'
+            - '../../Scripts/'
 
     KimaiPlugin\ApprovalBundle\API\:
         resource: '../../API'
