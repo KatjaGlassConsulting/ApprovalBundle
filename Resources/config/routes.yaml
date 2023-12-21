@@ -1,6 +1,6 @@
 controllers:
-    resource: '../../Controller/'
-    type: annotation
+    resource: '@ApprovalBundle/Controller/'
+    type: attribute
     prefix: /{_locale}
     requirements:
         _locale: '%app_locales%'
@@ -9,6 +9,6 @@ controllers:
 
 
 api_controllers:
-    resource: '../../API/'
-    type: annotation
+    resource: '@ApprovalBundle/API/'
+    type: attribute
     prefix: '/api'
