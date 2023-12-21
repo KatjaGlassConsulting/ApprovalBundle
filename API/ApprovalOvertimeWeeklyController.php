@@ -10,26 +10,22 @@
 namespace KimaiPlugin\ApprovalBundle\API;
 
 use App\Repository\UserRepository;
-use Exception;
 use DateTime;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use Nelmio\ApiDocBundle\Annotation\Security as ApiSecurity;
-use Swagger\Annotations as SWG;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Doctrine\Common\Collections\Criteria;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
+use OpenApi\Attributes as OA;
 
-/**
- * @SWG\Tag(name="ApprovalBundleApi")
- */
+#[OA\Tag(name: 'ApprovalBundleApi')]
 final class ApprovalOvertimeWeeklyController extends AbstractController
 {
     public function __construct(
@@ -42,32 +38,12 @@ final class ApprovalOvertimeWeeklyController extends AbstractController
     ) {
     }
 
-    /**
-     * @SWG\Response(
-     *     response=200,
-     *     description="Get weekly overtime overview for all weeks from 'date' and later"
-     * )
-     * 
-     * @SWG\Parameter(
-     *      name="user",
-     *      in="query",
-     *      type="integer",
-     *      description="User ID to get information for",
-     *      required=false,
-     * ),
-     * @SWG\Parameter(
-     *      name="date",
-     *      in="query",
-     *      type="string",
-     *      description="Date to get weekly overtime overview up from this date: Y-m-d",
-     *      required=true,
-     * )
-     *
-     * @Rest\Get(path="/weekly_overtime")
-     * @ApiSecurity(name="apiUser")
-     * @ApiSecurity(name="apiToken")
-     * @throws Exception
-     */
+    #[OA\Response(response: 200, description: "Get weekly overtime overview for all weeks from 'date' and later")]
+    #[Rest\QueryParam(name: 'user', requirements: '\d+', strict: true, nullable: true, description: 'User ID to get information for')]
+    #[Rest\QueryParam(name: 'date', nullable: false, description: 'Date to get weekly overtime overview up from this date: Y-m-d')]
+    #[Rest\Get(path: '/weekly_overtime')]
+    #[ApiSecurity(name: 'apiUser')]
+    #[ApiSecurity(name: 'apiToken')]
     public function weeklyOvertime(Request $request): Response
     {
         $selectedUserId = $request->query->get('user', -1);
@@ -125,21 +101,21 @@ final class ApprovalOvertimeWeeklyController extends AbstractController
         return $this->security->isGranted('view_team_approval');
     }
 
-    protected function error404(string $message): Response
+    private function error404(string $message): Response
     {
         return $this->viewHandler->handle(
             new View($message, 404)
         );
     }
 
-    protected function error400(string $message): Response
+    private function error400(string $message): Response
     {
         return $this->viewHandler->handle(
             new View($message, 400)
         );
     }
 
-    protected function checkIfUserInTeam($user, $selectedUserId): array
+    private function checkIfUserInTeam($user, $selectedUserId): array
     {
         return array_filter(
             $user->getTeams(),

@@ -11,7 +11,6 @@ namespace KimaiPlugin\ApprovalBundle\API;
 
 use App\Repository\UserRepository;
 use DateTime;
-use Exception;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandlerInterface;
@@ -24,17 +23,15 @@ use KimaiPlugin\ApprovalBundle\Repository\ApprovalStatusRepository;
 use KimaiPlugin\ApprovalBundle\Repository\LockdownRepository;
 use KimaiPlugin\ApprovalBundle\Toolbox\EmailTool;
 use Nelmio\ApiDocBundle\Annotation\Security as ApiSecurity;
-use Swagger\Annotations as SWG;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use OpenApi\Attributes as OA;
 
-/**
- * @SWG\Tag(name="ApprovalBundleApi")
- */
+#[OA\Tag(name: 'ApprovalBundleApi')]
 final class ApprovalBundleApiController extends AbstractController
 {
     public function __construct(
@@ -51,32 +48,12 @@ final class ApprovalBundleApiController extends AbstractController
     ) {
     }
 
-    /**
-     * @SWG\Response(
-     *     response=200,
-     *     description="URL to submitted week"
-     * )
-     * 
-     * @SWG\Parameter(
-     *      name="user",
-     *      in="query",
-     *      type="integer",
-     *      description="User ID to get information for",
-     *      required=false,
-     * ),
-     * @SWG\Parameter(
-     *      name="date",
-     *      in="query",
-     *      type="string",
-     *      description="Date as monday of selected week: Y-m-d",
-     *      required=true,
-     * )
-     *
-     * @Rest\Post(path="/add_to_approve")
-     * @ApiSecurity(name="apiUser")
-     * @ApiSecurity(name="apiToken")
-     * @throws Exception
-     */
+    #[OA\Response(response: 200, description: "URL to submitted week")]
+    #[Rest\QueryParam(name: 'user', requirements: '\d+', strict: true, nullable: true, description: 'User ID to get information for')]
+    #[Rest\QueryParam(name: 'date', nullable: false, description: 'Date as monday of selected week: Y-m-d')]
+    #[Rest\Post(path: '/add_to_approve')]
+    #[ApiSecurity(name: 'apiUser')]
+    #[ApiSecurity(name: 'apiToken')]
     public function submitWeekAction(Request $request): Response
     {
         $selectedUserId = $request->query->get('user', -1);
@@ -136,7 +113,7 @@ final class ApprovalBundleApiController extends AbstractController
         );
     }
 
-    protected function getSelectedDate(Request $request): DateTime
+    private function getSelectedDate(Request $request): DateTime
     {
         $selectedDate = new DateTime($request->query->get('date'));
         if ($selectedDate->format('N') != 1) {
@@ -146,7 +123,7 @@ final class ApprovalBundleApiController extends AbstractController
         return $selectedDate;
     }
 
-    protected function checkIfUserInTeam($user, $selectedUser): array
+    private function checkIfUserInTeam($user, $selectedUser): array
     {
         return array_filter(
             $user->getTeams(),
@@ -162,14 +139,14 @@ final class ApprovalBundleApiController extends AbstractController
         );
     }
 
-    protected function error400(string $message): Response
+    private function error400(string $message): Response
     {
         return $this->viewHandler->handle(
             new View($message, 400)
         );
     }
 
-    protected function error404(string $message): Response
+    private function error404(string $message): Response
     {
         return $this->viewHandler->handle(
             new View($message, 404)
