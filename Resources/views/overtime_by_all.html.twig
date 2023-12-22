@@ -24,6 +24,7 @@
                     <th class="text-center">{{ 'table.approve_user'|trans }}</th>
                     <th class="text-center">{{ 'header.end'|trans}}</th>
                     <th class="text-center">{{ 'label.yearly_overtime'|trans}}</th>
+                    <th class="text-center">{{ 'label.yearly_overtime'|trans}} {{selectedDate}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,12 +33,27 @@
                         <td class="text-center">{{ entry.user }}</td>
                         <td class="text-center">{{ entry.endDate }}</td>
                         <td class="text-center {% if entry.overtime.overtime < 0 %} redText{% endif %}">{{ entry.overtime.overtime | duration }}</td>
+                        <td class="text-center {% if entry.overtimeDate.overtime < 0 %} redText{% endif %}">{{ entry.overtimeDate.overtime | duration }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
             </table>
         </div>
     {% endblock %}
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+      document.addEventListener("kimai.initialized", function () {
+          {% if form.date is defined %}            
+              jQuery('#{{form.date.vars.id}}').on("change", function (ev) {
+              jQuery(this).closest("form").submit();
+            });
+          {% endif %}
+      });
+    </script>
 {% endblock %}
 
 {% block stylesheets %}

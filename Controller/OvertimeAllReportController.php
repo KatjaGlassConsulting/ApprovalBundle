@@ -63,8 +63,12 @@ class OvertimeAllReportController extends AbstractController
         }
 
         $form = $this->createForm(OvertimeByAllForm::class);
-        file_put_contents("C:/temp/blub.txt", "form - " . json_encode($form) . "\n", FILE_APPEND);
-        file_put_contents("C:/temp/blub.txt", "formView - " . json_encode($form->createView()) . "\n", FILE_APPEND);
+        $form->handleRequest($request);
+
+        $selectedDate = new DateTime();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $selectedDate = $form->get('date')->getData();            
+        }
 
         $users = $this->getUsers();
         $weeklyEntries = $this->approvalRepository->getUserApprovals($users);
@@ -95,12 +99,16 @@ class OvertimeAllReportController extends AbstractController
             $entry['overtime'] = $this->approvalRepository->getExpectedActualDurationsForYear(
                 $this->userRepository->find($entry['userId']), 
                 new DateTime($entry['endDate']));
-        }
+            $entry['overtimeDate'] = $this->approvalRepository->getExpectedActualDurationsForYear(
+                $this->userRepository->find($entry['userId']), 
+                $selectedDate);
+    }
 
         return $this->render('@Approval/overtime_by_all.html.twig', [
             'current_tab' => 'overtime_by_user',
             'form' => $form->createView(),   
             'weeklyEntries' => $reducedData,
+            'selectedDate' => $selectedDate->format('Y-m-d'),
             'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
             'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
