@@ -1,0 +1,50 @@
+{% extends '@Approval/layout.html.twig' %}
+{% import "macros/widgets.html.twig" as widgets %}
+
+{% block report_title %}{{ report_title|trans({}, 'ApprovalBundle') }}{% endblock %}
+
+
+{% block report %}
+    {% block nav_row %}
+        <div class="nav_row" style="float:left;width: 100%;">
+            {% block nav_form %}
+                {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
+                {{ form_widget(form.date) }}
+                {{ form_end(form) }}
+            {% endblock %}
+            <br/>
+        </div>
+    {% endblock %}
+
+    {% block table %}
+        <div id="history">
+            <table class="table table-bordered dataTable">
+            <thead>
+                <tr>
+                    <th class="text-center">{{ 'table.approve_user'|trans }}</th>
+                    <th class="text-center">{{ 'header.end'|trans}}</th>
+                    <th class="text-center">{{ 'label.yearly_overtime'|trans}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in weeklyEntries %}
+                    <tr>
+                        <td class="text-center">{{ entry.user }}</td>
+                        <td class="text-center">{{ entry.endDate }}</td>
+                        <td class="text-center {% if entry.overtime.overtime < 0 %} redText{% endif %}">{{ entry.overtime.overtime | duration }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </div>
+    {% endblock %}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .redText {
+            color: red;
+        }
+    </style>
+{% endblock %}

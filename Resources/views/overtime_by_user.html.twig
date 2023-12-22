@@ -18,7 +18,6 @@
 
     {% block table %}
         <div id="history">
-
             <table class="table table-bordered dataTable">
             <thead>
                 <tr>
@@ -56,11 +55,6 @@
       document.addEventListener("kimai.initialized", function () {
           {% if form.user is defined %}
             jQuery('#{{ form.user.vars.id }}').on("change", function (ev) {
-              jQuery(this).closest("form").submit();
-            });
-          {% endif %}
-          {% if form.date is defined %}
-            jQuery('#{{ form.date.vars.id }}').on("change", function (ev) {
               jQuery(this).closest("form").submit();
             });
           {% endif %}
