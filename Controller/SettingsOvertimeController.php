@@ -10,9 +10,6 @@
 namespace KimaiPlugin\ApprovalBundle\Controller;
 
 use Doctrine\ORM\Exception\ORMException;
-use App\Controller\AbstractController;
-use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalOvertimeHistoryRepository;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
@@ -26,7 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route(path: '/approval')]
-class SettingsOvertimeController extends AbstractController
+class SettingsOvertimeController extends BaseApprovalController
 {
     public function __construct(
         private SettingsTool $settingsTool,

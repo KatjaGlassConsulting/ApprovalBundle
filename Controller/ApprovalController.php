@@ -27,7 +27,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[Route(path: '/approval')]
-class ApprovalController extends AbstractController
+class ApprovalController extends BaseApprovalController
 {
     public function __construct(
         private ApprovalRepository $approvalRepository,

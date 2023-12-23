@@ -25,7 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/approval')]
-class OvertimeReportController extends AbstractController
+class OvertimeReportController extends BaseApprovalController
 {
     public function __construct(
         private SettingsTool $settingsTool,

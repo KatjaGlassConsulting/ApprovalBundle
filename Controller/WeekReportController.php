@@ -50,7 +50,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route(path: '/approval')]
-class WeekReportController extends AbstractController
+class WeekReportController extends BaseApprovalController
 {
     public function __construct(
         private SettingsTool $settingsTool,
