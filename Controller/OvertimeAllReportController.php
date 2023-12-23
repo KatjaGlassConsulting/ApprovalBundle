@@ -88,13 +88,9 @@ class OvertimeAllReportController extends BaseApprovalController
 
         return $this->render('@Approval/overtime_by_all.html.twig', [
             'current_tab' => 'overtime_by_user',
-            'form' => $form->createView(),   
+            'form' => $form->createView(),
             'weeklyEntries' => $reducedData,
             'selectedDate' => $selectedDate->format('Y-m-d'),
-            'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
-            'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
-            'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
-            'showOvertime' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)
-        ]);
+        ] + $this->getDefaultTemplateParams($this->settingsTool));
     }
 }
