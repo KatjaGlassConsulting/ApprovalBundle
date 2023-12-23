@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0
+
+- Compatibility with Kimai 2 (tested with 2.6.0)
+
 ## 0.9.11 to 0.9.12
 
 - 6h-no-break-check corrected
