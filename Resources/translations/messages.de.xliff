@@ -428,6 +428,10 @@
         <source>label.addWorkdayHistory</source>
         <target>Neue Arbeitstage Historie</target>
       </trans-unit>
+      <trans-unit id="label.addOvertimeHistory">
+        <source>label.addOvertimeHistory</source>
+        <target>Neue Überstunden Historie</target>
+      </trans-unit>
       <trans-unit id="label.yearly_overtime">
         <source>label.yearly_overtime</source>
         <target>Überstunden (Jahr)</target>
