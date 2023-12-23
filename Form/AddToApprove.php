@@ -9,7 +9,7 @@
 
 namespace KimaiPlugin\ApprovalBundle\Form;
 
-use Exception;
+use App\Form\Type\UserType;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -25,13 +25,11 @@ class AddToApprove extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('user', ChoiceType::class, [
-            'label' => 'label.user',
+        $builder->add('user', UserType::class, [
             'required' => true,
             'multiple' => false,
             'choices' => $options['users'],
-            'choice_value' => 'id',
-            'choice_label' => 'username'
+            'width' => false
         ]);
 
         $builder->add('week', ChoiceType::class, [

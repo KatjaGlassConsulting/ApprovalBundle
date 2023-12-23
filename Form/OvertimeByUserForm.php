@@ -9,9 +9,9 @@
 
 namespace KimaiPlugin\ApprovalBundle\Form;
 
-use App\Reporting\WeekByUser;
+use App\Form\Type\UserType;
+use App\Reporting\WeekByUser\WeekByUser;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,21 +19,10 @@ class OvertimeByUserForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add('user', ChoiceType::class, [
-            'label' => 'label.user',
+        $builder->add('user', UserType::class, [
             'required' => true,
             'multiple' => false,
             'choices' => $options['users'],
-            'choice_value' => 'id',
-            'choice_label' => 'getDisplayName',
             'width' => false
         ]);
     }
