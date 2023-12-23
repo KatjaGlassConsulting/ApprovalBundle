@@ -12,6 +12,7 @@ namespace KimaiPlugin\ApprovalBundle\Form;
 use App\Form\Type\UserType;
 use App\Reporting\WeekByUser\WeekByUser;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,6 +26,16 @@ class OvertimeByUserForm extends AbstractType
             'choices' => $options['users'],
             'width' => false
         ]);
+
+
+        $routePath = $options['routePath'];
+        $builder->add('linkButton', ButtonType::class, [
+            'label' => 'All', // Button label
+            'attr' => [
+                'class' => 'btn btn-primary',
+                'onclick' => "window.location.href='{$routePath}'",
+            ],
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -34,6 +45,7 @@ class OvertimeByUserForm extends AbstractType
             'csrf_protection' => false,
             'method' => 'GET',
             'users' => [],
+            'routePath' => ''
         ]);
     }
 }

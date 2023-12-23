@@ -44,11 +44,13 @@ class OvertimeReportController extends BaseApprovalController
         $values = new WeekByUser();
         $values->setUser($firstUser);
 
+        $routePath = $this->generateUrl('overtime_all_report');
         $form = $this->createForm(OvertimeByUserForm::class, $values, [
             'users' => $users,
+            'routePath' => $routePath,
         ]);
 
-        $form->submit($request->query->all(), false);
+        $form->submit($request->query->all(), false);   
 
         if ($values->getUser() === null) {
             $values->setUser($firstUser);

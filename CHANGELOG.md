@@ -3,6 +3,7 @@
 ## 0.9.11 to 0.9.12
 
 - 6h-no-break-check corrected
+- new overtime by all report with select date option
 
 ## 0.9.10 to 0.9.11
 
