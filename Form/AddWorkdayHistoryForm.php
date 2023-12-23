@@ -9,10 +9,8 @@
 
 namespace KimaiPlugin\ApprovalBundle\Form;
 
-use Exception;
 use App\Form\Type\DatePickerType;
 use App\Form\Type\DurationType;
-use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -20,22 +18,7 @@ use App\Form\Type\UserType;
 
 class AddWorkdayHistoryForm extends AbstractType
 {
-    /**
-     * @var ApprovalRepository
-     */
-    private $approvalRepository;
-
-    public function __construct(
-        ApprovalRepository $approvalRepository
-    ) {
-        $this->approvalRepository = $approvalRepository;
-    }
-
-    /**
-     * {@inheritdoc}
-     * @throws Exception
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $days = [
           'Monday' => 'monday',
@@ -66,10 +49,7 @@ class AddWorkdayHistoryForm extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'users' => [],

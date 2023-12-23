@@ -14,22 +14,10 @@ use KimaiPlugin\ApprovalBundle\Settings\ApprovalSettingsInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class FormTool
+final class FormTool
 {
-    /**
-     * @var SettingsTool
-     */
-    private $settingsTool;
-
-    /**
-     * @var ApprovalSettingsInterface
-     */
-    private $metaFieldRuleRepository;
-
-    public function __construct(SettingsTool $settingsTool, ApprovalSettingsInterface $metaFieldRuleRepository)
+    public function __construct(private SettingsTool $settingsTool, private ApprovalSettingsInterface $metaFieldRuleRepository)
     {
-        $this->settingsTool = $settingsTool;
-        $this->metaFieldRuleRepository = $metaFieldRuleRepository;
     }
 
     /**

@@ -15,18 +15,10 @@ use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 
 class SettingsTool
 {
-    /**
-     * @var ConfigurationRepository
-     */
-    private $configurationRepository;
-    private $cache = [];
+    private array $cache = [];
 
-    /**
-     * @param ConfigurationRepository $configurationRepository
-     */
-    public function __construct(ConfigurationRepository $configurationRepository)
+    public function __construct(private ConfigurationRepository $configurationRepository)
     {
-        $this->configurationRepository = $configurationRepository;
     }
 
     /**

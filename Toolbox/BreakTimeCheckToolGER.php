@@ -16,19 +16,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BreakTimeCheckToolGER
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-    /**
-     * @var SettingsTool
-     */
-    private $settingsTool;
-
-    public function __construct(TranslatorInterface $translator, SettingsTool $settingsTool)
+    public function __construct(private TranslatorInterface $translator, private SettingsTool $settingsTool)
     {
-        $this->translator = $translator;
-        $this->settingsTool = $settingsTool;
     }
 
     /**

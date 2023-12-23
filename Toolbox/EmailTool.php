@@ -21,35 +21,14 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class EmailTool
+final class EmailTool
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-    /**
-     * @var KimaiMailer
-     */
-    private $kimaiMailer;
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
-    /**
-     * @var Formatting
-     */
-    private $formatting;
-
     public function __construct(
-        TranslatorInterface $translator,
-        KimaiMailer $kimaiMailer,
-        UserRepository $userRepository,
-        Formatting $formatting
+        private TranslatorInterface $translator,
+        private KimaiMailer $kimaiMailer,
+        private UserRepository $userRepository,
+        private Formatting $formatting
     ) {
-        $this->kimaiMailer = $kimaiMailer;
-        $this->translator = $translator;
-        $this->userRepository = $userRepository;
-        $this->formatting = $formatting;
     }
 
     public function sendStatusChangedEmail(Approval $approval, string $approver, string $url): bool
@@ -165,15 +144,7 @@ class EmailTool
         );
     }
 
-    /**
-     * @param array $recipients
-     * @param string $str
-     * @param string $template
-     * @param array $approvals
-     * @param OutputInterface $output
-     * @return bool
-     */
-    protected function setApprovalsEmailToAllRecipient(array $recipients, string $str, string $template, array $approvals, OutputInterface $output): bool
+    private function setApprovalsEmailToAllRecipient(array $recipients, string $str, string $template, array $approvals, OutputInterface $output): bool
     {
         foreach ($recipients as $recipient) {
             $email = (new TemplatedEmail())

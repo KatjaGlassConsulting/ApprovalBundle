@@ -25,27 +25,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SettingsForm extends AbstractType
 {
-    /**
-     * @var FormTool
-     */
-    private $formTool;
-    /**
-     * @var SettingsTool
-     */
-    private $settingsTool;
-    /**
-     * @var CustomerRepository
-     */
-    private $customerRepository;
-
     public function __construct(
-        FormTool $formTool,
-        SettingsTool $settingsTool,
-        CustomerRepository $customerRepository
+        private FormTool $formTool,
+        private SettingsTool $settingsTool,
+        private CustomerRepository $customerRepository
     ) {
-        $this->formTool = $formTool;
-        $this->settingsTool = $settingsTool;
-        $this->customerRepository = $customerRepository;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

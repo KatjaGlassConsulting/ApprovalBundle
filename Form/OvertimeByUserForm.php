@@ -17,12 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OvertimeByUserForm extends AbstractType
 {
-    /**
-     * Simplify cross linking between pages by removing the block prefix.
-     *
-     * @return null|string
-     */
-    public function getBlockPrefix()
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         return null;
     }
@@ -43,10 +38,7 @@ class OvertimeByUserForm extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => WeekByUser::class,

@@ -12,16 +12,10 @@ namespace KimaiPlugin\ApprovalBundle\Toolbox;
 use DateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class Formatting
+final class Formatting
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(private TranslatorInterface $translator)
     {
-        $this->translator = $translator;
     }
 
     public function parseDate(DateTime $dateTime)

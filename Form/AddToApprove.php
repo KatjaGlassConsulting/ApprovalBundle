@@ -19,22 +19,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AddToApprove extends AbstractType
 {
-    /**
-     * @var ApprovalRepository
-     */
-    private $approvalRepository;
-
-    public function __construct(
-        ApprovalRepository $approvalRepository
-    ) {
-        $this->approvalRepository = $approvalRepository;
+    public function __construct(private ApprovalRepository $approvalRepository)
+    {
     }
 
-    /**
-     * {@inheritdoc}
-     * @throws Exception
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('user', ChoiceType::class, [
             'label' => 'label.user',
@@ -62,10 +51,7 @@ class AddToApprove extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'users' => [],

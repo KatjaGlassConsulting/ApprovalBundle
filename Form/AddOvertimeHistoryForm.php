@@ -19,11 +19,7 @@ use App\Form\Type\UserType;
 
 class AddOvertimeHistoryForm extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     * @throws Exception
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('user', UserType::class, [
           'multiple' => false,
@@ -41,10 +37,7 @@ class AddOvertimeHistoryForm extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'users' => [],

@@ -24,41 +24,13 @@ use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 
 class ApprovalTimesheetRepository extends ServiceEntityRepository
 {
-    /**
-     * @var CoreTimesheetRepository
-     */
-    private $timesheetRepository;
-
-    /**
-     * @var CustomerRepository
-     */
-    private $customerRepository;
-
-    /**
-     * @var SettingsTool
-     */
-    private $settingsTool;
-
-    /**
-     * @var ApprovalRepository
-     */
-    private $approvalRepository;
-
-    /**
-     * @param CoreTimesheetRepository $timesheetRepository
-     */
     public function __construct(
         ManagerRegistry $registry,
-        CoreTimesheetRepository $timesheetRepository,
-        CustomerRepository $customerRepository,
-        SettingsTool $settingsTool,
-        ApprovalRepository $approvalRepository
+        private CustomerRepository $customerRepository,
+        private SettingsTool $settingsTool,
+        private ApprovalRepository $approvalRepository
     ) {
         parent::__construct($registry, Approval::class);
-        $this->timesheetRepository = $timesheetRepository;
-        $this->customerRepository = $customerRepository;
-        $this->settingsTool = $settingsTool;
-        $this->approvalRepository = $approvalRepository;
     }
 
     public function updateDaysOff(User $user)
