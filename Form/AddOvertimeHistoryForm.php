@@ -31,7 +31,7 @@ class AddOvertimeHistoryForm extends AbstractType
         ]);
 
         $builder->add('applyDate', DatePickerType::class, [
-          'label' => 'label.applyDate',
+          'label' => 'date',
           'required' => true
         ]);
     }
