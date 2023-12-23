@@ -35,7 +35,7 @@ class AddToApprove extends AbstractType
         ]);
 
         $builder->add('week', ChoiceType::class, [
-            'label' => 'label.week',
+            'label' => 'agendaWeek',
             'required' => true,
             'multiple' => true,
             'choices' => $this->approvalRepository->getWeeks($options['user']),

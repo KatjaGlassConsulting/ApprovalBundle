@@ -30,10 +30,10 @@ final class Formatting
 
         $endWeekDay = (clone $dateTime)->modify('next sunday')->format('d.m.Y');
 
-        return (clone $dateTime)->format('F Y') . ' - ' . $this->translator->trans('label.week') . ' ' . $weekNumber . ' [' . $startWeekDay . ' - ' . $endWeekDay . ']';
+        return (clone $dateTime)->format('F Y') . ' - ' . $this->translator->trans('agendaWeek') . ' ' . $weekNumber . ' [' . $startWeekDay . ' - ' . $endWeekDay . ']';
     }
 
-    public function formatDuration(int $duration) : string
+    public function formatDuration(int $duration): string
     {
         $prefix = $duration < 0 ? '-' : '';
         $mins = abs($duration) / 60;

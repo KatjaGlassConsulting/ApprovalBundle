@@ -26,7 +26,7 @@ class AddOvertimeHistoryForm extends AbstractType
         ]);
 
         $builder->add('duration', DurationType::class, [
-          'label' => 'label.duration',
+          'label' => 'duration',
           'required' => true
         ]);
 
