@@ -110,12 +110,14 @@ class WeekReportController extends BaseApprovalController
 
         $approvals = $this->approvalRepository->findApprovalForUser($selectedUser, $start, $end);
         $data = $this->reportRepository->getDailyStatistic($selectedUser, $start, $end);
+        $status = '';
         if ($approvals) {
             $approvalHistory = $this->approvalHistoryRepository->findLastStatus($approvals->getId());
-            $status = $approvalHistory->getStatus()->getName();
+            if ($approvalHistory !== null) {
+                $status = $approvalHistory->getStatus()->getName();
+            }
             $expectedDuration = $approvals->getExpectedDuration();
         } else {
-            $status = '';
             $expectedDuration = $this->approvalRepository->calculateExpectedDurationByUserAndDate($selectedUser, $start, $end);
         }
 

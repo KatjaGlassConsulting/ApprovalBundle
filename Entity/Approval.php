@@ -10,6 +10,7 @@
 namespace KimaiPlugin\ApprovalBundle\Entity;
 
 use App\Entity\User;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 
@@ -144,13 +145,20 @@ class Approval
     }
 
     /**
-     * @return mixed
+     * @return array<ApprovalHistory>
      */
-    public function getHistory()
+    public function getHistory(): array
     {
-        $history = $this->history;
+        if ($this->history instanceof Collection) {
+            return $this->history->toArray();
+        }
 
-        return \gettype($history) === 'object' ? $history->toArray() : $history;
+        return $this->history;
+    }
+
+    public function hasHistory(): bool
+    {
+        return \count($this->getHistory()) > 0;
     }
 
     /**

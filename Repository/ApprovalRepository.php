@@ -798,7 +798,7 @@ class ApprovalRepository extends ServiceEntityRepository
         $oldApproval = $this->findOneBy(['startDate' => $startDate, 'endDate' => $endDate, 'user' => $user], ['id' => 'DESC']);
         if ($oldApproval) {
             $oldApproval = $this->getLastHistory($oldApproval);
-            if ($oldApproval->getHistory()[0]->getStatus()->getName() !== $seededStatus) {
+            if ($oldApproval->hasHistory() && $oldApproval->getHistory()[0]->getStatus()->getName() !== $seededStatus) {
                 return null;
             }
         }
