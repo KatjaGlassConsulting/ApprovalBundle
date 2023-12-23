@@ -12,7 +12,6 @@ namespace KimaiPlugin\ApprovalBundle\Controller;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Exception\ORMException;
 use KimaiPlugin\ApprovalBundle\Entity\ApprovalOvertimeHistory;
-use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Form\AddOvertimeHistoryForm;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalOvertimeHistoryRepository;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
