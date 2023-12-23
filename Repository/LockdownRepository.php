@@ -54,10 +54,8 @@ class LockdownRepository extends ServiceEntityRepository
         if ($preference) {
             $preference->setValue($value);
         } else {
-            $preference = new UserPreference();
+            $preference = new UserPreference($preferenceName, $value);
             $preference->setUser($user);
-            $preference->setValue($value);
-            $preference->setName($preferenceName);
             $this->getEntityManager()->persist($preference);
         }
         $this->getEntityManager()->flush();
