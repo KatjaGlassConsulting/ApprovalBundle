@@ -10,7 +10,28 @@
 namespace KimaiPlugin\ApprovalBundle\Controller;
 
 use App\Controller\AbstractController;
+use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
+use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
 
 class BaseApprovalController extends AbstractController
 {
+    protected function canManageTeam(): bool
+    {
+        return $this->isGranted('view_team_approval');
+    }
+
+    protected function canManageAllPerson(): bool
+    {
+        return $this->isGranted('view_all_approval');
+    }
+
+    protected function getDefaultTemplateParams(SettingsTool $settingsTool): array
+    {
+        return [
+            'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
+            'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
+            'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
+            'showOvertime' => $settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)
+        ];
+    }
 }

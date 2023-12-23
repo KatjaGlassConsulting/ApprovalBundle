@@ -61,16 +61,6 @@ class WeekReportController extends BaseApprovalController
     ) {
     }
 
-    private function canManageTeam(): bool
-    {
-        return $this->isGranted('view_team_approval');
-    }
-
-    private function canManageAllPerson(): bool
-    {
-        return $this->isGranted('view_all_approval');
-    }
-
     #[Route(path: '/week_by_user', name: 'approval_bundle_report', methods: ['GET', 'POST'])]
     public function weekByUser(Request $request): Response
     {
@@ -155,10 +145,6 @@ class WeekReportController extends BaseApprovalController
                 $this->canManageTeam() && $this->canManageAllPerson()
             ),
             'currentUser' => $this->getUser()->getId(),
-            'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
-            'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
-            'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
-            'showOvertime' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'expectedDuration' => $expectedDuration,
             'yearDuration' => $overtimeDuration,
             'isSuperAdmin' => $this->getUser()->isSuperAdmin(),
@@ -168,7 +154,7 @@ class WeekReportController extends BaseApprovalController
             'approvePreviousWeeksMessage' => $this->approvalRepository->getNextApproveWeek($selectedUser),
             'selectedUserSundayIssue' => $selectedUserSundayIssue,
             'currentUserSundayIssue' => $currentUserSundayIssue
-        ]);
+        ] + $this->getDefaultTemplateParams($this->settingsTool));
     }
 
     #[Route(path: '/to_approve', name: 'approval_bundle_to_approve', methods: ['GET', 'POST'])]
@@ -209,12 +195,8 @@ class WeekReportController extends BaseApprovalController
             'past_rows' => $pastRows,
             'current_rows' => $currentRows,
             'future_rows' => $futureRows,
-            'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
-            'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
-            'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
-            'showOvertime' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'warningNoUsers' => $warningNoUsers
-        ]);
+        ] + $this->getDefaultTemplateParams($this->settingsTool));
     }
 
     #[Route(path: '/settings', name: 'approval_bundle_settings', methods: ['GET', 'POST'])]
@@ -222,13 +204,9 @@ class WeekReportController extends BaseApprovalController
     {
         return $this->render('@Approval/settings.html.twig', [
             'current_tab' => 'settings',
-            'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
-            'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
-            'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
-            'showOvertime' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'form' => $this->createSettingsForm($request),
             'warningNoUsers' => empty($this->getUsers())
-        ]);
+        ] + $this->getDefaultTemplateParams($this->settingsTool));
     }
 
     #[Route(path: '/settings_workday_history', name: 'approval_bundle_settings_workday', methods: ['GET', 'POST'])]
@@ -239,11 +217,7 @@ class WeekReportController extends BaseApprovalController
         return $this->render('@Approval/settings_workday_history.html.twig', [
             'current_tab' => 'settings_workday_history',
             'workdayHistory' => $workdayHistory,
-            'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
-            'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
-            'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
-            'showOvertime' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)
-        ]);
+        ] + $this->getDefaultTemplateParams($this->settingsTool));
     }
 
     #[Route(path: '/create_workday_history', name: 'approval_create_workday_history', methods: ['GET', 'POST'])]

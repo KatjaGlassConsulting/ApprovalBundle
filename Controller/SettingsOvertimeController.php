@@ -45,11 +45,7 @@ class SettingsOvertimeController extends BaseApprovalController
         return $this->render('@Approval/settings_overtime_history.html.twig', [
             'current_tab' => 'settings_overtime_history',
             'overtimeHistory' => $overtimeHistory,
-            'showToApproveTab' => $this->isGranted('view_team_approval') || $this->isGranted('view_all_approval'),
-            'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
-            'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
-            'showOvertime' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)
-        ]);
+        ] + $this->getDefaultTemplateParams($this->settingsTool));
     }
 
     #[Route(path: '/create_overtime_history', name: 'approval_create_overtime_history', methods: ['GET', 'POST'])]

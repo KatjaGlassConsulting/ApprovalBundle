@@ -31,16 +31,6 @@ class OvertimeReportController extends BaseApprovalController
     ) {
     }
 
-    private function canManageTeam(): bool
-    {
-        return $this->isGranted('view_team_approval');
-    }
-
-    private function canManageAllPerson(): bool
-    {
-        return $this->isGranted('view_all_approval');
-    }
-
     #[Route(path: '/overtime_by_user', name: 'overtime_bundle_report', methods: ['GET', 'POST'])]
     public function overtimeByUser(Request $request): Response
     {
@@ -72,11 +62,7 @@ class OvertimeReportController extends BaseApprovalController
             'form' => $form->createView(),
             'user' => $selectedUser,
             'weeklyEntries' => array_reverse($weeklyEntries),
-            'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
-            'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
-            'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
-            'showOvertime' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)
-        ]);
+        ] + $this->getDefaultTemplateParams($this->settingsTool));
     }
 
     private function getUsers(): array
