@@ -46,7 +46,7 @@ final class ApprovalOvertimeWeeklyController extends BaseApiController
     #[ApiSecurity(name: 'apiToken')]
     public function weeklyOvertime(Request $request): Response
     {
-        $selectedUserId = $request->query->get('user', -1);
+        $selectedUserId = $request->query->get('user');
         $seletedDate = new DateTime($request->query->get('date'));
 
         if (!$this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)) {
@@ -60,7 +60,7 @@ final class ApprovalOvertimeWeeklyController extends BaseApiController
 
         $currentUser = $this->userRepository->find($this->getUser()->getId());
 
-        if ($selectedUserId !== -1) {
+        if ($selectedUserId !== null) {
             if (!$this->isGrantedViewAllApproval() && !$this->isGrantedViewTeamApproval()) {
                 return $this->error400($this->translator->trans('api.accessDenied'));
             }
@@ -78,7 +78,7 @@ final class ApprovalOvertimeWeeklyController extends BaseApiController
             $currentUser = $selectedUser;
         }
 
-        $weeklyEntries = $this->approvalRepository->findAllWeekForUser($currentUser,$seletedDate);
+        $weeklyEntries = $this->approvalRepository->findAllWeekForUser($currentUser, $seletedDate);
 
         if ($weeklyEntries) {
             return $this->viewHandler->handle(

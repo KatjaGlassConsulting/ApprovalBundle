@@ -41,10 +41,10 @@ final class ApprovalNextWeekApiController extends BaseApiController
     #[ApiSecurity(name: 'apiToken')]
     public function nextWeekAction(Request $request): Response
     {
-        $selectedUserId = $request->query->get('user', -1);
-        $currentUser = $this->userRepository->find($this->getUser()->getId());
+        $selectedUserId = $request->query->get('user');
+        $currentUser = $this->getUser();
 
-        if ($selectedUserId !== -1) {
+        if ($selectedUserId !== null) {
             if (!$this->isGrantedViewAllApproval() && !$this->isGrantedViewTeamApproval()) {
                 return $this->error400($this->translator->trans('api.accessDenied'));
             }

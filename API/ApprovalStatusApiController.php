@@ -45,11 +45,11 @@ final class ApprovalStatusApiController extends BaseApiController
     #[ApiSecurity(name: 'apiToken')]
     public function submitWeekAction(Request $request): Response
     {
-        $selectedUserId = $request->query->get('user', -1);
+        $selectedUserId = $request->query->get('user');
         $selectedDate = $this->getSelectedDate($request);
         $currentUser = $this->userRepository->find($this->getUser()->getId());
 
-        if ($selectedUserId != -1) {
+        if ($selectedUserId !== null) {
             if (!$this->isGrantedViewAllApproval() && !$this->isGrantedViewTeamApproval()) {
                 return $this->error400($this->translator->trans('api.accessDenied'));
             }

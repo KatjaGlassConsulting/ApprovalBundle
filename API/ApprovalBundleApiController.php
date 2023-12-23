@@ -56,11 +56,11 @@ final class ApprovalBundleApiController extends BaseApiController
     #[ApiSecurity(name: 'apiToken')]
     public function submitWeekAction(Request $request): Response
     {
-        $selectedUserId = $request->query->get('user', -1);
+        $selectedUserId = $request->query->get('user');
         $selectedDate = $this->getSelectedDate($request);
-        $currentUser = $this->userRepository->find($this->getUser()->getId());
+        $currentUser = $this->getUser();
 
-        if ($selectedUserId !== -1) {
+        if ($selectedUserId !== null) {
             if (!$this->isGrantedViewAllApproval() && !$this->isGrantedViewTeamApproval()) {
                 return $this->error400($this->translator->trans('api.accessDenied'));
             }
@@ -169,7 +169,7 @@ final class ApprovalBundleApiController extends BaseApiController
             if ($approval->getId() > 0) {
                 $approval = $this->approvalRepository->find($approval->getId());
                 $approveHistory = new ApprovalHistory();
-                $approveHistory->setUser($this->userRepository->find($this->getUser()->getId()));
+                $approveHistory->setUser($this->getUser());
                 $approveHistory->setApproval($approval);
                 $approveHistory->setDate(new DateTime('now'));
                 $approveHistory->setStatus($this->approvalStatusRepository->findOneBy(['name' => ApprovalStatus::SUBMITTED]));

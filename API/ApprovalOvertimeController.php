@@ -46,7 +46,7 @@ final class ApprovalOvertimeController extends BaseApiController
     #[ApiSecurity(name: 'apiToken')]
     public function overtimeForYearUntil(Request $request): Response
     {
-        $selectedUserId = $request->query->get('user', -1);
+        $selectedUserId = $request->query->get('user');
         $seletedDate = new DateTime($request->query->get('date'));
 
         if (!$this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)) {
@@ -58,9 +58,9 @@ final class ApprovalOvertimeController extends BaseApiController
             );
         }
 
-        $currentUser = $this->userRepository->find($this->getUser()->getId());
+        $currentUser = $this->getUser();
 
-        if ($selectedUserId !== -1) {
+        if ($selectedUserId !== null) {
             if (!$this->isGrantedViewAllApproval() && !$this->isGrantedViewTeamApproval()) {
                 return $this->error400($this->translator->trans('api.accessDenied'));
             }
