@@ -9,16 +9,13 @@
 
 namespace KimaiPlugin\ApprovalBundle\Controller;
 
-use App\Controller\AbstractController;
-use App\Entity\Team;
-use App\Entity\User;
-use DateTime;
 use App\Repository\UserRepository;
+use DateTime;
 use Exception;
-use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;;
+use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
+use KimaiPlugin\ApprovalBundle\Form\OvertimeByAllForm;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
-use KimaiPlugin\ApprovalBundle\Form\OvertimeByAllForm;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,38 +25,21 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class OvertimeAllReportController extends BaseApprovalController
 {
-    private $settingsTool;
-    private $approvalRepository;
-    private $userRepository;
-
     public function __construct(
-        SettingsTool $settingsTool,
-        UserRepository $userRepository,
-        ApprovalRepository $approvalRepository
+        private SettingsTool $settingsTool,
+        private UserRepository $userRepository,
+        private ApprovalRepository $approvalRepository
     ) {
-        $this->settingsTool = $settingsTool;
-        $this->userRepository = $userRepository;
-        $this->approvalRepository = $approvalRepository;
     }
 
-    private function canManageTeam(): bool
-    {
-        return $this->isGranted('view_team_approval');
-    }
-
-    private function canManageAllPerson(): bool
-    {
-        return $this->isGranted('view_all_approval');
-    }
-
-    /** 
+    /**
      * @Route(path="/overtime_by_all", name="overtime_all_report", methods={"GET","POST"})
      * @throws Exception
      */
     public function overtimeByUser(Request $request): Response
     {
-        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY) == false){
-          return $this->redirectToRoute('approval_bundle_report');
+        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY) == false) {
+            return $this->redirectToRoute('approval_bundle_report');
         }
 
         $form = $this->createForm(OvertimeByAllForm::class);
@@ -67,12 +47,12 @@ class OvertimeAllReportController extends BaseApprovalController
 
         $selectedDate = new DateTime();
         if ($form->isSubmitted() && $form->isValid()) {
-            $selectedDate = $form->get('date')->getData();            
+            $selectedDate = $form->get('date')->getData();
         }
 
         $users = $this->getOvertimeUsers($this->userRepository);
         $weeklyEntries = $this->approvalRepository->getUserApprovals($users);
-    
+
         // reduce the weekly Entries to only contain one enty per subject having the maximum date
         $reducedData = [];
         foreach ($weeklyEntries as $entry) {
@@ -81,7 +61,7 @@ class OvertimeAllReportController extends BaseApprovalController
             $user = $entry['user'];
 
             // Check if the userId already exists in the reducedData array
-            if (!array_key_exists($userId, $reducedData) || $endDate > $reducedData[$userId]['endDate']) {
+            if (!\array_key_exists($userId, $reducedData) || $endDate > $reducedData[$userId]['endDate']) {
                 $reducedData[$userId] = [
                     'userId' => $userId,
                     'endDate' => $endDate,
@@ -90,19 +70,21 @@ class OvertimeAllReportController extends BaseApprovalController
             }
         }
         $reducedData = array_values($reducedData);
-        usort($reducedData, function($a, $b) {
+        usort($reducedData, function ($a, $b) {
             return $a['user'] <=> $b['user'];
         });
 
         // include the overtime values for these dates
         foreach ($reducedData as &$entry) {
             $entry['overtime'] = $this->approvalRepository->getExpectedActualDurationsForYear(
-                $this->userRepository->find($entry['userId']), 
-                new DateTime($entry['endDate']));
+                $this->userRepository->find($entry['userId']),
+                new DateTime($entry['endDate'])
+            );
             $entry['overtimeDate'] = $this->approvalRepository->getExpectedActualDurationsForYear(
-                $this->userRepository->find($entry['userId']), 
-                $selectedDate);
-    }
+                $this->userRepository->find($entry['userId']),
+                $selectedDate
+            );
+        }
 
         return $this->render('@Approval/overtime_by_all.html.twig', [
             'current_tab' => 'overtime_by_user',
