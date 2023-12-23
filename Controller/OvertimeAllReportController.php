@@ -12,9 +12,9 @@ namespace KimaiPlugin\ApprovalBundle\Controller;
 use App\Repository\UserRepository;
 use DateTime;
 use Exception;
-use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Form\OvertimeByAllForm;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
+use KimaiPlugin\ApprovalBundle\Toolbox\SecurityTool;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +27,7 @@ class OvertimeAllReportController extends BaseApprovalController
 {
     public function __construct(
         private SettingsTool $settingsTool,
+        private SecurityTool $securityTool,
         private UserRepository $userRepository,
         private ApprovalRepository $approvalRepository
     ) {
@@ -50,7 +51,7 @@ class OvertimeAllReportController extends BaseApprovalController
             $selectedDate = $form->get('date')->getData();
         }
 
-        $users = $this->getOvertimeUsers($this->userRepository);
+        $users = $this->securityTool->getUsers();
         $weeklyEntries = $this->approvalRepository->getUserApprovals($users);
 
         // reduce the weekly Entries to only contain one enty per subject having the maximum date

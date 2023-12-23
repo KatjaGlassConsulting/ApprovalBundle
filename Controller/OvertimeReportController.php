@@ -10,10 +10,9 @@
 namespace KimaiPlugin\ApprovalBundle\Controller;
 
 use App\Reporting\WeekByUser\WeekByUser;
-use App\Repository\UserRepository;
-use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Form\OvertimeByUserForm;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
+use KimaiPlugin\ApprovalBundle\Toolbox\SecurityTool;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +23,7 @@ class OvertimeReportController extends BaseApprovalController
 {
     public function __construct(
         private SettingsTool $settingsTool,
-        private UserRepository $userRepository,
+        private SecurityTool $securityTool,
         private ApprovalRepository $approvalRepository
     ) {
     }
@@ -36,7 +35,7 @@ class OvertimeReportController extends BaseApprovalController
             return $this->redirectToRoute('approval_bundle_report');
         }
 
-        $users = $this->getOvertimeUsers($this->userRepository);
+        $users = $this->securityTool->getUsers();
         $firstUser = empty($users) ? $this->getUser() : $users[0];
 
         $values = new WeekByUser();
