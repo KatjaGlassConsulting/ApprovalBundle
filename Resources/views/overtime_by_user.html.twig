@@ -3,23 +3,21 @@
 
 {% block report_title %}{{ report_title|trans }}{% endblock %}
 
-
 {% block report %}
-    {% block nav_row %}
-        <div class="nav_row" style="float:left;width: 100%;">
-            {% block nav_form %}
-                {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
+    <div class="card mb-4">
+        <div class="card-body">
+            {{ form_start(form, {'attr': {'class': 'form-inline', 'id': 'overtime_filter_form'}}) }}
+            <div class="btn-list w-100">
                 {{ form_row(form.user, {'label': false}) }}
-                {{ form_end(form) }}
-            {% endblock %}
-            <br/>
+            </div>
+            {{ form_end(form) }}
         </div>
-    {% endblock %}
+    </div>
 
     {% block table %}
         <div id="history">
 
-            <table class="table table-bordered dataTable">
+            <table class="table table-hover dataTable">
             <thead>
                 <tr>
                     <th class="text-center">{{ 'header.begin'|trans}}</th>
@@ -53,17 +51,13 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
-      document.addEventListener("kimai.initialized", function () {
-          {% if form.user is defined %}
-            jQuery('#{{ form.user.vars.id }}').on("change", function (ev) {
-              jQuery(this).closest("form").submit();
-            });
-          {% endif %}
-          {% if form.date is defined %}
-            jQuery('#{{ form.date.vars.id }}').on("change", function (ev) {
-              jQuery(this).closest("form").submit();
-            });
-          {% endif %}
-      });
+        document.addEventListener("kimai.initialized", function () {
+            const filterForm = document.getElementById('overtime_filter_form');
+            if (filterForm !== null) {
+                filterForm.addEventListener('change', (event) => {
+                    filterForm.submit();
+                });
+            }
+        });
     </script>
 {% endblock %}

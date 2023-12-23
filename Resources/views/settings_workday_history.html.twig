@@ -12,115 +12,55 @@
     {% endif %}
 {% endblock %}
 
-{% set tableName = 'workday_history' %}
 {% block report %}
-    {% block history %}
-        <p>{{ 'description.workday_history'|trans }}</p>
+    {% set tableName = 'workday_history' %}
 
-        {% if tables is defined %}
-          <div class="row">
-              <div class="col-md-12">
-                  {{ tables.data_table_column_modal(tableName, columns) }}
-                  {{ tables.datatable_header(tableName, columns, query, {'reload': 'kimai.leaveUpdate'}) }}
-              </div>
+    <p>{{ 'description.workday_history'|trans }}</p>
+
+    {% if tables is defined %}
+      <div class="row">
+          <div class="col-md-12">
+              {{ tables.data_table_column_modal(tableName, columns) }}
+              {{ tables.datatable_header(tableName, columns, query, {'reload': 'kimai.leaveUpdate'}) }}
           </div>
-        {% endif %}
+      </div>
+    {% endif %}
 
-        <table class="table table-bordered dataTable">
-            <thead>
+    <table class="table table-hover dataTable">
+        <thead>
+            <tr>
+                <th>{{ 'user'|trans }}</th>
+                <th class="text-center">{{ 'Monday'|trans({},'system-configuration')}}</th>
+                <th class="text-center">{{ 'Tuesday'|trans({},'system-configuration')}}</th>
+                <th class="text-center">{{ 'Wednesday'|trans({},'system-configuration')}}</th>
+                <th class="text-center">{{ 'Thursday'|trans({},'system-configuration')}}</th>
+                <th class="text-center">{{ 'Friday'|trans({},'system-configuration')}}</th>
+                <th class="text-center">{{ 'Saturday'|trans({},'system-configuration')}}</th>
+                <th class="text-center">{{ 'Sunday'|trans({},'system-configuration')}}</th>
+                <th class="text-center">{{ 'label.valid_till'|trans}}</th>
+                <th class="actions"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in workdayHistory %}
                 <tr>
-                    <th>{{ 'user'|trans }}</th>
-                    <th class="text-center">{{ 'Monday'|trans({},'system-configuration')}}</th>
-                    <th class="text-center">{{ 'Tuesday'|trans({},'system-configuration')}}</th>
-                    <th class="text-center">{{ 'Wednesday'|trans({},'system-configuration')}}</th>
-                    <th class="text-center">{{ 'Thursday'|trans({},'system-configuration')}}</th>
-                    <th class="text-center">{{ 'Friday'|trans({},'system-configuration')}}</th>
-                    <th class="text-center">{{ 'Saturday'|trans({},'system-configuration')}}</th>
-                    <th class="text-center">{{ 'Sunday'|trans({},'system-configuration')}}</th>
-                    <th class="text-center">{{ 'label.valid_till'|trans}}</th>
-                    <th class="text-center"></th>
+                    <td class="text-center">{{ entry.user.displayName }}</td>
+                    <td class="text-center">{{ entry.monday | duration }}</td>
+                    <td class="text-center">{{ entry.tuesday | duration }}</td>
+                    <td class="text-center">{{ entry.wednesday | duration }}</td>
+                    <td class="text-center">{{ entry.thursday | duration }}</td>
+                    <td class="text-center">{{ entry.friday | duration }}</td>
+                    <td class="text-center">{{ entry.saturday | duration }}</td>
+                    <td class="text-center">{{ entry.sunday | duration }}</td>
+                    <td class="text-center">{{ entry.validTill | date_format('Y-m-d') }}</td>
+                    <td class="actions">
+                        {% set deleteLinkPath = path('delete_workday_history', {'entryId': entry.id, 'attr': {}}) %}
+                        <a href="{{ deleteLinkPath }}" class="btn btn-trash btn-icon api-link text-red" data-event="kimai.historyDelete" data-method="GET" data-question="confirm.delete" data-msg-error="action.delete.error" data-msg-success="action.delete.success">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                {% for entry in workdayHistory %}
-                    <tr>
-                        <td class="text-center">{{ entry.user.displayName }}</td>
-                        <td class="text-center">{{ entry.monday | duration }}</td>
-                        <td class="text-center">{{ entry.tuesday | duration }}</td>
-                        <td class="text-center">{{ entry.wednesday | duration }}</td>
-                        <td class="text-center">{{ entry.thursday | duration }}</td>
-                        <td class="text-center">{{ entry.friday | duration }}</td>
-                        <td class="text-center">{{ entry.saturday | duration }}</td>
-                        <td class="text-center">{{ entry.sunday | duration }}</td>
-                        <td class="text-center">{{ entry.validTill | date_format('Y-m-d') }}</td>
-                        <td>
-                            {% set deleteLinkPath = path('delete_workday_history', {'entryId': entry.id }) %}
-                            <button type="button" class="btn btn-sm btn-warning closeModal" 
-                                    onclick="$('#deniedLink').attr('href', '{{ deleteLinkPath }}');">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-    {% endblock %}
-    <div id="deleteMessage" hidden>
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="text-right">
-                        <span aria-hidden="true" class="closeModal pointer">×</span>
-                    </div>
-                    <h4 class="modal-title" id="form_modal_label">
-                        Delete?
-                    </h4>
-                </div>
-                <div class="modal-footer">
-                    <a href=""
-                        class="btn btn-primary btn-create" id="deniedLink"
-                        style="float: left;">
-                        Delete
-                    </a>
-                    <button type="button" class="btn btn-default btn-cancel closeModal" data-dismiss="modal">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#deleteMessage").hide();
-            $(document).on("click", ".closeModal", function () {
-                if ($("#deleteMessage").css("display") == "none") {
-                    $("#deleteMessage").show();
-                } else {
-                    $("#deleteMessage").hide();
-                }
-              });
-        });    
-    </script>
-{% endblock %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    <style>
-    #deleteMessage {
-            position: fixed;
-            z-index: 1000;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-
-        #deleteMessage > * {
-            margin-top: 20%;
-        }
-    </style>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
