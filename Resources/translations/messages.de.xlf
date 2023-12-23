@@ -1,446 +1,433 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xliff version="1.2"
-  xmlns="urn:oasis:names:tc:xliff:document:1.2">
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file date="2021-12-17T20:00:00Z" source-language="en" target-language="en" datatype="plaintext" original="none">
     <body>
-      <trans-unit id="title.approval_bundle">
+      <trans-unit id="M9qu6_Q" resname="title.approval_bundle">
         <source>title.approval_bundle</source>
         <target>Stunden Freigabe</target>
       </trans-unit>
-
-      <trans-unit id="menu.approval_bundle">
+      <trans-unit id="32.1ITn" resname="menu.approval_bundle">
         <source>menu.approval_bundle</source>
         <target>Stunden Freigabe</target>
       </trans-unit>
-      <trans-unit id="menu.to_approve">
+      <trans-unit id="mSorheL" resname="menu.to_approve">
         <source>menu.to_approve</source>
         <target>Zum Freigeben</target>
       </trans-unit>
-      <trans-unit id="menu.report_user_week">
+      <trans-unit id="Jpn34gg" resname="menu.report_user_week">
         <source>menu.report_user_week</source>
         <target>Wochenberichte</target>
       </trans-unit>
-      <trans-unit id="menu.settings_workday_history">
+      <trans-unit id="D8YT2co" resname="menu.settings_workday_history">
         <source>menu.settings_workday_history</source>
         <target>Einstellungen Arbeitstage</target>
       </trans-unit>
-      <trans-unit id="menu.report_overtime">
+      <trans-unit id="opwlnqi" resname="menu.report_overtime">
         <source>menu.report_overtime</source>
         <target>Überstunden</target>
       </trans-unit>
-      <trans-unit id="menu.settings_overtime_history">
+      <trans-unit id="UiDe0kR" resname="menu.settings_overtime_history">
         <source>menu.settings_overtime_history</source>
         <target>Einstellungen Überstunden</target>
       </trans-unit>
-      <trans-unit id="table.history">
+      <trans-unit id="CLaoXBM" resname="table.history">
         <source>table.history</source>
         <target>Historie für</target>
       </trans-unit>
-      <trans-unit id="table.approver">
+      <trans-unit id="rTn3oW9" resname="table.approver">
         <source>table.approver</source>
         <target>Genehmigender</target>
       </trans-unit>
-      <trans-unit id="table.status">
+      <trans-unit id="0kTj.54" resname="table.status">
         <source>table.status</source>
         <target>Status</target>
       </trans-unit>
-      <trans-unit id="table.message">
+      <trans-unit id="4nuv8Xg" resname="table.message">
         <source>table.message</source>
         <target>Nachricht</target>
       </trans-unit>
-      <trans-unit id="table.dateOfApprove">
+      <trans-unit id="1BnDRmX" resname="table.dateOfApprove">
         <source>table.dateOfApprove</source>
         <target>Datum der Freigabe</target>
       </trans-unit>
-      <trans-unit id="email.subjectSubmitted">
+      <trans-unit id="PVlmoUj" resname="email.subjectSubmitted">
         <source>email.subjectSubmitted</source>
         <target>Stundenzettel wurde eingereicht</target>
       </trans-unit>
-      <trans-unit id="email.subjectApproved">
+      <trans-unit id="GylmrH1" resname="email.subjectApproved">
         <source>email.subjectApproved</source>
         <target>Stundenzettel wurde genehmigt</target>
       </trans-unit>
-      <trans-unit id="email.subjectReject">
+      <trans-unit id="xR_kulD" resname="email.subjectReject">
         <source>email.subjectReject</source>
         <target>Stundenzettel wurde abgelehnt</target>
       </trans-unit>
-      <trans-unit id="email.closedMonth">
+      <trans-unit id="rdM9EDv" resname="email.closedMonth">
         <source>email.closedMonth</source>
         <target>Abgeschlossener Monat</target>
       </trans-unit>
-      <trans-unit id="email.closedMonthMessage">
+      <trans-unit id="JhH.w0b" resname="email.closedMonthMessage">
         <source>email.closedMonthMessage</source>
         <target>Der Monat ist vollständig genehmigt -</target>
       </trans-unit>
-      <trans-unit id="email.hello">
+      <trans-unit id="GplFCXV" resname="email.hello">
         <source>email.hello</source>
         <target>Hallo</target>
       </trans-unit>
-      <trans-unit id="email.approved.message">
+      <trans-unit id="dYRDhPq" resname="email.approved.message">
         <source>email.approved.message</source>
         <target>hat ihren Stundenzettel genehmigt - Woche:</target>
       </trans-unit>
-      <trans-unit id="email.reject.message">
+      <trans-unit id="Ok8jCeM" resname="email.reject.message">
         <source>email.reject.message</source>
         <target>hat ihren Stundenzettel abgelehnt - Woche:</target>
       </trans-unit>
-      <trans-unit id="email.reason">
+      <trans-unit id="7oAiqQ6" resname="email.reason">
         <source>email.reason</source>
         <target>Grund:</target>
       </trans-unit>
-      <trans-unit id="email.cronjob.adminNotSubmittedSubject">
+      <trans-unit id="DuuF34p" resname="email.cronjob.adminNotSubmittedSubject">
         <source>email.cronjob.adminNotSubmittedSubject</source>
         <target>Liste der nicht angemeldeten Benutzer</target>
       </trans-unit>
-      <trans-unit id="email.cronjob.adminNotSubmittedTitle">
+      <trans-unit id="jFhYeRV" resname="email.cronjob.adminNotSubmittedTitle">
         <source>email.cronjob.adminNotSubmittedTitle</source>
         <target>Liste der nicht angemeldeten Benutzer:</target>
       </trans-unit>
-      <trans-unit id="email.cronjob.userNotSubmittedWeeksSubject">
+      <trans-unit id="L7RIsf1" resname="email.cronjob.userNotSubmittedWeeksSubject">
         <source>email.cronjob.userNotSubmittedWeeksSubject</source>
         <target>Liste der nicht eingereichten Wochen</target>
       </trans-unit>
-      <trans-unit id="email.cronjob.userNotSubmittedWeeksTitle">
+      <trans-unit id="e3jW8Wg" resname="email.cronjob.userNotSubmittedWeeksTitle">
         <source>email.cronjob.userNotSubmittedWeeksTitle</source>
         <target>Liste der nicht eingereichten Wochen:</target>
       </trans-unit>
-      <trans-unit id="email.cronjob.teamleadNotSubmittedUsersSubject">
+      <trans-unit id="G6xTIdS" resname="email.cronjob.teamleadNotSubmittedUsersSubject">
         <source>email.cronjob.teamleadNotSubmittedUsersSubject</source>
         <target>Liste der nicht eingereichten Wochen</target>
       </trans-unit>
-      <trans-unit id="email.cronjob.teamleadNotSubmittedUsersTitle">
+      <trans-unit id="gffLvUV" resname="email.cronjob.teamleadNotSubmittedUsersTitle">
         <source>email.cronjob.teamleadNotSubmittedUsersTitle</source>
         <target>Liste der nicht eingereichten Wochen:</target>
       </trans-unit>
-
-      <trans-unit id="menu.settings">
+      <trans-unit id="4UTsL.X" resname="menu.settings">
         <source>menu.settings</source>
         <target>Einstellungen</target>
       </trans-unit>
-
-      <trans-unit id="stats.duration_total">
+      <trans-unit id="G_t_3Se" resname="stats.duration_total">
         <source>stats.duration_total</source>
         <target>Gesamtdauer</target>
       </trans-unit>
-      <trans-unit id="stats.duration_expected">
+      <trans-unit id="C_UHtRf" resname="stats.duration_expected">
         <source>stats.duration_expected</source>
         <target>Erwartete Dauer</target>
       </trans-unit>
-      <trans-unit id="stats.duration_actual">
+      <trans-unit id="wTg5hH2" resname="stats.duration_actual">
         <source>stats.duration_actual</source>
         <target>Erfasste Dauer</target>
       </trans-unit>
-      <trans-unit id="table.past_weeks">
+      <trans-unit id="YDDLiv4" resname="table.past_weeks">
         <source>table.past_weeks</source>
         <target>Vergangene Wochen</target>
       </trans-unit>
-      <trans-unit id="table.current_week">
+      <trans-unit id="mtGlTOm" resname="table.current_week">
         <source>table.current_week</source>
         <target>Aktuelle Woche</target>
       </trans-unit>
-      <trans-unit id="table.future_week">
+      <trans-unit id="dKDLQKN" resname="table.future_week">
         <source>table.future_week</source>
         <target>Kommende Wochen</target>
       </trans-unit>
-
-      <trans-unit id="table.approve_user">
+      <trans-unit id="oTr3M.5" resname="table.approve_user">
         <source>table.approve_user</source>
         <target>Benutzer</target>
       </trans-unit>
-      <trans-unit id="table.approve_week">
+      <trans-unit id="b659oMC" resname="table.approve_week">
         <source>table.approve_week</source>
         <target>Woche</target>
       </trans-unit>
-      <trans-unit id="table.approve_status">
+      <trans-unit id="cU6hKwA" resname="table.approve_status">
         <source>table.approve_status</source>
         <target>Status</target>
       </trans-unit>
-      <trans-unit id="warning.add_to_approve_previous_weeks">
+      <trans-unit id="e79F7vi" resname="warning.add_to_approve_previous_weeks">
         <source>warning.add_to_approve_previous_weeks</source>
         <target>Es gibt noch ungenehmigte frühere Wochen, daher kann diese Woche nicht bearbeitet werden</target>
       </trans-unit>
-      <trans-unit id="warning.selected_user_sunday_issue">
+      <trans-unit id="olL6IjD" resname="warning.selected_user_sunday_issue">
         <source>warning.selected_user_sunday_issue</source>
         <target>Der gewählte Nutzer hat Sonntag als Wochenstart - dies wird vom Approval Plugin nicht unterstützt.</target>
       </trans-unit>
-      <trans-unit id="warning.currentUserSundayIssue">
+      <trans-unit id="9WCJXXi" resname="warning.currentUserSundayIssue">
         <source>warning.currentUserSundayIssue</source>
         <target>Nutzereinstellung Sonntag als Wochenstart - dies wird vom Approval Plugin nicht unterstützt.</target>
       </trans-unit>
-
-      <trans-unit id="submitted">
+      <trans-unit id="4G_M.Dn" resname="submitted">
         <source>submitted</source>
         <target>Abgeschickt</target>
       </trans-unit>
-      <trans-unit id="denied">
+      <trans-unit id="YtbCMwA" resname="denied">
         <source>denied</source>
         <target>Abgelehnt</target>
       </trans-unit>
-      <trans-unit id="rejected">
+      <trans-unit id="IM2Tii6" resname="rejected">
         <source>rejected</source>
         <target>Abgelehnt</target>
       </trans-unit>
-      <trans-unit id="approved">
+      <trans-unit id="Jof4btZ" resname="approved">
         <source>approved</source>
         <target>Angenommen</target>
       </trans-unit>
-      <trans-unit id="not_submitted">
+      <trans-unit id="9GPC890" resname="not_submitted">
         <source>not_submitted</source>
         <target>Nicht abgeschickt</target>
       </trans-unit>
-      <trans-unit id="label.undoMessage">
+      <trans-unit id="dkxLqg4" resname="label.undoMessage">
         <source>label.undoMessage</source>
         <target>Möchten Sie den Status "Nicht eingereicht" wiederherstellen?</target>
       </trans-unit>
-      <trans-unit id="api.wrongTeam">
+      <trans-unit id="bHtEnEI" resname="api.wrongTeam">
         <source>api.wrongTeam</source>
         <target>Benutzer nicht aus Ihrem Team</target>
       </trans-unit>
-      <trans-unit id="api.accessDenied">
+      <trans-unit id="zHRxV_o" resname="api.accessDenied">
         <source>api.accessDenied</source>
         <target>Zugriff verweigert</target>
       </trans-unit>
-      <trans-unit id="api.wrongUser">
+      <trans-unit id="vRqh2y2" resname="api.wrongUser">
         <source>api.wrongUser</source>
         <target>Benutzer existiert nicht</target>
       </trans-unit>
-      <trans-unit id="api.noOvertimeSetting">
+      <trans-unit id="97NkKd5" resname="api.noOvertimeSetting">
         <source>api.noOvertimeSetting</source>
         <target>Überstunden sind in den Settings deaktiviert</target>
       </trans-unit>
-      <trans-unit id="api.alreadyExists">
+      <trans-unit id="Ty9xyW2" resname="api.alreadyExists">
         <source>api.alreadyExists</source>
         <target>Freigabe existiert bereits</target>
       </trans-unit>
-      <trans-unit id="api.add_to_approve_previous_weeks">
+      <trans-unit id="WGNStcn" resname="api.add_to_approve_previous_weeks">
         <source>api.add_to_approve_previous_weeks</source>
         <target>Es gibt noch ungenehmigte frühere Wochen, daher kann diese Woche nicht bearbeitet werden</target>
       </trans-unit>
-      <trans-unit id="api.noData">
+      <trans-unit id=".HPkVRu" resname="api.noData">
         <source>api.noData</source>
         <target>Keine Daten für diesen Benutzer</target>
       </trans-unit>
-
-      <trans-unit id="warning.noUserToApprove">
+      <trans-unit id="hDVvIuT" resname="warning.noUserToApprove">
         <source>warning.noUserToApprove</source>
         <target>Keine Benutzer zur Genehmigung</target>
       </trans-unit>
-
-      <trans-unit id="header.date">
+      <trans-unit id="8numka1" resname="header.date">
         <source>header.date</source>
         <target>Datum</target>
       </trans-unit>
-      <trans-unit id="header.begin">
+      <trans-unit id="tYmRWqd" resname="header.begin">
         <source>header.begin</source>
         <target>Beginn</target>
       </trans-unit>
-      <trans-unit id="header.end">
+      <trans-unit id="fcOA1xc" resname="header.end">
         <source>header.end</source>
         <target>Ende</target>
       </trans-unit>
-      <trans-unit id="header.duration">
+      <trans-unit id="Czf447q" resname="header.duration">
         <source>header.duration</source>
         <target>Dauer</target>
       </trans-unit>
-      <trans-unit id="header.customer">
+      <trans-unit id="Az.gm5S" resname="header.customer">
         <source>header.customer</source>
         <target>Kunde</target>
       </trans-unit>
-      <trans-unit id="header.project">
+      <trans-unit id="Ggg5J8x" resname="header.project">
         <source>header.project</source>
         <target>Projekt</target>
       </trans-unit>
-      <trans-unit id="header.activity">
+      <trans-unit id="YoJWI9r" resname="header.activity">
         <source>header.activity</source>
         <target>Tätigkeit</target>
       </trans-unit>
-      <trans-unit id="header.description">
+      <trans-unit id="uIoZr6R" resname="header.description">
         <source>header.description</source>
         <target>Beschreibung</target>
       </trans-unit>
-
-      <trans-unit id="error.less_than_eleven_hours_off">
+      <trans-unit id="0TjTcEG" resname="error.less_than_eleven_hours_off">
         <source>error.less_than_eleven_hours_off</source>
         <target>Sie haben die Ruhezeit von 11 Stunden nicht eingehalten.</target>
       </trans-unit>
-      <trans-unit id="error.more_than_ten_hours_worked">
+      <trans-unit id="CbTaeLC" resname="error.more_than_ten_hours_worked">
         <source>error.more_than_ten_hours_worked</source>
         <target>Sie haben mehr als 10 Stunden gearbeitet!</target>
       </trans-unit>
-      <trans-unit id="error.nine_hours_without_break">
+      <trans-unit id="fRH6l.V" resname="error.nine_hours_without_break">
         <source>error.nine_hours_without_break</source>
         <target>Sie haben mehr als 9 Stunden ohne 45-minütige Pause gearbeitet!</target>
       </trans-unit>
-      <trans-unit id="error.six_hours_without_break">
+      <trans-unit id="DglCyZG" resname="error.six_hours_without_break">
         <source>error.six_hours_without_break</source>
         <target>Sie haben mehr als 6 Stunden ohne 30-minütige Pause gearbeitet!</target>
       </trans-unit>
-      <trans-unit id="error.six_hours_without_stop_break">
+      <trans-unit id="MEOmY9S" resname="error.six_hours_without_stop_break">
         <source>error.six_hours_without_stop_break</source>
         <target>Sie haben mehr als 6 Stunden am Stück gearbeitet!</target>
       </trans-unit>
-      <trans-unit id="error.work_on_sunday">
+      <trans-unit id="RQKdSVx" resname="error.work_on_sunday">
         <source>error.work_on_sunday</source>
         <target>Sie haben Sonntag gearbeitet!</target>
       </trans-unit>
-      <trans-unit id="error.work_offdays">
+      <trans-unit id="UJv0FyA" resname="error.work_offdays">
         <source>error.work_offdays</source>
         <target>Sie haben an einem freien Tag gearbeitet!</target>
       </trans-unit>
-      <trans-unit id="error.no_end_date">
+      <trans-unit id="XanuWvg" resname="error.no_end_date">
         <source>error.no_end_date</source>
         <target>Sie haben kein End-Datum.</target>
       </trans-unit>
-
-      <trans-unit id="label.customer_for_free_days">
+      <trans-unit id="0ySZ.uY" resname="label.customer_for_free_days">
         <source>label.customer_for_free_days</source>
         <target>Kunde für freie Tage</target>
       </trans-unit>
-      <trans-unit id="label.email_link_url">
+      <trans-unit id="3M4Epld" resname="label.email_link_url">
         <source>label.email_link_url</source>
         <target>E-Mail-Link url</target>
       </trans-unit>
-      <trans-unit id="label.workflow_start">
+      <trans-unit id="voEX3bt" resname="label.workflow_start">
         <source>label.workflow_start</source>
         <target>Approval Workflow Start Datum</target>
       </trans-unit>
-
       <!-- START formatting patterns form -->
-      <trans-unit id="format.full_datetime">
+      <trans-unit id="0A0ov8D" resname="format.full_datetime">
         <source>format.full_datetime</source>
         <target>d.m.Y H:i:s</target>
       </trans-unit>
-      <trans-unit id="format.full_date">
+      <trans-unit id="ufyVaxF" resname="format.full_date">
         <source>format.full_date</source>
         <target>d.m.Y</target>
       </trans-unit>
-      <trans-unit id="format.decimal_separator">
+      <trans-unit id="PviJ8JV" resname="format.decimal_separator">
         <source>format.decimal_separator</source>
         <target>,</target>
       </trans-unit>
-      <trans-unit id="format.thousands_separator">
+      <trans-unit id="U8qC3dP" resname="format.thousands_separator">
         <source>format.thousands_separator</source>
         <target>.</target>
       </trans-unit>
       <!-- END formatting patterns form -->
-
       <!-- START month form -->
-      <trans-unit id="month.january">
+      <trans-unit id="GFYIa9S" resname="month.january">
         <source>month.january</source>
         <target>Januar</target>
       </trans-unit>
-      <trans-unit id="month.february">
+      <trans-unit id="jWiYJCq" resname="month.february">
         <source>month.february</source>
         <target>Februar</target>
       </trans-unit>
-      <trans-unit id="month.march">
+      <trans-unit id="X_VvCAA" resname="month.march">
         <source>month.march</source>
         <target>März</target>
       </trans-unit>
-      <trans-unit id="month.april">
+      <trans-unit id="trmIV1m" resname="month.april">
         <source>month.april</source>
         <target>April</target>
       </trans-unit>
-      <trans-unit id="month.may">
+      <trans-unit id="JeDq94m" resname="month.may">
         <source>month.may</source>
         <target>Mai</target>
       </trans-unit>
-      <trans-unit id="month.june">
+      <trans-unit id="RsY9NcG" resname="month.june">
         <source>month.june</source>
         <target>Juni</target>
       </trans-unit>
-      <trans-unit id="month.july">
+      <trans-unit id="trHhJOb" resname="month.july">
         <source>month.july</source>
         <target>Juli</target>
       </trans-unit>
-      <trans-unit id="month.august">
+      <trans-unit id="cRoWKY4" resname="month.august">
         <source>month.august</source>
         <target>August</target>
       </trans-unit>
-      <trans-unit id="month.september">
+      <trans-unit id="pV0rFEJ" resname="month.september">
         <source>month.september</source>
         <target>September</target>
       </trans-unit>
-      <trans-unit id="month.october">
+      <trans-unit id="_U33TCM" resname="month.october">
         <source>month.october</source>
         <target>Oktober</target>
       </trans-unit>
-      <trans-unit id="month.november">
+      <trans-unit id="vYzQ1Ia" resname="month.november">
         <source>month.november</source>
         <target>November</target>
       </trans-unit>
-      <trans-unit id="month.december">
+      <trans-unit id="2xCp5NT" resname="month.december">
         <source>month.december</source>
         <target>Dezember</target>
       </trans-unit>
       <!-- END month form -->
-
       <!-- START Tooltips for buttons -->
-      <trans-unit id="tooltip.description">
+      <trans-unit id="qZG5IdP" resname="tooltip.description">
         <source>tooltip.description</source>
         <target>Zeige Beschreibung der Tätigkeiten</target>
       </trans-unit>
-      <trans-unit id="tooltip.timesheets">
+      <trans-unit id="UZWxVoj" resname="tooltip.timesheets">
         <source>tooltip.timesheets</source>
         <target>Timesheets</target>
       </trans-unit>
-      <trans-unit id="tooltip.history">
+      <trans-unit id="0Iya7gx" resname="tooltip.history">
         <source>tooltip.history</source>
         <target>Historie</target>
       </trans-unit>
-      <trans-unit id="tooltip.approve">
+      <trans-unit id="2i0AxI1" resname="tooltip.approve">
         <source>tooltip.approve</source>
         <target>Approve</target>
       </trans-unit>
-      <trans-unit id="tooltip.reject">
+      <trans-unit id="HVIm9.e" resname="tooltip.reject">
         <source>tooltip.reject</source>
         <target>Ablehnen</target>
       </trans-unit>
-      <trans-unit id="tooltip.undo">
+      <trans-unit id="p7q3C.O" resname="tooltip.undo">
         <source>tooltip.undo</source>
         <target>Approval zurücknehmen</target>
       </trans-unit>
-      <trans-unit id="tooltip.submit">
+      <trans-unit id="XV.qEtm" resname="tooltip.submit">
         <source>tooltip.submit</source>
         <target>Submit Approval</target>
       </trans-unit>
       <!-- END Tooltips for buttons -->
-      <trans-unit id="label.valid_till">
+      <trans-unit id="MMObi4p" resname="label.valid_till">
         <source>label.valid_till</source>
         <target>Gültig bis</target>
       </trans-unit>
-      <trans-unit id="label.approval_overtime_ny">
+      <trans-unit id="p8UAyEF" resname="label.approval_overtime_ny">
         <source>label.approval_overtime_ny</source>
         <target>Überstunden Darstellung</target>
       </trans-unit>
-      <trans-unit id="label.approval_breakchecks_ny">
+      <trans-unit id="gc2Eczk" resname="label.approval_breakchecks_ny">
         <source>label.approval_breakchecks_ny</source>
         <target>Berechne Pausenzeiten-Probleme</target>
       </trans-unit>
-      <trans-unit id="description.workday_history">
+      <trans-unit id="NUgf0fZ" resname="description.workday_history">
         <source>description.workday_history</source>
         <target>
           Arbeitstage Historie - wenn sich die Arbeitsstunden pro Tag ändern, kann hier die Historie eingetragen werden. 
           Die eingetragenen Arbeitsstunden pro Tag gelten bis zum Tag "gültig bis".
         </target>
       </trans-unit>
-      <trans-unit id="label.addWorkdayHistory">
+      <trans-unit id="aSwuAam" resname="label.addWorkdayHistory">
         <source>label.addWorkdayHistory</source>
         <target>Neue Arbeitstage Historie</target>
       </trans-unit>
-      <trans-unit id="label.addOvertimeHistory">
+      <trans-unit id="qS9DJiY" resname="label.addOvertimeHistory">
         <source>label.addOvertimeHistory</source>
         <target>Neue Überstunden Historie</target>
       </trans-unit>
-      <trans-unit id="label.yearly_overtime">
+      <trans-unit id="ZxzEvV_" resname="label.yearly_overtime">
         <source>label.yearly_overtime</source>
         <target>Überstunden (Jahr)</target>
       </trans-unit>
-      <trans-unit id="label.overtime">
+      <trans-unit id="As197nd" resname="label.overtime">
         <source>label.overtime</source>
         <target>Überstunden</target>
       </trans-unit>
-      <trans-unit id="description.overtime_history">
+      <trans-unit id="sLVHir2" resname="description.overtime_history">
         <source>description.overtime_history</source>
         <target>
           Überstunden Historie - wenn es einen manuellen Überstundenausgleich geben soll, so kann dieser hier eingetragen werden. Die Gesammtüberstunden pro
@@ -450,4 +437,3 @@
     </body>
   </file>
 </xliff>
-
