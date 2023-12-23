@@ -1,50 +1,38 @@
-<ul class="nav nav-tabs">
+<ul class="nav nav-pills card-header-pills" data-bs-toggle="tabs">
     {% if showToApproveTab %}
-        <li{% if current_tab == "to_approve" %} class="active"{% endif %}>
-            <a href="{{ path('approval_bundle_to_approve') }}"
-               style="cursor: pointer"
-               aria-expanded="false">
+        <li class="nav-item">
+            <a class="nav-link{% if current_tab == "to_approve" %} active{% endif %}" href="{{ path('approval_bundle_to_approve') }}">
                 {{ 'menu.to_approve' |trans }}
             </a>
         </li>
     {% endif %}
-    <li{% if current_tab == "weekly_report" %} class="active"{% endif %}>
-        <a href="{{ path('approval_bundle_report') }}"
-           style="cursor: pointer"
-           aria-expanded="false">
+    <li class="nav-item">
+        <a class="nav-link{% if current_tab == "weekly_report" %} active{% endif %}" href="{{ path('approval_bundle_report') }}">
             {{ 'menu.report_user_week' |trans }}
         </a>
     </li>
     {% if showOvertime %}
-        <li{% if current_tab == "overtime_by_user" %} class="active"{% endif %}>
-            <a href="{{ path('overtime_bundle_report') }}"
-              style="cursor: pointer"
-              aria-expanded="false">
+        <li class="nav-item">
+            <a class="nav-link{% if current_tab == "overtime_by_user" %} active{% endif %}" href="{{ path('overtime_bundle_report') }}">
                 {{ 'menu.report_overtime' |trans }}
             </a>
         </li>
     {% endif %}
     {% if showSettings %}
-        <li{% if current_tab == "settings" %} class="active"{% endif %}>
-            <a href="{{ path('approval_bundle_settings') }}"
-               style="cursor: pointer"
-               aria-expanded="false">
+        <li class="nav-item">
+            <a class="nav-link{% if current_tab == "settings" %} active{% endif %}" href="{{ path('approval_bundle_settings') }}">
                 {{ 'menu.settings' |trans }}
             </a>
         </li>
     {% endif %}
     {% if showSettingsWorkdays %}
-        <li{% if current_tab == "settings_workday_history" %} class="active"{% endif %}>
-            <a href="{{ path('approval_bundle_settings_workday') }}"
-               style="cursor: pointer"
-               aria-expanded="false">
+        <li class="nav-item">
+            <a class="nav-link{% if current_tab == "settings_workday_history" %} active{% endif %}" href="{{ path('approval_bundle_settings_workday') }}">
                 {{ 'menu.settings_workday_history' |trans }}
             </a>
         </li>
-        <li{% if current_tab == "settings_overtime_history" %} class="active"{% endif %}>
-            <a href="{{ path('approval_settings_overtime_history') }}"
-               style="cursor: pointer"
-               aria-expanded="false">
+        <li class="nav-item">
+            <a class="nav-link{% if current_tab == "settings_overtime_history" %} active{% endif %}" href="{{ path('approval_settings_overtime_history') }}">
                 {{ 'menu.settings_overtime_history' |trans }}
             </a>
         </li>
