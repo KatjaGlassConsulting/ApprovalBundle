@@ -180,35 +180,6 @@
         <target>Nutzereinstellung Sonntag als Wochenstart - dies wird vom Approval Plugin nicht unterstützt.</target>
       </trans-unit>
 
-      <trans-unit id="label.meta_field_expected_working_time_on_monday">
-        <source>label.meta_field_expected_working_time_on_monday</source>
-        <target>Tägliche Arbeitszeit Montag MetaField internal name</target>
-      </trans-unit>
-      <trans-unit id="label.meta_field_expected_working_time_on_tuesday">
-        <source>label.meta_field_expected_working_time_on_tuesday</source>
-        <target>Tägliche Arbeitszeit Dienstag MetaField internal name</target>
-      </trans-unit>
-      <trans-unit id="label.meta_field_expected_working_time_on_wednesday">
-        <source>label.meta_field_expected_working_time_on_wednesday</source>
-        <target>Tägliche Arbeitszeit Mittwoch MetaField internal name</target>
-      </trans-unit>
-      <trans-unit id="label.meta_field_expected_working_time_on_thursday">
-        <source>label.meta_field_expected_working_time_on_thursday</source>
-        <target>Tägliche Arbeitszeit Donnerstag MetaField internal name</target>
-      </trans-unit>
-      <trans-unit id="label.meta_field_expected_working_time_on_friday">
-        <source>label.meta_field_expected_working_time_on_friday</source>
-        <target>Tägliche Arbeitszeit Freitag MetaField internal name</target>
-      </trans-unit>
-      <trans-unit id="label.meta_field_expected_working_time_on_saturday">
-        <source>label.meta_field_expected_working_time_on_saturday</source>
-        <target>Tägliche Arbeitszeit Samstag MetaField internal name</target>
-      </trans-unit>
-      <trans-unit id="label.meta_field_expected_working_time_on_sunday">
-        <source>label.meta_field_expected_working_time_on_sunday</source>
-        <target>Tägliche Arbeitszeit Sonntag MetaField internal name</target>
-      </trans-unit>
-
       <trans-unit id="submitted">
         <source>submitted</source>
         <target>Abgeschickt</target>

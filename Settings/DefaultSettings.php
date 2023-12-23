@@ -10,20 +10,9 @@
 namespace KimaiPlugin\ApprovalBundle\Settings;
 
 use App\Entity\User;
-use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 
 class DefaultSettings implements ApprovalSettingsInterface
 {
-    public function canBeConfigured(): bool
-    {
-        return false;
-    }
-
-    public function isFullyConfigured(): bool
-    {
-        return true;
-    }
-
     public function getRules(): array
     {
         return [];
@@ -34,43 +23,38 @@ class DefaultSettings implements ApprovalSettingsInterface
         return null;
     }
 
-    public function getWorkingTimeForDay(User $user, string $name): int
-    {
-        return 0;
-    }
-
     public function getWorkingTimeForMonday(User $user): int
     {
-        return $this->getWorkingTimeForDay($user, ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_MONDAY);
+        return $user->getWorkHoursMonday();
     }
 
     public function getWorkingTimeForTuesday(User $user): int
     {
-        return $this->getWorkingTimeForDay($user, ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_TUESDAY);
+        return $user->getWorkHoursTuesday();
     }
 
     public function getWorkingTimeForWednesday(User $user): int
     {
-        return $this->getWorkingTimeForDay($user, ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_WEDNESDAY);
+        return $user->getWorkHoursWednesday();
     }
 
     public function getWorkingTimeForThursday(User $user): int
     {
-        return $this->getWorkingTimeForDay($user, ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_THURSDAY);
+        return $user->getWorkHoursThursday();
     }
 
     public function getWorkingTimeForFriday(User $user): int
     {
-        return $this->getWorkingTimeForDay($user, ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_FRIDAY);
+        return $user->getWorkHoursFriday();
     }
 
     public function getWorkingTimeForSaturday(User $user): int
     {
-        return $this->getWorkingTimeForDay($user, ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_SATURDAY);
+        return $user->getWorkHoursSaturday();
     }
 
     public function getWorkingTimeForSunday(User $user): int
     {
-        return $this->getWorkingTimeForDay($user, ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_SUNDAY);
+        return $user->getWorkHoursSunday();
     }
 }

@@ -11,7 +11,6 @@ namespace KimaiPlugin\ApprovalBundle\Toolbox;
 
 use App\Entity\Configuration;
 use App\Repository\ConfigurationRepository;
-use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 
 class SettingsTool
 {
@@ -25,40 +24,38 @@ class SettingsTool
      * @param $key
      * @return mixed|string
      */
-    public function isInConfiguration($key)
+    public function isInConfiguration($key): bool
     {
-        if ($this->configurationRepository->findOneBy(['name' => $key]) == null){
+        if ($this->configurationRepository->findOneBy(['name' => $key]) === null) {
             return false;
-        } else {
-            return true;
         }
+
+        return true;
     }
 
     /**
      * @param $key
      * @return mixed|string
      */
-    public function getConfiguration($key)
+    public function getConfiguration($key, $default = '')
     {
-        if (!array_key_exists($key, $this->cache)) {
+        if (!\array_key_exists($key, $this->cache)) {
             $config = $this->configurationRepository->findOneBy(['name' => $key]);
             if ($config === null) {
-                return '';
+                return $default;
             }
-            $this->cache[$key] = $config->getValue() ?? '';
+            $this->cache[$key] = $config->getValue() ?? $default;
         }
 
         return $this->cache[$key];
     }
-
-
 
     /**
      * @param $key
      * @param $value
      * @return bool
      */
-    public function setConfiguration($key, $value)
+    public function setConfiguration($key, $value): bool
     {
         $this->cache = [];
 
@@ -72,33 +69,6 @@ class SettingsTool
         $configuration->setValue($value);
 
         $this->configurationRepository->saveConfiguration($configuration);
-
-        return true;
-    }
-
-    public function isAllSettingsUpdated()
-    {
-        if ($this->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_MONDAY) === '') {
-            return false;
-        }
-        if ($this->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_TUESDAY) === '') {
-            return false;
-        }
-        if ($this->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_WEDNESDAY) === '') {
-            return false;
-        }
-        if ($this->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_THURSDAY) === '') {
-            return false;
-        }
-        if ($this->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_FRIDAY) === '') {
-            return false;
-        }
-        if ($this->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_SATURDAY) === '') {
-            return false;
-        }
-        if ($this->getConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_SUNDAY) === '') {
-            return false;
-        }
 
         return true;
     }

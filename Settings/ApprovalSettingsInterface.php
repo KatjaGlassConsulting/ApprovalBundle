@@ -27,20 +27,6 @@ interface ApprovalSettingsInterface
      */
     public function find($id);
 
-    /**
-     * Whether this setting repository can be configured.
-     *
-     * @return bool
-     */
-    public function canBeConfigured(): bool;
-
-    /**
-     * Returns if the settings are fully configured.
-     *
-     * @return bool
-     */
-    public function isFullyConfigured(): bool;
-
     public function getWorkingTimeForMonday(User $user): int;
 
     public function getWorkingTimeForTuesday(User $user): int;
