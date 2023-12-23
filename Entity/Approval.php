@@ -17,22 +17,22 @@ use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 #[ORM\Table(name: 'kimai2_ext_approval')]
 class Approval
 {
-     #[ORM\Id]
-     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-     #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'integer')]
     private $id;
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?User $user = null;
-     #[ORM\Column(type: 'date')]
+    #[ORM\Column(type: 'date')]
     private $startDate;
-     #[ORM\Column(type: 'date')]
+    #[ORM\Column(type: 'date')]
     private $endDate;
-     #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer')]
     private $expectedDuration;
-     #[ORM\Column(type: 'integer')]
-    private $actualDuration;
-     #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'integer')]
+    private int $actualDuration = 0;
+    #[ORM\Column(type: 'datetime')]
     private $creationDate;
     #[ORM\OneToMany(mappedBy: 'approval', targetEntity: ApprovalHistory::class)]
     private $history;
@@ -117,18 +117,12 @@ class Approval
         $this->expectedDuration = $expectedDuration;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getActualDuration()
+    public function getActualDuration(): int
     {
         return $this->actualDuration;
     }
 
-    /**
-     * @param mixed $expectedDuration
-     */
-    public function setActualDuration($actualDuration): void
+    public function setActualDuration(int $actualDuration): void
     {
         $this->actualDuration = $actualDuration;
     }
