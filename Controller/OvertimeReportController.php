@@ -9,8 +9,6 @@
 
 namespace KimaiPlugin\ApprovalBundle\Controller;
 
-use App\Entity\Team;
-use App\Entity\User;
 use App\Reporting\WeekByUser\WeekByUser;
 use App\Repository\UserRepository;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
@@ -38,19 +36,18 @@ class OvertimeReportController extends BaseApprovalController
             return $this->redirectToRoute('approval_bundle_report');
         }
 
-        $users = $this->getUsers();
+        $users = $this->getOvertimeUsers($this->userRepository);
         $firstUser = empty($users) ? $this->getUser() : $users[0];
 
         $values = new WeekByUser();
         $values->setUser($firstUser);
 
-        $routePath = $this->generateUrl('overtime_all_report');
         $form = $this->createForm(OvertimeByUserForm::class, $values, [
             'users' => $users,
-            'routePath' => $routePath,
+            'routePath' => $this->generateUrl('overtime_all_report'),
         ]);
 
-        $form->submit($request->query->all(), false);   
+        $form->submit($request->query->all(), false);
 
         if ($values->getUser() === null) {
             $values->setUser($firstUser);
@@ -65,48 +62,5 @@ class OvertimeReportController extends BaseApprovalController
             'user' => $selectedUser,
             'weeklyEntries' => array_reverse($weeklyEntries),
         ] + $this->getDefaultTemplateParams($this->settingsTool));
-    }
-
-    private function getUsers(): array
-    {
-        if ($this->canManageAllPerson()) {
-            $users = $this->userRepository->findAll();
-        } elseif ($this->canManageTeam()) {
-            $users = [];
-            $user = $this->getUser();
-            /** @var Team $team */
-            foreach ($user->getTeams() as $team) {
-                if (\in_array($user, $team->getTeamleads())) {
-                    array_push($users, ...$team->getUsers());
-                } else {
-                    $users[] = $user;
-                }
-            }
-            if (empty($users)) {
-                $users = [$user];
-            }
-            $users = array_unique($users);
-        } else {
-            $users = [$this->getUser()];
-        }
-
-        $users = array_reduce($users, function ($current, $user) {
-            if ($user->isEnabled() && !$user->isSuperAdmin()) {
-                $current[] = $user;
-            }
-
-            return $current;
-        }, []);
-
-        if (!empty($users)) {
-            usort(
-                $users,
-                function (User $userA, User $userB) {
-                    return strcmp(strtoupper($userA->getUsername()), strtoupper($userB->getUsername()));
-                }
-            );
-        }
-
-        return $users;
     }
 }

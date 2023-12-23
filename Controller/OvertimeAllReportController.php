@@ -26,7 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route(path="/approval")
  */
-class OvertimeAllReportController extends AbstractController
+class OvertimeAllReportController extends BaseApprovalController
 {
     private $settingsTool;
     private $approvalRepository;
@@ -70,7 +70,7 @@ class OvertimeAllReportController extends AbstractController
             $selectedDate = $form->get('date')->getData();            
         }
 
-        $users = $this->getUsers();
+        $users = $this->getOvertimeUsers($this->userRepository);
         $weeklyEntries = $this->approvalRepository->getUserApprovals($users);
     
         // reduce the weekly Entries to only contain one enty per subject having the maximum date
@@ -114,47 +114,5 @@ class OvertimeAllReportController extends AbstractController
             'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'showOvertime' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)
         ]);
-    }
-
-    private function getUsers(): array
-    {
-        if ($this->canManageAllPerson()) {
-            $users = $this->userRepository->findAll();
-        } elseif ($this->canManageTeam()) {
-            $users = [];
-            $user = $this->getUser();
-            /** @var Team $team */
-            foreach ($user->getTeams() as $team) {
-                if (\in_array($user, $team->getTeamleads())) {
-                    array_push($users, ...$team->getUsers());
-                } else {
-                    $users[] = $user;
-                }
-            }
-            if (empty($users)) {
-                $users = [$user];
-            }
-            $users = array_unique($users);
-        } else {
-            $users = [$this->getUser()];
-        }
-
-        $users = array_reduce($users, function ($current, $user) {
-            if ($user->isEnabled() && !$user->isSuperAdmin()) {
-                $current[] = $user;
-            }
-
-            return $current;
-        }, []);
-        if (!empty($users)) {
-            usort(
-                $users,
-                function (User $userA, User $userB) {
-                    return strcmp(strtoupper($userA->getUsername()), strtoupper($userB->getUsername()));
-                }
-            );
-        }
-
-        return $users;
     }
 }

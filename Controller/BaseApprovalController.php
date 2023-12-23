@@ -10,6 +10,9 @@
 namespace KimaiPlugin\ApprovalBundle\Controller;
 
 use App\Controller\AbstractController;
+use App\Entity\Team;
+use App\Entity\User;
+use App\Repository\UserRepository;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
 
@@ -33,5 +36,48 @@ class BaseApprovalController extends AbstractController
             'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'showOvertime' => $settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)
         ];
+    }
+
+    protected function getOvertimeUsers(UserRepository $userRepository): array
+    {
+        if ($this->canManageAllPerson()) {
+            $users = $userRepository->findAll();
+        } elseif ($this->canManageTeam()) {
+            $users = [];
+            $user = $this->getUser();
+            /** @var Team $team */
+            foreach ($user->getTeams() as $team) {
+                if (\in_array($user, $team->getTeamleads())) {
+                    array_push($users, ...$team->getUsers());
+                } else {
+                    $users[] = $user;
+                }
+            }
+            if (empty($users)) {
+                $users = [$user];
+            }
+            $users = array_unique($users);
+        } else {
+            $users = [$this->getUser()];
+        }
+
+        $users = array_reduce($users, function ($current, $user) {
+            if ($user->isEnabled() && !$user->isSuperAdmin()) {
+                $current[] = $user;
+            }
+
+            return $current;
+        }, []);
+
+        if (!empty($users)) {
+            usort(
+                $users,
+                function (User $userA, User $userB) {
+                    return strcmp(strtoupper($userA->getUsername()), strtoupper($userB->getUsername()));
+                }
+            );
+        }
+
+        return $users;
     }
 }
