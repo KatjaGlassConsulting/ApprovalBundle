@@ -1,0 +1,11 @@
+{% macro status_color_class(status) %}
+    {%- if status == 'approved' -%}
+        bg-success
+    {%- elseif status == 'denied' -%}
+        bg-danger
+    {%- elseif status == 'submitted' -%}
+        bg-yellow
+    {%- else -%}
+        bg-dark-lt
+    {%- endif -%}
+{% endmacro %}
