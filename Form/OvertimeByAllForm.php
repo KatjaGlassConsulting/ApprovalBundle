@@ -8,35 +8,20 @@
  */
 
 namespace KimaiPlugin\ApprovalBundle\Form;
-use Exception;
+
 use App\Form\Type\DatePickerType;
+use DateTime;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use DateTime;
 
 class OvertimeByAllForm extends AbstractType
 {
-
-    /**
-     * {@inheritdoc}
-     * @throws Exception
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('date', DatePickerType::class, [
             'label' => 'label.date',
             'required' => true,
-            'data' => new DateTime() 
-        ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
+            'data' => new DateTime()
         ]);
     }
 }

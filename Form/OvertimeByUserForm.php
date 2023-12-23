@@ -27,7 +27,6 @@ class OvertimeByUserForm extends AbstractType
             'width' => false
         ]);
 
-
         $routePath = $options['routePath'];
         $builder->add('linkButton', ButtonType::class, [
             'label' => 'All', // Button label
