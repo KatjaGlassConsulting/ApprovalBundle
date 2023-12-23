@@ -271,6 +271,9 @@ class ApprovalRepository extends ServiceEntityRepository
     {
         $parseToViewArray = $this->getUserApprovals($users);
         $parseToViewArray = $this->addAllNotSubmittedUsers($parseToViewArray, $users);
+        if (\count($parseToViewArray) > 5000) {
+            $parseToViewArray = \array_slice($parseToViewArray, 0, 5000);
+        }
 
         $result = $parseToViewArray ? $this->sort($parseToViewArray) : [];
 
