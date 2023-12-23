@@ -17,9 +17,9 @@ use KimaiPlugin\ApprovalBundle\Repository\ApprovalHistoryRepository;
 #[ORM\Table(name: 'kimai2_ext_approval_history')]
 class ApprovalHistory
 {
-     #[ORM\Id]
-     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-     #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'integer')]
     private $id;
     #[ORM\ManyToOne(targetEntity: Approval::class, inversedBy: 'history')]
     #[ORM\JoinColumn(nullable: false)]
@@ -30,9 +30,9 @@ class ApprovalHistory
     #[ORM\ManyToOne(targetEntity: ApprovalStatus::class, inversedBy: 'history')]
     #[ORM\JoinColumn(nullable: false)]
     private ?ApprovalStatus $status = null;
-     #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime')]
     private $date;
-     #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true)]
     private $message;
 
     /**

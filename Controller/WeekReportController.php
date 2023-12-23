@@ -9,41 +9,36 @@
 
 namespace KimaiPlugin\ApprovalBundle\Controller;
 
-use Doctrine\ORM\Exception\ORMException;
-use App\Controller\AbstractController;
 use App\Entity\Customer;
 use App\Entity\Team;
 use App\Entity\Timesheet;
 use App\Entity\User;
 use App\Form\Model\DateRange;
 use App\Model\DailyStatistic;
-use App\Reporting\WeekByUser;
+use App\Reporting\WeekByUser\WeekByUser;
 use App\Repository\Query\BaseQuery;
 use App\Repository\Query\TimesheetQuery;
 use App\Repository\TimesheetRepository;
 use App\Repository\UserRepository;
 use DateTime;
-use Exception;
+use Doctrine\ORM\Exception\ORMException;
 use KimaiPlugin\ApprovalBundle\Entity\Approval;
 use KimaiPlugin\ApprovalBundle\Entity\ApprovalWorkdayHistory;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Enumeration\FormEnum;
+use KimaiPlugin\ApprovalBundle\Form\AddWorkdayHistoryForm;
 use KimaiPlugin\ApprovalBundle\Form\SettingsForm;
 use KimaiPlugin\ApprovalBundle\Form\WeekByUserForm;
-use KimaiPlugin\ApprovalBundle\Form\AddWorkdayHistoryForm;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalHistoryRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalTimesheetRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalWorkdayHistoryRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ReportRepository;
-use KimaiPlugin\ApprovalBundle\Settings\ApprovalSettingsInterface;
 use KimaiPlugin\ApprovalBundle\Toolbox\BreakTimeCheckToolGER;
 use KimaiPlugin\ApprovalBundle\Toolbox\Formatting;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
-use PhpOffice\PhpSpreadsheet\Calculation\Logical\Boolean;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\ExpressionLanguage\Expression;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -62,8 +57,7 @@ class WeekReportController extends BaseApprovalController
         private TimesheetRepository $timesheetRepository,
         private ApprovalTimesheetRepository $approvalTimesheetRepository,
         private BreakTimeCheckToolGER $breakTimeCheckToolGER,
-        private ReportRepository $reportRepository,
-        private ApprovalSettingsInterface $approvalSettings
+        private ReportRepository $reportRepository
     ) {
     }
 
@@ -77,7 +71,7 @@ class WeekReportController extends BaseApprovalController
         return $this->isGranted('view_all_approval');
     }
 
-    #[Route(path: '/week_by_user', name: 'approval_bundle_report', methods: ["GET","POST"])]
+    #[Route(path: '/week_by_user', name: 'approval_bundle_report', methods: ['GET', 'POST'])]
     public function weekByUser(Request $request): Response
     {
         $users = $this->getUsers();
@@ -134,9 +128,9 @@ class WeekReportController extends BaseApprovalController
         $currentUserSundayIssue = $this->getUser()->isFirstDayOfWeekSunday();
 
         $overtimeDuration = null;
-        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)){
+        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)) {
             // use actual year display, in case of "starting", use first approval date
-            $overtimeDuration = $this->approvalRepository->getExpectedActualDurationsForYear($selectedUser, $end); 
+            $overtimeDuration = $this->approvalRepository->getExpectedActualDurationsForYear($selectedUser, $end);
         }
 
         return $this->render('@Approval/report_by_user.html.twig', [
@@ -176,14 +170,14 @@ class WeekReportController extends BaseApprovalController
         ]);
     }
 
-    #[Route(path: '/to_approve', name: 'approval_bundle_to_approve', methods: ["GET","POST"])]
+    #[Route(path: '/to_approve', name: 'approval_bundle_to_approve', methods: ['GET', 'POST'])]
     #[IsGranted(new Expression("is_granted('view_team_approval') or is_granted('view_all_approval')"))]
     public function toApprove(): Response
     {
         $users = $this->getUsers(false);
 
         $warningNoUsers = false;
-        if (empty($users)){
+        if (empty($users)) {
             $warningNoUsers = true;
             $users = [$this->getUser()];
         }
@@ -198,8 +192,7 @@ class WeekReportController extends BaseApprovalController
         foreach ($allRows as $row) {
             if ($row['startDate'] >= $futureWeek) {
                 $futureRows[] = $row;
-            }
-            else if ($row['startDate'] >= $currentWeek) {
+            } elseif ($row['startDate'] >= $currentWeek) {
                 $currentRows[] = $row;
             } else {
                 $pastRows[] = $row;
@@ -219,12 +212,11 @@ class WeekReportController extends BaseApprovalController
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
             'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'showOvertime' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
-            'settingsWarning' => !$this->approvalSettings->isFullyConfigured(),
             'warningNoUsers' => $warningNoUsers
         ]);
     }
 
-    #[Route(path: '/settings', name: 'approval_bundle_settings', methods: ["GET","POST"])]
+    #[Route(path: '/settings', name: 'approval_bundle_settings', methods: ['GET', 'POST'])]
     public function settings(Request $request): Response
     {
         return $this->render('@Approval/settings.html.twig', [
@@ -239,11 +231,11 @@ class WeekReportController extends BaseApprovalController
         ]);
     }
 
-    #[Route(path: '/settings_workday_history', name: 'approval_bundle_settings_workday', methods: ["GET","POST"])]
+    #[Route(path: '/settings_workday_history', name: 'approval_bundle_settings_workday', methods: ['GET', 'POST'])]
     public function settingsWorkdayHistory(Request $request): Response
     {
         $workdayHistory = $this->approvalWorkdayHistoryRepository->findAll();
-         
+
         return $this->render('@Approval/settings_workday_history.html.twig', [
             'current_tab' => 'settings_workday_history',
             'workdayHistory' => $workdayHistory,
@@ -254,7 +246,7 @@ class WeekReportController extends BaseApprovalController
         ]);
     }
 
-    #[Route(path: '/create_workday_history', name: 'approval_create_workday_history', methods: ["GET", "POST"])]
+    #[Route(path: '/create_workday_history', name: 'approval_create_workday_history', methods: ['GET', 'POST'])]
     public function createWorkdayHistory(Request $request): Response
     {
         $users = $this->userRepository->findAll();
@@ -264,7 +256,7 @@ class WeekReportController extends BaseApprovalController
             'method' => 'POST'
         ]);
 
-        $form->handleRequest($request);    
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
@@ -280,7 +272,7 @@ class WeekReportController extends BaseApprovalController
                 $workdayHistory->setSunday($form->getData()['sunday']);
                 $workdayHistory->setValidTill($form->getData()['validTill']);
 
-                $this->approvalWorkdayHistoryRepository->save($workdayHistory, true);  
+                $this->approvalWorkdayHistoryRepository->save($workdayHistory, true);
                 $this->approvalTimesheetRepository->updateDaysOff($form->getData()['user']);
                 $this->approvalRepository->updateExpectedActualDurationForUser($form->getData()['user']);
                 $this->flashSuccess('action.update.success');
@@ -294,10 +286,10 @@ class WeekReportController extends BaseApprovalController
         return $this->render('@Approval/add_workday_history.html.twig', [
             'title' => 'title.add_workday_history',
             'form' => $form->createView()
-        ]); 
+        ]);
     }
 
-    #[Route(path: '/deleteWorkdayHistory', name: 'delete_workday_history', methods: ["GET"])]
+    #[Route(path: '/deleteWorkdayHistory', name: 'delete_workday_history', methods: ['GET'])]
     public function deleteWorkdayHistoryAction(Request $request): Response
     {
         $entryId = $request->get('entryId');
@@ -314,7 +306,7 @@ class WeekReportController extends BaseApprovalController
         return $this->redirectToRoute('approval_bundle_settings_workday');
     }
 
-    private function createSettingsForm(Request $request)
+    private function createSettingsForm(Request $request): FormView
     {
         $form = $this->createForm(SettingsForm::class, null, [
             'with_time' => $this->approvalSettings->canBeConfigured()
@@ -346,7 +338,7 @@ class WeekReportController extends BaseApprovalController
         return $form->createView();
     }
 
-    private function collectMetaField($data, $key)
+    private function collectMetaField($data, $key): string
     {
         return !empty($data[$key]) ? ($data[$key])->getId() : '';
     }
@@ -373,8 +365,7 @@ class WeekReportController extends BaseApprovalController
 
             $users = array_unique($users);
 
-            if (!$includeOwnForTeam)
-            {
+            if (!$includeOwnForTeam) {
                 // remove the active user from the list
                 $index = array_search($this->getUser(), $users);
                 if ($index !== false) {
@@ -392,6 +383,7 @@ class WeekReportController extends BaseApprovalController
 
             return $current;
         }, []);
+
         if (!empty($users)) {
             usort(
                 $users,
@@ -423,7 +415,7 @@ class WeekReportController extends BaseApprovalController
         return $approveArray;
     }
 
-    protected function getTimesheets(?User $selectedUser, DateTime $start, DateTime $end): array
+    private function getTimesheets(?User $selectedUser, DateTime $start, DateTime $end): array
     {
         $timesheetQuery = new TimesheetQuery();
         $timesheetQuery->setUser($selectedUser);
@@ -437,7 +429,7 @@ class WeekReportController extends BaseApprovalController
         $timesheets = $this->timesheetRepository->getTimesheetsForQuery($timesheetQuery);
 
         if ($this->settingsTool->isInConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY) == false or
-            $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY)){
+            $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY)) {
             $errors = $this->breakTimeCheckToolGER->checkBreakTime($timesheets);
         } else {
             $errors = [];

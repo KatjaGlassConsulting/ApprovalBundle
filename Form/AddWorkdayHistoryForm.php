@@ -11,10 +11,10 @@ namespace KimaiPlugin\ApprovalBundle\Form;
 
 use App\Form\Type\DatePickerType;
 use App\Form\Type\DurationType;
+use App\Form\Type\UserType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Form\Type\UserType;
 
 class AddWorkdayHistoryForm extends AbstractType
 {

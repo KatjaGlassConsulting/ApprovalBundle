@@ -35,11 +35,12 @@ final class Formatting
 
     public function formatDuration(int $duration) : string
     {
-        $prefix = $duration < 0 ? "-" : "";
-        $mins = abs($duration) / 60; 
+        $prefix = $duration < 0 ? '-' : '';
+        $mins = abs($duration) / 60;
         $hours = floor($mins / 60);
         $mins = $mins - ($hours * 60);
-        $preZero = $mins < 9 ? "0" : "";
-        return $prefix . $hours . ":" . $preZero . $mins;  
+        $preZero = $mins < 9 ? '0' : '';
+
+        return $prefix . $hours . ':' . $preZero . $mins;
     }
 }

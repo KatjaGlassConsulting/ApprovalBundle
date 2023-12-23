@@ -16,11 +16,11 @@ use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use Nelmio\ApiDocBundle\Annotation\Security as ApiSecurity;
+use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'ApprovalNextWeekApi')]
 final class ApprovalNextWeekApiController extends BaseApiController
@@ -34,7 +34,7 @@ final class ApprovalNextWeekApiController extends BaseApiController
     ) {
     }
 
-    #[OA\Response(response: 200, description: "Status of selected week")]
+    #[OA\Response(response: 200, description: 'Status of selected week')]
     #[Rest\QueryParam(name: 'user', requirements: '\d+', strict: true, nullable: true, description: 'User ID to get information for')]
     #[Rest\Get(path: '/next-week')]
     #[ApiSecurity(name: 'apiUser')]

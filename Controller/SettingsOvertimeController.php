@@ -9,13 +9,13 @@
 
 namespace KimaiPlugin\ApprovalBundle\Controller;
 
+use App\Repository\UserRepository;
 use Doctrine\ORM\Exception\ORMException;
+use KimaiPlugin\ApprovalBundle\Entity\ApprovalOvertimeHistory;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
+use KimaiPlugin\ApprovalBundle\Form\AddOvertimeHistoryForm;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalOvertimeHistoryRepository;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
-use KimaiPlugin\ApprovalBundle\Form\AddOvertimeHistoryForm;
-use App\Repository\UserRepository;
-use KimaiPlugin\ApprovalBundle\Entity\ApprovalOvertimeHistory;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,16 +32,16 @@ class SettingsOvertimeController extends BaseApprovalController
     ) {
     }
 
-    #[Route(path: '/settings_overtime', name: 'approval_settings_overtime_history', methods: ["GET","POST"])]
+    #[Route(path: '/settings_overtime', name: 'approval_settings_overtime_history', methods: ['GET', 'POST'])]
     #[IsGranted(new Expression("is_granted('view_team_approval') or is_granted('view_all_approval')"))]
     public function settingsOvertime(Request $request): Response
     {
-        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY) == false){
+        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY) == false) {
             return $this->redirectToRoute('approval_bundle_report');
         }
 
         $overtimeHistory = $this->approvalOvertimeHistoryRepository->findAll();
-         
+
         return $this->render('@Approval/settings_overtime_history.html.twig', [
             'current_tab' => 'settings_overtime_history',
             'overtimeHistory' => $overtimeHistory,
@@ -50,9 +50,9 @@ class SettingsOvertimeController extends BaseApprovalController
             'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'showOvertime' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)
         ]);
-    }  
+    }
 
-    #[Route(path: '/create_overtime_history', name: 'approval_create_overtime_history', methods: ["GET", "POST"])]
+    #[Route(path: '/create_overtime_history', name: 'approval_create_overtime_history', methods: ['GET', 'POST'])]
     public function createOvertimeHistory(Request $request): Response
     {
         $users = $this->userRepository->findAll();
@@ -62,7 +62,7 @@ class SettingsOvertimeController extends BaseApprovalController
             'method' => 'POST'
         ]);
 
-        $form->handleRequest($request);    
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
@@ -72,7 +72,7 @@ class SettingsOvertimeController extends BaseApprovalController
                 $overtimeHistory->setDuration($form->getData()['duration']);
                 $overtimeHistory->setApplyDate($form->getData()['applyDate']);
 
-                $this->approvalOvertimeHistoryRepository->save($overtimeHistory, true);  
+                $this->approvalOvertimeHistoryRepository->save($overtimeHistory, true);
                 $this->flashSuccess('action.update.success');
 
                 return $this->redirectToRoute('approval_settings_overtime_history');
@@ -84,10 +84,10 @@ class SettingsOvertimeController extends BaseApprovalController
         return $this->render('@Approval/add_overtime_history.html.twig', [
             'title' => 'title.add_overtime_history',
             'form' => $form->createView()
-        ]); 
+        ]);
     }
 
-    #[Route(path: '/deleteOvertimeHistory', name: 'delete_overtime_history', methods: ["GET"])]
+    #[Route(path: '/deleteOvertimeHistory', name: 'delete_overtime_history', methods: ['GET'])]
     public function deleteOvertimeHistoryAction(Request $request): Response
     {
         $entryId = $request->get('entryId');
@@ -98,6 +98,7 @@ class SettingsOvertimeController extends BaseApprovalController
 
             $this->approvalOvertimeHistoryRepository->remove($overtimeHistory, true);
         }
+
         return $this->redirectToRoute('approval_settings_overtime_history');
     }
 }

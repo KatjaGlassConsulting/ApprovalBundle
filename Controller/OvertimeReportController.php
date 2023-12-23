@@ -9,13 +9,10 @@
 
 namespace KimaiPlugin\ApprovalBundle\Controller;
 
-use App\Controller\AbstractController;
 use App\Entity\Team;
 use App\Entity\User;
-use App\Reporting\WeekByUser;
+use App\Reporting\WeekByUser\WeekByUser;
 use App\Repository\UserRepository;
-use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Form\OvertimeByUserForm;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
@@ -44,11 +41,11 @@ class OvertimeReportController extends BaseApprovalController
         return $this->isGranted('view_all_approval');
     }
 
-    #[Route(path: '/overtime_by_user', name: 'overtime_bundle_report', methods: ["GET","POST"])]
+    #[Route(path: '/overtime_by_user', name: 'overtime_bundle_report', methods: ['GET', 'POST'])]
     public function overtimeByUser(Request $request): Response
     {
-        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY) == false){
-          return $this->redirectToRoute('approval_bundle_report');
+        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY) == false) {
+            return $this->redirectToRoute('approval_bundle_report');
         }
 
         $users = $this->getUsers();
@@ -68,12 +65,12 @@ class OvertimeReportController extends BaseApprovalController
         }
 
         $selectedUser = $values->getUser();
-        $weeklyEntries = $this->approvalRepository->findAllWeekForUser($selectedUser,null);
+        $weeklyEntries = $this->approvalRepository->findAllWeekForUser($selectedUser, null);
 
         return $this->render('@Approval/overtime_by_user.html.twig', [
             'current_tab' => 'overtime_by_user',
             'form' => $form->createView(),
-            'user' => $selectedUser,    
+            'user' => $selectedUser,
             'weeklyEntries' => array_reverse($weeklyEntries),
             'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
@@ -112,6 +109,7 @@ class OvertimeReportController extends BaseApprovalController
 
             return $current;
         }, []);
+
         if (!empty($users)) {
             usort(
                 $users,

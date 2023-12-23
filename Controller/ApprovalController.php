@@ -9,10 +9,8 @@
 
 namespace KimaiPlugin\ApprovalBundle\Controller;
 
-use App\Controller\AbstractController;
 use App\Repository\UserRepository;
 use DateTime;
-use Exception;
 use KimaiPlugin\ApprovalBundle\Entity\Approval;
 use KimaiPlugin\ApprovalBundle\Entity\ApprovalHistory;
 use KimaiPlugin\ApprovalBundle\Entity\ApprovalStatus;
@@ -40,7 +38,7 @@ class ApprovalController extends BaseApprovalController
     ) {
     }
 
-    #[Route(path: '/add_to_approve', name: 'add_to_approve', methods: ["GET", "POST"])]
+    #[Route(path: '/add_to_approve', name: 'add_to_approve', methods: ['GET', 'POST'])]
     public function addToApprove(Request $request): RedirectResponse
     {
         $userId = $request->query->get('user');
@@ -55,7 +53,7 @@ class ApprovalController extends BaseApprovalController
         ]));
     }
 
-    #[Route(path: '/approve/{approveId}', defaults: ['approveId' => 0], name: 'approve', methods: ["GET"])]
+    #[Route(path: '/approve/{approveId}', defaults: ['approveId' => 0], name: 'approve', methods: ['GET'])]
     public function approveAction(Request $request, string $approveId): RedirectResponse
     {
         $approval = $this->approvalRepository->find($approveId);
@@ -85,7 +83,7 @@ class ApprovalController extends BaseApprovalController
         ]));
     }
 
-    #[Route(path: '/not_approved/{approveId}', defaults: ['approveId' => 0], name: 'not_approved', methods: ["GET"])]
+    #[Route(path: '/not_approved/{approveId}', defaults: ['approveId' => 0], name: 'not_approved', methods: ['GET'])]
     public function notApprovedAction(Request $request, string $approveId): RedirectResponse
     {
         $approval = $this->approvalRepository->find($approveId);
@@ -111,7 +109,7 @@ class ApprovalController extends BaseApprovalController
         ]));
     }
 
-    #[Route(path: '/denied/{approveId}', defaults: ['approveId' => 0], name: 'denied', methods: ["GET"])]
+    #[Route(path: '/denied/{approveId}', defaults: ['approveId' => 0], name: 'denied', methods: ['GET'])]
     public function deniedAction(Request $request, string $approveId): RedirectResponse
     {
         $approval = $this->approvalRepository->find($approveId);
@@ -143,7 +141,7 @@ class ApprovalController extends BaseApprovalController
         ]));
     }
 
-    private function resetAllLaterApprovals($approvalIdArray)
+    private function resetAllLaterApprovals($approvalIdArray): void
     {
         foreach ($approvalIdArray as $approvalId) {
             $this->createNewApproveHistory($approvalId, ApprovalStatus::NOT_SUBMITTED, 'Reset due to earlier approval cancellation');

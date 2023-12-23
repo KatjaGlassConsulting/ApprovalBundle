@@ -38,7 +38,6 @@ final class Version20221118162725 extends AbstractMigration
                 GROUP BY ap.user_id, ap.start_date
             ) AS tm ON app.user_id = tm.user_id AND app.start_date = tm.start_date
             SET app.actual_duration = tm.dur_sum');
-
     }
 
     public function down(Schema $schema): void

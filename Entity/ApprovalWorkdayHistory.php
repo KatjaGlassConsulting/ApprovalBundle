@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of the Kimai time-tracking app.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace KimaiPlugin\ApprovalBundle\Entity;
 
 use App\Entity\User;
@@ -10,37 +17,37 @@ use KimaiPlugin\ApprovalBundle\Repository\ApprovalWorkdayHistoryRepository;
 #[ORM\Table(name: 'kimai2_ext_approval_workday_history')]
 class ApprovalWorkdayHistory
 {
-     #[ORM\Id]
-     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-     #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?User $user = null;
 
-     #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer')]
     private ?int $monday = null;
 
-     #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer')]
     private ?int $tuesday = null;
 
-     #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer')]
     private ?int $wednesday = null;
 
-     #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer')]
     private ?int $thursday = null;
 
-     #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer')]
     private ?int $friday = null;
 
-     #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer')]
     private ?int $saturday = null;
 
-     #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer')]
     private ?int $sunday = null;
 
-     #[ORM\Column(type: 'date')]
+    #[ORM\Column(type: 'date')]
     private $validTill = null;
 
     public function getId(): ?int

@@ -15,15 +15,15 @@ use DateTime;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandlerInterface;
+use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
+use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
 use Nelmio\ApiDocBundle\Annotation\Security as ApiSecurity;
+use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
-use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
-use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'ApprovalBundleApi')]
 final class ApprovalOvertimeController extends BaseApiController
@@ -38,7 +38,7 @@ final class ApprovalOvertimeController extends BaseApiController
     ) {
     }
 
-    #[OA\Response(response: 200, description: "Get overtime for that year")]
+    #[OA\Response(response: 200, description: 'Get overtime for that year')]
     #[Rest\QueryParam(name: 'user', requirements: '\d+', strict: true, nullable: true, description: 'User ID to get information for')]
     #[Rest\QueryParam(name: 'date', nullable: false, description: 'Date to get overtime until/including this date: Y-m-d')]
     #[Rest\Get(path: '/overtime_year')]
@@ -88,6 +88,7 @@ final class ApprovalOvertimeController extends BaseApiController
                 )
             );
         }
+
         return $this->error404($this->translator->trans('api.noData'));
     }
 

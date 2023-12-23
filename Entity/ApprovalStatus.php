@@ -22,11 +22,11 @@ class ApprovalStatus
     public const APPROVED = 'approved';
     public const NOT_SUBMITTED = 'not_submitted';
 
-     #[ORM\Id]
-     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-     #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'integer')]
     private $id;
-     #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255)]
     private $name;
     #[ORM\OneToMany(mappedBy: 'status', targetEntity: ApprovalHistory::class)]
     private $history;

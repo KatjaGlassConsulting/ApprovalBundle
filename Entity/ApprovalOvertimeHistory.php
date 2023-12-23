@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of the Kimai time-tracking app.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace KimaiPlugin\ApprovalBundle\Entity;
 
 use App\Entity\User;
@@ -10,19 +17,19 @@ use KimaiPlugin\ApprovalBundle\Repository\ApprovalOvertimeHistoryRepository;
 #[ORM\Table(name: 'kimai2_ext_approval_overtime_history')]
 class ApprovalOvertimeHistory
 {
-     #[ORM\Id]
-     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-     #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?User $user = null;
 
-     #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer')]
     private ?int $duration = null;
 
-     #[ORM\Column(type: 'date')]
+    #[ORM\Column(type: 'date')]
     private $applyDate;
 
     public function getId(): ?int

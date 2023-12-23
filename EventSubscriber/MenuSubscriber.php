@@ -88,6 +88,9 @@ class MenuSubscriber implements EventSubscriberInterface
         return null;
     }
 
+    /**
+     * @return array<User>
+     */
     private function getUsers(): array
     {
         $user = $this->getUser();
