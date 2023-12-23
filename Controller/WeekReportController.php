@@ -159,7 +159,6 @@ class WeekReportController extends BaseApprovalController
             'showOvertime' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'expectedDuration' => $expectedDuration,
             'yearDuration' => $overtimeDuration,
-            'settingsWarning' => !$this->approvalSettings->isFullyConfigured(),
             'isSuperAdmin' => $this->getUser()->isSuperAdmin(),
             'warningNoUsers' => empty($users),
             'errors' => $errors,
@@ -226,7 +225,6 @@ class WeekReportController extends BaseApprovalController
             'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'showOvertime' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'form' => $this->createSettingsForm($request),
-            'settingsWarning' => !$this->approvalSettings->isFullyConfigured(),
             'warningNoUsers' => empty($this->getUsers())
         ]);
     }
