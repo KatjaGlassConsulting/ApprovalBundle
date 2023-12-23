@@ -153,7 +153,7 @@ class Approval
             return $this->history->toArray();
         }
 
-        return $this->history;
+        return $this->history ?? [];
     }
 
     public function hasHistory(): bool
@@ -162,9 +162,9 @@ class Approval
     }
 
     /**
-     * @param mixed $history
+     * @param array<ApprovalHistory>|null $history
      */
-    public function setHistory($history): void
+    public function setHistory(?array $history): void
     {
         $this->history = $history;
     }
