@@ -82,7 +82,7 @@ class WeekReportController extends BaseApprovalController
         $values->setUser($firstUser);
         $values->setDate($dateTimeFactory->getStartOfWeek());
 
-        $form = $this->createForm(WeekByUserForm::class, $values, [
+        $form = $this->createFormForGetRequest(WeekByUserForm::class, $values, [
             'timezone' => $dateTimeFactory->getTimezone()->getName(),
             'start_date' => $values->getDate(),
             'users' => $users,

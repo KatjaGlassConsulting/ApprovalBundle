@@ -9,10 +9,11 @@
 
 namespace KimaiPlugin\ApprovalBundle\Form;
 
+use App\Entity\User;
+use App\Form\Type\UserType;
 use App\Form\Type\WeekPickerType;
-use App\Reporting\WeekByUser;
+use App\Reporting\WeekByUser\WeekByUser;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -26,13 +27,10 @@ class WeekByUserForm extends AbstractType
             'start_date' => $options['start_date'],
         ]);
 
-        $builder->add('user', ChoiceType::class, [
-            'label' => 'label.user',
+        $builder->add('user', UserType::class, [
             'required' => true,
             'multiple' => false,
             'choices' => $options['users'],
-            'choice_value' => 'id',
-            'choice_label' => 'getDisplayName',
             'width' => false
         ]);
     }
@@ -45,6 +43,7 @@ class WeekByUserForm extends AbstractType
             'start_date' => new \DateTime(),
             'csrf_protection' => false,
             'method' => 'GET',
+            /* @var array<User> */
             'users' => [],
         ]);
     }
