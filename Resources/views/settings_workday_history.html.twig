@@ -45,13 +45,13 @@
                 {% for entry in workdayHistory %}
                     <tr>
                         <td class="text-center">{{ entry.user.displayName }}</td>
-                        <td class="text-center">{{ entry.monday | formatHours }}</td>
-                        <td class="text-center">{{ entry.tuesday | formatHours }}</td>
-                        <td class="text-center">{{ entry.wednesday | formatHours }}</td>
-                        <td class="text-center">{{ entry.thursday | formatHours }}</td>
-                        <td class="text-center">{{ entry.friday | formatHours }}</td>
-                        <td class="text-center">{{ entry.saturday | formatHours }}</td>
-                        <td class="text-center">{{ entry.sunday | formatHours }}</td>
+                        <td class="text-center">{{ entry.monday | duration }}</td>
+                        <td class="text-center">{{ entry.tuesday | duration }}</td>
+                        <td class="text-center">{{ entry.wednesday | duration }}</td>
+                        <td class="text-center">{{ entry.thursday | duration }}</td>
+                        <td class="text-center">{{ entry.friday | duration }}</td>
+                        <td class="text-center">{{ entry.saturday | duration }}</td>
+                        <td class="text-center">{{ entry.sunday | duration }}</td>
                         <td class="text-center">{{ entry.validTill | date_format('Y-m-d') }}</td>
                         <td>
                             {% set deleteLinkPath = path('delete_workday_history', {'entryId': entry.id }) %}

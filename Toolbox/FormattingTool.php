@@ -21,15 +21,6 @@ final class FormattingTool
 
     /**
      * @param float|int $duration
-     * @return string
-     */
-    public function formattingDurationToHours($duration): string
-    {
-        return $this->formattingNumber($duration / 60 / 60);
-    }
-
-    /**
-     * @param float|int $duration
      * @return int
      */
     public function formattingDurationToSeconds($duration)
