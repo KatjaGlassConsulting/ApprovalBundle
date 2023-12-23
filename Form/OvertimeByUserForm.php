@@ -27,12 +27,11 @@ class OvertimeByUserForm extends AbstractType
             'width' => false
         ]);
 
-        $routePath = $options['routePath'];
         $builder->add('linkButton', ButtonType::class, [
-            'label' => 'All', // Button label
+            'label' => 'all',
             'attr' => [
                 'class' => 'btn btn-primary',
-                'onclick' => "window.location.href='{$routePath}'",
+                'onclick' => sprintf("window.location.href='%s'", $options['routePath']),
             ],
         ]);
     }
