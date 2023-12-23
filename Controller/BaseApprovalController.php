@@ -33,8 +33,8 @@ class BaseApprovalController extends AbstractController
         return [
             'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
-            'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
-            'showOvertime' => $settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)
+            'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $settingsTool->isOvertimeCheckActive(),
+            'showOvertime' => $settingsTool->isOvertimeCheckActive()
         ];
     }
 

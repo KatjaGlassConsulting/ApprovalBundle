@@ -38,7 +38,7 @@ class OvertimeAllReportController extends BaseApprovalController
      */
     public function overtimeByUser(Request $request): Response
     {
-        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY) == false) {
+        if (!$this->settingsTool->isOvertimeCheckActive()) {
             return $this->redirectToRoute('approval_bundle_report');
         }
 

@@ -120,7 +120,7 @@ class WeekReportController extends BaseApprovalController
         $currentUserSundayIssue = $this->getUser()->isFirstDayOfWeekSunday();
 
         $overtimeDuration = null;
-        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)) {
+        if ($this->settingsTool->isOvertimeCheckActive()) {
             // use actual year display, in case of "starting", use first approval date
             $overtimeDuration = $this->approvalRepository->getExpectedActualDurationsForYear($selectedUser, $end);
         }

@@ -36,7 +36,7 @@ class SettingsOvertimeController extends BaseApprovalController
     #[IsGranted(new Expression("is_granted('view_team_approval') or is_granted('view_all_approval')"))]
     public function settingsOvertime(Request $request): Response
     {
-        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY) == false) {
+        if (!$this->settingsTool->isOvertimeCheckActive()) {
             return $this->redirectToRoute('approval_bundle_report');
         }
 

@@ -32,7 +32,7 @@ class OvertimeReportController extends BaseApprovalController
     #[Route(path: '/overtime_by_user', name: 'overtime_bundle_report', methods: ['GET', 'POST'])]
     public function overtimeByUser(Request $request): Response
     {
-        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY) == false) {
+        if (!$this->settingsTool->isOvertimeCheckActive()) {
             return $this->redirectToRoute('approval_bundle_report');
         }
 

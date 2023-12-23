@@ -11,6 +11,7 @@ namespace KimaiPlugin\ApprovalBundle\Toolbox;
 
 use App\Entity\Configuration;
 use App\Repository\ConfigurationRepository;
+use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 
 class SettingsTool
 {
@@ -31,6 +32,11 @@ class SettingsTool
         }
 
         return true;
+    }
+
+    public function isOvertimeCheckActive(): bool
+    {
+        return $this->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY, null) !== null;
     }
 
     /**

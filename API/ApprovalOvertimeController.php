@@ -49,7 +49,7 @@ final class ApprovalOvertimeController extends BaseApiController
         $selectedUserId = $request->query->get('user');
         $seletedDate = new DateTime($request->query->get('date'));
 
-        if (!$this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)) {
+        if (!$this->settingsTool->isOvertimeCheckActive()) {
             return $this->viewHandler->handle(
                 new View(
                     $this->translator->trans('api.noOvertimeSetting'),
