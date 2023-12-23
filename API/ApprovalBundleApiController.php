@@ -23,7 +23,6 @@ use KimaiPlugin\ApprovalBundle\Repository\ApprovalStatusRepository;
 use KimaiPlugin\ApprovalBundle\Repository\LockdownRepository;
 use KimaiPlugin\ApprovalBundle\Toolbox\EmailTool;
 use Nelmio\ApiDocBundle\Annotation\Security as ApiSecurity;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -32,7 +31,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'ApprovalBundleApi')]
-final class ApprovalBundleApiController extends AbstractController
+final class ApprovalBundleApiController extends BaseApiController
 {
     public function __construct(
         private ViewHandlerInterface $viewHandler,

@@ -9,6 +9,7 @@
 
 namespace KimaiPlugin\ApprovalBundle\API;
 
+use App\API\BaseApiController;
 use App\Repository\UserRepository;
 use DateTime;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -18,7 +19,6 @@ use KimaiPlugin\ApprovalBundle\Entity\Approval;
 use KimaiPlugin\ApprovalBundle\Entity\ApprovalStatus;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use Nelmio\ApiDocBundle\Annotation\Security as ApiSecurity;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -26,7 +26,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'ApprovalStatusApi')]
-final class ApprovalStatusApiController extends AbstractController
+final class ApprovalStatusApiController extends BaseApiController
 {
     public function __construct(
         private ViewHandlerInterface $viewHandler,
