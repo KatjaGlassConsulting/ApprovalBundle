@@ -1,8 +1,7 @@
 {% extends '@Approval/layout.html.twig' %}
 {% import "macros/widgets.html.twig" as widgets %}
 
-{% block report_title %}{{ report_title|trans({}, 'ApprovalBundle') }}{% endblock %}
-
+{% block report_title %}{{ report_title|trans }}{% endblock %}
 
 {% block report %}
     {% if approvePreviousWeeksMessage and approvePreviousWeeksMessage < (current | date_format('Y-m-d')) %}

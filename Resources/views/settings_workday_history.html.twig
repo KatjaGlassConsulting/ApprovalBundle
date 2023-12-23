@@ -1,7 +1,7 @@
 {% extends '@Approval/layout.html.twig' %}
 {% import "macros/widgets.html.twig" as widgets %}
 
-{% block report_title %}{{ report_title|trans({}, 'ApprovalBundle') }}{% endblock %}
+{% block report_title %}{{ report_title|trans }}{% endblock %}
 
 {% block page_actions %}
     {% import "macros/widgets.html.twig" as widgets %}
@@ -29,7 +29,7 @@
         <table class="table table-bordered dataTable">
             <thead>
                 <tr>
-                    <th>{{ 'label.user'|trans }}</th>
+                    <th>{{ 'user'|trans }}</th>
                     <th class="text-center">{{ 'Monday'|trans({},'system-configuration')}}</th>
                     <th class="text-center">{{ 'Tuesday'|trans({},'system-configuration')}}</th>
                     <th class="text-center">{{ 'Wednesday'|trans({},'system-configuration')}}</th>

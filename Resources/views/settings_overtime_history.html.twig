@@ -1,7 +1,7 @@
 {% extends '@Approval/layout.html.twig' %}
 {% import "macros/widgets.html.twig" as widgets %}
 
-{% block report_title %}{{ report_title|trans({}, 'ApprovalBundle') }}{% endblock %}
+{% block report_title %}{{ report_title|trans }}{% endblock %}
 
 {% block page_actions %}
     {% import "macros/widgets.html.twig" as widgets %}
@@ -20,9 +20,9 @@
         <table class="table table-bordered dataTable">
             <thead>
                 <tr>
-                    <th>{{ 'label.user'|trans }}</th>
-                    <th>{{ 'label.date'|trans }}</th>
-                    <th>{{ 'label.duration'|trans }}</th>
+                    <th>{{ 'user'|trans }}</th>
+                    <th>{{ 'date'|trans }}</th>
+                    <th>{{ 'duration'|trans }}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -52,16 +52,10 @@
                     <div class="text-right">
                         <span aria-hidden="true" class="closeModal pointer">×</span>
                     </div>
-                    <h4 class="modal-title" id="form_modal_label">
-                        Delete?
-                    </h4>
+                    <h4 class="modal-title" id="form_modal_label">{{ 'confirm.delete'|trans }}</h4>
                 </div>
                 <div class="modal-footer">
-                    <a href=""
-                        class="btn btn-primary btn-create" id="deniedLink"
-                        style="float: left;">
-                        Delete
-                    </a>
+                    <a href="" class="btn btn-primary btn-create" id="deniedLink" style="float: left;">{{ 'delete'|trans }}</a>
                     <button type="button" class="btn btn-default btn-cancel closeModal" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
