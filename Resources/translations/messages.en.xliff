@@ -130,10 +130,6 @@
         <source>stats.duration_actual</source>
         <target>Actual duration</target>
       </trans-unit>
-      <trans-unit id="label.week">
-        <source>label.week</source>
-        <target>Week</target>
-      </trans-unit>
       <trans-unit id="table.past_weeks">
         <source>table.past_weeks</source>
         <target>Past weeks</target>
@@ -158,14 +154,6 @@
       <trans-unit id="table.approve_status">
         <source>table.approve_status</source>
         <target>Status</target>
-      </trans-unit>
-      <trans-unit id="table.approve_action">
-        <source>table.approve_action</source>
-        <target>Action</target>
-      </trans-unit>
-      <trans-unit id="warning.approval_settings_not_set">
-        <source>warning.approval_settings_not_set</source>
-        <target>Settings are not configured completely yet</target>
       </trans-unit>
       <trans-unit id="warning.add_to_approve_previous_weeks">
         <source>warning.add_to_approve_previous_weeks</source>

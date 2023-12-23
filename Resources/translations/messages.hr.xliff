@@ -126,10 +126,6 @@
         <source>stats.duration_actual</source>
         <target>Stvarno trajanje</target>
       </trans-unit>
-      <trans-unit id="label.week">
-        <source>label.week</source>
-        <target>Tjedan</target>
-      </trans-unit>
       <trans-unit id="table.past_weeks">
         <source>table.past_weeks</source>
         <target>Prošli tjedan</target>
@@ -154,14 +150,6 @@
       <trans-unit id="table.approve_status">
         <source>table.approve_status</source>
         <target>Stanje</target>
-      </trans-unit>
-      <trans-unit id="table.approve_action">
-        <source>table.approve_action</source>
-        <target>Radnja</target>
-      </trans-unit>
-      <trans-unit id="warning.approval_settings_not_set">
-        <source>warning.approval_settings_not_set</source>
-        <target>Postavke još nisu potpuno postavljene</target>
       </trans-unit>
       <trans-unit id="warning.add_to_approve_previous_weeks">
         <source>warning.add_to_approve_previous_weeks</source>
