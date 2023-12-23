@@ -42,7 +42,7 @@ class LockdownRepository extends ServiceEntityRepository
             $endDate = $this->getOldestNotSubmittedDate($allWeeks, $user);
             $endDate = $this->getOldestSubmittedApprovalFromTeam($user, $approvalRepository, $endDate);
 
-            $graceDate = $this->getGraceDate(clone $endDate, new DateTimeZone($user->getPreferenceValue('timezone')));
+            $graceDate = $this->getGraceDate(clone $endDate, new DateTimeZone($user->getTimezone()));
             $endDate->modify('midnight')->modify('+1 day')->modify('-1 second');
             $this->updateLockPreference($user, $endDate, $graceDate);
         }
@@ -68,7 +68,7 @@ class LockdownRepository extends ServiceEntityRepository
      */
     private function getOldestNotSubmittedDate(array $allWeeks, User $user): DateTime
     {
-        $timezone = new DateTimeZone($user->getPreferenceValue('timezone'));
+        $timezone = new DateTimeZone($user->getTimezone());
 
         foreach ($allWeeks as $week) {
             if ($week['status'] === 'not_submitted') {
@@ -91,7 +91,7 @@ class LockdownRepository extends ServiceEntityRepository
     {
         $this->updatePreference($user, self::LOCKDOWN_PERIOD_START, '0000-01-01 00:00:01');
         $this->updatePreference($user, self::LOCKDOWN_PERIOD_END, $endDate->format('Y-m-d H:i:s'));
-        $this->updatePreference($user, self::LOCKDOWN_PERIOD_TIMEZONE, $user->getPreferenceValue('timezone'));
+        $this->updatePreference($user, self::LOCKDOWN_PERIOD_TIMEZONE, $user->getTimezone());
         $this->updatePreference($user, self::LOCKDOWN_GRACE_PERIOD, $graceDate->format('Y-m-d H:i:s'));
     }
 
@@ -125,7 +125,7 @@ class LockdownRepository extends ServiceEntityRepository
                 $endDate = $this->getOldestNotSubmittedDate($weeks, $teamLeader);
                 $endDate = $this->getOldestSubmittedApprovalFromTeam($teamLeader, $approvalRepository, $endDate);
 
-                $graceDate = $this->getGraceDate(clone $endDate, new DateTimeZone($user->getPreferenceValue('timezone')));
+                $graceDate = $this->getGraceDate(clone $endDate, new DateTimeZone($user->getTimezone()));
                 $endDate->modify('midnight')->modify('+1 day')->modify('-1 second');
                 $this->updateLockPreference($teamLeader, $endDate, $graceDate);
             }
