@@ -38,41 +38,17 @@ class MenuSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $users = $this->security->getUsers();
-        $date = date('Y-m-d', strtotime('this week'));
-
-        $menu = $event->getMenu();
-        if (empty($users)) {
-            $menu->addChild(
-                new MenuItemModel(
-                    'approvalBundle',
-                    'title.approval_bundle',
-                    'approval_bundle_settings',
-                    [],
-                    'fas fa-thumbs-up'
-                )
-            );
-
-            return;
-        }
-
         $model = new MenuItemModel(
-            'approvalBundle',
-            'title.approval_bundle',
-            'approval_bundle_report',
-            [
-                //'user' => $users[0]->getId(),
-                'date' => $date
-            ],
-            'fas fa-thumbs-up',
+            'approvalBundle', 'title.approval_bundle', 'approval_bundle_report', [], 'fas fa-thumbs-up',
         );
 
         if ($this->security->canViewAllApprovals() || $this->security->canViewTeamApprovals()) {
+            $users = $this->security->getUsers();
             $dataToMenuItem = $this->approvalRepository->findCurrentWeekToApprove($users, $currentUser);
             $model->setBadge((string) $dataToMenuItem);
             $model->setBadgeColor($dataToMenuItem === 0 ? 'green' : 'red');
         }
 
-        $menu->addChild($model);
+        $event->getMenu()->addChild($model);
     }
 }
