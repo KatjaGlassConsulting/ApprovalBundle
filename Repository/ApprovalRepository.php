@@ -359,16 +359,6 @@ class ApprovalRepository extends ServiceEntityRepository
         }, []);
     }
 
-    private function parseHistoryToOneElementCurrentWeek($approvedList): void
-    {
-        array_map(function (Approval $item) {
-            $history = $item->getHistory();
-            $item->setHistory([empty($history) ? null : $history[\count($history) - 1]]);
-
-            return $item;
-        }, $approvedList);
-    }
-
     public function getWeeks(User $user): array
     {
         $approvedWeeks = $this->getApprovedWeeks($user);
@@ -575,24 +565,27 @@ class ApprovalRepository extends ServiceEntityRepository
         $em = $this->getEntityManager()->createQueryBuilder();
         $expr = $em->expr();
         $approvedList = $em
-            ->select('ap')
+            ->select('ap', 'ah', 'ast')
             ->from(Approval::class, 'ap')
             ->join('ap.user', 'u')
             ->join('ap.history', 'ah')
+            ->leftJoin('ah.status', 'ast')
             ->andWhere($expr->in('u.id', ':users'))
             ->setParameter('users', $usersId)
+            ->orderBy('ap.startDate', 'DESC')
             ->getQuery()
             ->getResult();
 
-        $this->parseHistoryToOneElementCurrentWeek($approvedList);
-
-        $array_filter = array_filter($approvedList, function ($approval) {
-            /* @var Approval $approval */
-            return !empty($approval->getHistory()) && !empty($approval->getHistory()[0]) && $approval->getHistory()[0]->getStatus()->getName() === ApprovalStatus::SUBMITTED;
+        /** @var array<Approval> $array_filter */
+        $array_filter = array_filter($approvedList, function (Approval $approval) {
+            $history = $approval->getHistory();
+            $history = array_pop($history);
+            return $history instanceof ApprovalHistory && $history->getStatus()->getName() === ApprovalStatus::SUBMITTED;
         });
+
         $toReturn = [];
         foreach ($array_filter as $approval) {
-            if (!(\in_array('ROLE_TEAMLEAD', $approval->getUser()->getRoles()) && $approval->getUser()->getId() === $currentUser->getId())) {
+            if (!($approval->getUser()->hasTeamleadRole() && $approval->getUser()->getId() === $currentUser->getId())) {
                 $toReturn[] = $approval;
             }
         }
