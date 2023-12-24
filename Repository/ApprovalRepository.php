@@ -580,6 +580,7 @@ class ApprovalRepository extends ServiceEntityRepository
         $array_filter = array_filter($approvedList, function (Approval $approval) {
             $history = $approval->getHistory();
             $history = array_pop($history);
+
             return $history instanceof ApprovalHistory && $history->getStatus()->getName() === ApprovalStatus::SUBMITTED;
         });
 
