@@ -39,8 +39,6 @@ class MenuSubscriber implements EventSubscriberInterface
         }
 
         $users = $this->security->getUsers();
-        $dataToMenuItem = $this->approvalRepository->findCurrentWeekToApprove($users, $currentUser);
-
         $date = date('Y-m-d', strtotime('this week'));
 
         $menu = $event->getMenu();
@@ -54,6 +52,8 @@ class MenuSubscriber implements EventSubscriberInterface
                     'fas fa-thumbs-up'
                 )
             );
+
+            return;
         }
 
         $model = new MenuItemModel(
@@ -68,6 +68,7 @@ class MenuSubscriber implements EventSubscriberInterface
         );
 
         if ($this->security->canViewAllApprovals() || $this->security->canViewTeamApprovals()) {
+            $dataToMenuItem = $this->approvalRepository->findCurrentWeekToApprove($users, $currentUser);
             $model->setBadge((string) $dataToMenuItem);
             $model->setBadgeColor($dataToMenuItem === 0 ? 'green' : 'red');
         }
