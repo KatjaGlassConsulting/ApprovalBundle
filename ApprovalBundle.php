@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class ApprovalBundle extends Bundle implements PluginInterface
 {
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new ApprovalSettingsCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION);
     }
