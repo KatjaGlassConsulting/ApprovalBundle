@@ -20,9 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route(path="/approval")
- */
+#[Route(path: '/approval')]
 class OvertimeAllReportController extends BaseApprovalController
 {
     public function __construct(
@@ -33,10 +31,7 @@ class OvertimeAllReportController extends BaseApprovalController
     ) {
     }
 
-    /**
-     * @Route(path="/overtime_by_all", name="overtime_all_report", methods={"GET","POST"})
-     * @throws Exception
-     */
+    #[Route(path: '/overtime_by_all', name: 'overtime_all_report', methods: ['GET', 'POST'])]
     public function overtimeByUser(Request $request): Response
     {
         if (!$this->settingsTool->isOvertimeCheckActive()) {
