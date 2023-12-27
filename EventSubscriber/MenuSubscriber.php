@@ -15,7 +15,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class MenuSubscriber implements EventSubscriberInterface
 {
-
     public static function getSubscribedEvents(): array
     {
         return [
@@ -26,7 +25,11 @@ class MenuSubscriber implements EventSubscriberInterface
     public function onMenuConfigure(ConfigureMainMenuEvent $event): void
     {
         $model = new MenuItemModel(
-            'approvalBundle', 'title.approval_bundle', 'approval_bundle_report', [], 'fas fa-thumbs-up',
+            'approvalBundle',
+            'title.approval_bundle',
+            'approval_bundle_report',
+            [],
+            'fas fa-thumbs-up',
         );
 
         /*

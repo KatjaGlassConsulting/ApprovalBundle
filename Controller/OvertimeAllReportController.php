@@ -11,7 +11,6 @@ namespace KimaiPlugin\ApprovalBundle\Controller;
 
 use App\Repository\UserRepository;
 use DateTime;
-use Exception;
 use KimaiPlugin\ApprovalBundle\Form\OvertimeByAllForm;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use KimaiPlugin\ApprovalBundle\Toolbox\SecurityTool;
