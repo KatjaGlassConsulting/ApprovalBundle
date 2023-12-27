@@ -36,7 +36,7 @@ class SettingsTool
 
     public function isOvertimeCheckActive(): bool
     {
-        return $this->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY, null) !== null;
+        return $this->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY, null) !== "0";
     }
 
     /**
