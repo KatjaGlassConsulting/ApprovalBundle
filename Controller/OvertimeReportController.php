@@ -41,7 +41,7 @@ class OvertimeReportController extends BaseApprovalController
         $values = new WeekByUser();
         $values->setUser($firstUser);
 
-        $form = $this->createForm(OvertimeByUserForm::class, $values, [
+        $form = $this->createFormForGetRequest(OvertimeByUserForm::class, $values, [
             'users' => $users,
             'routePath' => $this->generateUrl('overtime_all_report'),
         ]);
