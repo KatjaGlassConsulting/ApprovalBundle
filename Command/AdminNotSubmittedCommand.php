@@ -13,43 +13,25 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use KimaiPlugin\ApprovalBundle\Toolbox\EmailTool;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'kimai:bundle:approval:admin-not-submitted-users')]
 class AdminNotSubmittedCommand extends Command
 {
-    // the name of the command (the part after "bin/console")
-    protected static $defaultName = 'kimai:bundle:approval:admin-not-submitted-users';
-
-    /**
-     * @var ApprovalRepository
-     */
-    private $approvalRepository;
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
-    /**
-     * @var EmailTool
-     */
-    private $emailTool;
-
     public function __construct(
-        ApprovalRepository $approvalRepository,
-        UserRepository $userRepository,
-        EmailTool $emailTool
+        private ApprovalRepository $approvalRepository,
+        private UserRepository $userRepository,
+        private EmailTool $emailTool
     ) {
         parent::__construct();
-        $this->approvalRepository = $approvalRepository;
-        $this->userRepository = $userRepository;
-        $this->emailTool = $emailTool;
     }
 
     protected function configure(): void
     {
-        $this
-            ->setHelp('This command sends emails to SUPER_ADMIN with users who have "not submitted" status');
+        $this->setHelp('Sends emails to SUPER_ADMIN with users who have not yet submitted their status');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -68,10 +50,10 @@ class AdminNotSubmittedCommand extends Command
             );
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 
-    protected function getUserList(): array
+    private function getUserList(): array
     {
         return array_filter(
             $this->userRepository->findAll(),

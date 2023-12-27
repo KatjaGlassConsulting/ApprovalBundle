@@ -12,42 +12,25 @@ namespace KimaiPlugin\ApprovalBundle\Command;
 use App\Repository\UserRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use KimaiPlugin\ApprovalBundle\Toolbox\EmailTool;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'kimai:bundle:approval:user-not-submitted-weeks')]
 class UserNotSubmittedCommand extends Command
 {
-    // the name of the command (the part after "bin/console")
-    protected static $defaultName = 'kimai:bundle:approval:user-not-submitted-weeks';
-    /**
-     * @var ApprovalRepository
-     */
-    private $approvalRepository;
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
-    /**
-     * @var EmailTool
-     */
-    private $emailTool;
-
     public function __construct(
-        UserRepository $userRepository,
-        EmailTool $emailTool,
-        ApprovalRepository $approvalRepository
+        private UserRepository $userRepository,
+        private EmailTool $emailTool,
+        private ApprovalRepository $approvalRepository
     ) {
         parent::__construct();
-        $this->userRepository = $userRepository;
-        $this->emailTool = $emailTool;
-        $this->approvalRepository = $approvalRepository;
     }
 
     protected function configure(): void
     {
-        $this
-            ->setHelp('This command sends an email with a list of past "not submitted" weeks to the user');
+        $this->setHelp('Sends an email with a list of past "not submitted" weeks to the user');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -64,6 +47,6 @@ class UserNotSubmittedCommand extends Command
             }
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

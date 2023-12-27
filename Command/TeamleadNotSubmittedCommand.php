@@ -13,43 +13,25 @@ use App\Entity\Team;
 use App\Repository\TeamRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use KimaiPlugin\ApprovalBundle\Toolbox\EmailTool;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'kimai:bundle:approval:teamlead-not-submitted-last-week')]
 class TeamleadNotSubmittedCommand extends Command
 {
-    // the name of the command (the part after "bin/console")
-    protected static $defaultName = 'kimai:bundle:approval:teamlead-not-submitted-last-week';
-
-    /**
-     * @var ApprovalRepository
-     */
-    private $approvalRepository;
-    /**
-     * @var EmailTool
-     */
-    private $emailTool;
-    /**
-     * @var TeamRepository
-     */
-    private $teamRepository;
-
     public function __construct(
-        ApprovalRepository $approvalRepository,
-        EmailTool $emailTool,
-        TeamRepository $teamRepository
+        private ApprovalRepository $approvalRepository,
+        private EmailTool $emailTool,
+        private TeamRepository $teamRepository
     ) {
         parent::__construct();
-        $this->approvalRepository = $approvalRepository;
-        $this->emailTool = $emailTool;
-        $this->teamRepository = $teamRepository;
     }
 
     protected function configure(): void
     {
-        $this
-            ->setHelp('This command sends emails to the Team lead with a list of team users witch have "not submitted" status');
+        $this->setHelp('Sends emails to the Teamlead with a list of team users which did not yet submit their status');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -64,10 +46,10 @@ class TeamleadNotSubmittedCommand extends Command
             }
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 
-    protected function getUsers(Team $team): array
+    private function getUsers(Team $team): array
     {
         return array_filter(
             $team->getUsers(),
@@ -77,7 +59,7 @@ class TeamleadNotSubmittedCommand extends Command
         );
     }
 
-    protected function getTeamLeaders(Team $team): array
+    private function getTeamLeaders(Team $team): array
     {
         return array_filter(
             $team->getTeamleads(),
