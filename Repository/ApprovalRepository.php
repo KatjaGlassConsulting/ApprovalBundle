@@ -838,6 +838,7 @@ class ApprovalRepository extends ServiceEntityRepository
         foreach ($approvals as $approval) { 
             $start = $approval->getStartDate();
             $end = $approval->getEndDate();
+            date_time_set($end,23,59,59);
             $expected = $approval->getExpectedDuration();
             $actual = $approval->getActualDuration();
             $stats = $this->getExpectedActualDurations($user, $start, $end);

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.12 to 0.9.13
+
+- fix "overtime" invalid calculation (sunday is ignored) when new workday settings are done
+
 ## 0.9.11 to 0.9.12
 
 - 6h-no-break-check corrected
