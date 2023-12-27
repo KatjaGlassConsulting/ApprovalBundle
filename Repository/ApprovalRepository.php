@@ -142,7 +142,7 @@ class ApprovalRepository extends ServiceEntityRepository
     public function getExpectedActualDurations(User $user, \DateTime $startDate, \DateTime $endDate, $additionalAdd = 0): ?array
     {
         $expectedDuration = $this->calculateExpectedDurationByUserAndDate($user, $startDate, $endDate);
-        $actualDuration = \intval($this->timesheetRepository->getStatistic($this->timesheetRepository::STATS_QUERY_DURATION, $startDate, $endDate, $user));
+        $actualDuration = $this->timesheetRepository->getDurationForTimeRange($startDate, $endDate, $user);
         $overtime = $actualDuration - $expectedDuration;
 
         $manualAdoption = $this->approvalOvertimeHistoryRepository->getOvertimeCorrectionForUserByStardEndDate($user, $startDate, $endDate);
