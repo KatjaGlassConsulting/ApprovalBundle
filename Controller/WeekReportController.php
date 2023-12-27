@@ -112,7 +112,7 @@ class WeekReportController extends BaseApprovalController
         }
 
         $userId = $request->query->get('user');
-        $startWeek = $request->query->get('date');
+        $startWeek = $request->query->get('date', 'now');
 
         [$timesheets, $errors] = $this->getTimesheets($selectedUser, $start, $end);
 
