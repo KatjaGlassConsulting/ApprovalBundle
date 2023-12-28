@@ -1,8 +1,9 @@
 # Changelog
 
-## 0.9.12 to 0.9.13
+## 0.9.12 to 1.0.0
 
 - fix "overtime" invalid calculation (sunday is ignored) when new workday settings are done
+- main version update as in new branch for Kimai V1 support
 
 ## 0.9.11 to 0.9.12
 

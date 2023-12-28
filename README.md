@@ -4,22 +4,22 @@ A plugin for [Kimai](https://www.kimai.org/) - a timetracking open source tool -
 
 Checkout the [Documentation](./documentation.md) for content information and [Troubleshooting](./doc_troubleshooting.md) if you have issues.
 
-Here is a short live demo:
+Here is a short live demo (for Kimai2 in version 1):
 
 ![Example process for Teamleads](./_documentation/ApprovalTeamlead.gif)
 
 ## Kimai2 Version 1 vs. Version 2
 
-The Plugin as located in the `main` branch, supports the version 1 of Kimai. Version 2 which is live is currently (december 2023) not fully supported, thanks to 
-Vitor Mattos and Sam MacLennan which are contributing for this update. The branch for the Kimai version 2 is available in the branch `kimai_v2_update`.
+The Plugin as located in the `main` branch, supports the version 2 of Kimai. Version 1 support is available in the branch `bundle_for_kimai_v1`. For now new updates will be implemented in version 1 and then migrated to version 2 later on - major updates are not expected.
 
 ## Requirements
 
-- Requires Kimai 2, V1.16.10 - V1.30.11 (Kimai2 Version 2 is under development by collaborators in branch `kimai_v2_update`) 
+- Requires Kimai 2, V1.16.10 - V1.30.11 (for ApprovalBundle in Version 1.x as in `bundle_for_kimai_v1`)
+- Required Kimai 2, >= Version 2.5 (for ApprovalBundle in Version 2.x as in default `main`) 
 
 Optional but recommended:
-- MetaFields plugin - without "overtime" will not be shown unless "Display Overtime" is activated and "Settings workdays" are set for the future )
 - LockdownPerUser plugin ([GitHub](https://github.com/kevinpapst/LockdownPerUserBundle)) - without the lockdown functionality will not work
+- MetaFields plugin - optional setting of working hours per day per user unless specified in ApprovalBundle "Settings workday"
 
 ## Features
 
@@ -28,14 +28,16 @@ Optional but recommended:
 - Teamlead/Admin can approve or deny the week
 - Overview of approvals, missing approvals and the status
 - Mailing options to recall approval tasks if outstanding
+- Overview of overtime
+- Overview of break issues according German Law
 
 ## Status
 
-The approval bundle is working pretty well. There had been lately updates to support overtime hours and also store the actual duration along. The bundle is been used and issues received (GitHub issues) are handled. A detailed testing is NOT performed. For this the release is pretty stable, but there might be issues due to different settings, environment etc.
+The approval bundle has been lately updated to support the new kimai version by Kevin Papst. The active ongoing development and testing is done on Kimai version 1 as this. A detailed testing is NOT performed. For this the release is pretty stable, but there might be issues due to different settings, environment etc. If you experience anything, please report this in GitHub issues.
 
 ## Issues
 
-It is highly recommended to use the **same timezone** setting for all users. Furthermore all users should use the **same "Start day of the week"** setting - ideally everybody should use "Monday". Otherwise issues could appear as, e.g. Monday times can be located on a Sunday when the teamlead and the user using different timezones. Furthermore the "Start day" is used to store the approval week. When the "Start day" is Sunday for a user and Monday for the teamlead, the approval will not work appropriately.
+It is highly recommended to use the **same timezone** setting for all users. Furthermore all users should use the **same "Start day of the week"** setting - everybody should use "Monday". Otherwise issues could appear as, e.g. Monday times can be located on a Sunday when the teamlead and the user using different timezones. Furthermore the "Start day" is used to store the approval week. When the "Start day" is Sunday for a user and Monday for the teamlead, the approval will not work appropriately - an update for this is unlucklily more complex and set to "on-hold".
 
 Please checkout [doc_troubleshooting.md](./doc_troubleshooting.md) for troubleshooting.
 
@@ -61,6 +63,8 @@ The plugin should appear now.
 ### Meta-Field Setup (optional)
 
 The ApprovalBundle needs some meta fields and settings to be done. The daily and workly hours are displayed. For this the daily working time per day needs to be specified per user. Typically it might be 8h per week day. But there are very different situations, so someone might only work 4 days a week or less hours a day.
+
+If you do not use the "overtime" or are using the "Settings workday" for this - these fields are not required.
 
 The following meta-fields can be created ([Custom-Field-Plugin](https://www.kimai.org/store/custom-fields-bundle.html) is required for this):
 
@@ -112,117 +116,15 @@ To have this functionality available, the ApprovalBundle changes the "Lockdown p
 
 ## APIs
 
-The following APIs are available. You might want to check out the API swagger documentation within Kimai where the API commands can directly be executed as well.
+There are various APIs available for the ApprovalBundle. Pleaes check out the API swagger documententation for the various endpoints and their parameters (`<kimai_path>/api/doc`).
 
-    Kimai -> click your icon -> settings -> API -> click the book icon top right
+Overview of APIs:
 
-## Add to approve API
-
-It's possible to "add to approve" the selected week by API. User is optional - per default the data for the user who submitted the request is provided.
-
-request method: **POST**
-
-url: `{your url address}/api/add_to_approve?user={user ID}&date={monday of selected week: Y-m-d}`
-
-headers:
-```
-X-AUTH-USER: login
-X-AUTH-TOKEN: token/password
-```
-
-response:
-- response code 200 - URL, to the selected week "added to approval"
-- response 400 - "Approval already exists" / "User not from your team"  / "Please add previous weeks to approve"
-- response 403 - by bad authentication header
-- response 404 - wrong user
-
-Admin can "add to approve" all users.
-Teamlead can "add to approve" only users from his team.
-Normal users can "add to approve" only their own.
-
-## Week status API
-
-It's possible to check status of selected week. User is optional - per default the data for the user who submitted the request is provided.
-
-request method: **GET**
-
-url: `{your url address}/api/week-status?user={user ID}&date={monday of selected week: Y-m-d}`
-
-headers:
-```
-X-AUTH-USER: login
-X-AUTH-TOKEN: token/password
-```
-
-response:
-- response code 200 - information about status
-- response 400 - "Access denied" / "User not from your team"
-- response 403 - by bad authentication header
-- response 404 - wrong user
-
-Admin can check the status of all users
-Teamlead can check the status of his team users
-Normal users can check their status
-
-## Next week API
-
-It's possible to check which week can be currently submitted. User is optional - per default the data for the user who submitted the request is provided.
-
-request method: **GET**
-
-url: `{your url address}/api/next-week?user={user ID}`
-
-headers:
-```
-X-AUTH-USER: login
-X-AUTH-TOKEN: token/password
-```
-
-response:
-
-- response code 200 - information about the week
-- response 403 - by bad authentication header
-- response 404 - wrong user / no data
-
-## Overtime for Year
-
-This will get the overtime for that year considering all submitted/approved approval weeks. User is optional - per default the data for the user who submitted the request is provided.
-
-request method: **GET**
-
-url: `{your url address}/api/overtime_year?user={user ID}&date={monday of selected week: Y-m-d}`
-
-headers:
-```
-X-AUTH-USER: login
-X-AUTH-TOKEN: token/password
-```
-
-response:
-
-- response code 200 - information about overtime for that year
-- response 403 - by bad authentication header
-- response 404 - wrong user / no data
-
-## Overtime on Weekly Bases 
-
-This will get a the overtime on a weekly bases up until that date for the corresponding year (content of "Overtime", but in JSON format). User is optional - per default the data for the user who submitted the request is provided.
-
-request method: **GET**
-
-url: `{your url address}/api/weekly_overtime?user={user ID}&date={monday of selected week: Y-m-d}`
-
-headers:
-```
-X-AUTH-USER: login
-X-AUTH-TOKEN: token/password
-```
-
-response:
-
-- response code 200 - information about overtime for that year
-- response 403 - by bad authentication header
-- response 404 - wrong user / no data
+- Get next-approval-week
+- Get status of selected week (approval open, submitted, approved, rejected)
+- Get overtime for specified year
+- Get weekly overtime overview for all weeks from provided date and later
+- Post a "submit of approval" for a specified week
 
 ## Cronjobs
 
@@ -248,4 +150,4 @@ Many thanks go to [HMR-IT](https://www.hmr-it.de) which had been highly involved
 
 Additional thanks go to Milo Ivir for additional translations and to Kevin Papst for code enhancements and the update to use this bundle with less pre-requisites.
 
-Furthermore thanks to Vitor Mattos and Sam MacLennan which are working on the migration for the ApprovalBundle supporting Kimai Version 2.
+Many thanks to Kevin Papst, Vitor Mattos and Sam MacLennan for working on the migration of the ApprovalBundle supporting Kimai Version 2.
