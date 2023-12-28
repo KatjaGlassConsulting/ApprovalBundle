@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0
+## 2.0.0
 
 - Compatibility with Kimai 2 (tested with 2.6.0)
 
@@ -8,6 +8,7 @@
 
 - 6h-no-break-check corrected
 - new overtime by all report with select date option
+- fix "overtime" invalid calculation (sunday is ignored) when new workday settings are done
 
 ## 0.9.10 to 0.9.11
 
