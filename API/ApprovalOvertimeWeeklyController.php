@@ -21,6 +21,7 @@ use Nelmio\ApiDocBundle\Annotation\Security as ApiSecurity;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -40,7 +41,7 @@ final class ApprovalOvertimeWeeklyController extends BaseApiController
     #[OA\Response(response: 200, description: "Get weekly overtime overview for all weeks from 'date' and later")]
     #[Rest\QueryParam(name: 'user', requirements: '\d+', strict: true, nullable: true, description: 'User ID to get information for')]
     #[Rest\QueryParam(name: 'date', nullable: false, description: 'Date to get weekly overtime overview up from this date: Y-m-d')]
-    #[Rest\Get(path: '/weekly_overtime')]
+    #[Route(methods: ['GET'], path: '/weekly_overtime')]
     #[ApiSecurity(name: 'apiUser')]
     #[ApiSecurity(name: 'apiToken')]
     public function weeklyOvertime(Request $request): Response
