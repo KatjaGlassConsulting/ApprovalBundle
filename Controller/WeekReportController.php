@@ -300,11 +300,6 @@ class WeekReportController extends BaseApprovalController
         return $form->createView();
     }
 
-    private function collectMetaField($data, $key): string
-    {
-        return !empty($data[$key]) ? ($data[$key])->getId() : '';
-    }
-
     private function getUsers(bool $includeOwnForTeam = true): array
     {
         if ($this->canManageAllPerson()) {
