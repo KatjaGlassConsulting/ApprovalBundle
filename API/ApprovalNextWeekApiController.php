@@ -19,6 +19,7 @@ use Nelmio\ApiDocBundle\Annotation\Security as ApiSecurity;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -36,7 +37,7 @@ final class ApprovalNextWeekApiController extends BaseApiController
 
     #[OA\Response(response: 200, description: 'Status of selected week')]
     #[Rest\QueryParam(name: 'user', requirements: '\d+', strict: true, nullable: true, description: 'User ID to get information for')]
-    #[Rest\Get(path: '/next-week')]
+    #[Route(methods: ['GET'], path: '/next-week')]
     #[ApiSecurity(name: 'apiUser')]
     #[ApiSecurity(name: 'apiToken')]
     public function nextWeekAction(Request $request): Response
