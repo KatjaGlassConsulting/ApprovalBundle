@@ -21,11 +21,7 @@ class SettingsTool
     {
     }
 
-    /**
-     * @param $key
-     * @return mixed|string
-     */
-    public function isInConfiguration($key): bool
+    public function isInConfiguration(string $key): bool
     {
         if ($this->configurationRepository->findOneBy(['name' => $key]) === null) {
             return false;
@@ -39,11 +35,7 @@ class SettingsTool
         return $this->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY, '1') !== '0';
     }
 
-    /**
-     * @param $key
-     * @return mixed|string
-     */
-    public function getConfiguration($key, $default = '')
+    public function getConfiguration(string $key, $default = ''): mixed
     {
         if (!\array_key_exists($key, $this->cache)) {
             $config = $this->configurationRepository->findOneBy(['name' => $key]);
@@ -56,12 +48,7 @@ class SettingsTool
         return $this->cache[$key];
     }
 
-    /**
-     * @param $key
-     * @param $value
-     * @return bool
-     */
-    public function setConfiguration($key, $value): bool
+    public function setConfiguration(string $key, mixed $value): bool
     {
         $this->cache = [];
 

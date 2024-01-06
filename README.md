@@ -8,18 +8,22 @@ Here is a short live demo (for Kimai2 in version 1):
 
 ![Example process for Teamleads](./_documentation/ApprovalTeamlead.gif)
 
-## Kimai2 Version 1 vs. Version 2
+## Version 1 vs. Version 2
 
-The Plugin as located in the `main` branch, supports the version 2 of Kimai. Version 1 support is available in the branch `bundle_for_kimai_v1`. For now new updates will be implemented in version 1 and then migrated to version 2 later on - major updates are not expected.
+This plugin supports two version of Kimai:
+
+- the Plugin as located in the `main` branch, supports the version 2 of Kimai 
+- Version 1 support is available in the branch [bundle_for_kimai_v1](https://github.com/KatjaGlassConsulting/ApprovalBundle/tree/bundle_for_kimai_v1). 
+
+For now new updates will be implemented in Version 1 and then migrated to Version 2 later on - major updates are not expected.
 
 ## Requirements
 
-- Requires Kimai 2, V1.16.10 - V1.30.11 (for ApprovalBundle in Version 1.x as in `bundle_for_kimai_v1`)
-- Required Kimai 2, >= Version 2.5 (for ApprovalBundle in Version 2.x as in default `main`) 
+- Required Kimai >= 2.5 (for ApprovalBundle in Version 2.x in branch `main`) 
+- Requires Kimai >= 1.16.10 (for ApprovalBundle in Version 1.x in branch `bundle_for_kimai_v1`)
 
-Optional but recommended:
-- LockdownPerUser plugin ([GitHub](https://github.com/kevinpapst/LockdownPerUserBundle)) - without the lockdown functionality will not work
-- MetaFields plugin - optional setting of working hours per day per user unless specified in ApprovalBundle "Settings workday"
+Optional, but recommended:
+- [LockdownPerUser plugin](https://github.com/kevinpapst/LockdownPerUserBundle) - without this bundle, the lockdown functionality will not work
 
 ## Features
 
@@ -33,7 +37,12 @@ Optional but recommended:
 
 ## Status
 
-The approval bundle has been lately updated to support the new kimai version by Kevin Papst. The active ongoing development and testing is done on Kimai version 1 as this. A detailed testing is NOT performed. For this the release is pretty stable, but there might be issues due to different settings, environment etc. If you experience anything, please report this in GitHub issues.
+The approval bundle has been lately updated to support the Kimai version 2.x. 
+The active ongoing development and testing is done on Kimai version 1 as this. 
+
+A detailed testing is NOT performed. For this the release is pretty stable, but there might be issues due to different settings, environment etc. 
+
+If you experience anything, please report this in GitHub [issues](https://github.com/KatjaGlassConsulting/ApprovalBundle/issues/new/choose).
 
 ## Issues
 
@@ -60,29 +69,17 @@ The plugin should appear now.
 
 ## Settings
 
-### Meta-Field Setup (optional)
+### Working time setup (optional)
 
-The ApprovalBundle needs some meta fields and settings to be done. The daily and workly hours are displayed. For this the daily working time per day needs to be specified per user. Typically it might be 8h per week day. But there are very different situations, so someone might only work 4 days a week or less hours a day.
+The ApprovalBundle needs the users working-hours configuration to be available. This can be found in each users profile at `Edit > Employment contract`. 
 
-If you do not use the "overtime" or are using the "Settings workday" for this - these fields are not required.
+The daily and weekly hours are displayed. For this the daily working time per day needs to be specified per user. Typically, it might be 8h per week day. But there are very different situations, so someone might only work 4 days a week or less hours a day.
 
-The following meta-fields can be created ([Custom-Field-Plugin](https://www.kimai.org/store/custom-fields-bundle.html) is required for this):
-
-- Custom-Fields -> Users
-- The following fields must be from type = "duration", required field, visible, Role = "ROLE_SUPER_ADMIN", default for most should be default = "28800" (which is for 8 hours), for Saturday/Sunday it should be "0" - the names could be anything, but the meaning is according those descriptions
-  - Daily working time Monday (daily_working_time_monday)
-  - Daily working time Tuesday (daily_working_time_tuesday)
-  - Daily working time Wednesday (daily_working_time_wednesday)
-  - Daily working time Thursday (daily_working_time_thursday)
-  - Daily working time Friday (daily_working_time_friday)
-  - Daily working time Saturday (daily_working_time_saturday)
-  - Daily working time Sunday (daily_working_time_sunday)
-
-These values must then be set for every active user. Go to System -> Users -> Select each user -> Settings -> edit daily working time if required -> "Save". To see that all users have that these values, you can checkout the overview ("system" -> "user" -> click the "exe" mark "daily working time" to see them all).
+If you do not use the "overtime" these settings are not required. But if you do, these values must then be set for every active user.
 
 ### Remark LockdownBundle
 
-The lockdown bundle also comes along with some custom user fields. An empty value is not accepted for start of approval timeframe, please enter "0000-01-01 00:00:01" for the three lockdockdown fields. The same you can enter for the other two time-settings. The ApprovalBundle will modify the "Lockdown period end" and the "Lockdown grace period".
+The [LockdownPerUser bundle](https://github.com/kevinpapst/LockdownPerUserBundle) also comes along with some custom user fields. An empty value is not accepted for start of approval timeframe, please enter "0000-01-01 00:00:01" for the three lockdockdown fields. The same you can enter for the other two time-settings. The ApprovalBundle will modify the "Lockdown period end" and the "Lockdown grace period".
 
 ### Team Setup
 
@@ -90,11 +87,11 @@ Next the teams needs to be setup. The teams define which person approves the tim
 
 ### Approval Settings
 
-The final approval settings can be done via approval -> settings. Please enter the names of the daily_working_time_(day of the week) in the appropriate fields. A customer for off-days can also be set - then break times are not considered for those. The E-Mail link will be used as prefix to have the mails containing the correct links for approval views. You might want to enter something like `https://kimai.example.de/`. The approval week start date defines a date where the approval workflow should start. All prior unapproved weeks are ignored.
+The final approval settings can be done via `Hours approval > Settings`. A customer for off-days can be set - then break times are not considered for those. The E-Mail link will be used as prefix to have the mails containing the correct links for approval views. You might want to enter something like `https://kimai.example.com/`. The approval week start date defines a date where the approval workflow should start. All prior unapproved weeks are ignored.
 
-Then there are two toggle options available. "Calculate breaktime issues" can be used to deactivate the calculation of breaktime issues. In Germany, there is a law available that sepcific break times must be available. For this in the "Apporoved weeks report" there are red hints when the German worktime rules are not followed, e.g. someone worked 8 hours without an appropriate break. If you are not located in Germany, you can switch it off as this might be irrelevant for you.
+Then there are two toggle options available: the `Calculate breaktime issues` can be used to deactivate the calculation of breaktime issues. In Germany, there is a law available that specific break times must be available. For this in the `Approved weeks report` there are red hints when the German worktime rules are not followed, e.g. someone worked 8 hours without an appropriate break. If you are not located in Germany, you can switch it off as this might be irrelevant for you.
 
-The "Display Overtime" options allows to calculate and display expected hours and overtime hours. For example, a colleague is working 40 hours a week. When she is working the concrete week 45 hours, she has 5 hours overtime for that week. The expected hours are to be entered in the "Daily Working time" per day and/or in the "Settings workdays". Remark: if you set all expected working hours to zero, you see the summed up actual working hours. When this option is active, there is also an overview tab for "Overtime" showing the submitted/approved weeks including their times. If you are not interested in "Overtime" at all, then this can be deactivated.
+The `Display Overtime` options allows to calculate and display expected hours and overtime hours. For example, a colleague is working 40 hours a week. When she is working the concrete week 45 hours, she has 5 hours overtime for that week. The expected hours are to be entered in the `Employment contract` per day and/or in the `Settings workdays`. Remark: if you set all expected working hours to zero, you see the summed up actual working hours. When this option is active, there is also an overview tab for "Overtime" showing the submitted/approved weeks including their times. If you are not interested in "Overtime" at all, then this can be deactivated.
 
 ![Screenshot Settings](./_documentation/Screenshot_Settings.png)
 
@@ -104,7 +101,7 @@ There are two new roles available for the team approval. The `view_team_approval
 
 ## Functionality of Lockdown (requires LockdownBundle)
 
-With the lockdown bundle the loockdown periods can be set per user and no longer per system option. For this it is possible that user 1 has a lockdown date as of 01.01.2022 whereas user 2 could have for example a lockdown date of 15.01.2022. Per user - a locktime frame can be defined by "Lockdown period start" and "Lockdown period end". Considering also the "Lockdown grace period" (how long after the locktime end it should still be possible to edit time entries) - this defines which time entries can be modified by the user. Please checkout the general lockdown period documentation [here](https://www.kimai.org/documentation/configurations.html#lockdown-period) for detailed information - the same principle is applied, but "per user".
+With the lockdown bundle the lockdown periods can be set per user and no longer per system option. For this it is possible that user 1 has a lockdown date as of 01.01.2022 whereas user 2 could have for example a lockdown date of 15.01.2022. Per user - a locktime frame can be defined by "Lockdown period start" and "Lockdown period end". Considering also the "Lockdown grace period" (how long after the locktime end it should still be possible to edit time entries) - this defines which time entries can be modified by the user. Please checkout the general lockdown period documentation [here](https://www.kimai.org/documentation/configurations.html#lockdown-period) for detailed information - the same principle is applied, but "per user".
 
 When a week is submitted for approval, then this or any prior week should be locked - no time modifications for that week should be possible. This timesheet lock must be available per user. The following graphic shows an example.
 
@@ -112,11 +109,11 @@ When a week is submitted for approval, then this or any prior week should be loc
 
 When "User A" has submitted weeks 1-3 for approval, then this user can submit week 4 next and can not modify any times including week 3 or prior. "User B" is a bit slower with week submission - only submitted week 1 and 2 - and has as current lock date the last day of week 2. For this "User B" is able to create/modify/delete time sheets in week 3 and 4.
 
-To have this functionality available, the ApprovalBundle changes the "Lockdown period end" and "Lockdown grace period". Typically both values will be set to the last day/second of the approval end date. In case this date is in the future (for example when submitting weeks which are upcoming) - then the end grace is the current day to prohibit any editing for the future.
+To have this functionality available, the ApprovalBundle changes the "Lockdown period end" and "Lockdown grace period". Typically, both values will be set to the last day/second of the approval end date. In case this date is in the future (for example when submitting weeks which are upcoming) - then the end grace is the current day to prohibit any editing for the future.
 
 ## APIs
 
-There are various APIs available for the ApprovalBundle. Pleaes check out the API swagger documententation for the various endpoints and their parameters (`<kimai_path>/api/doc`).
+There are various APIs available for the ApprovalBundle. Please check out the API swagger documentation for the various endpoints and their parameters (`<kimai_path>/api/doc`).
 
 Overview of APIs:
 
@@ -150,4 +147,4 @@ Many thanks go to [HMR-IT](https://www.hmr-it.de) which had been highly involved
 
 Additional thanks go to Milo Ivir for additional translations and to Kevin Papst for code enhancements and the update to use this bundle with less pre-requisites.
 
-Many thanks to Kevin Papst, Vitor Mattos and Sam MacLennan for working on the migration of the ApprovalBundle supporting Kimai Version 2.
+Many thanks to Kevin Papst, Vitor Mattos and Sam MacLennan for working on the migration of the ApprovalBundle supporting Kimai 2.

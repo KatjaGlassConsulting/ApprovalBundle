@@ -21,6 +21,7 @@ use Nelmio\ApiDocBundle\Annotation\Security as ApiSecurity;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -40,7 +41,7 @@ final class ApprovalOvertimeController extends BaseApiController
     #[OA\Response(response: 200, description: 'Get overtime for that year')]
     #[Rest\QueryParam(name: 'user', requirements: '\d+', strict: true, nullable: true, description: 'User ID to get information for')]
     #[Rest\QueryParam(name: 'date', nullable: false, description: 'Date to get overtime until/including this date: Y-m-d')]
-    #[Rest\Get(path: '/overtime_year')]
+    #[Route(methods: ['GET'], path: '/overtime_year')]
     #[ApiSecurity(name: 'apiUser')]
     #[ApiSecurity(name: 'apiToken')]
     public function overtimeForYearUntil(Request $request): Response
