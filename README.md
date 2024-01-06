@@ -25,6 +25,9 @@ For now new updates will be implemented in Version 1 and then migrated to Versio
 Optional, but recommended:
 - [LockdownPerUser plugin](https://github.com/kevinpapst/LockdownPerUserBundle) - without this bundle, the lockdown functionality will not work
 
+Optional, but recommended for version 1:
+- MetaFields plugin - optional setting of working hours per day per user unless specified in ApprovalBundle "Settings workday" (in Kimai 2, this is a new standard setting for users, in the old version it can be set as custom fields)
+
 ## Features
 
 - Users can send a week for approval (in sequential order)
@@ -71,11 +74,26 @@ The plugin should appear now.
 
 ### Working time setup (optional)
 
-The ApprovalBundle needs the users working-hours configuration to be available. This can be found in each users profile at `Edit > Employment contract`. 
+The ApprovalBundle needs the users working-hours configuration to be available in case you want to display overtime. 
+
+- **version 2**: this can be found in each users profile at `Edit > Employment contract`. 
+
+- **Version 1** MetaFields  for users are required.
+  - Custom-Fields -> Users
+  - The following fields must be from type = "duration", required field, visible, Role = "ROLE_SUPER_ADMIN", default for most should be default = "28800" (which is for 8 hours), for Saturday/Sunday it should be "0" - the names could be anything, but the meaning is according those descriptions
+    - Daily working time Monday (daily_working_time_monday)
+    - Daily working time Tuesday (daily_working_time_tuesday)
+    - Daily working time Wednesday (daily_working_time_wednesday)
+    - Daily working time Thursday (daily_working_time_thursday)
+    - Daily working time Friday (daily_working_time_friday)
+    - Daily working time Saturday (daily_working_time_saturday)
+    - Daily working time Sunday (daily_working_time_sunday)
 
 The daily and weekly hours are displayed. For this the daily working time per day needs to be specified per user. Typically, it might be 8h per week day. But there are very different situations, so someone might only work 4 days a week or less hours a day.
 
 If you do not use the "overtime" these settings are not required. But if you do, these values must then be set for every active user.
+
+Additionally, working hours till an "end date" can be specified directly in the bundle settings. This enables different expected working times for different periods. A user might for example work 8h daily till 15.5.2023, then only 4h daily till 22.08.2023 and then again 8h daily from that day on.
 
 ### Remark LockdownBundle
 
