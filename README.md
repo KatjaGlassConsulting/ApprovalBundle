@@ -19,7 +19,7 @@ For now new updates will be implemented in Version 1 and then migrated to Versio
 
 ## Requirements
 
-- Required Kimai >= 2.5 (for ApprovalBundle in Version 2.x in branch `main`) 
+- Required Kimai >= 2.8 (for ApprovalBundle in Version 2.x in branch `main`) 
 - Requires Kimai >= 1.16.10 (for ApprovalBundle in Version 1.x in branch `bundle_for_kimai_v1`)
 
 Optional, but recommended:
