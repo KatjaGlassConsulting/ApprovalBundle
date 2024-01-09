@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.0 to 1.0.1
+
+- performance updates
+- fix migration class issue
+
 ## 0.9.12 to 1.0.0
 
 - fix "overtime" invalid calculation (sunday is ignored) when new workday settings are done

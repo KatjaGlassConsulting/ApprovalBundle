@@ -17,9 +17,10 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class SecurityTool
 {
-    private ?array $cache = null;
+    private ?array $cacheUsers = null;
     private ?bool $viewAll = null;
     private ?bool $viewTeam = null;
+    private ?User $user = null;
     
     public function __construct(
         private UserRepository $userRepository, 
@@ -30,13 +31,15 @@ class SecurityTool
     
     public function getUser(): ?User
     {
-        $user = $this->token->getToken()->getUser();
+        if ($this->user === null) {
+            $this->user = $this->token->getToken()->getUser();
 
-        if ($user instanceof User) {
-            return $user;
+            if (!($this->user instanceof User)) {
+                $this->user = null;
+            }
         }
 
-        return null;
+        return $this->user;        
     }
 
     public function canViewAllApprovals(): bool
@@ -60,9 +63,29 @@ class SecurityTool
     /**
      * @return array<User>
      */
+    public function getUsersExcludeOwnWhenTeamlead(): array
+    {
+        $users = $this->getUsers();
+
+        if ($this->canViewAllApprovals()) {
+            return $users;
+        } elseif ($this->canViewTeamApprovals()) {
+            // remove the active user from the list
+            $index = array_search($this->getUser(), $users);
+            if ($index !== false) {
+                unset($users[$index]);
+            }
+        }
+
+        return $users;
+    }
+
+    /**
+     * @return array<User>
+     */
     public function getUsers(): array
     {
-        if ($this->cache === null) {
+        if ($this->cacheUsers === null) {
             /** @var User $user */
             $user = $this->token->getToken()->getUser();
 
@@ -112,9 +135,9 @@ class SecurityTool
                 $users = [$user];
             }
 
-            $this->cache = $users;
+            $this->cacheUsers = $users;
         }
 
-        return $this->cache;
+        return $this->cacheUsers;
     }
 }

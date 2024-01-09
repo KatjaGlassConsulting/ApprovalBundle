@@ -40,7 +40,7 @@ use KimaiPlugin\ApprovalBundle\Settings\ApprovalSettingsInterface;
 use KimaiPlugin\ApprovalBundle\Toolbox\BreakTimeCheckToolGER;
 use KimaiPlugin\ApprovalBundle\Toolbox\Formatting;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
-use PhpOffice\PhpSpreadsheet\Calculation\Logical\Boolean;
+use KimaiPlugin\ApprovalBundle\Toolbox\SecurityTool;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,9 +63,11 @@ class WeekReportController extends AbstractController
     private $breakTimeCheckToolGER;
     private $reportRepository;
     private $approvalSettings;
+    private $securityTool;
 
     public function __construct(
         SettingsTool $settingsTool,
+        SecurityTool $securityTool,
         UserRepository $userRepository,
         ApprovalHistoryRepository $approvalHistoryRepository,
         ApprovalRepository $approvalRepository,
@@ -78,6 +80,7 @@ class WeekReportController extends AbstractController
         ApprovalSettingsInterface $approvalSettings
     ) {
         $this->settingsTool = $settingsTool;
+        $this->securityTool = $securityTool;
         $this->userRepository = $userRepository;
         $this->approvalHistoryRepository = $approvalHistoryRepository;
         $this->approvalRepository = $approvalRepository;
@@ -90,23 +93,13 @@ class WeekReportController extends AbstractController
         $this->approvalSettings = $approvalSettings;
     }
 
-    private function canManageTeam(): bool
-    {
-        return $this->isGranted('view_team_approval');
-    }
-
-    private function canManageAllPerson(): bool
-    {
-        return $this->isGranted('view_all_approval');
-    }
-
     /** 
      * @Route(path="/week_by_user", name="approval_bundle_report", methods={"GET","POST"})
      * @throws Exception
      */
     public function weekByUser(Request $request): Response
     {
-        $users = $this->getUsers();
+        $users = $this->securityTool->getUsers();
         $firstUser = empty($users) ? $this->getUser() : $users[0];
         $dateTimeFactory = $this->getDateTimeFactory($firstUser);
 
@@ -180,12 +173,12 @@ class WeekReportController extends AbstractController
             'status' => $status,
             'current_tab' => 'weekly_report',
             'canManageHimself' => (
-                $this->canManageTeam() && !$this->isGranted('ROLE_SUPER_ADMIN')
+                $this->securityTool->canViewTeamApprovals() && !$this->isGranted('ROLE_SUPER_ADMIN')
             ) || !(
-                $this->canManageTeam() && $this->canManageAllPerson()
+                $this->securityTool->canViewTeamApprovals() && $this->securityTool->canViewAllApprovals()
             ),
             'currentUser' => $this->getUser()->getId(),
-            'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
+            'showToApproveTab' => $this->securityTool->canViewAllApprovals() || $this->securityTool->canViewTeamApprovals(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
             'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'showOvertime' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
@@ -209,7 +202,7 @@ class WeekReportController extends AbstractController
      */
     public function toApprove(): Response
     {
-        $users = $this->getUsers(false);
+        $users = $this->securityTool->getUsersExcludeOwnWhenTeamlead();
 
         $warningNoUsers = false;
         if (empty($users)){
@@ -244,7 +237,7 @@ class WeekReportController extends AbstractController
             'past_rows' => $pastRows,
             'current_rows' => $currentRows,
             'future_rows' => $futureRows,
-            'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
+            'showToApproveTab' => $this->securityTool->canViewAllApprovals() || $this->securityTool->canViewTeamApprovals(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
             'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'showOvertime' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
@@ -261,13 +254,13 @@ class WeekReportController extends AbstractController
     {
         return $this->render('@Approval/settings.html.twig', [
             'current_tab' => 'settings',
-            'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
+            'showToApproveTab' => $this->securityTool->canViewAllApprovals() || $this->securityTool->canViewTeamApprovals(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
             'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'showOvertime' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'form' => $this->createSettingsForm($request),
             'settingsWarning' => !$this->approvalSettings->isFullyConfigured(),
-            'warningNoUsers' => empty($this->getUsers())
+            'warningNoUsers' => empty($this->securityTool->getUsers())
         ]);
     }
 
@@ -282,7 +275,7 @@ class WeekReportController extends AbstractController
         return $this->render('@Approval/settings_workday_history.html.twig', [
             'current_tab' => 'settings_workday_history',
             'workdayHistory' => $workdayHistory,
-            'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
+            'showToApproveTab' => $this->securityTool->canViewAllApprovals() || $this->securityTool->canViewTeamApprovals(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
             'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'showOvertime' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)
@@ -389,6 +382,7 @@ class WeekReportController extends AbstractController
             $this->settingsTool->setConfiguration(ConfigEnum::CUSTOMER_FOR_FREE_DAYS, $this->collectCustomerForFreeDays($data));
 
             $this->flashSuccess('action.update.success');
+            $this->settingsTool->resetCache();
         }
 
         return $form->createView();
@@ -397,59 +391,6 @@ class WeekReportController extends AbstractController
     private function collectMetaField($data, $key)
     {
         return !empty($data[$key]) ? ($data[$key])->getId() : '';
-    }
-
-    private function getUsers(bool $includeOwnForTeam = true): array
-    {
-        if ($this->canManageAllPerson()) {
-            $users = $this->userRepository->findAll();
-        } elseif ($this->canManageTeam()) {
-            $users = [];
-            $user = $this->getUser();
-            /** @var Team $team */
-            foreach ($user->getTeams() as $team) {
-                if (\in_array($user, $team->getTeamleads())) {
-                    array_push($users, ...$team->getUsers());
-                } else {
-                    $users[] = $user;
-                }
-            }
-
-            if (empty($users)) {
-                $users = [$user];
-            }
-
-            $users = array_unique($users);
-
-            if (!$includeOwnForTeam)
-            {
-                // remove the active user from the list
-                $index = array_search($this->getUser(), $users);
-                if ($index !== false) {
-                    unset($users[$index]);
-                }
-            }
-        } else {
-            $users = [$this->getUser()];
-        }
-
-        $users = array_reduce($users, function ($current, $user) {
-            if ($user->isEnabled() && !$user->isSuperAdmin()) {
-                $current[] = $user;
-            }
-
-            return $current;
-        }, []);
-        if (!empty($users)) {
-            usort(
-                $users,
-                function (User $userA, User $userB) {
-                    return strcmp(strtoupper($userA->getUsername()), strtoupper($userB->getUsername()));
-                }
-            );
-        }
-
-        return $users;
     }
 
     private function parseToHistoryView($userId, $startWeek): array

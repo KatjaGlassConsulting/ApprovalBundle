@@ -59,8 +59,6 @@ class SettingsTool
         return $this->cache[$key];
     }
 
-
-
     /**
      * @param $key
      * @param $value
@@ -109,5 +107,10 @@ class SettingsTool
         }
 
         return true;
+    }
+
+    public function resetCache()
+    {
+        $this->cache = [];
     }
 }

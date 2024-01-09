@@ -10,14 +10,13 @@
 namespace KimaiPlugin\ApprovalBundle\Controller;
 
 use App\Controller\AbstractController;
-use App\Entity\Team;
-use App\Entity\User;
 use DateTime;
 use App\Repository\UserRepository;
 use Exception;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
+use KimaiPlugin\ApprovalBundle\Toolbox\SecurityTool;
 use KimaiPlugin\ApprovalBundle\Form\OvertimeByAllForm;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,27 +28,20 @@ use Symfony\Component\Routing\Annotation\Route;
 class OvertimeAllReportController extends AbstractController
 {
     private $settingsTool;
+    private $securityTool;
     private $approvalRepository;
     private $userRepository;
 
     public function __construct(
         SettingsTool $settingsTool,
+        SecurityTool $securityTool,
         UserRepository $userRepository,
         ApprovalRepository $approvalRepository
     ) {
         $this->settingsTool = $settingsTool;
+        $this->securityTool = $securityTool;
         $this->userRepository = $userRepository;
         $this->approvalRepository = $approvalRepository;
-    }
-
-    private function canManageTeam(): bool
-    {
-        return $this->isGranted('view_team_approval');
-    }
-
-    private function canManageAllPerson(): bool
-    {
-        return $this->isGranted('view_all_approval');
     }
 
     /** 
@@ -70,7 +62,7 @@ class OvertimeAllReportController extends AbstractController
             $selectedDate = $form->get('date')->getData();            
         }
 
-        $users = $this->getUsers();
+        $users = $this->securityTool->getUsers();
         $weeklyEntries = $this->approvalRepository->getUserApprovals($users);
     
         // reduce the weekly Entries to only contain one enty per subject having the maximum date
@@ -109,52 +101,10 @@ class OvertimeAllReportController extends AbstractController
             'form' => $form->createView(),   
             'weeklyEntries' => $reducedData,
             'selectedDate' => $selectedDate->format('Y-m-d'),
-            'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
+            'showToApproveTab' => $this->securityTool->canViewAllApprovals() || $this->securityTool->canViewTeamApprovals(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
             'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
             'showOvertime' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)
         ]);
-    }
-
-    private function getUsers(): array
-    {
-        if ($this->canManageAllPerson()) {
-            $users = $this->userRepository->findAll();
-        } elseif ($this->canManageTeam()) {
-            $users = [];
-            $user = $this->getUser();
-            /** @var Team $team */
-            foreach ($user->getTeams() as $team) {
-                if (\in_array($user, $team->getTeamleads())) {
-                    array_push($users, ...$team->getUsers());
-                } else {
-                    $users[] = $user;
-                }
-            }
-            if (empty($users)) {
-                $users = [$user];
-            }
-            $users = array_unique($users);
-        } else {
-            $users = [$this->getUser()];
-        }
-
-        $users = array_reduce($users, function ($current, $user) {
-            if ($user->isEnabled() && !$user->isSuperAdmin()) {
-                $current[] = $user;
-            }
-
-            return $current;
-        }, []);
-        if (!empty($users)) {
-            usort(
-                $users,
-                function (User $userA, User $userB) {
-                    return strcmp(strtoupper($userA->getUsername()), strtoupper($userB->getUsername()));
-                }
-            );
-        }
-
-        return $users;
     }
 }
