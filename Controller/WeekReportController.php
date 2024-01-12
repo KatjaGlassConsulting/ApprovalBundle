@@ -157,6 +157,9 @@ class WeekReportController extends AbstractController
             $overtimeDuration = $this->approvalRepository->getExpectedActualDurationsForYear($selectedUser, $end); 
         }
 
+        $canManageHimself = $this->securityTool->canViewAllApprovals() || ($this->securityTool->canViewTeamApprovals() && 
+            ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY) == "1"));
+
         return $this->render('@Approval/report_by_user.html.twig', [
             'approve' => $this->parseToHistoryView($userId, $startWeek),
             'week' => $this->formatting->parseDate(new DateTime($startWeek)),
@@ -171,11 +174,7 @@ class WeekReportController extends AbstractController
             'approveId' => empty($approvals) ? 0 : $approvals->getId(),
             'status' => $status,
             'current_tab' => 'weekly_report',
-            'canManageHimself' => (
-                $this->securityTool->canViewTeamApprovals() && !$this->isGranted('ROLE_SUPER_ADMIN')
-            ) || !(
-                $this->securityTool->canViewTeamApprovals() && $this->securityTool->canViewAllApprovals()
-            ),
+            'canManageHimself' => $canManageHimself,
             'currentUser' => $this->getUser()->getId(),
             'showToApproveTab' => $this->securityTool->canViewAllApprovals() || $this->securityTool->canViewTeamApprovals(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
@@ -201,7 +200,11 @@ class WeekReportController extends AbstractController
      */
     public function toApprove(): Response
     {
-        $users = $this->securityTool->getUsersExcludeOwnWhenTeamlead();
+        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY) == "1") {
+            $users = $this->securityTool->getUsers();
+        } else {
+            $users = $this->securityTool->getUsersExcludeOwnWhenTeamlead();
+        }
 
         $warningNoUsers = false;
         if (empty($users)){

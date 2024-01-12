@@ -4,6 +4,8 @@
 
 - performance updates
 - fix migration class issue
+- new option to allow system-administrators to be included in approvals
+- new option to allow teamlead to self-approve the own weeks
 
 ## 0.9.12 to 1.0.0
 
