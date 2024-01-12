@@ -450,6 +450,14 @@
         <source>label.approval_breakchecks_ny</source>
         <target>Izračunajte probleme vremena pauze</target>
       </trans-unit>
+      <trans-unit id="label.approval_include_admin_ny">
+        <source>label.approval_include_admin_ny</source>
+        <target>Odobrenja za administratore sustava</target>
+      </trans-unit>
+      <trans-unit id="label.approval_teamlead_selfapprove_ny">
+        <source>label.approval_teamlead_selfapprove_ny</source>
+        <target>Samoodobravanje za voditelje timova</target>
+      </trans-unit>
       <trans-unit id="description.workday_history">
         <source>description.workday_history</source>
         <target>

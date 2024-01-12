@@ -12,7 +12,6 @@ namespace KimaiPlugin\ApprovalBundle\Controller;
 use Doctrine\ORM\Exception\ORMException;
 use App\Controller\AbstractController;
 use App\Entity\Customer;
-use App\Entity\Team;
 use App\Entity\Timesheet;
 use App\Entity\User;
 use App\Form\Model\DateRange;
@@ -379,6 +378,8 @@ class WeekReportController extends AbstractController
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_WORKFLOW_START, $data[FormEnum::WORKFLOW_START]);
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY, $data[FormEnum::OVERTIME_NY]);
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY, $data[FormEnum::BREAKCHECKS_NY]);
+            $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_INCLUDE_ADMIN_NY, $data[FormEnum::INCLUDE_ADMIN_NY]);
+            $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY, $data[FormEnum::TEAMLEAD_SELF_APPROVE_NY]);
             $this->settingsTool->setConfiguration(ConfigEnum::CUSTOMER_FOR_FREE_DAYS, $this->collectCustomerForFreeDays($data));
 
             $this->flashSuccess('action.update.success');

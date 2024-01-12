@@ -14,6 +14,8 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
+use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 
 class SecurityTool
 {
@@ -25,7 +27,8 @@ class SecurityTool
     public function __construct(
         private UserRepository $userRepository, 
         private TokenStorageInterface $token,
-        private AuthorizationCheckerInterface $security)
+        private AuthorizationCheckerInterface $security,
+        private SettingsTool $settingsTool)
     {    
     }
     
@@ -112,12 +115,12 @@ class SecurityTool
             }
 
             /** @var array<User> $users */
-            $users = array_reduce($users, function ($current, $user) {
+            $users = array_reduce($users, function ($current, $user){
+                $includeSuperAdmin = $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_INCLUDE_ADMIN_NY) == "1";
                 /** @var User $user */
-                if ($user->isEnabled() && !$user->isSystemAccount() && !$user->isSuperAdmin()) {
+                if ($user->isEnabled() && !$user->isSystemAccount() && (!$user->isSuperAdmin() || $includeSuperAdmin)) {
                     $current[] = $user;
                 }
-
                 return $current;
             }, []);
 
