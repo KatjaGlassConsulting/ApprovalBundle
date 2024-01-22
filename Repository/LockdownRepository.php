@@ -68,7 +68,13 @@ class LockdownRepository extends ServiceEntityRepository
      */
     private function getOldestNotSubmittedDate(array $allWeeks, User $user): DateTime
     {
-        $timezone = new DateTimeZone($user->getPreferenceValue('timezone'));
+        $timezoneValue = $user->getPreferenceValue('timezone');
+        $validTimezones = DateTimeZone::listIdentifiers();
+        if (!in_array($timezoneValue, $validTimezones)) {
+            $timezoneValue = $user->getTimezone();
+        } 
+
+        $timezone = new DateTimeZone($timezoneValue);
 
         foreach ($allWeeks as $week) {
             if ($week['status'] === 'not_submitted') {

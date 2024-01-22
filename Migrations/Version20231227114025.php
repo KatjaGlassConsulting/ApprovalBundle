@@ -32,7 +32,7 @@ final class Version20231227114025 extends AbstractMigration
                 SELECT ap.user_id, ap.start_date, ap.end_date, SUM(t.duration) AS dur_sum
                   FROM kimai2_ext_approval as ap, kimai2_timesheet AS t
                   WHERE ap.user_id = t.user AND t.start_time >= ap.start_date AND DATE_FORMAT(t.end_time,"%Y-%m-%d") <= ap.end_date
-                  GROUP BY ap.user_id, ap.start_date
+                  GROUP BY ap.user_id, ap.start_date, ap.end_date
               ) AS tm ON app.user_id = tm.user_id AND app.start_date = tm.start_date
               SET app.actual_duration = tm.dur_sum');
     }

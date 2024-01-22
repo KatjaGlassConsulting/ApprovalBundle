@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.1 to 1.0.2
+
+- include check for valid timezones and take user timezone if lockdown-timezone is invalid
+- update migration SQL to include additional group to support updates also on SQL option "only_full_group_by"
+
 ## 1.0.0 to 1.0.1
 
 - performance updates
