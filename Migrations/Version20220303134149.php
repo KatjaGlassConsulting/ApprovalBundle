@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace ApprovalBundle\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\Migrations\AbstractMigration;
+use App\Doctrine\AbstractMigration;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
