@@ -11,8 +11,8 @@ declare(strict_types=1);
 
 namespace ApprovalBundle\Migrations;
 
-use Doctrine\DBAL\Schema\Schema;
 use App\Doctrine\AbstractMigration;
+use Doctrine\DBAL\Schema\Schema;
 use KimaiPlugin\ApprovalBundle\Entity\ApprovalStatus;
 
 /**
