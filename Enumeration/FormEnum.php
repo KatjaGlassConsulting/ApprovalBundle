@@ -25,4 +25,6 @@ abstract class FormEnum
     public const WORKFLOW_START = 'workflow_start';
     public const OVERTIME_NY = 'approval_overtime_ny';
     public const BREAKCHECKS_NY = 'approval_breakchecks_ny';
+    public const INCLUDE_ADMIN_NY = 'approval_include_admin_ny';
+    public const TEAMLEAD_SELF_APPROVE_NY = 'approval_teamlead_selfapprove_ny';
 }

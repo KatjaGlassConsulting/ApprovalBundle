@@ -404,6 +404,14 @@
         <source>label.approval_breakchecks_ny</source>
         <target>Berechne Pausenzeiten-Probleme</target>
       </trans-unit>
+      <trans-unit id="Mdn3yh_" resname="label.approval_include_admin_ny">
+        <source>label.approval_include_admin_ny</source>
+        <target>Approvals für System-Administratoren</target>
+      </trans-unit>
+      <trans-unit id="9yM8I2U" resname="label.approval_teamlead_selfapprove_ny">
+        <source>label.approval_teamlead_selfapprove_ny</source>
+        <target>Self Approve für Teamleiter</target>
+      </trans-unit>
       <trans-unit id="NUgf0fZ" resname="description.workday_history">
         <source>description.workday_history</source>
         <target>

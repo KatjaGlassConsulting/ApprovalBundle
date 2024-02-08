@@ -17,4 +17,6 @@ abstract class ConfigEnum
     public const APPROVAL_WORKFLOW_START = 'approval.workflow_start';
     public const APPROVAL_OVERTIME_NY = 'approval.overtime_ny';
     public const APPROVAL_BREAKCHECKS_NY = 'approval.breakchecks_ny';
+    public const APPROVAL_INCLUDE_ADMIN_NY = 'approval.include_admin_ny';
+    public const APPROVAL_TEAMLEAD_SELF_APPROVE_NY = 'approval.teamlead_selfapprove_ny';
 }
