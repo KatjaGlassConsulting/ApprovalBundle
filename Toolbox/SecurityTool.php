@@ -14,16 +14,13 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 
-use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
-use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
-
 class SecurityTool
 {
     private ?array $cache = null;
     private ?bool $viewAll = null;
     private ?bool $viewTeam = null;
 
-    public function __construct(private Security $security, private UserRepository $userRepository, private SettingsTool $settingsTool)
+    public function __construct(private Security $security, private UserRepository $userRepository)
     {
     }
 
@@ -89,9 +86,8 @@ class SecurityTool
 
             /** @var array<User> $users */
             $users = array_reduce($users, function ($current, $user) {
-                $includeSuperAdmin = $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_INCLUDE_ADMIN_NY) == "1";
                 /** @var User $user */
-                if ($user->isEnabled() && !$user->isSystemAccount() && (!$user->isSuperAdmin() || $includeSuperAdmin )) {
+                if ($user->isEnabled() && !$user->isSystemAccount() && !$user->isSuperAdmin()) {
                     $current[] = $user;
                 }
 

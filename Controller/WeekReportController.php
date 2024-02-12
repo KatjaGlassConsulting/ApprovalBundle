@@ -191,9 +191,6 @@ class WeekReportController extends BaseApprovalController
             }
         }
         $pastRows = $this->approvalRepository->filterPastWeeksNotApproved($pastRows);
-        //$pastRows = $this->reduceRows($pastRows);
-        //$currentRows = $this->reduceRows($currentRows);
-        //$futureRows = $this->reduceRows($futureRows);
 
         return $this->render('@Approval/to_approve.html.twig', [
             'current_tab' => 'to_approve',
