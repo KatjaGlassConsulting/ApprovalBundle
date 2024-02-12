@@ -37,7 +37,6 @@ use KimaiPlugin\ApprovalBundle\Repository\ReportRepository;
 use KimaiPlugin\ApprovalBundle\Toolbox\BreakTimeCheckToolGER;
 use KimaiPlugin\ApprovalBundle\Toolbox\Formatting;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
-use KimaiPlugin\ApprovalBundle\Toolbox\SecurityTool;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,7 +49,6 @@ class WeekReportController extends BaseApprovalController
 {
     public function __construct(
         private SettingsTool $settingsTool,
-        private SecurityTool $securityTool,
         private UserRepository $userRepository,
         private ApprovalHistoryRepository $approvalHistoryRepository,
         private ApprovalRepository $approvalRepository,
@@ -127,9 +125,6 @@ class WeekReportController extends BaseApprovalController
             $overtimeDuration = $this->approvalRepository->getExpectedActualDurationsForYear($selectedUser, $end);
         }
 
-        $canManageHimself = $this->securityTool->canViewAllApprovals() || ($this->securityTool->canViewTeamApprovals() && 
-            ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY) == "1"));
-
         return $this->render('@Approval/report_by_user.html.twig', [
             'approve' => $this->parseToHistoryView($userId, $startWeek),
             'week' => $this->formatting->parseDate(new DateTime($startWeek)),
@@ -144,7 +139,6 @@ class WeekReportController extends BaseApprovalController
             'approveId' => empty($approvals) ? 0 : $approvals->getId(),
             'status' => $status,
             'current_tab' => 'weekly_report',
-            'canManageHimself' => $canManageHimself,
             'currentUser' => $this->getUser()->getId(),
             'expectedDuration' => $expectedDuration,
             'yearDuration' => $overtimeDuration,
@@ -191,9 +185,6 @@ class WeekReportController extends BaseApprovalController
             }
         }
         $pastRows = $this->approvalRepository->filterPastWeeksNotApproved($pastRows);
-        //$pastRows = $this->reduceRows($pastRows);
-        //$currentRows = $this->reduceRows($currentRows);
-        //$futureRows = $this->reduceRows($futureRows);
 
         return $this->render('@Approval/to_approve.html.twig', [
             'current_tab' => 'to_approve',

@@ -89,9 +89,8 @@ class SecurityTool
 
             /** @var array<User> $users */
             $users = array_reduce($users, function ($current, $user) {
-                $includeSuperAdmin = $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_INCLUDE_ADMIN_NY) == "1";
                 /** @var User $user */
-                if ($user->isEnabled() && !$user->isSystemAccount() && (!$user->isSuperAdmin() || $includeSuperAdmin )) {
+                if ($user->isEnabled() && !$user->isSystemAccount() && !$user->isSuperAdmin()) {
                     $current[] = $user;
                 }
 
