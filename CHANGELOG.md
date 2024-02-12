@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.1 to 2.0.2
+
+- new option to allow system-administrators to be included in approvals
+- new option to allow teamlead to self-approve the own weeks
+
 ## 2.0.0
 
 - Compatibility with Kimai 2 (tested with 2.6.0)
