@@ -43,7 +43,7 @@
                         <i class="fa fa-1x fa-history"></i>
                     </a>
                 {% endif %}
-                    {% if (status == 'submitted') and not (user.id == currentUser and canManageHimself) %}
+                    {% if (status == 'submitted') and (user.id != currentUser or canManageHimself) %}
                     <a href="{{ path('approve',{'approveId':approveId,'user':user.id,'date':current|date('Y-m-d')}) }}" class="btn btn-default btn-create" title="{{ 'tooltip.approve'|trans }}">
                         <i class="fa fa-1x fa-check-circle"></i>
                     </a>

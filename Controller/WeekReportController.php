@@ -37,6 +37,7 @@ use KimaiPlugin\ApprovalBundle\Repository\ReportRepository;
 use KimaiPlugin\ApprovalBundle\Toolbox\BreakTimeCheckToolGER;
 use KimaiPlugin\ApprovalBundle\Toolbox\Formatting;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
+use KimaiPlugin\ApprovalBundle\Toolbox\SecurityTool;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,6 +50,7 @@ class WeekReportController extends BaseApprovalController
 {
     public function __construct(
         private SettingsTool $settingsTool,
+        private SecurityTool $securityTool,
         private UserRepository $userRepository,
         private ApprovalHistoryRepository $approvalHistoryRepository,
         private ApprovalRepository $approvalRepository,
@@ -125,6 +127,9 @@ class WeekReportController extends BaseApprovalController
             $overtimeDuration = $this->approvalRepository->getExpectedActualDurationsForYear($selectedUser, $end);
         }
 
+        $canManageHimself = $this->securityTool->canViewAllApprovals() || ($this->securityTool->canViewTeamApprovals() && 
+            ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY) == "1"));
+
         return $this->render('@Approval/report_by_user.html.twig', [
             'approve' => $this->parseToHistoryView($userId, $startWeek),
             'week' => $this->formatting->parseDate(new DateTime($startWeek)),
@@ -139,11 +144,7 @@ class WeekReportController extends BaseApprovalController
             'approveId' => empty($approvals) ? 0 : $approvals->getId(),
             'status' => $status,
             'current_tab' => 'weekly_report',
-            'canManageHimself' => (
-                $this->canManageTeam() && !$this->isGranted('ROLE_SUPER_ADMIN')
-            ) || !(
-                $this->canManageTeam() && $this->canManageAllPerson()
-            ),
+            'canManageHimself' => $canManageHimself,
             'currentUser' => $this->getUser()->getId(),
             'expectedDuration' => $expectedDuration,
             'yearDuration' => $overtimeDuration,
@@ -161,7 +162,11 @@ class WeekReportController extends BaseApprovalController
     #[IsGranted(new Expression("is_granted('view_team_approval') or is_granted('view_all_approval')"))]
     public function toApprove(): Response
     {
-        $users = $this->getUsers(false);
+        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY) == "1") {
+            $users = $this->getUsers(true);
+        } else {
+            $users = $this->getUsers(false);
+        }
 
         $warningNoUsers = false;
         if (empty($users)) {
@@ -186,9 +191,6 @@ class WeekReportController extends BaseApprovalController
             }
         }
         $pastRows = $this->approvalRepository->filterPastWeeksNotApproved($pastRows);
-        $pastRows = $this->reduceRows($pastRows);
-        $currentRows = $this->reduceRows($currentRows);
-        $futureRows = $this->reduceRows($futureRows);
 
         return $this->render('@Approval/to_approve.html.twig', [
             'current_tab' => 'to_approve',
@@ -292,6 +294,8 @@ class WeekReportController extends BaseApprovalController
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_WORKFLOW_START, $data[FormEnum::WORKFLOW_START]);
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY, $data[FormEnum::OVERTIME_NY]);
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY, $data[FormEnum::BREAKCHECKS_NY]);
+            $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_INCLUDE_ADMIN_NY, $data[FormEnum::INCLUDE_ADMIN_NY]);
+            $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY, $data[FormEnum::TEAMLEAD_SELF_APPROVE_NY]);
             $this->settingsTool->setConfiguration(ConfigEnum::CUSTOMER_FOR_FREE_DAYS, $this->collectCustomerForFreeDays($data));
 
             $this->flashSuccess('action.update.success');
@@ -334,7 +338,8 @@ class WeekReportController extends BaseApprovalController
         }
 
         $users = array_reduce($users, function ($current, $user) {
-            if ($user->isEnabled() && !$user->isSuperAdmin()) {
+            $includeSuperAdmin = $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_INCLUDE_ADMIN_NY) == "1";
+            if ($user->isEnabled() && (!$user->isSuperAdmin() || $includeSuperAdmin)) {
                 $current[] = $user;
             }
 
@@ -349,7 +354,7 @@ class WeekReportController extends BaseApprovalController
                 }
             );
         }
-
+        
         return $users;
     }
 
