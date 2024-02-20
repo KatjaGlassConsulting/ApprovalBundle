@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.2 to 2.0.3 (fixes)
+
+- Fix in migration for strict SQL settings
+- Fix for 'now' issue in some circumstances
+
 ## 2.0.1 to 2.0.2
 
 - new option to allow system-administrators to be included in approvals
