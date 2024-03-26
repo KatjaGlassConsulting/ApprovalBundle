@@ -20,10 +20,10 @@ use KimaiPlugin\ApprovalBundle\Entity\Approval;
 
 class LockdownRepository extends ServiceEntityRepository
 {
-    private const LOCKDOWN_PERIOD_START = 'timesheet.rules.lockdown_period_start';
-    private const LOCKDOWN_PERIOD_END = 'timesheet.rules.lockdown_period_end';
-    private const LOCKDOWN_PERIOD_TIMEZONE = 'timesheet.rules.lockdown_period_timezone';
-    private const LOCKDOWN_GRACE_PERIOD = 'timesheet.rules.lockdown_grace_period';
+    private const LOCKDOWN_PERIOD_START = 'lockdown_period_start';
+    private const LOCKDOWN_PERIOD_END = 'lockdown_period_end';
+    private const LOCKDOWN_PERIOD_TIMEZONE = 'lockdown_period_timezone';
+    private const LOCKDOWN_GRACE_PERIOD = 'lockdown_grace_period';
 
     public function __construct(ManagerRegistry $registry)
     {
