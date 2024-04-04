@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.3 to 2.0.4 (fixes)
+
+- Corrected URL in mail when an approval was granted
+- Removal of display class for "To Approve" rows to enable dark-theme using white text color
+- Lockdown didn't lock approved weeks - this has been corrected
+
 ## 2.0.2 to 2.0.3 (fixes)
 
 - Fix in migration for strict SQL settings

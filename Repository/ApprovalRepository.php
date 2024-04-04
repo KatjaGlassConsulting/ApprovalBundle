@@ -713,7 +713,7 @@ class ApprovalRepository extends ServiceEntityRepository
         $path = $this->urlGenerator->generate('approval_bundle_report', [
             'user' => $userId,
             'date' => $date
-        ], UrlGeneratorInterface::ABSOLUTE_PATH);
+        ], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return rtrim($url, '/') . $path;
     }
