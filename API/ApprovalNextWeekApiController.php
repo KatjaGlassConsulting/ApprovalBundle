@@ -15,7 +15,6 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
-use Nelmio\ApiDocBundle\Annotation\Security as ApiSecurity;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,8 +37,6 @@ final class ApprovalNextWeekApiController extends BaseApiController
     #[OA\Response(response: 200, description: 'Status of selected week')]
     #[Rest\QueryParam(name: 'user', requirements: '\d+', strict: true, nullable: true, description: 'User ID to get information for')]
     #[Route(methods: ['GET'], path: '/next-week')]
-    #[ApiSecurity(name: 'apiUser')]
-    #[ApiSecurity(name: 'apiToken')]
     public function nextWeekAction(Request $request): Response
     {
         $selectedUserId = $request->query->get('user');
