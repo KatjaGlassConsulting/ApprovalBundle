@@ -17,7 +17,6 @@ use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
-use Nelmio\ApiDocBundle\Annotation\Security as ApiSecurity;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,8 +41,6 @@ final class ApprovalOvertimeWeeklyController extends BaseApiController
     #[Rest\QueryParam(name: 'user', requirements: '\d+', strict: true, nullable: true, description: 'User ID to get information for')]
     #[Rest\QueryParam(name: 'date', nullable: false, description: 'Date to get weekly overtime overview up from this date: Y-m-d')]
     #[Route(methods: ['GET'], path: '/weekly_overtime')]
-    #[ApiSecurity(name: 'apiUser')]
-    #[ApiSecurity(name: 'apiToken')]
     public function weeklyOvertime(Request $request): Response
     {
         $selectedUserId = $request->query->get('user');
