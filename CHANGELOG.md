@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.4 to 2.0.5 (enhancements)
+
+- Remove deprecated security annotations 
+
 ## 2.0.3 to 2.0.4 (fixes)
 
 - Corrected URL in mail when an approval was granted
