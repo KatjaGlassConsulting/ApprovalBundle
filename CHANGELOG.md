@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.5 to 2.0.6 (enhancements)
+
+- Remove other deprecations
+
 ## 2.0.4 to 2.0.5 (enhancements)
 
 - Remove deprecated security annotations 
