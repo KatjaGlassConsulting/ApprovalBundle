@@ -396,6 +396,22 @@
         <source>label.approval_breakchecks_ny</source>
         <target>Izračunajte probleme vremena pauze</target>
       </trans-unit>
+      <trans-unit id="Mdn3yh_" resname="label.approval_include_admin_ny">
+        <source>label.approval_include_admin_ny</source>
+        <target>Odobrenja za administratore sustava</target>
+      </trans-unit>
+      <trans-unit id="9yM8I2U" resname="label.approval_teamlead_selfapprove_ny">
+        <source>label.approval_teamlead_selfapprove_ny</source>
+        <target>Samoodobravanje za voditelje timova</target>
+      </trans-unit>
+      <trans-unit id="9yljk2U" resname="label.approval_mail_submitted_ny">
+        <source>label.approval_mail_submitted_ny</source>
+        <target>Slanje e-pošte prilikom podnošenja zahtjeva za odobrenje</target>
+      </trans-unit>
+      <trans-unit id="58u8I2U" resname="label.approval_mail_action_ny">
+        <source>label.approval_mail_action_ny</source>
+        <target>Slanje e-poštom nakon odluke o odobrenju</target>
+      </trans-unit>
       <trans-unit id="NUgf0fZ" resname="description.workday_history">
         <source>description.workday_history</source>
         <target>

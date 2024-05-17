@@ -19,4 +19,6 @@ abstract class ConfigEnum
     public const APPROVAL_BREAKCHECKS_NY = 'approval.breakchecks_ny';
     public const APPROVAL_INCLUDE_ADMIN_NY = 'approval.include_admin_ny';
     public const APPROVAL_TEAMLEAD_SELF_APPROVE_NY = 'approval.teamlead_selfapprove_ny';
+    public const APPROVAL_MAIL_SUBMITTED_NY = 'approval.mail_submitted_ny';
+    public const APPROVAL_MAIL_ACTION_NY = 'approval.mail_action_ny';
 }

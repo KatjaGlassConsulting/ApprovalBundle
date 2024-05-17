@@ -63,38 +63,33 @@ class SettingsForm extends AbstractType
           'required' => false
         ]);
 
-        if ($this->settingsTool->isInConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY)) {
-            $breakchecks = $this->formTool->isChecked(ConfigEnum::APPROVAL_BREAKCHECKS_NY);
-        } else {
-            $breakchecks = true;
-        }
         $builder->add(FormEnum::BREAKCHECKS_NY, CheckboxType::class, [
           'label' => 'label.approval_breakchecks_ny',
-          'data' => $breakchecks,
+          'data' => $this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY, true),
           'required' => false
         ]);
 
-        if ($this->settingsTool->isInConfiguration(ConfigEnum::APPROVAL_INCLUDE_ADMIN_NY)){
-            $adminchecks = $this->formTool->isChecked(ConfigEnum::APPROVAL_INCLUDE_ADMIN_NY);
-        } else {
-            $adminchecks = false;
-        }
-
         $builder->add(FormEnum::INCLUDE_ADMIN_NY, CheckboxType::class, [
             'label' => 'label.approval_include_admin_ny',
-            'data' => $adminchecks,
+            'data' => $this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_INCLUDE_ADMIN_NY, false),
             'required' => false
         ]);
-
-        if ($this->settingsTool->isInConfiguration(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY)) {
-            $leadselfchecks = $this->formTool->isChecked(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY);
-        } else {
-            $leadselfchecks = false;            
-        }
         
         $builder->add(FormEnum::TEAMLEAD_SELF_APPROVE_NY, CheckboxType::class, [
             'label' => 'label.approval_teamlead_selfapprove_ny',
-            'data' => $leadselfchecks,
+            'data' => $this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY, false),
+            'required' => false
+        ]);
+
+        $builder->add(FormEnum::MAIL_SUBMITTED_NY, CheckboxType::class, [
+            'label' => 'label.approval_mail_submitted_ny',
+            'data' => $this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_MAIL_SUBMITTED_NY, false),
+            'required' => false
+        ]);
+       
+        $builder->add(FormEnum::MAIL_ACTION_NY, CheckboxType::class, [
+            'label' => 'label.approval_mail_action_ny',
+            'data' => $this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_MAIL_ACTION_NY, false),
             'required' => false
         ]);
 

@@ -412,6 +412,14 @@
         <source>label.approval_teamlead_selfapprove_ny</source>
         <target>Self approve for teamleads</target>
       </trans-unit>
+      <trans-unit id="9yljk2U" resname="label.approval_mail_submitted_ny">
+        <source>label.approval_mail_submitted_ny</source>
+        <target>Mail on approval request</target>
+      </trans-unit>
+      <trans-unit id="58u8I2U" resname="label.approval_mail_action_ny">
+        <source>label.approval_mail_action_ny</source>
+        <target>Mail on approval decision</target>
+      </trans-unit>
       <trans-unit id="NUgf0fZ" resname="description.workday_history">
         <source>description.workday_history</source>
         <target>

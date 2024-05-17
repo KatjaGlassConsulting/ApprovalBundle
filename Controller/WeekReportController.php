@@ -297,6 +297,8 @@ class WeekReportController extends BaseApprovalController
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_INCLUDE_ADMIN_NY, $data[FormEnum::INCLUDE_ADMIN_NY]);
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY, $data[FormEnum::TEAMLEAD_SELF_APPROVE_NY]);
             $this->settingsTool->setConfiguration(ConfigEnum::CUSTOMER_FOR_FREE_DAYS, $this->collectCustomerForFreeDays($data));
+            $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_MAIL_SUBMITTED_NY, $data[FormEnum::MAIL_SUBMITTED_NY]);
+            $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_MAIL_ACTION_NY, $data[FormEnum::MAIL_ACTION_NY]);
 
             $this->flashSuccess('action.update.success');
         }
