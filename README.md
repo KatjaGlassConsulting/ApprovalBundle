@@ -117,6 +117,12 @@ The `Display Overtime` options allows to calculate and display expected hours an
 
 There are two new roles available for the team approval. The `view_team_approval` ideally should be YES for all but the user. This allows up from the teamlead hierarchy to see the approvals of their team. The `view_all_approval` should either be YES for System-Admin only or for System-Admin and Admin, depending on your schema. 
 
+## Mail
+
+Per default, mails are send to teamleads when a user submits an approval. When someone accepts or rejects an approval, a mail is send to the user. There are two options available in the settings to deactivate this functionality.
+
+Make sure to setup Kimai that mails can be send accordingly. Please see [here](https://www.kimai.org/documentation/emails.html) for instructions how to setup and check.
+
 ## Functionality of Lockdown (requires LockdownBundle)
 
 With the lockdown bundle the lockdown periods can be set per user and no longer per system option. For this it is possible that user 1 has a lockdown date as of 01.01.2022 whereas user 2 could have for example a lockdown date of 15.01.2022. Per user - a locktime frame can be defined by "Lockdown period start" and "Lockdown period end". Considering also the "Lockdown grace period" (how long after the locktime end it should still be possible to edit time entries) - this defines which time entries can be modified by the user. Please checkout the general lockdown period documentation [here](https://www.kimai.org/documentation/configurations.html#lockdown-period) for detailed information - the same principle is applied, but "per user".

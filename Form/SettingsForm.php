@@ -83,13 +83,13 @@ class SettingsForm extends AbstractType
 
         $builder->add(FormEnum::MAIL_SUBMITTED_NY, CheckboxType::class, [
             'label' => 'label.approval_mail_submitted_ny',
-            'data' => $this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_MAIL_SUBMITTED_NY, false),
+            'data' => $this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_MAIL_SUBMITTED_NY, true),
             'required' => false
         ]);
        
         $builder->add(FormEnum::MAIL_ACTION_NY, CheckboxType::class, [
             'label' => 'label.approval_mail_action_ny',
-            'data' => $this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_MAIL_ACTION_NY, false),
+            'data' => $this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_MAIL_ACTION_NY, true),
             'required' => false
         ]);
 

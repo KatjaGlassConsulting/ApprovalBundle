@@ -36,20 +36,21 @@ final class EmailTool
         $history = $approval->getHistory();
         $history = $history[\count($history) - 1];
         $status = $history->getStatus()->getName();
+        $week = $this->formatting->parseDate(clone $approval->getStartDate());
         $context = [
             'submitter' => $approval->getUser()->getUsername(),
             'approver' => $approver,
-            'week' => $this->formatting->parseDate(clone $approval->getStartDate()),
+            'week' => $week,
             'reason' => $history->getMessage(),
             'status' => $this->translator->trans($status === ApprovalStatus::DENIED ? 'reject' : $status),
             'url' => $url
         ];
+        
         $email = (new TemplatedEmail())
             ->to(new Address($approval->getUser()->getEmail()))
-            ->subject($this->translator->trans($status === ApprovalStatus::APPROVED ? 'email.subjectApproved' : 'email.subjectReject'))
+            ->subject($this->translator->trans($status === ApprovalStatus::APPROVED ? 'email.subjectApproved' : 'email.subjectReject') . " (" . $week . ")")
             ->htmlTemplate('@Approval/approvedChangeStatus.email.twig')
             ->context($context);
-
         try {
             $this->kimaiMailer->send($email);
 
@@ -68,18 +69,18 @@ final class EmailTool
         }
         foreach ($users as $user) {
             $approver = $user->getUsername();
+            $week = $this->formatting->parseDate(clone $approval->getStartDate());
             $context = [
                 'submitter' => $submitter,
                 'approver' => $approver,
-                'week' => $this->formatting->parseDate(clone $approval->getStartDate()),
+                'week' => $week,
                 'url' => $approvalRepository->getUrl((string) $user->getId(), $approval->getStartDate()->format('Y-m-d'))
             ];
             $email = (new TemplatedEmail())
                 ->to(new Address($user->getEmail()))
-                ->subject($submitter . $this->translator->trans('email.subjectSubmitted'))
+                ->subject($submitter . " " . $this->translator->trans('email.subjectSubmitted') . " (" . $week . ")")
                 ->htmlTemplate('@Approval/approved.email.twig')
                 ->context($context);
-
             try {
                 $this->kimaiMailer->send($email);
             } catch (TransportExceptionInterface $e) {

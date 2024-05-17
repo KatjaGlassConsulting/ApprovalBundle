@@ -23,6 +23,7 @@ use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalStatusRepository;
 use KimaiPlugin\ApprovalBundle\Repository\LockdownRepository;
 use KimaiPlugin\ApprovalBundle\Toolbox\EmailTool;
+use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,6 +39,7 @@ final class ApprovalBundleApiController extends BaseApiController
         private ViewHandlerInterface $viewHandler,
         private UserRepository $userRepository,
         private EmailTool $emailTool,
+        private SettingsTool $settingsTool,
         private UrlGeneratorInterface $urlGenerator,
         private ApprovalRepository $approvalRepository,
         private ApprovalHistoryRepository $approvalHistoryRepository,
@@ -96,7 +98,9 @@ final class ApprovalBundleApiController extends BaseApiController
         $approval = $this->approvalRepository->createApproval($selectedDate->format('Y-m-d'), $currentUser);
         if ($approval !== null) {
             $approval = $this->createHistory($approval);
-            $this->emailTool->sendApproveWeekEmail($approval, $this->approvalRepository);
+            if ($this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_MAIL_SUBMITTED_NY, true)){
+                $this->emailTool->sendApproveWeekEmail($approval, $this->approvalRepository);
+            }
             $this->lockdownRepository->updateLockWeek($approval, $this->approvalRepository);
         }
 

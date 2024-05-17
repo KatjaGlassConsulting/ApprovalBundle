@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.6 to 2.0.7 (enhancements)
+
+- Two new options to allow to deactivate sending of mails
+- Mails for approval request, accept or deny contains week in subject field
+
 ## 2.0.5 to 2.0.6 (enhancements)
 
 - Remove other deprecations
