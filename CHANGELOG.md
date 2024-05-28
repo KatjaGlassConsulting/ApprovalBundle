@@ -4,6 +4,8 @@
 
 - Two new options to allow to deactivate sending of mails
 - Mails for approval request, accept or deny contains week in subject field
+- Mail when a user submitted a timesheet contains now the correct user link when an admin submits the approval
+- Mails will use the displayName instead of the Username
 
 ## 2.0.5 to 2.0.6 (enhancements)
 

@@ -38,7 +38,7 @@ final class EmailTool
         $status = $history->getStatus()->getName();
         $week = $this->formatting->parseDate(clone $approval->getStartDate());
         $context = [
-            'submitter' => $approval->getUser()->getUsername(),
+            'submitter' => $approval->getUser()->getDisplayName(),
             'approver' => $approver,
             'week' => $week,
             'reason' => $history->getMessage(),
@@ -62,19 +62,19 @@ final class EmailTool
 
     public function sendApproveWeekEmail(Approval $approval, ApprovalRepository $approvalRepository): bool
     {
-        $submitter = $approval->getUser()->getUsername();
+        $submitter = $approval->getUser()->getDisplayName();
         $users = [];
         foreach ($approval->getUser()->getTeams() as $team) {
             $users = array_merge($users, $team->getTeamleads());
         }
         foreach ($users as $user) {
-            $approver = $user->getUsername();
+            $approver = $user->getDisplayName();
             $week = $this->formatting->parseDate(clone $approval->getStartDate());
             $context = [
                 'submitter' => $submitter,
                 'approver' => $approver,
                 'week' => $week,
-                'url' => $approvalRepository->getUrl((string) $user->getId(), $approval->getStartDate()->format('Y-m-d'))
+                'url' => $approvalRepository->getUrl((string) $approval->getUser()->getId(), $approval->getStartDate()->format('Y-m-d'))
             ];
             $email = (new TemplatedEmail())
                 ->to(new Address($user->getEmail()))

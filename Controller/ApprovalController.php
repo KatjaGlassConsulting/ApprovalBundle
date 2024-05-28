@@ -74,7 +74,7 @@ class ApprovalController extends BaseApprovalController
             if ($this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_MAIL_ACTION_NY, true)){
                 $this->emailTool->sendStatusChangedEmail(
                     $approval,
-                    $this->getUser()->getUsername(),
+                    $this->getUser()->getDisplayName(),
                     $this->approvalRepository->getUrl((string) $approval->getUser()->getId(), $approval->getStartDate()->format('Y-m-d'))
                 );
             }
@@ -132,7 +132,7 @@ class ApprovalController extends BaseApprovalController
             if ($this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_MAIL_ACTION_NY, true)){
                 $this->emailTool->sendStatusChangedEmail(
                     $approval,
-                    $this->getUser()->getUsername(),
+                    $this->getUser()->getDisplayName(),
                     $this->approvalRepository->getUrl((string) $approval->getUser()->getId(), $approval->getStartDate()->format('Y-m-d'))
                 );
             }
