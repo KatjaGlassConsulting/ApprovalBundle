@@ -22,13 +22,13 @@ class ApprovalHistory
     #[ORM\Column(type: 'integer')]
     private $id;
     #[ORM\ManyToOne(targetEntity: Approval::class, inversedBy: 'history')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Approval $approval = null;
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?User $user = null;
     #[ORM\ManyToOne(targetEntity: ApprovalStatus::class, inversedBy: 'history')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?ApprovalStatus $status = null;
     #[ORM\Column(type: 'datetime')]
     private $date;

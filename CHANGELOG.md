@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.6 to 2.0.7 (fix)
+
+- Deletion of users who had approvals had not been possible, this is now fixed (new install needed)
+
+```bash
+bin/console kimai:reload
+bin/console kimai:bundle:approval:install
+```
 ## 2.0.6 to 2.0.7 (enhancements)
 
 - Two new options to allow to deactivate sending of mails
