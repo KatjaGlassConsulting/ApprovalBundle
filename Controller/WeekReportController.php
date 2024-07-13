@@ -125,6 +125,7 @@ class WeekReportController extends AbstractController
         $start = $dateTimeFactory->getStartOfWeek($values->getDate());
         $end = $dateTimeFactory->getEndOfWeek($values->getDate());
         $selectedUser = $values->getUser();
+        $startWeek = $values->getDate();
 
         $previous = clone $start;
         $previous->modify('-1 week');
@@ -143,9 +144,6 @@ class WeekReportController extends AbstractController
             $expectedDuration = $this->approvalRepository->calculateExpectedDurationByUserAndDate($selectedUser, $start, $end);
         }
 
-        $userId = $request->query->get('user');
-        $startWeek = $request->query->get('date');
-
         [$timesheets, $errors] = $this->getTimesheets($selectedUser, $start, $end);
 
         $selectedUserSundayIssue = $selectedUser->isFirstDayOfWeekSunday();
@@ -161,8 +159,8 @@ class WeekReportController extends AbstractController
             ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY) == "1"));
 
         return $this->render('@Approval/report_by_user.html.twig', [
-            'approve' => $this->parseToHistoryView($userId, $startWeek),
-            'week' => $this->formatting->parseDate(new DateTime($startWeek)),
+            'approve' => $this->parseToHistoryView($selectedUser, $startWeek->format('Y-m-d')),
+            'week' => $this->formatting->parseDate($startWeek),
             'box_id' => 'user-week-report-box',
             'form' => $form->createView(),
             'days' => new DailyStatistic($start, $end, $selectedUser),
