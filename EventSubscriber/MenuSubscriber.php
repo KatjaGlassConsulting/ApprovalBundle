@@ -46,7 +46,11 @@ class MenuSubscriber implements EventSubscriberInterface
             'approvalBundle', 'title.approval_bundle', 'approval_bundle_report', [], 'fas fa-thumbs-up',
         );
 
-        if ($this->security->canViewAllApprovals() || $this->security->canViewTeamApprovals()) {
+        
+        // do not do this for admins due to performance issues
+        //if ($this->security->canViewAllApprovals() || $this->security->canViewTeamApprovals()) {
+        if (($this->security->canViewAllApprovals() || $this->security->canViewTeamApprovals()) && 
+             !$this->security->getUser()->isSuperAdmin()) {
             $users = $this->security->getUsers();
             $dataToMenuItem = $this->approvalRepository->findCurrentWeekToApprove($users, $currentUser);
             $model->setBadge((string) $dataToMenuItem);

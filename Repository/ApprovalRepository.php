@@ -580,6 +580,7 @@ class ApprovalRepository extends ServiceEntityRepository
             ->andWhere($expr->in('u.id', ':users'))
             ->setParameter('users', $usersId)
             ->orderBy('ap.startDate', 'DESC')
+            ->orderBy('ah.date', 'DESC')
             ->getQuery()
             ->getResult();
 
