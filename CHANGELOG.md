@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.8 to 2.0.9 (fix)
+
+- fix: History of approvals could not have been seen by users
+
 ## 2.0.7 to 2.0.8 (enhancements)
 
 - Two new options to allow to deactivate sending of mails
