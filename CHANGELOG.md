@@ -1,8 +1,10 @@
 # Changelog
 
-## 1.0.1 to 1.0.2
+## 1.0.2 to 1.0.3
 
 - fix: History of approvals could not have been seen by users
+- fix: badge for teamlead
+- performance update: remove badge for admin
 
 ## 1.0.1 to 1.0.2
 
