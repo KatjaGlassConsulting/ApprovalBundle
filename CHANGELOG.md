@@ -6,6 +6,8 @@
 - fix: badge for teamlead
 - performance update: remove badge for admin
 - deny reason for auto-deny-laters includes additionally date of denied approval "Reset due to earlier approval cancellation"
+- deny reason for approval reset set to "Approval reset by Admin"
+- declaration updates to support PHP 7.4
 
 ## 1.0.1 to 1.0.2
 

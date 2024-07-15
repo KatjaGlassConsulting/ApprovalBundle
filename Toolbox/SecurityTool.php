@@ -23,13 +23,22 @@ class SecurityTool
     private ?bool $viewAll = null;
     private ?bool $viewTeam = null;
     private ?User $user = null;
+
+    private $userRepository;
+    private $token;
+    private $security;
+    private $settingsTool;
     
     public function __construct(
-        private UserRepository $userRepository, 
-        private TokenStorageInterface $token,
-        private AuthorizationCheckerInterface $security,
-        private SettingsTool $settingsTool)
-    {    
+        UserRepository $userRepository, 
+        TokenStorageInterface $token,
+        AuthorizationCheckerInterface $security,
+        SettingsTool $settingsTool)
+    {   
+        $this->userRepository = $userRepository;
+        $this->token = $token;
+        $this->security = $security;
+        $this->settingsTool = $settingsTool;
     }
     
     public function getUser(): ?User

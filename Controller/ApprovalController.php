@@ -147,7 +147,7 @@ class ApprovalController extends AbstractController
             // set all approvals + following approvals to NOT_SUBMITTED
             $this->resetAllLaterApprovals($this->approvalRepository->findAllLaterApprovals($approveId), $approval->getStartDate()->format('Y-m-d'));
             // set current approvals to NOT_SUBMITTED
-            $approval = $this->createNewApproveHistory($approveId, ApprovalStatus::NOT_SUBMITTED);
+            $approval = $this->createNewApproveHistory($approveId, ApprovalStatus::NOT_SUBMITTED, 'Approval reset by Admin');
             // update lockdown period
             $this->lockdownRepository->updateLockWeek($approval, $this->approvalRepository);
         }
