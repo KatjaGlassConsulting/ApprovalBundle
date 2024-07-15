@@ -195,7 +195,6 @@ class ApprovalController extends AbstractController
 
     private function resetAllLaterApprovals($approvalIdArray, $date)
     {
-        file_put_contents("C:/temp/blub.txt", "resetAllLaterApprovals" . "\n", FILE_APPEND);
         foreach ($approvalIdArray as $approvalId) {
             $this->createNewApproveHistory($approvalId, ApprovalStatus::NOT_SUBMITTED, 'Reset due to earlier approval cancellation (' . $date . ')');
         }
