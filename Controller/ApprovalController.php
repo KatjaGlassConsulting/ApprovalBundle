@@ -145,7 +145,7 @@ class ApprovalController extends AbstractController
         );
         if ($approval) {
             // set all approvals + following approvals to NOT_SUBMITTED
-            $this->resetAllLaterApprovals($this->approvalRepository->findAllLaterApprovals($approveId));
+            $this->resetAllLaterApprovals($this->approvalRepository->findAllLaterApprovals($approveId), $approval->getStartDate()->format('Y-m-d'));
             // set current approvals to NOT_SUBMITTED
             $approval = $this->createNewApproveHistory($approveId, ApprovalStatus::NOT_SUBMITTED);
             // update lockdown period
@@ -182,7 +182,7 @@ class ApprovalController extends AbstractController
             $this->createNewApproveHistory($approveId, ApprovalStatus::NOT_SUBMITTED, '', (new DateTime())->modify('+2 second')->format('d.m.Y H:i:s'));
 
             // set all approvals + following approvals to NOT_SUBMITTED
-            $this->resetAllLaterApprovals($this->approvalRepository->findAllLaterApprovals($approveId));
+            $this->resetAllLaterApprovals($this->approvalRepository->findAllLaterApprovals($approveId), $approval->getStartDate()->format('Y-m-d'));
 
             $this->lockdownRepository->updateLockWeek($approval, $this->approvalRepository);
         }
@@ -193,10 +193,11 @@ class ApprovalController extends AbstractController
         ]));
     }
 
-    private function resetAllLaterApprovals($approvalIdArray)
+    private function resetAllLaterApprovals($approvalIdArray, $date)
     {
+        file_put_contents("C:/temp/blub.txt", "resetAllLaterApprovals" . "\n", FILE_APPEND);
         foreach ($approvalIdArray as $approvalId) {
-            $this->createNewApproveHistory($approvalId, ApprovalStatus::NOT_SUBMITTED, 'Reset due to earlier approval cancellation');
+            $this->createNewApproveHistory($approvalId, ApprovalStatus::NOT_SUBMITTED, 'Reset due to earlier approval cancellation (' . $date . ')');
         }
     }
 

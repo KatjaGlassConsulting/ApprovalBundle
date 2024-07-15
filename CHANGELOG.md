@@ -5,6 +5,7 @@
 - fix: History of approvals could not have been seen by users
 - fix: badge for teamlead
 - performance update: remove badge for admin
+- deny reason for auto-deny-laters includes additionally date of denied approval "Reset due to earlier approval cancellation"
 
 ## 1.0.1 to 1.0.2
 
