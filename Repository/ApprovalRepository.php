@@ -233,6 +233,22 @@ class ApprovalRepository extends ServiceEntityRepository
         return $expected;
     }
 
+    public function calculateDurationWithoutFreeDays(User $user, String $day, int $freeDaysCustomerId): int {
+        $freeDaysOtherTimesQuery = $this->getEntityManager()->createQueryBuilder()
+                ->select('SUM(t.duration) as totalDuration')
+                ->from(Timesheet::class, 't')
+                ->where('t.user = :user')
+                ->setParameter('user', $user)
+                ->join('t.project', 'p')
+                ->join('p.customer', 'c')
+                ->andWhere('c.id != :customerId')
+                ->andWhere('t.date = :day')
+                ->setParameter('day', $day)
+                ->setParameter('customerId', $freeDaysCustomerId);        
+            $result = $freeDaysOtherTimesQuery->getQuery()->getSingleScalarResult();            
+        return $result ? (int) $result : 0;
+    }
+
     public function findApprovalForUser(User $user, DateTime $begin, DateTime $end): ?Approval
     {
         return $this->getEntityManager()->createQueryBuilder()

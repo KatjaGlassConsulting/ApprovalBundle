@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3 to 1.0.4
+
+- When performing "workday updates", all off-days are recalculated and reset - in the past the current day working time had been used, e.g. when the workday should be 8 hours, all times for "off-days", e.g. holidays, vacations, sick-leave are set to 8 hours. Now the update consider non-off-day related time entries. If for example a subject worked 3 hours and had the remaining a sick-leave, the sick-leave entry will only be updated to 5 hours.
+
 ## 1.0.2 to 1.0.3
 
 - fix: History of approvals could not have been seen by users

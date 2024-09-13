@@ -3,7 +3,7 @@
     "description": "A Kimai plugin to manage approvals and supporting related API",
     "homepage": "https://glacon.eu",
     "type": "kimai-plugin",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "license": "MIT",
     "authors": [
         {

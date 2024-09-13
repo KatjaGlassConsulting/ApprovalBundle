@@ -324,6 +324,10 @@
         <source>error.work_offdays</source>
         <target>Radili ste na slobodan dan!</target>
       </trans-unit>
+      <trans-unit id="error.multiple_offday_entries">
+        <source>error.multiple_offday_entries</source>
+        <target>Postoji više unosa izvan dana - molimo zadržite samo jedan.</target>
+      </trans-unit>
 
       <trans-unit id="label.customer_for_free_days">
         <source>label.customer_for_free_days</source>

@@ -20,6 +20,7 @@ use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
 use KimaiPlugin\ApprovalBundle\Entity\Approval;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 class ApprovalTimesheetRepository extends ServiceEntityRepository
@@ -45,6 +46,11 @@ class ApprovalTimesheetRepository extends ServiceEntityRepository
     private $approvalRepository;
 
     /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
      * @param CoreTimesheetRepository $timesheetRepository
      */
     public function __construct(
@@ -52,17 +58,20 @@ class ApprovalTimesheetRepository extends ServiceEntityRepository
         CoreTimesheetRepository $timesheetRepository,
         CustomerRepository $customerRepository,
         SettingsTool $settingsTool,
-        ApprovalRepository $approvalRepository
+        ApprovalRepository $approvalRepository,
+        TranslatorInterface $translator
     ) {
         parent::__construct($registry, Approval::class);
         $this->timesheetRepository = $timesheetRepository;
         $this->customerRepository = $customerRepository;
         $this->settingsTool = $settingsTool;
         $this->approvalRepository = $approvalRepository;
+        $this->translator = $translator;
     }
 
-    public function updateDaysOff(User $user)
+    public function updateDaysOff(User $user): array
     {
+        $errors = [];
         $customer = $this->customerRepository->find($this->settingsTool->getConfiguration(ConfigEnum::CUSTOMER_FOR_FREE_DAYS));
 
         $currentYear = date('Y'); 
@@ -79,14 +88,26 @@ class ApprovalTimesheetRepository extends ServiceEntityRepository
                 ->andWhere('c.id = :customerId')
                 ->andWhere('t.begin >= :begin')
                 ->setParameter('begin', $start)
-                ->setParameter('customerId', $customer->getId());        
+                ->setParameter('customerId', $customer->getId())
+                ->orderBy('t.date', 'ASC');        
             $freeDaysTimesheets = $freeDaysTimesheetsQuery->getQuery()->getResult();
 
-            foreach ($freeDaysTimesheets as $timesheet) {
+            $lastTimesheetDay = " ";
+            foreach ($freeDaysTimesheets as $timesheet) {                
+                file_put_contents("C:/temp/blub.txt", "blub " . json_encode($lastTimesheetDay) . " "  . json_encode($timesheet->getBegin()->format('Y-m-d')) . "\n", FILE_APPEND);
+                if ($lastTimesheetDay == $timesheet->getBegin()->format('Y-m-d')){                    
+                    $errors[] = $user->getDisplayName() . " - " .  $timesheet->getBegin()->format('Y-m-d') . " ". $this->translator->trans("error.multiple_offday_entries");
+                    file_put_contents("C:/temp/blub.txt", "issue available error - " . json_encode($errors) . "\n", FILE_APPEND);
+                }
                 $timeSheetDuration = $timesheet->getDuration();
                 $expectedCurrent = 0;
                 $expectedCurrent = $this->approvalRepository->getExpectTimeForDate($timesheet->getBegin(), $user, $expectedCurrent);
+                // remove tracked hours of non-free-days entries, e.g. people might have worked for time + remaining is sick leave
+                $expectedCurrent = $expectedCurrent - $this->approvalRepository->calculateDurationWithoutFreeDays($user, $timesheet->getBegin()->format('Y-m-d'), $customer->getId());
                 if ($timeSheetDuration != $expectedCurrent){
+                    if ($expectedCurrent < 0){
+                        $expectedCurrent = 0;
+                    }
                     // if duration differs, then update end and duration
                     $newEnd = clone $timesheet->getBegin();
                     $newEnd->add(new DateInterval('PT' . $expectedCurrent. 'S'));                
@@ -94,12 +115,12 @@ class ApprovalTimesheetRepository extends ServiceEntityRepository
                     $timesheet->setEnd($newEnd);
                     $timesheet->setDuration($expectedCurrent);
                     $this->getEntityManager()->persist($timesheet);
-              }
-          }
-
-          $this->getEntityManager()->flush();
+                }
+                $lastTimesheetDay = $timesheet->getBegin()->format('Y-m-d');
+            }
+            $this->getEntityManager()->flush();
         }
 
-        
+        return $errors;
     }
 }

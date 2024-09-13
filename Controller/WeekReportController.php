@@ -271,6 +271,9 @@ class WeekReportController extends AbstractController
     public function settingsWorkdayHistory(Request $request): Response
     {
         $workdayHistory = $this->approvalWorkdayHistoryRepository->findAll();
+
+        $errors = $this->get('session')->getFlashBag()->get('error', []);
+        file_put_contents("C:/temp/blub.txt", "errors - " . json_encode($errors) . "\n", FILE_APPEND);
          
         return $this->render('@Approval/settings_workday_history.html.twig', [
             'current_tab' => 'settings_workday_history',
@@ -300,6 +303,8 @@ class WeekReportController extends AbstractController
         ]);
 
         $form->handleRequest($request);    
+
+        //$this->approvalTimesheetRepository->getDurationWithoutFreeDays($form->getData()['user'], "2024-07-18", 1);
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {

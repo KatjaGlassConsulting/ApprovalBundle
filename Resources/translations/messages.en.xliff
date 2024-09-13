@@ -332,6 +332,10 @@
         <source>error.no_end_date</source>
         <target>There is no end date for the time entry.</target>
       </trans-unit>
+      <trans-unit id="error.multiple_offday_entries">
+        <source>error.multiple_offday_entries</source>
+        <target>There are multiple Off-Day entries - please keep only one.</target>
+      </trans-unit>
 
       <trans-unit id="label.customer_for_free_days">
         <source>label.customer_for_free_days</source>
