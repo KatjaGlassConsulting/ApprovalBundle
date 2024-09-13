@@ -94,10 +94,8 @@ class ApprovalTimesheetRepository extends ServiceEntityRepository
 
             $lastTimesheetDay = " ";
             foreach ($freeDaysTimesheets as $timesheet) {                
-                file_put_contents("C:/temp/blub.txt", "blub " . json_encode($lastTimesheetDay) . " "  . json_encode($timesheet->getBegin()->format('Y-m-d')) . "\n", FILE_APPEND);
                 if ($lastTimesheetDay == $timesheet->getBegin()->format('Y-m-d')){                    
                     $errors[] = $user->getDisplayName() . " - " .  $timesheet->getBegin()->format('Y-m-d') . " ". $this->translator->trans("error.multiple_offday_entries");
-                    file_put_contents("C:/temp/blub.txt", "issue available error - " . json_encode($errors) . "\n", FILE_APPEND);
                 }
                 $timeSheetDuration = $timesheet->getDuration();
                 $expectedCurrent = 0;

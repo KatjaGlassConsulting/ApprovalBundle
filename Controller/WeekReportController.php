@@ -273,7 +273,6 @@ class WeekReportController extends AbstractController
         $workdayHistory = $this->approvalWorkdayHistoryRepository->findAll();
 
         $errors = $this->get('session')->getFlashBag()->get('error', []);
-        file_put_contents("C:/temp/blub.txt", "errors - " . json_encode($errors) . "\n", FILE_APPEND);
          
         return $this->render('@Approval/settings_workday_history.html.twig', [
             'current_tab' => 'settings_workday_history',
@@ -281,7 +280,8 @@ class WeekReportController extends AbstractController
             'showToApproveTab' => $this->securityTool->canViewAllApprovals() || $this->securityTool->canViewTeamApprovals(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
             'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
-            'showOvertime' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)
+            'showOvertime' => $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY),
+            'errors' => $errors
         ]);
     }
 
@@ -304,8 +304,6 @@ class WeekReportController extends AbstractController
 
         $form->handleRequest($request);    
 
-        //$this->approvalTimesheetRepository->getDurationWithoutFreeDays($form->getData()['user'], "2024-07-18", 1);
-
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $workdayHistory = new ApprovalWorkdayHistory();
@@ -321,9 +319,14 @@ class WeekReportController extends AbstractController
                 $workdayHistory->setValidTill($form->getData()['validTill']);
 
                 $this->approvalWorkdayHistoryRepository->save($workdayHistory, true);  
-                $this->approvalTimesheetRepository->updateDaysOff($form->getData()['user']);
+                $errors = $this->approvalTimesheetRepository->updateDaysOff($form->getData()['user']);
                 $this->approvalRepository->updateExpectedActualDurationForUser($form->getData()['user']);
                 $this->flashSuccess('action.update.success');
+
+                // Set flash messages for errors
+                foreach ($errors as $error) {
+                    $this->addFlash('error', $error);
+                }
 
                 return $this->redirectToRoute('approval_bundle_settings_workday');
             } catch (ORMException $e) {
@@ -353,8 +356,13 @@ class WeekReportController extends AbstractController
             $user = $workdayHistory->getUser();
 
             $this->approvalWorkdayHistoryRepository->remove($workdayHistory, true);
-            $this->approvalTimesheetRepository->updateDaysOff($user);
+            $errors = $this->approvalTimesheetRepository->updateDaysOff($user);
             $this->approvalRepository->updateExpectedActualDurationForUser($user);
+        }
+
+        // Set flash messages for errors
+        foreach ($errors as $error) {
+            $this->addFlash('error', $error);
         }
 
         return $this->redirectToRoute('approval_bundle_settings_workday');
