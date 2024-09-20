@@ -27,4 +27,6 @@ abstract class FormEnum
     public const BREAKCHECKS_NY = 'approval_breakchecks_ny';
     public const INCLUDE_ADMIN_NY = 'approval_include_admin_ny';
     public const TEAMLEAD_SELF_APPROVE_NY = 'approval_teamlead_selfapprove_ny';
+    public const MAIL_SUBMITTED_NY = 'approval_mail_submitted_ny';
+    public const MAIL_ACTION_NY = 'approval_mail_action_ny';
 }

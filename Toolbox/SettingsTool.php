@@ -35,6 +35,11 @@ class SettingsTool
         return $this->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY, '1') !== '0';
     }
 
+    public function getBooleanConfiguration(string $key, bool $default = false): bool
+    {
+        return $this->getConfiguration($key, $default ? '1' : '0') === '1';
+    }
+
     public function getConfiguration(string $key, $default = ''): mixed
     {
         if (!\array_key_exists($key, $this->cache)) {

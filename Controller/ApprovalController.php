@@ -19,6 +19,8 @@ use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalStatusRepository;
 use KimaiPlugin\ApprovalBundle\Repository\LockdownRepository;
 use KimaiPlugin\ApprovalBundle\Toolbox\EmailTool;
+use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
+use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -34,6 +36,7 @@ class ApprovalController extends BaseApprovalController
         private UrlGeneratorInterface $urlGenerator,
         private UserRepository $userRepository,
         private EmailTool $emailTool,
+        private SettingsTool $settingsTool,
         private LockdownRepository $lockdownRepository
     ) {
     }
@@ -44,7 +47,9 @@ class ApprovalController extends BaseApprovalController
         $userId = $request->query->get('user');
         $date = $request->query->get('date');
         $approval = $this->createAddToApproveForm($userId, $date);
-        $this->emailTool->sendApproveWeekEmail($approval, $this->approvalRepository);
+        if ($this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_MAIL_SUBMITTED_NY, true)){
+            $this->emailTool->sendApproveWeekEmail($approval, $this->approvalRepository);
+        }
         $this->lockdownRepository->updateLockWeek($approval, $this->approvalRepository);
 
         return new RedirectResponse($this->urlGenerator->generate('approval_bundle_report', [
@@ -66,11 +71,13 @@ class ApprovalController extends BaseApprovalController
         );
         if ($approval) {
             $approval = $this->createNewApproveHistory($approveId, ApprovalStatus::APPROVED);
-            $this->emailTool->sendStatusChangedEmail(
-                $approval,
-                $this->getUser()->getUsername(),
-                $this->approvalRepository->getUrl((string) $approval->getUser()->getId(), $approval->getStartDate()->format('Y-m-d'))
-            );
+            if ($this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_MAIL_ACTION_NY, true)){
+                $this->emailTool->sendStatusChangedEmail(
+                    $approval,
+                    $this->getUser()->getDisplayName(),
+                    $this->approvalRepository->getUrl((string) $approval->getUser()->getId(), $approval->getStartDate()->format('Y-m-d'))
+                );
+            }
             $this->lockdownRepository->updateLockWeek($approval, $this->approvalRepository);
         }
 
@@ -122,11 +129,13 @@ class ApprovalController extends BaseApprovalController
         );
         if ($approval) {
             $approval = $this->createNewApproveHistory($approveId, ApprovalStatus::DENIED, $request->query->get('input'));
-            $this->emailTool->sendStatusChangedEmail(
-                $approval,
-                $this->getUser()->getUsername(),
-                $this->approvalRepository->getUrl((string) $approval->getUser()->getId(), $approval->getStartDate()->format('Y-m-d'))
-            );
+            if ($this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_MAIL_ACTION_NY, true)){
+                $this->emailTool->sendStatusChangedEmail(
+                    $approval,
+                    $this->getUser()->getDisplayName(),
+                    $this->approvalRepository->getUrl((string) $approval->getUser()->getId(), $approval->getStartDate()->format('Y-m-d'))
+                );
+            }
             $this->createNewApproveHistory($approveId, ApprovalStatus::NOT_SUBMITTED, '', (new DateTime())->modify('+2 second')->format('d.m.Y H:i:s'));
 
             // set all approvals + following approvals to NOT_SUBMITTED
