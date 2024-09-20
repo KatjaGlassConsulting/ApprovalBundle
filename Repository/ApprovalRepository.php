@@ -178,29 +178,7 @@ class ApprovalRepository extends ServiceEntityRepository
 
         if (\is_null($workdayHistory)) {
             // get information from meta fields
-            switch ($i->format('N')) {
-                case (1):
-                    $expected += $this->metaFieldRuleRepository->getWorkingTimeForMonday($user);
-                    break;
-                case (2):
-                    $expected += $this->metaFieldRuleRepository->getWorkingTimeForTuesday($user);
-                    break;
-                case (3):
-                    $expected += $this->metaFieldRuleRepository->getWorkingTimeForWednesday($user);
-                    break;
-                case (4):
-                    $expected += $this->metaFieldRuleRepository->getWorkingTimeForThursday($user);
-                    break;
-                case (5):
-                    $expected += $this->metaFieldRuleRepository->getWorkingTimeForFriday($user);
-                    break;
-                case (6):
-                    $expected += $this->metaFieldRuleRepository->getWorkingTimeForSaturday($user);
-                    break;
-                case (7):
-                    $expected += $this->metaFieldRuleRepository->getWorkingTimeForSunday($user);
-                    break;
-            }
+            $expected += $this->metaFieldRuleRepository->getWorkingTimeForDate($user, $i);
         } else {
             // otherwise use hours according approvalWorkdayHistory
             switch ($i->format('N')) {

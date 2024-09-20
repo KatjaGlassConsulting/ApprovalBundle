@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.0
+
+- Support the new work contract types
+
 ## 2.0.5 to 2.0.6 (enhancements)
 
 - Remove other deprecations
