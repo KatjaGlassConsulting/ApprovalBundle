@@ -25,9 +25,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 class SettingsForm extends AbstractType
 {
     public function __construct(
-        private FormTool $formTool,
-        private SettingsTool $settingsTool,
-        private CustomerRepository $customerRepository
+        private readonly FormTool $formTool,
+        private readonly SettingsTool $settingsTool,
+        private readonly CustomerRepository $customerRepository
     ) {
     }
 
@@ -74,7 +74,7 @@ class SettingsForm extends AbstractType
           'required' => false
         ]);
 
-        if ($this->settingsTool->isInConfiguration(ConfigEnum::APPROVAL_INCLUDE_ADMIN_NY)){
+        if ($this->settingsTool->isInConfiguration(ConfigEnum::APPROVAL_INCLUDE_ADMIN_NY)) {
             $adminchecks = $this->formTool->isChecked(ConfigEnum::APPROVAL_INCLUDE_ADMIN_NY);
         } else {
             $adminchecks = false;
@@ -89,9 +89,9 @@ class SettingsForm extends AbstractType
         if ($this->settingsTool->isInConfiguration(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY)) {
             $leadselfchecks = $this->formTool->isChecked(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY);
         } else {
-            $leadselfchecks = false;            
+            $leadselfchecks = false;
         }
-        
+
         $builder->add(FormEnum::TEAMLEAD_SELF_APPROVE_NY, CheckboxType::class, [
             'label' => 'label.approval_teamlead_selfapprove_ny',
             'data' => $leadselfchecks,

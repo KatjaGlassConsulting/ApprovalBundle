@@ -31,7 +31,7 @@ class OvertimeByUserForm extends AbstractType
             'label' => 'all',
             'attr' => [
                 'class' => 'btn btn-primary',
-                'onclick' => sprintf("window.location.href='%s'", $options['routePath']),
+                'onclick' => \sprintf("window.location.href='%s'", $options['routePath']),
             ],
         ]);
     }
