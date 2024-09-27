@@ -435,17 +435,4 @@ class WeekReportController extends BaseApprovalController
 
         return '';
     }
-
-    private function reduceRows(array $rows): array
-    {
-        return array_reduce($rows, function ($toReturn, $row) {
-            $currentUser = $this->getUser();
-            $isCurrentUserATeamLeader = \in_array('ROLE_TEAMLEAD', $currentUser->getRoles());
-            if (!($row['user'] === $currentUser->getUsername() && $isCurrentUserATeamLeader && $row['status'] !== 'not_submitted')) {
-                $toReturn[] = $row;
-            }
-
-            return $toReturn;
-        }, []);
-    }
 }
