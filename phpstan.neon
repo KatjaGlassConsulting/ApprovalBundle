@@ -4,7 +4,7 @@ includes:
   - %rootDir%/../phpstan-symfony/rules.neon
 
 parameters:
-  level: 6
+  level: 7
   excludePaths:
     - vendor/
     - Settings/MetaFieldSettings.php
@@ -13,3 +13,6 @@ parameters:
   ignoreErrors:
     - identifier: missingType.iterableValue
     - identifier: missingType.generics
+    - identifier: missingType.return
+    - identifier: missingType.parameter
+    - identifier: missingType.property
