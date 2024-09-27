@@ -80,6 +80,10 @@ class ApprovalOvertimeHistoryRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
         ;
 
-        return $result ?? 0;
+        if ($result === null) {
+            return 0;
+        }
+
+        return (int) $result;
     }
 }
