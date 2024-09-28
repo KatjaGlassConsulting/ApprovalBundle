@@ -3,6 +3,7 @@
 ## 2.1.0
 
 - Support the new work contract types
+- fix: History of approvals could not have been seen by users
 
 ## 2.0.7 to 2.0.8 (enhancements)
 
