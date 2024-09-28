@@ -15,7 +15,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class FormattingTool
 {
-    public function __construct(private TranslatorInterface $translator)
+    public function __construct(private readonly TranslatorInterface $translator)
     {
     }
 
@@ -23,7 +23,7 @@ final class FormattingTool
      * @param float|int $duration
      * @return int
      */
-    public function formattingDurationToSeconds($duration)
+    public function formattingDurationToSeconds($duration): int
     {
         return (int) ($duration * 60 * 60);
     }
@@ -93,7 +93,7 @@ final class FormattingTool
      */
     public function formattingMonthIntToMonthString($month)
     {
-        $nameOfMonth = (new DateTime(sprintf('01-%s-2020', $month)))->format('F');
+        $nameOfMonth = (new DateTime(\sprintf('01-%s-2020', $month)))->format('F');
 
         return $this->translator->trans('month.' . strtolower($nameOfMonth));
     }

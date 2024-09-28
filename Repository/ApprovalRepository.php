@@ -798,8 +798,12 @@ class ApprovalRepository extends ServiceEntityRepository
 
         // Otherwise, when there are $allRows, get the one which would be next (located in the future)
         $prevWeekDay = end($allRows)['startDate'];
+        $prev = strtotime($prevWeekDay . ' + 7 days');
+        if ($prev === false) {
+            throw new \RuntimeException('Could not calculate next week');
+        }
 
-        return date('Y-m-d', strtotime($prevWeekDay . ' + 7 days'));
+        return date('Y-m-d', $prev);
     }
 
     public function updateExpectedActualDurationForUser(User $user)

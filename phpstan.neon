@@ -1,13 +1,18 @@
 includes:
-    - %rootDir%/../phpstan-doctrine/extension.neon
-    - %rootDir%/../phpstan-symfony/extension.neon
-    - %rootDir%/../phpstan-symfony/rules.neon
+  - %rootDir%/../phpstan-doctrine/extension.neon
+  - %rootDir%/../phpstan-symfony/extension.neon
+  - %rootDir%/../phpstan-symfony/rules.neon
 
 parameters:
-    excludePaths:
-        - vendor/
-        - Settings/MetaFieldSettings.php
-    treatPhpDocTypesAsCertain: false
-    inferPrivatePropertyTypeFromConstructor: true
-    checkMissingIterableValueType: false
-    checkGenericClassInNonGenericObjectType: false
+  level: 7
+  excludePaths:
+    - vendor/
+    - Settings/MetaFieldSettings.php
+  treatPhpDocTypesAsCertain: false
+  inferPrivatePropertyTypeFromConstructor: true
+  ignoreErrors:
+    - identifier: missingType.iterableValue
+    - identifier: missingType.generics
+    - identifier: missingType.return
+    - identifier: missingType.parameter
+    - identifier: missingType.property
