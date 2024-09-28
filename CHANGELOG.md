@@ -4,6 +4,7 @@
 
 - Support the new work contract types
 - fix: History of approvals could not have been seen by users
+- fix: Reject message did contain "Approved" when no reason was provided
 
 ## 2.0.7 to 2.0.8 (enhancements)
 
