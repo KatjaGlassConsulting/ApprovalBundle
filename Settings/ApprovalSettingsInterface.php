@@ -27,17 +27,5 @@ interface ApprovalSettingsInterface
      */
     public function find($id);
 
-    public function getWorkingTimeForMonday(User $user): int;
-
-    public function getWorkingTimeForTuesday(User $user): int;
-
-    public function getWorkingTimeForWednesday(User $user): int;
-
-    public function getWorkingTimeForThursday(User $user): int;
-
-    public function getWorkingTimeForFriday(User $user): int;
-
-    public function getWorkingTimeForSaturday(User $user): int;
-
-    public function getWorkingTimeForSunday(User $user): int;
+    public function getWorkingTimeForDate(User $user, \DateTimeInterface $dateTime): int;
 }

@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.0
+
+- Support the new work contract types
+
 ## 2.0.7 to 2.0.8 (enhancements)
 
 - Two new options to allow to deactivate sending of mails

@@ -10,6 +10,7 @@
 namespace KimaiPlugin\ApprovalBundle\Settings;
 
 use App\Entity\User;
+use App\WorkingTime\WorkingTimeService;
 use KimaiPlugin\MetaFieldsBundle\Repository\MetaFieldRuleRepository;
 
 /**
@@ -17,8 +18,10 @@ use KimaiPlugin\MetaFieldsBundle\Repository\MetaFieldRuleRepository;
  */
 class MetaFieldSettings implements ApprovalSettingsInterface
 {
-    public function __construct(private MetaFieldRuleRepository $metaFieldRuleRepository)
-    {
+    public function __construct(
+        private readonly MetaFieldRuleRepository $metaFieldRuleRepository,
+        private readonly WorkingTimeService $workingTimeService
+    ) {
     }
 
     public function getRules(): array
@@ -31,38 +34,8 @@ class MetaFieldSettings implements ApprovalSettingsInterface
         return $this->metaFieldRuleRepository->find($id);
     }
 
-    public function getWorkingTimeForMonday(User $user): int
+    public function getWorkingTimeForDate(User $user, \DateTimeInterface $dateTime): int
     {
-        return $user->getWorkHoursMonday();
-    }
-
-    public function getWorkingTimeForTuesday(User $user): int
-    {
-        return $user->getWorkHoursTuesday();
-    }
-
-    public function getWorkingTimeForWednesday(User $user): int
-    {
-        return $user->getWorkHoursWednesday();
-    }
-
-    public function getWorkingTimeForThursday(User $user): int
-    {
-        return $user->getWorkHoursThursday();
-    }
-
-    public function getWorkingTimeForFriday(User $user): int
-    {
-        return $user->getWorkHoursFriday();
-    }
-
-    public function getWorkingTimeForSaturday(User $user): int
-    {
-        return $user->getWorkHoursSaturday();
-    }
-
-    public function getWorkingTimeForSunday(User $user): int
-    {
-        return $user->getWorkHoursSunday();
+        $this->workingTimeService->getContractMode($user)->getCalculator($user)->getWorkHoursForDay($dateTime);
     }
 }

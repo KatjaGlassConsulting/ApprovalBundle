@@ -3,7 +3,7 @@
     "description": "A Kimai plugin to manage approvals and supporting related API",
     "homepage": "https://www.kimai.org/store/katjaglass-approval-bundle.html",
     "type": "kimai-plugin",
-    "version": "2.0.8",
+    "version": "2.1.0",
     "keywords": [
         "kimai",
         "kimai-plugin"
@@ -17,12 +17,12 @@
         },
         {
             "name": "Kevin Papst",
-            "homepage": "https://www.keleo.de"
+            "homepage": "https://www.kimai.org"
         }
     ],
     "extra": {
         "kimai": {
-            "require": 20800,
+            "require": 22200,
             "name": "Timesheet approvals"
         }
     },
