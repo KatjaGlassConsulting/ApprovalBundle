@@ -63,23 +63,30 @@ class ApprovalTimesheetRepository extends ServiceEntityRepository
 
     public function updateDaysOff(User $user)
     {
-        $customer = $this->customerRepository->find($this->settingsTool->getConfiguration(ConfigEnum::CUSTOMER_FOR_FREE_DAYS));
+        $projectHolidays = $this->settingsTool->getConfiguration(ConfigEnum::PROJECT_FOR_HOLIDAYS);
+        $projectVacations = $this->settingsTool->getConfiguration(ConfigEnum::PROJECT_FOR_VACATIONS);
+        
+        $projectIds = [];
+        if ($projectHolidays !== null) {
+            $projectIds[] = $projectHolidays;
+        }
+        if ($projectVacations !== null) {
+            $projectIds[] = $projectVacations;
+        }
 
         $currentYear = date('Y'); 
         $start = "01-01-" . strval($currentYear - 1);
 
-        if ($customer != null){
+        if (!empty($projectIds)){
           $freeDaysTimesheetsQuery = $this->getEntityManager()->createQueryBuilder()
                 ->select('t')
                 ->from(Timesheet::class, 't')
                 ->where('t.user = :user')
                 ->setParameter('user', $user)
-                ->join('t.project', 'p')
-                ->join('p.customer', 'c')
-                ->andWhere('c.id = :customerId')
+                ->andWhere('t.project IN (:projectIds)')
                 ->andWhere('t.begin >= :begin')
                 ->setParameter('begin', $start)
-                ->setParameter('customerId', $customer->getId());        
+                ->setParameter('projectIds', $projectIds);        
             $freeDaysTimesheets = $freeDaysTimesheetsQuery->getQuery()->getResult();
 
             foreach ($freeDaysTimesheets as $timesheet) {

@@ -38,17 +38,27 @@ class BreakTimeCheckToolGER
     {
         $errors = [];
 
-        $customerId = $this->settingsTool->getConfiguration(ConfigEnum::CUSTOMER_FOR_FREE_DAYS);
+        
+        $projectHolidaysId = $this->settingsTool->getConfiguration(ConfigEnum::PROJECT_FOR_HOLIDAYS);
+        $projectVacationsId = $this->settingsTool->getConfiguration(ConfigEnum::PROJECT_FOR_VACATIONS);
+        $projectIds = [];
+        if ($projectHolidaysId !== null) {
+            $projectIds[] = $projectHolidaysId;
+        }
+        if ($projectVacationsId !== null) {
+            $projectIds[] = $projectVacationsId;
+        }
+
         $offdays = [];
         foreach ($timesheets as $timesheet) {            
-            if ($timesheet->getProject()->getCustomer()->getId() == $customerId) {
+            if (in_array($timesheet->getProject()->getId(), $projectIds)) {
                 $offdays[] = $timesheet->getBegin()->format('Y-m-d');
             }
         }
         $timesheets = array_filter(
             $timesheets,
-            function (Timesheet $timesheet) use ($customerId) {
-                return $timesheet->getProject()->getCustomer()->getId() != $customerId;
+            function (Timesheet $timesheet) use ($projectIds) {
+                return !in_array($timesheet->getProject()->getId(), $projectIds);
             }
         );
         

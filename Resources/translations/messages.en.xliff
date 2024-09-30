@@ -333,9 +333,13 @@
         <target>There is no end date for the time entry.</target>
       </trans-unit>
 
-      <trans-unit id="label.customer_for_free_days">
-        <source>label.customer_for_free_days</source>
-        <target>Customer for free days</target>
+      <trans-unit id="label.project_for_holidays">
+        <source>label.project_for_holidays</source>
+        <target>Project for holidays</target>
+      </trans-unit>      
+      <trans-unit id="label.project_for_vacations">
+        <source>label.project_for_vacations</source>
+        <target>Project for vacations</target>
       </trans-unit>
       <trans-unit id="label.email_link_url">
         <source>label.email_link_url</source>

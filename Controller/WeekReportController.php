@@ -12,6 +12,7 @@ namespace KimaiPlugin\ApprovalBundle\Controller;
 use Doctrine\ORM\Exception\ORMException;
 use App\Controller\AbstractController;
 use App\Entity\Customer;
+use App\Entity\Project;
 use App\Entity\Timesheet;
 use App\Entity\User;
 use App\Form\Model\DateRange;
@@ -381,7 +382,8 @@ class WeekReportController extends AbstractController
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY, $data[FormEnum::BREAKCHECKS_NY]);
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_INCLUDE_ADMIN_NY, $data[FormEnum::INCLUDE_ADMIN_NY]);
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY, $data[FormEnum::TEAMLEAD_SELF_APPROVE_NY]);
-            $this->settingsTool->setConfiguration(ConfigEnum::CUSTOMER_FOR_FREE_DAYS, $this->collectCustomerForFreeDays($data));
+            $this->settingsTool->setConfiguration(ConfigEnum::PROJECT_FOR_HOLIDAYS, $this->collectProjectForHolidays($data));
+            $this->settingsTool->setConfiguration(ConfigEnum::PROJECT_FOR_VACATIONS, $this->collectProjectForVacations($data));
 
             $this->flashSuccess('action.update.success');
             $this->settingsTool->resetCache();
@@ -464,13 +466,25 @@ class WeekReportController extends AbstractController
         ];
     }
 
-    private function collectCustomerForFreeDays($data)
+    private function collectProjectForHolidays($data)
     {
-        if ($data[FormEnum::CUSTOMER_FOR_FREE_DAYS]) {
-            /** @var Customer $customer */
-            $customer = $data[FormEnum::CUSTOMER_FOR_FREE_DAYS];
+        if ($data[FormEnum::PROJECT_FOR_HOLIDAYS]) {
+            /** @var Project $project */
+            $project = $data[FormEnum::PROJECT_FOR_HOLIDAYS];
 
-            return $customer->getId();
+            return $project->getId();
+        }
+
+        return '';
+    }
+
+    private function collectProjectForVacations($data)
+    {
+        if ($data[FormEnum::PROJECT_FOR_VACATIONS]) {
+            /** @var Project $project */
+            $project = $data[FormEnum::PROJECT_FOR_VACATIONS];
+
+            return $project->getId();
         }
 
         return '';

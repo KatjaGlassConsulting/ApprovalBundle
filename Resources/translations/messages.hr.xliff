@@ -325,9 +325,13 @@
         <target>Radili ste na slobodan dan!</target>
       </trans-unit>
 
-      <trans-unit id="label.customer_for_free_days">
-        <source>label.customer_for_free_days</source>
-        <target>Kupac za slobodne dane</target>
+      <trans-unit id="label.project_for_holidays">
+        <source>label.project_for_holidays</source>
+        <target>Blagdanski projekt</target>
+      </trans-unit>      
+      <trans-unit id="label.project_for_vacations">
+        <source>label.project_for_vacations</source>
+        <target>Projekt za odmor</target>
       </trans-unit>
       <trans-unit id="label.email_link_url">
         <source>label.email_link_url</source>

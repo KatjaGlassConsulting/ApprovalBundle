@@ -333,9 +333,13 @@
         <target>Sie haben kein End-Datum.</target>
       </trans-unit>
 
-      <trans-unit id="label.customer_for_free_days">
-        <source>label.customer_for_free_days</source>
-        <target>Kunde für freie Tage</target>
+      <trans-unit id="label.project_for_holidays">
+        <source>label.project_for_holidays</source>
+        <target>Projekt für Feiertage</target>
+      </trans-unit>      
+      <trans-unit id="label.project_for_vacations">
+        <source>label.project_for_vacations</source>
+        <target>Projekt für Urlaube</target>
       </trans-unit>
       <trans-unit id="label.email_link_url">
         <source>label.email_link_url</source>

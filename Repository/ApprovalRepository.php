@@ -371,8 +371,8 @@ class ApprovalRepository extends ServiceEntityRepository
         $approvedWeeks = $this->getApprovedWeeks($user);
 
         $weeks = [];
-        $freeDays = $this->settingsTool->getConfiguration(ConfigEnum::CUSTOMER_FOR_FREE_DAYS);
-
+        $projectHolidays = $this->settingsTool->getConfiguration(ConfigEnum::PROJECT_FOR_HOLIDAYS);
+        
         $firstDayWorkQuery = $this->getEntityManager()->createQueryBuilder()
             ->select('t')
             ->from(Timesheet::class, 't')
@@ -380,12 +380,10 @@ class ApprovalRepository extends ServiceEntityRepository
             ->setParameter('user', $user)
             ->orderBy('t.begin', 'ASC')
             ->setMaxResults(1);
-        if (!empty($freeDays)) {
+        if ($projectHolidays != null) {
             $firstDayWorkQuery = $firstDayWorkQuery
-                ->join('t.project', 'p')
-                ->join('p.customer', 'c')
-                ->andWhere('c.id != :customerId')
-                ->setParameter('customerId', $freeDays);
+                ->andWhere('t.project != :projectHolidays')
+                ->setParameter('projectHolidays', $projectHolidays);
         }
         $firstDayWork = $firstDayWorkQuery
             ->getQuery()
@@ -400,7 +398,7 @@ class ApprovalRepository extends ServiceEntityRepository
 
         if ($firstDay->format('D') !== 'Mon') {
             $firstDay = clone new DateTime($firstDay->modify('last monday')->format('Y-m-d H:i:s'));
-        }
+        }        
         while ($firstDay <= new DateTime('today')) {
             if (!\in_array($firstDay, $approvedWeeks) && $firstDay->format('Y-m-d') > $approval_ws_start_week) {
                 $weeks[] = (object) [

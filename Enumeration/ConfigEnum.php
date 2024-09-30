@@ -22,6 +22,8 @@ abstract class ConfigEnum
     public const META_FIELD_EXPECTED_WORKING_TIME_ON_SUNDAY = 'approval.meta_field_expected_working_time_on_sunday';
     public const META_FIELD_EMAIL_LINK_URL = 'approval.meta_field_email_link_url';
     public const CUSTOMER_FOR_FREE_DAYS = 'approval.customer_for_free_days';
+    public const PROJECT_FOR_HOLIDAYS = 'approval.project_for_holidays';
+    public const PROJECT_FOR_VACATIONS = 'approval.project_for_vacations';
     public const APPROVAL_WORKFLOW_START = 'approval.workflow_start';
     public const APPROVAL_OVERTIME_NY = 'approval.overtime_ny';
     public const APPROVAL_BREAKCHECKS_NY = 'approval.breakchecks_ny';

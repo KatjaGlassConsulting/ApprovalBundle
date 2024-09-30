@@ -9,8 +9,8 @@
 
 namespace KimaiPlugin\ApprovalBundle\Form;
 
-use App\Form\Type\CustomerType;
-use App\Repository\CustomerRepository;
+use App\Form\Type\ProjectType;
+use App\Repository\ProjectRepository;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Enumeration\FormEnum;
 use KimaiPlugin\ApprovalBundle\Toolbox\FormTool;
@@ -34,18 +34,18 @@ class SettingsForm extends AbstractType
      */
     private $settingsTool;
     /**
-     * @var CustomerRepository
+     * @var ProjectRepository
      */
-    private $customerRepository;
+    private $projectRepository;
 
     public function __construct(
         FormTool $formTool,
         SettingsTool $settingsTool,
-        CustomerRepository $customerRepository
+        ProjectRepository $projectRepository
     ) {
         $this->formTool = $formTool;
         $this->settingsTool = $settingsTool;
-        $this->customerRepository = $customerRepository;
+        $this->projectRepository = $projectRepository;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -105,10 +105,17 @@ class SettingsForm extends AbstractType
             );
         }
 
-        $customer = $this->customerRepository->find($this->settingsTool->getConfiguration(ConfigEnum::CUSTOMER_FOR_FREE_DAYS));
-        $builder->add(FormEnum::CUSTOMER_FOR_FREE_DAYS, CustomerType::class, [
-            'label' => 'label.customer_for_free_days',
-            'data' => $customer ?? null,
+        $project_holidays = $this->projectRepository->find($this->settingsTool->getConfiguration(ConfigEnum::PROJECT_FOR_HOLIDAYS));
+        $builder->add(FormEnum::PROJECT_FOR_HOLIDAYS, ProjectType::class, [
+            'label' => 'label.project_for_holidays',
+            'data' => $project_holidays ?? null,
+            'required' => false
+        ]);
+
+        $project_vacations = $this->projectRepository->find($this->settingsTool->getConfiguration(ConfigEnum::PROJECT_FOR_VACATIONS));
+        $builder->add(FormEnum::PROJECT_FOR_VACATIONS, ProjectType::class, [
+            'label' => 'label.project_for_vacations',
+            'data' => $project_vacations ?? null,
             'required' => false
         ]);
 
