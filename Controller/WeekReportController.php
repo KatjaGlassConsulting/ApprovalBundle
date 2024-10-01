@@ -11,8 +11,7 @@ namespace KimaiPlugin\ApprovalBundle\Controller;
 
 use Doctrine\ORM\Exception\ORMException;
 use App\Controller\AbstractController;
-use App\Entity\Customer;
-use App\Entity\Project;
+use App\Entity\Activity;
 use App\Entity\Timesheet;
 use App\Entity\User;
 use App\Form\Model\DateRange;
@@ -382,8 +381,8 @@ class WeekReportController extends AbstractController
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY, $data[FormEnum::BREAKCHECKS_NY]);
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_INCLUDE_ADMIN_NY, $data[FormEnum::INCLUDE_ADMIN_NY]);
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY, $data[FormEnum::TEAMLEAD_SELF_APPROVE_NY]);
-            $this->settingsTool->setConfiguration(ConfigEnum::PROJECT_FOR_HOLIDAYS, $this->collectProjectForHolidays($data));
-            $this->settingsTool->setConfiguration(ConfigEnum::PROJECT_FOR_VACATIONS, $this->collectProjectForVacations($data));
+            $this->settingsTool->setConfiguration(ConfigEnum::ACTIVITY_FOR_HOLIDAYS, $this->collectActivityForHolidays($data));
+            $this->settingsTool->setConfiguration(ConfigEnum::ACTIVITY_FOR_VACATIONS, $this->collectActivityForVacations($data));
 
             $this->flashSuccess('action.update.success');
             $this->settingsTool->resetCache();
@@ -466,25 +465,25 @@ class WeekReportController extends AbstractController
         ];
     }
 
-    private function collectProjectForHolidays($data)
+    private function collectActivityForHolidays($data)
     {
-        if ($data[FormEnum::PROJECT_FOR_HOLIDAYS]) {
-            /** @var Project $project */
-            $project = $data[FormEnum::PROJECT_FOR_HOLIDAYS];
+        if ($data[FormEnum::ACTIVITY_FOR_HOLIDAYS]) {
+            /** @var Activity $activity */
+            $activity = $data[FormEnum::ACTIVITY_FOR_HOLIDAYS];
 
-            return $project->getId();
+            return $activity->getId();
         }
 
         return '';
     }
 
-    private function collectProjectForVacations($data)
+    private function collectActivityForVacations($data)
     {
-        if ($data[FormEnum::PROJECT_FOR_VACATIONS]) {
-            /** @var Project $project */
-            $project = $data[FormEnum::PROJECT_FOR_VACATIONS];
+        if ($data[FormEnum::ACTIVITY_FOR_VACATIONS]) {
+            /** @var Activity $activity */
+            $activity = $data[FormEnum::ACTIVITY_FOR_VACATIONS];
 
-            return $project->getId();
+            return $activity->getId();
         }
 
         return '';

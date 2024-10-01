@@ -9,8 +9,8 @@
 
 namespace KimaiPlugin\ApprovalBundle\Form;
 
-use App\Form\Type\ProjectType;
-use App\Repository\ProjectRepository;
+use App\Form\Type\ActivityType;
+use App\Repository\ActivityRepository;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Enumeration\FormEnum;
 use KimaiPlugin\ApprovalBundle\Toolbox\FormTool;
@@ -34,18 +34,18 @@ class SettingsForm extends AbstractType
      */
     private $settingsTool;
     /**
-     * @var ProjectRepository
+     * @var ActivityRepository
      */
-    private $projectRepository;
+    private $activityRepository;
 
     public function __construct(
         FormTool $formTool,
         SettingsTool $settingsTool,
-        ProjectRepository $projectRepository
+        ActivityRepository $activityRepository
     ) {
         $this->formTool = $formTool;
         $this->settingsTool = $settingsTool;
-        $this->projectRepository = $projectRepository;
+        $this->activityRepository = $activityRepository;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -105,17 +105,17 @@ class SettingsForm extends AbstractType
             );
         }
 
-        $project_holidays = $this->projectRepository->find($this->settingsTool->getConfiguration(ConfigEnum::PROJECT_FOR_HOLIDAYS));
-        $builder->add(FormEnum::PROJECT_FOR_HOLIDAYS, ProjectType::class, [
-            'label' => 'label.project_for_holidays',
-            'data' => $project_holidays ?? null,
+        $activityHolidays = $this->activityRepository->find($this->settingsTool->getConfiguration(ConfigEnum::ACTIVITY_FOR_HOLIDAYS));
+        $builder->add(FormEnum::ACTIVITY_FOR_HOLIDAYS, ActivityType::class, [
+            'label' => 'label.activity_for_holidays',
+            'data' => $activityHolidays ?? null,
             'required' => false
         ]);
 
-        $project_vacations = $this->projectRepository->find($this->settingsTool->getConfiguration(ConfigEnum::PROJECT_FOR_VACATIONS));
-        $builder->add(FormEnum::PROJECT_FOR_VACATIONS, ProjectType::class, [
-            'label' => 'label.project_for_vacations',
-            'data' => $project_vacations ?? null,
+        $activityVacations = $this->activityRepository->find($this->settingsTool->getConfiguration(ConfigEnum::ACTIVITY_FOR_VACATIONS));
+        $builder->add(FormEnum::ACTIVITY_FOR_VACATIONS, ActivityType::class, [
+            'label' => 'label.activity_for_vacations',
+            'data' => $activityVacations ?? null,
             'required' => false
         ]);
 

@@ -21,8 +21,8 @@ abstract class FormEnum
     public const SATURDAY = 'saturday';
     public const SUNDAY = 'sunday';
     public const CUSTOMER_FOR_FREE_DAYS = 'customer_for_free_days';
-    public const PROJECT_FOR_HOLIDAYS = 'project_for_holidays';
-    public const PROJECT_FOR_VACATIONS = 'project_for_vacations';
+    public const ACTIVITY_FOR_HOLIDAYS = 'activity_for_holidays';
+    public const ACTIVITY_FOR_VACATIONS = 'activity_for_vacations';
     public const EMAIL_LINK_URL = 'email_link_url';
     public const WORKFLOW_START = 'workflow_start';
     public const OVERTIME_NY = 'approval_overtime_ny';

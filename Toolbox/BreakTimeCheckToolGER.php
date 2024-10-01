@@ -39,26 +39,26 @@ class BreakTimeCheckToolGER
         $errors = [];
 
         
-        $projectHolidaysId = $this->settingsTool->getConfiguration(ConfigEnum::PROJECT_FOR_HOLIDAYS);
-        $projectVacationsId = $this->settingsTool->getConfiguration(ConfigEnum::PROJECT_FOR_VACATIONS);
-        $projectIds = [];
-        if ($projectHolidaysId !== null) {
-            $projectIds[] = $projectHolidaysId;
+        $activityHolidaysId = $this->settingsTool->getConfiguration(ConfigEnum::ACTIVITY_FOR_HOLIDAYS);
+        $activityVacationsId = $this->settingsTool->getConfiguration(ConfigEnum::ACTIVITY_FOR_VACATIONS);
+        $activityIds = [];
+        if ($activityHolidaysId !== null) {
+            $activityIds[] = $activityHolidaysId;
         }
-        if ($projectVacationsId !== null) {
-            $projectIds[] = $projectVacationsId;
+        if ($activityVacationsId !== null) {
+            $activityIds[] = $activityVacationsId;
         }
 
         $offdays = [];
         foreach ($timesheets as $timesheet) {            
-            if (in_array($timesheet->getProject()->getId(), $projectIds)) {
+            if (in_array($timesheet->getActivity()->getId(), $activityIds)) {
                 $offdays[] = $timesheet->getBegin()->format('Y-m-d');
             }
         }
         $timesheets = array_filter(
             $timesheets,
-            function (Timesheet $timesheet) use ($projectIds) {
-                return !in_array($timesheet->getProject()->getId(), $projectIds);
+            function (Timesheet $timesheet) use ($activityIds) {
+                return !in_array($timesheet->getActivity()->getId(), $activityIds);
             }
         );
         

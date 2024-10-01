@@ -371,7 +371,7 @@ class ApprovalRepository extends ServiceEntityRepository
         $approvedWeeks = $this->getApprovedWeeks($user);
 
         $weeks = [];
-        $projectHolidays = $this->settingsTool->getConfiguration(ConfigEnum::PROJECT_FOR_HOLIDAYS);
+        $activityHolidays = $this->settingsTool->getConfiguration(ConfigEnum::ACTIVITY_FOR_HOLIDAYS);
         
         $firstDayWorkQuery = $this->getEntityManager()->createQueryBuilder()
             ->select('t')
@@ -380,10 +380,10 @@ class ApprovalRepository extends ServiceEntityRepository
             ->setParameter('user', $user)
             ->orderBy('t.begin', 'ASC')
             ->setMaxResults(1);
-        if ($projectHolidays != null) {
+        if ($activityHolidays != null) {
             $firstDayWorkQuery = $firstDayWorkQuery
-                ->andWhere('t.project != :projectHolidays')
-                ->setParameter('projectHolidays', $projectHolidays);
+                ->andWhere('t.activity != :activityHolidays')
+                ->setParameter('activityHolidays', $activityHolidays);
         }
         $firstDayWork = $firstDayWorkQuery
             ->getQuery()
