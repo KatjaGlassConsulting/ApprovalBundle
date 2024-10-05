@@ -130,7 +130,7 @@ class WeekReportController extends BaseApprovalController
 
         return $this->render('@Approval/report_by_user.html.twig', [
             'approve' => $this->parseToHistoryView($selectedUser, $startWeek),
-            'week' => $this->formatting->parseDate(new DateTime($startWeek)),
+            'week' => $this->formatting->parseDate($startWeek instanceof DateTime ? $startWeek : new DateTime($startWeek)),
             'box_id' => 'user-week-report-box',
             'form' => $form->createView(),
             'days' => new DailyStatistic($start, $end, $selectedUser),
