@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.1
+
+- fix: TypeError in the WeekReportController class has been fixed
+
 ## 2.1.0
 
 - Support the new work contract types
