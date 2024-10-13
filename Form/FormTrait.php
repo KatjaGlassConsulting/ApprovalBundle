@@ -11,16 +11,16 @@ namespace KimaiPlugin\ApprovalBundle\Form;
 use App\Entity\Activity;
 use App\Entity\Customer;
 use App\Entity\Project;
-use App\Form\Type\ActivityType;
-use App\Form\Type\CustomerType;
 use App\Form\Type\DescriptionType;
 use App\Form\Type\ProjectType;
 use App\Form\Type\TagsType;
-use App\Repository\ProjectRepository;
-use App\Repository\Query\ProjectFormTypeQuery;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Helper functions to manage dependent customer-project-activity fields.
@@ -29,42 +29,72 @@ use Symfony\Component\Form\FormEvents;
  */
 trait FormTrait
 {
-    protected function addProject(string $id, FormBuilderInterface $builder, bool $isNew, ?Project $project = null, ?Customer $customer = null, array $options = [])
+    protected function addProject(string $id, FormBuilderInterface $builder, ?Project $project = null, array $options = [])
     {
         $options = array_merge([
-            'placeholder' => '',
+            'class' => Project::class,
+            'choice_label' => 'name',
+            'mapped' => false,
             'activity_enabled' => true,
             'query_builder_for_user' => true,
-            'join_customer' => true
+            'join_customer' => true,
+            'data' => $project
         ], $options);
 
         $builder->add($id, ProjectType::class, array_merge($options, [
             'projects' => $project,
-            'customers' => $customer,
         ]));
     }
 
-    protected function addActivity(string $id, string $projectId, FormBuilderInterface $builder, ?Activity $activity = null, ?Project $project = null, array $options = [])
+    protected function addActivity(string $id, FormBuilderInterface $builder, ?Activity $activity = null, ?Project $project = null, array $options = [])
     {
-        $options = array_merge(['placeholder' => '', 'query_builder_for_user' => true], $options);
-
-        $options['projects'] = $project;
-        $options['activities'] = $activity;
-
-        $builder->add($id, ActivityType::class, $options);
+        $builder->add($id, ChoiceType::class, [
+            'choices' => [], // Empty choice when no project is selected
+            'placeholder' => 'Select an activity',
+            'mapped' => false,
+        ]);
 
         // replaces the activity select after submission, to make sure only activities for the selected project are displayed
         $builder->addEventListener(
             FormEvents::PRE_SUBMIT,
-            function (FormEvent $event) use ($options, $projectId, $id) {
-                $data = $event->getData();
-                if (!isset($data[$projectId]) || empty($data[$projectId])) {
-                    return;
+            function (FormEvent $event) use ($options, $project, $id) {
+                $form = $event->getForm();
+
+                if ($project) {
+                    $form->add($id, EntityType::class, [
+                        'class' => Activity::class,
+                        'query_builder' => function (EntityRepository $repo) use ($project) {
+                            return $repo->createQueryBuilder('a')
+                                ->where('a.project = :project')
+                                ->setParameter('project', $project);
+                        },
+                        'choice_label' => 'name',
+                        'placeholder' => 'Select an activity',
+                        'mapped' => false,
+                    ]);
                 }
+            }
+        );
 
-                $options['projects'] = $data[$projectId];
+        $builder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($options, $project, $activity, $id) {
+                $form = $event->getForm();
 
-                $event->getForm()->add($id, ActivityType::class, $options);
+                if ($project->getId()) {
+                    $form->add($id, EntityType::class, [
+                        'class' => Activity::class,
+                        'query_builder' => function (EntityRepository $er) use ($project, $activity) {
+                            return $er->createQueryBuilder('a')
+                                ->where('a.project = :project')
+                                ->setParameter('project', $project->getId());
+                        },
+                        'choice_label' => 'name',
+                        'placeholder' => 'Select an activity',
+                        'data' => $activity,
+                        'mapped' => false,
+                    ]);
+                }
             }
         );
     }
@@ -94,5 +124,10 @@ trait FormTrait
         $builder->add('tags', TagsType::class, [
             'required' => false,
         ]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([]);
     }
 }

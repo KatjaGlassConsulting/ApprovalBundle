@@ -9,8 +9,6 @@
 
 namespace KimaiPlugin\ApprovalBundle\Form;
 
-use KimaiPlugin\ApprovalBundle\Form\FormTrait;
-use App\Form\Type\ActivityType;
 use App\Repository\ActivityRepository;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Enumeration\FormEnum;
@@ -108,34 +106,20 @@ class SettingsForm extends AbstractType
             );
         }
 
-        
-        $activityHoliday = null;
-        $projectHoliday = null;
+        $activityForHolidaysId = $this->settingsTool->getConfiguration(ConfigEnum::ACTIVITY_FOR_HOLIDAYS);
+        $activityForHolidays = $activityForHolidaysId ? $this->activityRepository->find($activityForHolidaysId) : null;
+        $activityForHolidaysProject = $activityForHolidays === null ? null : $activityForHolidays->getProject();
 
-        $this->addProject('project_holidays', $builder, false, $projectHoliday, null, ['label' => 'label.project_for_holidays','required' => false]);
-        $this->addActivity(FormEnum::ACTIVITY_FOR_HOLIDAYS, 'project_holidays', $builder, $activityHoliday, $projectHoliday, ['label' => 'label.activity_for_holidays','required' => false]);
+        $this->addProject('project_holidays', $builder, $activityForHolidaysProject, ['label' => 'label.project_for_holidays','required' => false]);
+        $this->addActivity(FormEnum::ACTIVITY_FOR_HOLIDAYS, $builder, $activityForHolidays, $activityForHolidaysProject, ['label' => 'label.activity_for_holidays','required' => false]);
 
-        $activityVacation = null;
-        $projectVacation = null;
+        $activityForVacationsId = $this->settingsTool->getConfiguration(ConfigEnum::ACTIVITY_FOR_VACATIONS);
+        $activityForVacations = $activityForVacationsId ? $this->activityRepository->find($activityForVacationsId) : null;
+        $activityForVacationsProject = $activityForVacations === null ? null : $activityForVacations->getProject();
 
-        $this->addProject('project_vacations', $builder, false, $projectVacation, null, ['label' => 'label.project_for_vacations','required' => false]);
-        $this->addActivity(FormEnum::ACTIVITY_FOR_VACATIONS, 'project_vacations', $builder, $activityVacation, $projectVacation, ['label' => 'label.activity_for_vacations','required' => false]);
+        $this->addProject('project_vacations', $builder, $activityForVacationsProject, ['label' => 'label.project_for_vacations','required' => false]);
+        $this->addActivity(FormEnum::ACTIVITY_FOR_VACATIONS, $builder, $activityForVacations, $activityForVacationsProject, ['label' => 'label.activity_for_vacations','required' => false]);
 
-        /*
-        $activityHolidays = $this->activityRepository->find($this->settingsTool->getConfiguration(ConfigEnum::ACTIVITY_FOR_HOLIDAYS));
-        $builder->add(FormEnum::ACTIVITY_FOR_HOLIDAYS, ActivityType::class, [
-            'label' => 'label.activity_for_holidays',
-            'data' => $activityHolidays ?? null,
-            'required' => false
-        ]);
-
-        $activityVacations = $this->activityRepository->find($this->settingsTool->getConfiguration(ConfigEnum::ACTIVITY_FOR_VACATIONS));
-        $builder->add(FormEnum::ACTIVITY_FOR_VACATIONS, ActivityType::class, [
-            'label' => 'label.activity_for_vacations',
-            'data' => $activityVacations ?? null,
-            'required' => false
-        ]);
-        */
 
         $data = $this->settingsTool->getConfiguration(ConfigEnum::META_FIELD_EMAIL_LINK_URL);
         $builder->add(FormEnum::EMAIL_LINK_URL, UrlType::class, [
@@ -152,7 +136,7 @@ class SettingsForm extends AbstractType
             'label' => 'label.workflow_start',
             'data' => $workflowDate,
             'required' => false
-        ]); 
+        ]);
 
         $builder->add(FormEnum::OVERTIME_NY, CheckboxType::class, [
           'label' => 'label.approval_overtime_ny',
@@ -163,7 +147,7 @@ class SettingsForm extends AbstractType
         if ($this->settingsTool->isInConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY)) {
             $breakchecks = $this->formTool->isChecked(ConfigEnum::APPROVAL_BREAKCHECKS_NY);
         } else {
-            $breakchecks = true;            
+            $breakchecks = true;
         }
         $builder->add(FormEnum::BREAKCHECKS_NY, CheckboxType::class, [
           'label' => 'label.approval_breakchecks_ny',
@@ -174,7 +158,7 @@ class SettingsForm extends AbstractType
         if ($this->settingsTool->isInConfiguration(ConfigEnum::APPROVAL_INCLUDE_ADMIN_NY)) {
             $adminchecks = $this->formTool->isChecked(ConfigEnum::APPROVAL_INCLUDE_ADMIN_NY);
         } else {
-            $adminchecks = false;            
+            $adminchecks = false;
         }
         $builder->add(FormEnum::INCLUDE_ADMIN_NY, CheckboxType::class, [
             'label' => 'label.approval_include_admin_ny',
@@ -185,7 +169,7 @@ class SettingsForm extends AbstractType
         if ($this->settingsTool->isInConfiguration(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY)) {
             $leadselfchecks = $this->formTool->isChecked(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY);
         } else {
-            $leadselfchecks = false;            
+            $leadselfchecks = false;
         }
         $builder->add(FormEnum::TEAMLEAD_SELF_APPROVE_NY, CheckboxType::class, [
             'label' => 'label.approval_teamlead_selfapprove_ny',

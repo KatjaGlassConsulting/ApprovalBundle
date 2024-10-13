@@ -92,7 +92,7 @@ class WeekReportController extends AbstractController
         $this->approvalSettings = $approvalSettings;
     }
 
-    /** 
+    /**
      * @Route(path="/week_by_user", name="approval_bundle_report", methods={"GET","POST"})
      * @throws Exception
      */
@@ -152,10 +152,10 @@ class WeekReportController extends AbstractController
         $overtimeDuration = null;
         if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_OVERTIME_NY)){
             // use actual year display, in case of "starting", use first approval date
-            $overtimeDuration = $this->approvalRepository->getExpectedActualDurationsForYear($selectedUser, $end); 
+            $overtimeDuration = $this->approvalRepository->getExpectedActualDurationsForYear($selectedUser, $end);
         }
 
-        $canManageHimself = $this->securityTool->canViewAllApprovals() || ($this->securityTool->canViewTeamApprovals() && 
+        $canManageHimself = $this->securityTool->canViewAllApprovals() || ($this->securityTool->canViewTeamApprovals() &&
             ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY) == "1"));
 
         return $this->render('@Approval/report_by_user.html.twig', [
@@ -271,7 +271,7 @@ class WeekReportController extends AbstractController
     public function settingsWorkdayHistory(Request $request): Response
     {
         $workdayHistory = $this->approvalWorkdayHistoryRepository->findAll();
-         
+
         return $this->render('@Approval/settings_workday_history.html.twig', [
             'current_tab' => 'settings_workday_history',
             'workdayHistory' => $workdayHistory,
@@ -299,7 +299,7 @@ class WeekReportController extends AbstractController
             'method' => 'POST'
         ]);
 
-        $form->handleRequest($request);    
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
@@ -315,7 +315,7 @@ class WeekReportController extends AbstractController
                 $workdayHistory->setSunday($form->getData()['sunday']);
                 $workdayHistory->setValidTill($form->getData()['validTill']);
 
-                $this->approvalWorkdayHistoryRepository->save($workdayHistory, true);  
+                $this->approvalWorkdayHistoryRepository->save($workdayHistory, true);
                 $this->approvalTimesheetRepository->updateDaysOff($form->getData()['user']);
                 $this->approvalRepository->updateExpectedActualDurationForUser($form->getData()['user']);
                 $this->flashSuccess('action.update.success');
@@ -329,7 +329,7 @@ class WeekReportController extends AbstractController
         return $this->render('@Approval/add_workday_history.html.twig', [
             'title' => 'title.add_workday_history',
             'form' => $form->createView()
-        ]); 
+        ]);
     }
 
     /**
@@ -365,6 +365,8 @@ class WeekReportController extends AbstractController
 
         if ($form->isSubmitted()) {
             $data = $form->getData();
+            $activityHolidays = $form->get(FormEnum::ACTIVITY_FOR_HOLIDAYS)->getData();
+            $activityVacations = $form->get(FormEnum::ACTIVITY_FOR_VACATIONS)->getData();
 
             if ($this->approvalSettings->canBeConfigured()) {
                 $this->settingsTool->setConfiguration(ConfigEnum::META_FIELD_EXPECTED_WORKING_TIME_ON_MONDAY, $this->collectMetaField($data, FormEnum::MONDAY));
@@ -381,8 +383,8 @@ class WeekReportController extends AbstractController
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY, $data[FormEnum::BREAKCHECKS_NY]);
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_INCLUDE_ADMIN_NY, $data[FormEnum::INCLUDE_ADMIN_NY]);
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY, $data[FormEnum::TEAMLEAD_SELF_APPROVE_NY]);
-            $this->settingsTool->setConfiguration(ConfigEnum::ACTIVITY_FOR_HOLIDAYS, $this->collectActivityForHolidays($data));
-            $this->settingsTool->setConfiguration(ConfigEnum::ACTIVITY_FOR_VACATIONS, $this->collectActivityForVacations($data));
+            $this->settingsTool->setConfiguration(ConfigEnum::ACTIVITY_FOR_HOLIDAYS, $activityHolidays->getId());
+            $this->settingsTool->setConfiguration(ConfigEnum::ACTIVITY_FOR_VACATIONS, $activityVacations->getId());
 
             $this->flashSuccess('action.update.success');
             $this->settingsTool->resetCache();
