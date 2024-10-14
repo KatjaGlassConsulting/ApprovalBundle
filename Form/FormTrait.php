@@ -81,7 +81,7 @@ trait FormTrait
             function (FormEvent $event) use ($options, $project, $activity, $id) {
                 $form = $event->getForm();
 
-                if ($project->getId()) {
+                if ($project !== null && $project->getId()) {
                     $form->add($id, EntityType::class, [
                         'class' => Activity::class,
                         'query_builder' => function (EntityRepository $er) use ($project, $activity) {
