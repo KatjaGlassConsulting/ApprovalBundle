@@ -13,6 +13,7 @@ use App\Repository\ActivityRepository;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Enumeration\FormEnum;
 use KimaiPlugin\ApprovalBundle\Toolbox\FormTool;
+use App\Form\FormTrait as FormToolOri;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -25,6 +26,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class SettingsForm extends AbstractType
 {
     use FormTrait;
+    use FormToolOri;
 
     /**
      * @var FormTool
@@ -106,19 +108,29 @@ class SettingsForm extends AbstractType
             );
         }
 
+        if (isset($options['data'])) {
+            $entry = $options['data'];
+
+            $activity = $entry->getActivity();
+            $project = $entry->getProject();
+        }
+
+        $this->addProject($builder, false, $project, null);
+        $this->addActivity($builder, $activity, $project);
+
         $activityForHolidaysId = $this->settingsTool->getConfiguration(ConfigEnum::ACTIVITY_FOR_HOLIDAYS);
         $activityForHolidays = $activityForHolidaysId ? $this->activityRepository->find($activityForHolidaysId) : null;
         $activityForHolidaysProject = $activityForHolidays === null ? null : $activityForHolidays->getProject();
 
-        $this->addProject('project_holidays', $builder, $activityForHolidaysProject, ['label' => 'label.project_for_holidays','required' => false]);
-        $this->addActivity(FormEnum::ACTIVITY_FOR_HOLIDAYS, $builder, $activityForHolidays, $activityForHolidaysProject, ['label' => 'label.activity_for_holidays','required' => false]);
+        $this->addProject2('project_holidays', $builder, $activityForHolidaysProject, ['label' => 'label.project_for_holidays','required' => false]);
+        $this->addActivity2(FormEnum::ACTIVITY_FOR_HOLIDAYS, $builder, $activityForHolidays, $activityForHolidaysProject, ['label' => 'label.activity_for_holidays','required' => false]);
 
         $activityForVacationsId = $this->settingsTool->getConfiguration(ConfigEnum::ACTIVITY_FOR_VACATIONS);
         $activityForVacations = $activityForVacationsId ? $this->activityRepository->find($activityForVacationsId) : null;
         $activityForVacationsProject = $activityForVacations === null ? null : $activityForVacations->getProject();
 
-        $this->addProject('project_vacations', $builder, $activityForVacationsProject, ['label' => 'label.project_for_vacations','required' => false]);
-        $this->addActivity(FormEnum::ACTIVITY_FOR_VACATIONS, $builder, $activityForVacations, $activityForVacationsProject, ['label' => 'label.activity_for_vacations','required' => false]);
+        $this->addProject2('project_vacations', $builder, $activityForVacationsProject, ['label' => 'label.project_for_vacations','required' => false]);
+        $this->addActivity2(FormEnum::ACTIVITY_FOR_VACATIONS, $builder, $activityForVacations, $activityForVacationsProject, ['label' => 'label.activity_for_vacations','required' => false]);
 
 
         $data = $this->settingsTool->getConfiguration(ConfigEnum::META_FIELD_EMAIL_LINK_URL);

@@ -29,7 +29,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 trait FormTrait
 {
-    protected function addProject(string $id, FormBuilderInterface $builder, ?Project $project = null, array $options = [])
+    protected function addProject2(string $id, FormBuilderInterface $builder, ?Project $project = null, array $options = [])
     {
         $options = array_merge([
             'class' => Project::class,
@@ -46,7 +46,7 @@ trait FormTrait
         ]));
     }
 
-    protected function addActivity(string $id, FormBuilderInterface $builder, ?Activity $activity = null, ?Project $project = null, array $options = [])
+    protected function addActivity2(string $id, FormBuilderInterface $builder, ?Activity $activity = null, ?Project $project = null, array $options = [])
     {
         $builder->add($id, ChoiceType::class, [
             'choices' => [], // Empty choice when no project is selected
@@ -102,6 +102,7 @@ trait FormTrait
     /**
      * @deprecated since 1.13
      */
+    /*
     protected function addDescription(FormBuilderInterface $builder)
     {
         @trigger_error('FormTrait::addDescription() is deprecated and will be removed with 2.0, use DescriptionType instead', E_USER_DEPRECATED);
@@ -113,10 +114,12 @@ trait FormTrait
             ]
         ]);
     }
+        */
 
     /**
      * @deprecated since 1.14
      */
+    /*
     protected function addTags(FormBuilderInterface $builder)
     {
         @trigger_error('FormTrait::addTags() is deprecated and will be removed with 2.0, use TagsType instead', E_USER_DEPRECATED);
@@ -130,4 +133,5 @@ trait FormTrait
     {
         $resolver->setDefaults([]);
     }
+        */
 }
