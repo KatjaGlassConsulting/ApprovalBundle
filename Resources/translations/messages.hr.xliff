@@ -311,7 +311,7 @@
       <trans-unit id="error.six_hours_without_break">
         <source>error.six_hours_without_break</source>
         <target>Radio/la si više od 6 sati bez pauze od 30 minuta!</target>
-      </trans-unit>      
+      </trans-unit>
       <trans-unit id="error.six_hours_without_stop_break">
         <source>error.six_hours_without_stop_break</source>
         <target>Radio/la si više od 6 sati neprekidno!</target>
@@ -325,10 +325,18 @@
         <target>Radili ste na slobodan dan!</target>
       </trans-unit>
 
+      <trans-unit id="label.project_for_holidays">
+        <source>label.project_for_holidays</source>
+        <target>Projekt za praznike</target>
+      </trans-unit>
       <trans-unit id="label.activity_for_holidays">
         <source>label.activity_for_holidays</source>
-        <target>Blagdanski aktivnost</target>
-      </trans-unit>      
+        <target>Aktivnost za praznike</target>
+      </trans-unit>
+      <trans-unit id="label.project_for_vacations">
+        <source>label.project_for_vacations</source>
+        <target>Projekt za odmor</target>
+      </trans-unit>
       <trans-unit id="label.activity_for_vacations">
         <source>label.activity_for_vacations</source>
         <target>Aktivnost za odmor</target>
@@ -449,7 +457,7 @@
       <trans-unit id="label.approval_overtime_ny">
         <source>label.approval_overtime_ny</source>
         <target>Prekovremena reprezentacija</target>
-      </trans-unit>      
+      </trans-unit>
       <trans-unit id="label.approval_breakchecks_ny">
         <source>label.approval_breakchecks_ny</source>
         <target>Izračunajte probleme vremena pauze</target>
