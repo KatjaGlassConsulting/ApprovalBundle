@@ -10,6 +10,7 @@
 namespace KimaiPlugin\ApprovalBundle\Form;
 
 use App\Repository\ActivityRepository;
+use App\Entity\Activity;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Enumeration\FormEnum;
 use KimaiPlugin\ApprovalBundle\Toolbox\FormTool;
@@ -21,6 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class SettingsForm extends AbstractType
 {
@@ -106,28 +108,23 @@ class SettingsForm extends AbstractType
             );
         }
 
-        /*
-        file_put_contents("C:/temp/blub.txt", "options - " . json_encode($options) . "\n", FILE_APPEND);
-        if (isset($options['data'])) {
-            $entry = $options['data'];
-            file_put_contents("C:/temp/blub.txt", "entry - " . json_encode($entry) . "\n", FILE_APPEND);
+        $builder->add(FormEnum::ACTIVITY_FOR_HOLIDAYS, EntityType::class, [
+            'label' => 'label.activity_for_holidays',
+            'class' => Activity::class,
+            'choice_label' => 'name',
+            'required' => false,
+            'data' => $this->activityRepository->findOneBy(['id' => $this->settingsTool->getConfiguration(ConfigEnum::ACTIVITY_FOR_HOLIDAYS)]),
+            'constraints' => [new \KimaiPlugin\VacationBundle\Validator\Activity()]
+        ]);
 
-            //$activity = $entry->getActivity();
-            //$project = $entry->getProject();
-        }
-        */
-
-        $holidaysActivityId = $this->settingsTool->getConfiguration(ConfigEnum::ACTIVITY_FOR_HOLIDAYS);
-        $holidaysActivity = $holidaysActivityId ? $this->activityRepository->find($holidaysActivityId) : null;
-        $holidaysProject = $holidaysActivity ? $holidaysActivity->getProject() : null;
-        $this->addProject('project_holidays', $builder, false, $holidaysProject, null, ['label' => 'label.project_for_holidays']);
-        $this->addActivity(FormEnum::ACTIVITY_FOR_HOLIDAYS, 'project_holidays', $builder, $holidaysActivity, $holidaysProject, ['label' => 'label.activity_for_holidays']);
-
-        $vacationsActivityId = $this->settingsTool->getConfiguration(ConfigEnum::ACTIVITY_FOR_VACATIONS);
-        $vacationsActivity = $vacationsActivityId ? $this->activityRepository->find($vacationsActivityId) : null;
-        $vacationProject = $holidaysActivity ? $vacationsActivity->getProject() : null;
-        $this->addProject('project_vacations', $builder, false, $vacationProject, null, ['label' => 'label.project_for_vacations']);
-        $this->addActivity(FormEnum::ACTIVITY_FOR_VACATIONS, 'project_vacations', $builder, $vacationsActivity, $vacationProject, ['label' => 'label.activity_for_vacations']);
+        $builder->add(FormEnum::ACTIVITY_FOR_VACATIONS, EntityType::class, [
+            'label' => 'label.activity_for_vacations',
+            'class' => Activity::class,
+            'choice_label' => 'name',
+            'required' => false,
+            'data' => $this->activityRepository->findOneBy(['id' => $this->settingsTool->getConfiguration(ConfigEnum::ACTIVITY_FOR_VACATIONS)]),
+            'constraints' => [new \KimaiPlugin\VacationBundle\Validator\Activity()]
+        ]);
 
         $data = $this->settingsTool->getConfiguration(ConfigEnum::META_FIELD_EMAIL_LINK_URL);
         $builder->add(FormEnum::EMAIL_LINK_URL, UrlType::class, [

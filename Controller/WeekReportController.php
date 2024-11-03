@@ -16,6 +16,7 @@ use App\Entity\Timesheet;
 use App\Entity\User;
 use App\Form\Model\DateRange;
 use App\Model\DailyStatistic;
+use App\Repository\ActivityRepository;
 use App\Reporting\WeekByUser;
 use App\Repository\Query\BaseQuery;
 use App\Repository\Query\TimesheetQuery;
@@ -63,6 +64,7 @@ class WeekReportController extends AbstractController
     private $reportRepository;
     private $approvalSettings;
     private $securityTool;
+    private $activityRepository;
 
     public function __construct(
         SettingsTool $settingsTool,
@@ -76,6 +78,7 @@ class WeekReportController extends AbstractController
         ApprovalTimesheetRepository $approvalTimesheetRepository,
         BreakTimeCheckToolGER $breakTimeCheckToolGER,
         ReportRepository $reportRepository,
+        ActivityRepository $activityRepository,
         ApprovalSettingsInterface $approvalSettings
     ) {
         $this->settingsTool = $settingsTool;
@@ -90,6 +93,7 @@ class WeekReportController extends AbstractController
         $this->breakTimeCheckToolGER = $breakTimeCheckToolGER;
         $this->reportRepository = $reportRepository;
         $this->approvalSettings = $approvalSettings;
+        $this->activityRepository = $activityRepository;
     }
 
     /**
@@ -383,9 +387,9 @@ class WeekReportController extends AbstractController
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY, $data[FormEnum::BREAKCHECKS_NY]);
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_INCLUDE_ADMIN_NY, $data[FormEnum::INCLUDE_ADMIN_NY]);
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY, $data[FormEnum::TEAMLEAD_SELF_APPROVE_NY]);
-            $this->settingsTool->setConfiguration(ConfigEnum::ACTIVITY_FOR_HOLIDAYS, $activityHolidays->getId());
-            $this->settingsTool->setConfiguration(ConfigEnum::ACTIVITY_FOR_VACATIONS, $activityVacations->getId());
-
+            $this->settingsTool->setConfiguration(ConfigEnum::ACTIVITY_FOR_HOLIDAYS, $activityHolidays ? $activityHolidays->getId() : null);
+            $this->settingsTool->setConfiguration(ConfigEnum::ACTIVITY_FOR_VACATIONS, $activityVacations ? $activityVacations->getId() : null);
+            
             $this->flashSuccess('action.update.success');
             $this->settingsTool->resetCache();
         }
