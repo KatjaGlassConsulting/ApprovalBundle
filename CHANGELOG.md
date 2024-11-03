@@ -4,7 +4,7 @@
 
 - instead of working with "Customer for free days", options for "Holiday Activitiy" and "Vacation Activitiy" is to be used
 - when updating time sheets due to working hour changes, only Holiday and Vacation time entries are update, not other "free days" which might also have been used for sick leaves or similar
-- Approval start time for a user has previously been ignoreing all "off-days", this is changed to ignore only "Holidays". As an impact, when a user starts with a vacation day/week, this week is already included as well.
+- Approval start time for a user has previously been ignoring all "off-days", this is changed to ignore only "Holidays". As an impact, when a user starts with a vacation day/week, this week is already included as well.
 - fix: Reject message did contain "Approved" when no reason was provided
 
 ## 1.0.2 to 1.0.3
