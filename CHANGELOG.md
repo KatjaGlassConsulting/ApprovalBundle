@@ -1,5 +1,9 @@
 # Changelog
 
+# 1.1.0 to 1.1.1
+
+- fix using no constrait for new setting from VacationBundle (different plugin not always available)
+
 # 1.0.3 to 1.1.0
 
 - instead of working with "Customer for free days", options for "Holiday Activitiy" and "Vacation Activitiy" is to be used

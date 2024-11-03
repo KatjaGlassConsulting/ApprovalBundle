@@ -113,8 +113,7 @@ class SettingsForm extends AbstractType
             'class' => Activity::class,
             'choice_label' => 'name',
             'required' => false,
-            'data' => $this->activityRepository->findOneBy(['id' => $this->settingsTool->getConfiguration(ConfigEnum::ACTIVITY_FOR_HOLIDAYS)]),
-            'constraints' => [new \KimaiPlugin\VacationBundle\Validator\Activity()]
+            'data' => $this->activityRepository->findOneBy(['id' => $this->settingsTool->getConfiguration(ConfigEnum::ACTIVITY_FOR_HOLIDAYS)])
         ]);
 
         $builder->add(FormEnum::ACTIVITY_FOR_VACATIONS, EntityType::class, [
@@ -122,8 +121,7 @@ class SettingsForm extends AbstractType
             'class' => Activity::class,
             'choice_label' => 'name',
             'required' => false,
-            'data' => $this->activityRepository->findOneBy(['id' => $this->settingsTool->getConfiguration(ConfigEnum::ACTIVITY_FOR_VACATIONS)]),
-            'constraints' => [new \KimaiPlugin\VacationBundle\Validator\Activity()]
+            'data' => $this->activityRepository->findOneBy(['id' => $this->settingsTool->getConfiguration(ConfigEnum::ACTIVITY_FOR_VACATIONS)])
         ]);
 
         $data = $this->settingsTool->getConfiguration(ConfigEnum::META_FIELD_EMAIL_LINK_URL);
