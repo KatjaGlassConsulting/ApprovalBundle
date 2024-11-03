@@ -247,6 +247,10 @@ class ApprovalRepository extends ServiceEntityRepository
 
     public function findAllWeek(?array $users): ?array
     {
+        if (count($users) == 0) {
+            return [];
+        }
+
         $parseToViewArray = $this->getUserApprovals($users);
         $parseToViewArray = $this->addAllNotSubmittedUsers($parseToViewArray, $users);
         if (\count($parseToViewArray) > 5000) {
@@ -698,6 +702,10 @@ class ApprovalRepository extends ServiceEntityRepository
 
     public function getAllNotSubmittedApprovals(array $users): array
     {
+        if (count($users) == 0) {
+            return [];
+        }
+
         $allRows = $this->findAllWeek($users);
         $allRows = $this->filterWeeksNotSubmitted($allRows);
         $approvals = $this->generateURLtoApprovals($allRows);
@@ -715,6 +723,10 @@ class ApprovalRepository extends ServiceEntityRepository
 
     public function getUserApprovals(?array $users, $startDate = null)
     {
+        if (count($users) == 0) {
+            return [];
+        }
+
         $usersId = array_map(function ($user) {
             return $user->getId();
         }, $users);

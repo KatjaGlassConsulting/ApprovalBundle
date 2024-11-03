@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.2
+
+- fix: Issues when having teams with no members
+
 ## 2.1.1
 
 - fix: TypeError in the WeekReportController class has been fixed
