@@ -37,7 +37,6 @@ class BreakTimeCheckToolGER
     public function checkBreakTime(array $timesheets)
     {
         $errors = [];
-
         
         $activityHolidaysId = $this->settingsTool->getConfiguration(ConfigEnum::ACTIVITY_FOR_HOLIDAYS);
         $activityVacationsId = $this->settingsTool->getConfiguration(ConfigEnum::ACTIVITY_FOR_VACATIONS);

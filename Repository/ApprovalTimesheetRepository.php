@@ -77,7 +77,7 @@ class ApprovalTimesheetRepository extends ServiceEntityRepository
         $currentYear = date('Y'); 
         $start = "01-01-" . strval($currentYear - 1);
 
-        if (!empty($projectIds)){
+        if (!empty($activityIds)){
           $freeDaysTimesheetsQuery = $this->getEntityManager()->createQueryBuilder()
                 ->select('t')
                 ->from(Timesheet::class, 't')
