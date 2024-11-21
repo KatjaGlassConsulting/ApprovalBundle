@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.3
+
+- fix: Return value had not been provided - using working hours had previously thrown an error
+
 ## 2.1.2
 
 - fix: Issues when having teams with no members
