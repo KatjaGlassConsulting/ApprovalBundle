@@ -36,6 +36,6 @@ class MetaFieldSettings implements ApprovalSettingsInterface
 
     public function getWorkingTimeForDate(User $user, \DateTimeInterface $dateTime): int
     {
-        $this->workingTimeService->getContractMode($user)->getCalculator($user)->getWorkHoursForDay($dateTime);
+        return $this->workingTimeService->getContractMode($user)->getCalculator($user)->getWorkHoursForDay($dateTime);
     }
 }
