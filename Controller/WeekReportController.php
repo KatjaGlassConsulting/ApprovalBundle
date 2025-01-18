@@ -386,6 +386,7 @@ class WeekReportController extends BaseApprovalController
         $dateRange->setEnd($end);
         $timesheetQuery->setDateRange($dateRange);
         $timesheetQuery->setOrderBy('date');
+        $timesheetQuery->setOrderBy('begin');
         $timesheetQuery->setOrder(BaseQuery::ORDER_ASC);
 
         $timesheets = $this->timesheetRepository->getTimesheetsForQuery($timesheetQuery);

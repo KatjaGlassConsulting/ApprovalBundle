@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.4
+
+- fix: Break issue calculations had not been correct, when time entries had been in misorder, e.g. entered later times before earlier times, this is now fixed.
+
 ## 2.1.3
 
 - fix: Return value had not been provided - using working hours had previously thrown an error
