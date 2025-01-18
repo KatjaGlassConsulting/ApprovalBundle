@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[OA\Tag(name: 'ApprovalBundleApi')]
+#[OA\Tag(name: 'ApprovalBundle')]
 final class ApprovalOvertimeWeeklyController extends BaseApiController
 {
     public function __construct(
@@ -40,7 +40,7 @@ final class ApprovalOvertimeWeeklyController extends BaseApiController
     #[OA\Response(response: 200, description: "Get weekly overtime overview for all weeks from 'date' and later")]
     #[Rest\QueryParam(name: 'user', requirements: '\d+', strict: true, nullable: true, description: 'User ID to get information for')]
     #[Rest\QueryParam(name: 'date', nullable: false, description: 'Date to get weekly overtime overview up from this date: Y-m-d')]
-    #[Route(methods: ['GET'], path: '/weekly_overtime')]
+    #[Route(methods: ['GET'], path: '/approval-bundle/weekly_overtime')]
     public function weeklyOvertime(Request $request): Response
     {
         $selectedUserId = $request->query->get('user');

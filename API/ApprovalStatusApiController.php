@@ -25,7 +25,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[OA\Tag(name: 'ApprovalStatusApi')]
+#[OA\Tag(name: 'ApprovalBundle')]
 final class ApprovalStatusApiController extends BaseApiController
 {
     public function __construct(
@@ -40,7 +40,7 @@ final class ApprovalStatusApiController extends BaseApiController
     #[OA\Response(response: 200, description: 'Status of selected week')]
     #[Rest\QueryParam(name: 'user', requirements: '\d+', strict: true, nullable: true, description: 'User ID to get information for')]
     #[Rest\QueryParam(name: 'date', nullable: false, description: 'Date as monday of selected week: Y-m-d')]
-    #[Route(methods: ['GET'], path: '/week-status')]
+    #[Route(methods: ['GET'], path: '/approval-bundle/week-status')]
     public function submitWeekAction(Request $request): Response
     {
         $selectedUserId = $request->query->get('user');

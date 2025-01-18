@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[OA\Tag(name: 'ApprovalBundleApi')]
+#[OA\Tag(name: 'ApprovalBundle')]
 final class ApprovalOvertimeController extends BaseApiController
 {
     public function __construct(
@@ -40,7 +40,7 @@ final class ApprovalOvertimeController extends BaseApiController
     #[OA\Response(response: 200, description: 'Get overtime for that year')]
     #[Rest\QueryParam(name: 'user', requirements: '\d+', strict: true, nullable: true, description: 'User ID to get information for')]
     #[Rest\QueryParam(name: 'date', nullable: false, description: 'Date to get overtime until/including this date: Y-m-d')]
-    #[Route(methods: ['GET'], path: '/overtime_year')]
+    #[Route(methods: ['GET'], path: '/approval-bundle/overtime_year')]
     public function overtimeForYearUntil(Request $request): Response
     {
         $selectedUserId = $request->query->get('user');

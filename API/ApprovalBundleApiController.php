@@ -32,7 +32,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[OA\Tag(name: 'ApprovalBundleApi')]
+#[OA\Tag(name: 'ApprovalBundle')]
 final class ApprovalBundleApiController extends BaseApiController
 {
     public function __construct(
@@ -53,7 +53,7 @@ final class ApprovalBundleApiController extends BaseApiController
     #[OA\Response(response: 200, description: 'URL to submitted week')]
     #[Rest\QueryParam(name: 'user', requirements: '\d+', strict: true, nullable: true, description: 'User ID to get information for')]
     #[Rest\QueryParam(name: 'date', nullable: false, description: 'Date as monday of selected week: Y-m-d')]
-    #[Route(methods: ['POST'], path: '/add_to_approve')]
+    #[Route(methods: ['POST'], path: '/approval-bundle/add_to_approve')]
     public function submitWeekAction(Request $request): Response
     {
         $selectedUserId = $request->query->get('user');

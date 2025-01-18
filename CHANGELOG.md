@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.0
+
+- **API endpoints changed** to support Kimai naming conventions
+- All API endpoints contain additionally "/approval-bundle/" in as prefix - this is a breaking change, so if you have integrations, you need to update them - the "TimeKex" integration has been updated - use the latest release and update the configuration
+
 ## 2.1.4
 
 - fix: Break issue calculations had not been correct, when time entries had been in misorder, e.g. entered later times before earlier times, this is now fixed.

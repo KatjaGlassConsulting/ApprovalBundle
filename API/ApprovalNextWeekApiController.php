@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[OA\Tag(name: 'ApprovalNextWeekApi')]
+#[OA\Tag(name: 'ApprovalBundle')]
 final class ApprovalNextWeekApiController extends BaseApiController
 {
     public function __construct(
@@ -36,7 +36,7 @@ final class ApprovalNextWeekApiController extends BaseApiController
 
     #[OA\Response(response: 200, description: 'Status of selected week')]
     #[Rest\QueryParam(name: 'user', requirements: '\d+', strict: true, nullable: true, description: 'User ID to get information for')]
-    #[Route(methods: ['GET'], path: '/next-week')]
+    #[Route(methods: ['GET'], path: '/approval-bundle/next-week')]
     public function nextWeekAction(Request $request): Response
     {
         $selectedUserId = $request->query->get('user');
