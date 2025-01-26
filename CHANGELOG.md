@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.1
+
+- fix: "History" of approvals had not been shown
+- fix: When timesheets are not all finished (e.g. no end-time), the approval view had an error and was not showing up
+
 ## 2.2.0
 
 - **API endpoints changed** to support Kimai naming conventions

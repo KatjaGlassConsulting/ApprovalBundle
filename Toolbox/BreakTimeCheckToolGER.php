@@ -84,6 +84,10 @@ class BreakTimeCheckToolGER
         $blockStart = 0;
         $blockEnd = 0;
         foreach ($timesheets as $timesheet) {
+            if($timesheet->getEnd() == null) {
+                continue;
+            }
+
             if ($lastDay != $timesheet->getBegin()->format('Y-m-d')) {
                 $lastDay = $timesheet->getBegin()->format('Y-m-d');
                 $blockStart = $timesheet->getBegin()->getTimestamp();
@@ -198,7 +202,7 @@ class BreakTimeCheckToolGER
             });
 
             for ($i = 0; $i < \count($value) - 1; $i++) {
-                if ($value[$i]->getEnd() != null) {
+                if ($value[$i]->getEnd() != null && $value[$i + 1]->getEnd() != null) {
                     $timesheetOne = $value[$i]->getEnd()->getTimestamp();
                     $timesheetTwo = $value[$i + 1]->getBegin()->getTimestamp();
                     if ($value[$i]->getEnd() == null) {

@@ -464,6 +464,12 @@ class ApprovalRepository extends ServiceEntityRepository
 
     public function findHistoryForUserAndWeek($userId, $week)
     {
+        if ($week instanceof DateTime) {
+            $weekString = $week->format('Y-m-d');
+        } else {
+            $weekString = $week;
+        }
+        
         $em = $this->getEntityManager();
 
         return $em->createQueryBuilder()
@@ -473,7 +479,7 @@ class ApprovalRepository extends ServiceEntityRepository
             ->join('ap.history', 'ah')
             ->where('ap.startDate = :startDate')
             ->andWhere('u.id = :userId')
-            ->setParameter('startDate', $week)
+            ->setParameter('startDate', $weekString)
             ->setParameter('userId', $userId)
             ->orderBy('ah.date', 'ASC')
             ->getQuery()
