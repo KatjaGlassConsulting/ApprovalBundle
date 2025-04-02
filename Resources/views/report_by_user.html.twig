@@ -7,6 +7,8 @@
 {% block report %}
     {% if approvePreviousWeeksMessage and approvePreviousWeeksMessage < (current | date_format('Y-m-d')) %}
         {{ widgets.callout('danger', 'warning.add_to_approve_previous_weeks'|trans) }}
+    {% elseif status == 'submitted' and finalApprovePreviousWeeksMessage and finalApprovePreviousWeeksMessage < (current | date_format('Y-m-d')) and (user.id != currentUser or canManageHimself) %}
+        {{ widgets.callout('warning', 'warning.add_to_final_approve_previous_weeks'|trans) }}    
     {% endif %}
 
     {% if selectedUserSundayIssue %}
@@ -47,7 +49,12 @@
                     </a>
                 {% endif %}
                     {% if (status == 'submitted') and (user.id != currentUser or canManageHimself) %}
-                        <a href="{{ path('approve',{'approveId':approveId,'user':user.id,'date':current|date('Y-m-d')}) }}"
+                        <a 
+                            {% if (finalApprovePreviousWeeksMessage and finalApprovePreviousWeeksMessage < (current | date_format('Y-m-d'))) %}
+                                disabled
+                            {% else %}
+                                href="{{ path('approve',{'approveId':approveId,'user':user.id,'date':current|date('Y-m-d')}) }}"
+                            {% endif %}
                            class="btn btn-default btn-create" title="{{ 'tooltip.approve'|trans }}">
                         <i class="fa fa-1x fa-check-circle"></i>
                     </a>

@@ -190,6 +190,7 @@ class WeekReportController extends AbstractController
             'errors' => $errors,
             'timesheet' => $timesheets,
             'approvePreviousWeeksMessage' => $this->approvalRepository->getNextApproveWeek($selectedUser),
+            'finalApprovePreviousWeeksMessage' => $this->approvalRepository->getNextForApprovalWeek($selectedUser),
             'selectedUserSundayIssue' => $selectedUserSundayIssue,
             'currentUserSundayIssue' => $currentUserSundayIssue
         ]);

@@ -169,7 +169,11 @@
       </trans-unit>
       <trans-unit id="warning.add_to_approve_previous_weeks">
         <source>warning.add_to_approve_previous_weeks</source>
-        <target>Es gibt noch ungenehmigte frühere Wochen, daher kann diese Woche nicht bearbeitet werden</target>
+        <target>Es gibt noch nicht abgeschickte frühere Wochen, daher kann diese Woche nicht zur Genehmigung geschickt werden.</target>
+      </trans-unit>
+      <trans-unit id="warning.add_to_final_approve_previous_weeks">
+        <source>warning.add_to_final_approve_previous_weeks</source>
+        <target>Es gibt noch nicht genehmigte frühere Wochen, daher kann diese Woche nicht genehmigt werden.</target>
       </trans-unit>
       <trans-unit id="warning.selected_user_sunday_issue">
         <source>warning.selected_user_sunday_issue</source>

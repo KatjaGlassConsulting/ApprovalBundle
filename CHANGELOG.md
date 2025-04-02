@@ -1,7 +1,10 @@
 # Changelog
 
-# 1.1.1 to 1.1.2
+# 1.1.1 to 1.2.0
 
+- new check that the approval can only be done, when all previous weeks are already approved (it's no longer possible to approve e.g. week 3 before week 2)
+- new warning message and disabled approval button, when not all previous weeks are approved
+- updated german warning message text when a week cannot be submitted for approval due to missing prior weeks
 - fix from V2: "History" of approvals had not been shown in some cases
 - fix from V2: When timesheets are not all finished (e.g. no end-time), the approval view had an error and was not showing up
 - fix from V2: Break issue calculations had not been correct, when time entries had been in misorder, e.g. entered later times before earlier times, this is now fixed.

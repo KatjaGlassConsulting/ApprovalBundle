@@ -171,6 +171,10 @@
         <source>warning.add_to_approve_previous_weeks</source>
         <target>Please add previous weeks to approve</target>
       </trans-unit>
+      <trans-unit id="warning.add_to_final_approve_previous_weeks">
+        <source>warning.add_to_final_approve_previous_weeks</source>
+        <target>Please approve previous weeks before this week</target>
+      </trans-unit>
       <trans-unit id="warning.selected_user_sunday_issue">
         <source>warning.selected_user_sunday_issue</source>
         <target>Selected user has Sunday as start of the week - this is not supported for Approval Plugin.</target>

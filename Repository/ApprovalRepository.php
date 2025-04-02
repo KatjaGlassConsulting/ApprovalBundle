@@ -669,6 +669,21 @@ class ApprovalRepository extends ServiceEntityRepository
         );
     }
 
+    public function filterWeeksSubmitted($parseToViewArray): array
+    {
+        return array_reduce(
+            $parseToViewArray,
+            function ($response, $approve) {
+                if (\in_array($approve['status'], [ApprovalStatus::SUBMITTED])) {
+                    $response[] = $approve;
+                }
+
+                return $response;
+            },
+            []
+        );
+    }
+
     public function filterWeeksApprovedOrSubmitted($parseToViewArray): array
     {
         return array_reduce(
@@ -817,7 +832,7 @@ class ApprovalRepository extends ServiceEntityRepository
 
     public function getNextApproveWeek(User $user): ?string
     {
-        $allRows = $this->findAllWeek([$user]);
+        $allRows = $this->findAllWeek([$user]); 
         $allNotSubmittedRows = $this->filterWeeksNotSubmitted($allRows);
 
         // When there are past/current not submitted rows, return that date
@@ -834,6 +849,20 @@ class ApprovalRepository extends ServiceEntityRepository
         $prevWeekDay = end($allRows)['startDate'];
 
         return date('Y-m-d', strtotime($prevWeekDay . ' + 7 days'));
+    }
+
+    public function getNextForApprovalWeek(User $user): ?string
+    {
+        $allRows = $this->findAllWeek([$user]); 
+        $allSubmittedRows = $this->filterWeeksSubmitted($allRows);
+
+        // When there are past/current submitted rows (not approved), return that date
+        if (!empty($allSubmittedRows)) {
+            return $allSubmittedRows[0]['startDate'];
+        }
+        else {
+            return null;
+        }
     }
 
     public function updateExpectedActualDurationForUser(User $user)

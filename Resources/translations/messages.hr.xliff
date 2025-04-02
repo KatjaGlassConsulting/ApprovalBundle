@@ -166,6 +166,10 @@
       <trans-unit id="warning.add_to_approve_previous_weeks">
         <source>warning.add_to_approve_previous_weeks</source>
         <target>Za odobravanje dodaj prošle tjedne</target>
+      </trans-unit>      
+      <trans-unit id="warning.add_to_final_approve_previous_weeks">
+        <source>warning.add_to_final_approve_previous_weeks</source>
+        <target>Prije ovog tjedna odobrite prethodne tjedne</target>
       </trans-unit>
       <trans-unit id="warning.selected_user_sunday_issue">
         <source>warning.selected_user_sunday_issue</source>
