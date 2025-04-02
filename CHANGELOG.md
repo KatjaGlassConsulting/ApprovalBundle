@@ -1,5 +1,11 @@
 # Changelog
 
+# 1.1.1 to 1.1.2
+
+- fix from V2: "History" of approvals had not been shown in some cases
+- fix from V2: When timesheets are not all finished (e.g. no end-time), the approval view had an error and was not showing up
+- fix from V2: Break issue calculations had not been correct, when time entries had been in misorder, e.g. entered later times before earlier times, this is now fixed.
+
 # 1.1.0 to 1.1.1
 
 - fix using no constrait for new setting from VacationBundle (different plugin not always available)
