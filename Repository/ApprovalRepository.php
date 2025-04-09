@@ -269,6 +269,35 @@ class ApprovalRepository extends ServiceEntityRepository
         return $result["startDate"];
     }
 
+    public function findApprovalsForUserWithStatus(User $user, DateTime $begin, DateTime $end): ?array
+    {
+        // get the latest approval elements (there might be multiple)
+        $subQuery = $this->getEntityManager()->createQueryBuilder()
+            ->select('MAX(ap_sub.creationDate)')
+            ->from(Approval::class, 'ap_sub')
+            ->where('ap_sub.startDate = ap.startDate')
+            ->andWhere('ap_sub.endDate = ap.endDate')
+            ->andWhere('ap_sub.user = :user');
+
+        return $this->getEntityManager()->createQueryBuilder()
+            ->select('ap')
+            ->from(Approval::class, 'ap')
+            ->join('ap.history', 'ah')
+            ->andWhere('ap.user = :user')
+            ->andWhere('ap.startDate <= :end')
+            ->andWhere('ap.endDate >= :begin')
+            ->andWhere('ap.creationDate = (' . $subQuery->getDQL() . ')')
+            ->setParameter('user', $user)
+            ->setParameter('begin', $begin->format('Y-m-d'))
+            ->setParameter('end', $end->format('Y-m-d'))
+            ->orderBy('ap.startDate', 'ASC')
+            ->addOrderBy('ap.id', 'ASC')
+            ->addOrderBy('ah.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
     public function findAllWeek(?array $users): ?array
     {
         $parseToViewArray = $this->getUserApprovals($users);
@@ -584,7 +613,7 @@ class ApprovalRepository extends ServiceEntityRepository
             ->andWhere($expr->in('u.id', ':users'))
             ->setParameter('users', $usersId)
             ->orderBy('ap.startDate', 'DESC')
-            ->orderBy('ah.date', 'DESC')
+            ->addOrderBy('ah.date', 'DESC')
             ->getQuery()
             ->getResult();
 

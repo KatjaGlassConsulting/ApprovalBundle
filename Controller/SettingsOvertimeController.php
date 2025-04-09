@@ -104,9 +104,7 @@ class SettingsOvertimeController extends AbstractController
         return $this->render('@Approval/add_overtime_history.html.twig', [
             'title' => 'title.add_overtime_history',
             'form' => $form->createView()
-        ]); 
-
-        return null;
+        ]);
     }
 
     /**

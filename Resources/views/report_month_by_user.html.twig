@@ -1,0 +1,294 @@
+{% extends '@Approval/layout.html.twig' %}
+{% import "macros/widgets.html.twig" as widgets %}
+
+{% block report_title %}{{ report_title|trans({}, 'ApprovalBundle') }}{% endblock %}
+
+{% block report %}
+    {% if selectedUserSundayIssue %}
+        {{ widgets.callout('danger', 'warning.selected_user_sunday_issue'|trans) }}
+    {% endif %}
+
+    {% if currentUserSundayIssue %}
+        {{ widgets.callout('danger', 'warning.currentUserSundayIssue'|trans) }}
+    {% endif %}
+
+    {% block nav_row %}
+        <div class="nav_row" style="float:left;width: 100%;background-color: '#cccccc' }}">
+            {% block nav_form %}
+                {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
+                {{ form_row(form.user, {'label': false}) }}
+                {{ form_row(form.date, {'label': false}) }}
+
+                <span style="float: right">
+                    {% if timesheet | length > 0 %}
+                        <a id="descriptionButton" class="btn btn-default btn-create" title="{{ 'tooltip.description'|trans }}">
+                            <i class="fas fa-1x fa-info-circle"></i>
+                        </a>
+                        <a id="timesheetButton" class="btn btn-default btn-create" title="{{ 'tooltip.timesheets'|trans }}">
+                            <i class="fas fa-1x fa-user-clock"></i>
+                        </a>
+                    {% endif %}
+                    {% if status is not empty %}
+                        <a id="historyButton" class="btn btn-default btn-create" title="{{ 'tooltip.history'|trans }}">
+                            <i class="fa fa-1x fa-history"></i>
+                        </a>
+                    {% endif %}                
+                </span>
+                {{ form_end(form) }}
+            {% endblock %}
+        </div>
+    {% endblock %}
+
+    {% block table %}
+        {% set totals = {'totals': 0} %}
+        {% set columns = 2 %}
+        <div style="overflow-x: auto; width: 100%;">
+            <table class="table table-bordered table-hover dataTable">
+                <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    {% for day in days.dateTimes %}
+                        <th class="text-center text-wrap{% if day is weekend %} weekend{% endif %}{% if day is today %} today{% endif %}">
+                            {{ day|date_weekday }}
+                        </th>
+                        {% set columns = columns + 1 %}
+                        {% set totals = totals|merge({(day|report_date): 0}) %}
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr>
+                    <td>Approval Status</td>
+                    <td>&nbsp;</td>
+                    {% for day, status in dayStatus %}
+                        <td style="
+                            {% if status == 'approved' %}
+                                background-color: green;
+                            {% elseif status == 'submitted' %}
+                                background-color: orange;
+                            {% elseif status == 'none' %}
+                                background-color: white;
+                            {% else %}
+                                background-color: grey;
+                            {% endif %}
+                        ">
+                            &nbsp;
+                        </td>
+                    {% endfor %}
+                </tr>
+
+                {% for title, project in rows %}
+                    {% set totals = totals|merge({'totals': (totals['totals'] + project.duration)}) %}
+                    <tr class="activity" style="background-color: whitesmoke">
+                        <td class="text-nowrap">
+                            <strong> {{ title }}  </strong>
+                        </td>
+                        <td class="text-nowrap text-center total">{{ project.duration|duration }}</td>
+                        {% for day in project.days.days %}
+                            <td class="text-nowrap text-center day-total{% if day.date is weekend %} weekend{% endif %}{% if day.date is today %} today{% endif %}">
+                                {% if day.duration > 0 %}
+                                    {% set totals = totals|merge({(day.date|report_date): (totals[day.date|report_date] + day.duration)}) %}
+                                    <strong>{{ day.duration|duration }}</strong>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    {% for key, row in project.details %}
+                        <tr class="description">
+                            <td class="text-nowrap"> {{ key }} </td>
+                            <td class="text-nowrap text-center total">{{ row.duration|duration }}</td>
+                            {% for day in row.days.days %}
+                                <td class="text-nowrap text-center day-total{% if day.date is weekend %} weekend{% endif %}{% if day.date is today %} today{% endif %}">
+                                    {% if day.duration > 0 %}
+                                        <strong>{{ day.duration|duration }}</strong>
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr class="summary">
+                    <td>{{ 'stats.duration_total'|trans }} {% if expectedDuration is not empty %}[{{ 'stats.duration_expected'|trans }}] {% endif %}</td>
+                    <td class="text-nowrap text-center total">{{ totals['totals']|duration }}{% if expectedDuration is not empty %} [{{ expectedDuration|duration }}]{% endif %}</td>
+                    {% for day in days.dateTimes %}
+                        <td class="text-nowrap text-center day-total{% if day is weekend %} weekend{% endif %}">
+                            {{ totals[day|report_date]|duration }}
+
+                            {% if errors[(day | date_format('Y-m-d'))] is defined and (errors[(day | date_format('Y-m-d'))] | length) > 0 %}
+                                <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                      title="{{ errors[(day | date_format('Y-m-d'))] | join('\n\n') }}">
+                                        <i class="fa fa-1x fa-exclamation-circle" style="color: red"></i>
+                                </span>
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                {% if yearDuration is not null %}
+                    {% set yearDiff = yearDuration.actualDuration - yearDuration.expectedDuration + yearDuration.manualAdoption %}
+                    <tr class="summary">
+                    <td>{{ 'label.yearly_overtime'|trans }}</td>
+                    <td class="text-nowrap text-center total{% if yearDiff < 0 %} redText{% endif %}">{{ yearDiff|duration }}</td>
+                    {% for day in days.dateTimes %}
+                        <td></td>
+                    {% endfor %}
+                </tr>
+                {% endif %}
+                </tfoot>
+
+            </table>
+        </div>
+    {% endblock %}
+
+    {% if timesheet | length > 0 %}
+        {% block timesheetTable %}
+            <div id="timesheet_approval" style="overflow-x: auto; width: 100%; margin-top: 2rem">
+                <table class="table table-bordered table-hover dataTable">
+                    <thead>
+                    <tr>
+                        <th>{{ 'header.date' | trans }}</th>
+                        <th>{{ 'header.begin' | trans }}</th>
+                        <th>{{ 'header.end' | trans }}</th>
+                        <th>{{ 'header.duration' | trans }}</th>
+                        <th>{{ 'header.customer' | trans }}</th>
+                        <th>{{ 'header.project' | trans }}</th>
+                        <th>{{ 'header.activity' | trans }}</th>
+                        <th>{{ 'header.description' | trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for sheet in timesheet %}
+                        <tr>
+                            <td>{{ sheet['date'] }}</td>
+                            <td>{{ sheet['begin'] }}</td>
+                            <td>{{ sheet['end'] }}</td>
+                            <td>
+                                {{ sheet['duration'] | formatHours }}
+
+                                {% if sheet['error'] | length > 0 %}
+                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                              title="{{ sheet['error'] | join('\n\n') }}">
+                                        <i class="fa fa-1x fa-exclamation-circle" style="color: red"></i>
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td>{{ sheet['customerName'] }}</td>
+                            <td>{{ sheet['projectName'] }}</td>
+                            <td>{{ sheet['activityName'] }}</td>
+                            <td>{{ sheet['description'] }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endblock %}
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+      document.addEventListener("kimai.initialized", function () {
+          {% if form.user is defined %}
+        jQuery('#{{ form.user.vars.id }}').on("change", function (ev) {
+          jQuery(this).closest("form").submit();
+        });
+          {% endif %}
+        jQuery('#{{ form.date.vars.id }}').on("change", function (ev) {
+          jQuery(this).closest("form").submit();
+        });
+      });
+
+      $(document).ready(function () {
+        $("#history").hide();
+        $("#timesheet_approval").hide();
+        $("#deniedMessage").hide();
+        let elements = document.getElementsByClassName("description");
+        for (let element of elements) {
+          element.hidden = true;
+        }
+
+        $(document).on("click", "#historyButton", function () {
+          $("#history").slideToggle();
+        });
+        $(document).on("click", "#timesheetButton", function () {
+          $("#timesheet_approval").slideToggle();
+        });
+        $(document).on("click", "#descriptionButton", function () {
+          let elements = document.getElementsByClassName("description");
+          for (let element of elements) {
+            element.hidden = !element.hidden;
+          }
+        });
+
+        $(document).on("click", ".closeModal", function () {
+          if ($("#deniedMessage").css("display") == "none") {
+            $("#deniedMessage").show();
+          } else {
+            $("#deniedMessage").hide();
+          }
+        });
+      });
+
+      $(document).on("click", "#deniedLink", function () {
+        var href = $("#deniedLink").attr("href");
+        $("#deniedLink").attr("href", href + "&input=" + $("#deniedInput").val());
+
+      });
+
+      function undoAction() {
+        if (confirm('{{ 'label.undoMessage'|trans }}'.replace(/&quot;/g,'"')) === true) {
+          window.location.href = '{{ path('not_approved',{'approveId':approveId,'user':user.id,'date':current|date('Y-m-d')}) }}'.replace(/&amp;/g,'&');
+        }
+      }
+
+      let undoButton = document.getElementById("undoButton");
+      if (undoButton) {
+        undoButton.addEventListener("click", undoAction);
+      }
+
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .nav_row {
+            padding: 1rem;
+        }
+
+        #history {
+            margin-top: 7rem;
+            margin-bottom: 5rem;
+        }
+
+        #deniedInput {
+            width: 100%;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+
+        .redText {
+            color: red;
+        }
+
+        #deniedMessage {
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        #deniedMessage > * {
+            margin-top: 20%;
+        }
+    </style>
+{% endblock %}

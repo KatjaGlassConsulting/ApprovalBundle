@@ -15,6 +15,13 @@
             {{ 'menu.report_user_week' |trans }}
         </a>
     </li>
+    <li{% if current_tab == "monthly_report" %} class="active"{% endif %}>
+        <a href="{{ path('approval_bundle_report_month') }}"
+           style="cursor: pointer"
+           aria-expanded="false">
+            {{ 'menu.report_user_month' |trans }}
+        </a>
+    </li>
     {% if showOvertime %}
         <li{% if current_tab == "overtime_by_user" %} class="active"{% endif %}>
             <a href="{{ path('overtime_bundle_report') }}"
