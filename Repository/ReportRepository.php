@@ -130,6 +130,13 @@ class ReportRepository extends ServiceEntityRepository
     {
         $days = new DailyStatistic($begin, $end, $user);
         $day = $days->getDayByReportDate($value['date']);
+        
+        // If the day is not found - time going over the week (sunday->monday) and is by chance documented as on next day - use the previous day (sunday)
+        if ($day === null) {
+            $previousDay = (new \DateTime($value['date']))->modify('-1 day')->format('Y-m-d');
+            $day = $days->getDayByReportDate($previousDay);            
+        }
+
         $day->setTotalDuration($day->getTotalDuration() + (int) $value['duration']);
         $array['days'] = $days;
 
@@ -140,6 +147,13 @@ class ReportRepository extends ServiceEntityRepository
     {
         $valueDays = $report[$title]['details'][$value['description']]['days'];
         $valueDay = $valueDays->getDayByReportDate($value['date']);
+
+        // If the day is not found - time going over the week (sunday->monday) and is by chance documented as on next day - use the previous day (sunday)
+        if ($valueDay === null) {
+            $previousDay = (new \DateTime($value['date']))->modify('-1 day')->format('Y-m-d');
+            $valueDay = $valueDays->getDayByReportDate($previousDay);            
+        }
+
         $valueDay->setTotalDuration($valueDay->getTotalDuration() + (int) $value['duration']);
         $report[$title]['details'][$value['description']]['days'] = $valueDays;
         $report[$title]['details'][$value['description']]['duration'] += $value['duration'];
@@ -151,6 +165,13 @@ class ReportRepository extends ServiceEntityRepository
     {
         $valueDays = new DailyStatistic($begin, $end, $user);
         $valueDay = $valueDays->getDayByReportDate($value['date']);
+        
+        // If the day is not found - time going over the week (sunday->monday) and is by chance documented as on next day - use the previous day (sunday)
+        if ($valueDay === null) {
+            $previousDay = (new \DateTime($value['date']))->modify('-1 day')->format('Y-m-d');
+            $valueDay = $valueDays->getDayByReportDate($previousDay);            
+        }
+
         $valueDay->setTotalDuration($valueDay->getTotalDuration() + (int) $value['duration']);
         $value['days'] = $valueDays;
         $report[$title]['details'][$value['description']] = $value;
@@ -180,6 +201,13 @@ class ReportRepository extends ServiceEntityRepository
 
         $days = $report[$title]['days'];
         $day = $days->getDayByReportDate($value['date']);
+
+        // If the day is not found - time going over the week (sunday->monday) and is by chance documented as on next day - use the previous day (sunday)
+        if ($day === null) {
+            $previousDay = (new \DateTime($value['date']))->modify('-1 day')->format('Y-m-d');
+            $day = $days->getDayByReportDate($previousDay);            
+        }
+        
         $day->setTotalDuration($day->getTotalDuration() + (int) $value['duration']);
 
         if (isset($report[$title]['details'][$value['description']])) {
