@@ -14,6 +14,7 @@ This plugin supports two version of Kimai:
 
 - the Plugin as located in the `main` branch, supports the version 2 of Kimai 
 - Version 1 support is available in the branch [bundle_for_kimai_v1](https://github.com/KatjaGlassConsulting/ApprovalBundle/tree/bundle_for_kimai_v1). 
+- the Plugin for Kimai2 does not support the vacation/holiday bundle, this is only supported for Kimai1 as the bundle is working differently for Kimai1 and Kimai2.
 
 For now new updates will be implemented in Version 1 and then migrated to Version 2 later on - major updates are not expected.
 
@@ -28,6 +29,7 @@ Optional, but recommended:
 Optional, but recommended for version 1:
 - MetaFields plugin - optional setting of working hours per day per user unless specified in ApprovalBundle "Settings workday" (in Kimai 2, this is a new standard setting for users, in the old version it can be set as custom fields)
 
+
 ## Features
 
 - Users can send a week for approval (in sequential order)
@@ -35,7 +37,7 @@ Optional, but recommended for version 1:
 - Teamlead/Admin can approve or deny the week
 - Overview of approvals, missing approvals and the status
 - Mailing options to recall approval tasks if outstanding
-- Overview of overtime
+- Overview of overtime (for holiday/vacation, this is only working for Kimai 1.x)
 - Overview of break issues according German Law
 
 ## Status
@@ -91,7 +93,7 @@ The ApprovalBundle needs the users working-hours configuration to be available i
 
 The daily and weekly hours are displayed. For this the daily working time per day needs to be specified per user. Typically, it might be 8h per week day. But there are very different situations, so someone might only work 4 days a week or less hours a day.
 
-If you do not use the "overtime" these settings are not required. But if you do, these values must then be set for every active user.
+If you do not use the "overtime" these settings are not required. But if you do, these values must then be set for every active user. Note that overtime is not supported for Kimai 2 (holiday/vacation are not considered).
 
 Additionally, working hours till an "end date" can be specified directly in the bundle settings. This enables different expected working times for different periods. A user might for example work 8h daily till 15.5.2023, then only 4h daily till 22.08.2023 and then again 8h daily from that day on.
 
