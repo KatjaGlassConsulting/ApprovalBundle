@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.3
+
+- fix: When "submitted to approval" and "approved" got the exact same timestamp, the approval history was not showing the correct last entry. Now an additional order by ID is used to ensure the correct order of entries.
+
 ## 2.2.2
 
 - fix: Approval view for a special situation had been throwing an error. Issue with "Call to a member function setTotalDuration() on null" which could occur when timesheets are available on Sunday spanning through Monday and by chance are documented for the "day" as Monday, not Sunday. This is now fixed by checking if the day is not available in the week, then use the previsous day (Sunday).

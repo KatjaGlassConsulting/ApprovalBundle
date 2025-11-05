@@ -47,6 +47,7 @@ class ApprovalHistoryRepository extends ServiceEntityRepository
             ->where('a.id = :id')
             ->setParameter('id', $approvalId)
             ->orderBy('ah.date', 'DESC')
+            ->addOrderBy('ah.id', 'DESC')
             ->setMaxResults(1);
 
         return $query->getQuery()->getOneOrNullResult();
