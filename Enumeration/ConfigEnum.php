@@ -21,4 +21,5 @@ abstract class ConfigEnum
     public const APPROVAL_TEAMLEAD_SELF_APPROVE_NY = 'approval.teamlead_selfapprove_ny';
     public const APPROVAL_MAIL_SUBMITTED_NY = 'approval.mail_submitted_ny';
     public const APPROVAL_MAIL_ACTION_NY = 'approval.mail_action_ny';
+    public const APPROVAL_EXPECTED_DURATION_NY = 'approval.expected_duration_ny';
 }

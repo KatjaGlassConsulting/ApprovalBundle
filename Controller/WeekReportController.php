@@ -60,8 +60,7 @@ class WeekReportController extends BaseApprovalController
         private ApprovalTimesheetRepository $approvalTimesheetRepository,
         private BreakTimeCheckToolGER $breakTimeCheckToolGER,
         private ReportRepository $reportRepository
-    ) {
-    }
+    ) {}
 
     #[Route(path: '/week_by_user', name: 'approval_bundle_report', methods: ['GET', 'POST'])]
     public function weekByUser(Request $request): Response
@@ -128,7 +127,7 @@ class WeekReportController extends BaseApprovalController
         $canManageHimself = $this->securityTool->canViewAllApprovals() || ($this->securityTool->canViewTeamApprovals() &&
             ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY) == '1'));
 
-        return $this->render('@Approval/report_by_user.html.twig', [
+        $renderParams = [
             'approve' => $this->parseToHistoryView($selectedUser, $startWeek),
             'week' => $this->formatting->parseDate($startWeek instanceof DateTime ? $startWeek : new DateTime($startWeek)),
             'box_id' => 'user-week-report-box',
@@ -144,7 +143,6 @@ class WeekReportController extends BaseApprovalController
             'current_tab' => 'weekly_report',
             'canManageHimself' => $canManageHimself,
             'currentUser' => $this->getUser()->getId(),
-            'expectedDuration' => $expectedDuration,
             'yearDuration' => $overtimeDuration,
             'isSuperAdmin' => $this->getUser()->isSuperAdmin(),
             'warningNoUsers' => empty($users),
@@ -153,7 +151,13 @@ class WeekReportController extends BaseApprovalController
             'approvePreviousWeeksMessage' => $this->approvalRepository->getNextApproveWeek($selectedUser),
             'selectedUserSundayIssue' => $selectedUserSundayIssue,
             'currentUserSundayIssue' => $currentUserSundayIssue
-        ] + $this->getDefaultTemplateParams($this->settingsTool));
+        ];
+
+        if ($this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_EXPECTED_DURATION_NY, true)) {
+            $renderParams['expectedDuration'] = $expectedDuration;
+        }
+
+        return $this->render('@Approval/report_by_user.html.twig', $renderParams + $this->getDefaultTemplateParams($this->settingsTool));
     }
 
     #[Route(path: '/to_approve', name: 'approval_bundle_to_approve', methods: ['GET', 'POST'])]
@@ -298,6 +302,10 @@ class WeekReportController extends BaseApprovalController
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_MAIL_SUBMITTED_NY, $data[FormEnum::MAIL_SUBMITTED_NY]);
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_MAIL_ACTION_NY, $data[FormEnum::MAIL_ACTION_NY]);
 
+            if (isset($data[FormEnum::EXPECTED_DURATION_NY])) {
+                $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_EXPECTED_DURATION_NY, $data[FormEnum::EXPECTED_DURATION_NY]);
+            }
+
             $this->flashSuccess('action.update.success');
         }
 
@@ -391,8 +399,10 @@ class WeekReportController extends BaseApprovalController
 
         $timesheets = $this->timesheetRepository->getTimesheetsForQuery($timesheetQuery);
 
-        if ($this->settingsTool->isInConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY) == false or
-            $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY)) {
+        if (
+            $this->settingsTool->isInConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY) == false or
+            $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY)
+        ) {
             $errors = $this->breakTimeCheckToolGER->checkBreakTime($timesheets);
         } else {
             $errors = [];

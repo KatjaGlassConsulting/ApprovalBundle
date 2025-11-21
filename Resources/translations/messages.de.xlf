@@ -420,6 +420,10 @@
         <source>label.approval_mail_action_ny</source>
         <target>Mailversand bei Approvalentscheidung</target>
       </trans-unit>
+      <trans-unit id="K7mDx9p" resname="label.approval_expected_duration_ny">
+        <source>label.approval_expected_duration_ny</source>
+        <target>Erwartete Dauer anzeigen</target>
+      </trans-unit>
       <trans-unit id="NUgf0fZ" resname="description.workday_history">
         <source>description.workday_history</source>
         <target>

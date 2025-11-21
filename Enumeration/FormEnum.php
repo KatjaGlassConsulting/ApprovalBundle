@@ -29,4 +29,6 @@ abstract class FormEnum
     public const TEAMLEAD_SELF_APPROVE_NY = 'approval_teamlead_selfapprove_ny';
     public const MAIL_SUBMITTED_NY = 'approval_mail_submitted_ny';
     public const MAIL_ACTION_NY = 'approval_mail_action_ny';
+    public const EXPECTED_DURATION_NY = 'approval_expected_duration_ny';
+
 }

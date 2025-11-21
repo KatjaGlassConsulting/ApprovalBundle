@@ -28,8 +28,7 @@ class SettingsForm extends AbstractType
         private readonly FormTool $formTool,
         private readonly SettingsTool $settingsTool,
         private readonly CustomerRepository $customerRepository
-    ) {
-    }
+    ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -58,15 +57,15 @@ class SettingsForm extends AbstractType
         ]);
 
         $builder->add(FormEnum::OVERTIME_NY, CheckboxType::class, [
-          'label' => 'label.approval_overtime_ny',
-          'data' => $this->formTool->isChecked(ConfigEnum::APPROVAL_OVERTIME_NY),
-          'required' => false
+            'label' => 'label.approval_overtime_ny',
+            'data' => $this->formTool->isChecked(ConfigEnum::APPROVAL_OVERTIME_NY),
+            'required' => false
         ]);
 
         $builder->add(FormEnum::BREAKCHECKS_NY, CheckboxType::class, [
-          'label' => 'label.approval_breakchecks_ny',
-          'data' => $this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY, true),
-          'required' => false
+            'label' => 'label.approval_breakchecks_ny',
+            'data' => $this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY, true),
+            'required' => false
         ]);
 
         if ($this->settingsTool->isInConfiguration(ConfigEnum::APPROVAL_INCLUDE_ADMIN_NY)) {
@@ -98,10 +97,16 @@ class SettingsForm extends AbstractType
             'data' => $this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_MAIL_SUBMITTED_NY, true),
             'required' => false
         ]);
-       
+
         $builder->add(FormEnum::MAIL_ACTION_NY, CheckboxType::class, [
             'label' => 'label.approval_mail_action_ny',
             'data' => $this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_MAIL_ACTION_NY, true),
+            'required' => false
+        ]);
+
+        $builder->add(FormEnum::EXPECTED_DURATION_NY, CheckboxType::class, [
+            'label' => 'label.approval_expected_duration_ny',
+            'data' => $this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_EXPECTED_DURATION_NY, true),
             'required' => false
         ]);
 
