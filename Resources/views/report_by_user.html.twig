@@ -163,8 +163,8 @@
             </tbody>
             <tfoot>
             <tr class="summary">
-                <td>{{ 'stats.duration_total'|trans }} {% if expectedDuration is not empty %}[{{ 'stats.duration_expected'|trans }}] {% endif %}</td>
-                <td class="text-nowrap text-center total">{{ totals['totals']|duration }}{% if expectedDuration is not empty %} [{{ expectedDuration|duration }}]{% endif %}</td>
+                <td>{{ 'stats.duration_total'|trans }} {% if expectedDuration is defined and expectedDuration is not empty %}[{{ 'stats.duration_expected'|trans }}] {% endif %}</td>
+                <td class="text-nowrap text-center total">{{ totals['totals']|duration }}{% if expectedDuration is defined and expectedDuration is not empty %} [{{ expectedDuration|duration }}]{% endif %}</td>
                 {% for day in days.dateTimes %}
                     <td class="text-nowrap text-center day-total{% if day is weekend %} weekend{% endif %}">
                         {{ totals[day|report_date]|duration }}

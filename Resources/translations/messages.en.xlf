@@ -420,6 +420,10 @@
         <source>label.approval_mail_action_ny</source>
         <target>Mail on approval decision</target>
       </trans-unit>
+      <trans-unit id="K7mDx9p" resname="label.approval_expected_duration_ny">
+        <source>label.approval_expected_duration_ny</source>
+        <target>Show expected duration</target>
+      </trans-unit>
       <trans-unit id="NUgf0fZ" resname="description.workday_history">
         <source>description.workday_history</source>
         <target>
