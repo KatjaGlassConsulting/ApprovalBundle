@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.4
+
+- new feature: Expected duration display can now be toggled to omit display - thanks to Luis Antonio Galvez Bommer for this change!
+
 ## 2.2.3
 
 - fix: When "submitted to approval" and "approved" got the exact same timestamp, the approval history was not showing the correct last entry. Now an additional order by ID is used to ensure the correct order of entries.

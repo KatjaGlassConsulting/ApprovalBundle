@@ -175,4 +175,4 @@ Additional thanks go to Milo Ivir for additional translations and to Kevin Papst
 
 Many thanks to Kevin Papst, Vitor Mattos and Sam MacLennan for working on the migration of the ApprovalBundle supporting Kimai 2.
 
-Thanks also to Brett Meyer, Kevin Papst and Sam MacLennan for their participation and pull requests.
+Thanks also to Brett Meyer, Kevin Papst, Sam MacLennan and Luis Antonio Galvez Bommer for their participation and pull requests.
