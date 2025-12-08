@@ -30,5 +30,6 @@ abstract class FormEnum
     public const MAIL_SUBMITTED_NY = 'approval_mail_submitted_ny';
     public const MAIL_ACTION_NY = 'approval_mail_action_ny';
     public const EXPECTED_DURATION_NY = 'approval_expected_duration_ny';
+    public const HIDE_APPROVED_NY = 'approval_hide_approved_ny';
 
 }

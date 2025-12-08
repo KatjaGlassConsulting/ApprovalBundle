@@ -22,4 +22,5 @@ abstract class ConfigEnum
     public const APPROVAL_MAIL_SUBMITTED_NY = 'approval.mail_submitted_ny';
     public const APPROVAL_MAIL_ACTION_NY = 'approval.mail_action_ny';
     public const APPROVAL_EXPECTED_DURATION_NY = 'approval.expected_duration_ny';
+    public const APPROVAL_HIDE_APPROVED_NY = 'approval.hide_approved_ny';
 }

@@ -424,6 +424,10 @@
         <source>label.approval_expected_duration_ny</source>
         <target>Erwartete Dauer anzeigen</target>
       </trans-unit>
+      <trans-unit id="hJkL2mN" resname="label.approval_hide_approved_ny">
+        <source>label.approval_hide_approved_ny</source>
+        <target>Genehmigte Freigaben ausblenden</target>
+      </trans-unit>
       <trans-unit id="NUgf0fZ" resname="description.workday_history">
         <source>description.workday_history</source>
         <target>

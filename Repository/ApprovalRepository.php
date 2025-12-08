@@ -150,14 +150,14 @@ class ApprovalRepository extends ServiceEntityRepository
 
         $overtimeFormatted = $this->formatting->formatDuration($overtime);
         $result =
-        [
-            'expectedDuration' => $expectedDuration,
-            'actualDuration' => $actualDuration,
-            'overtime' => $overtime,
-            'overtimeFormatted' => $overtimeFormatted,
-            'manualAdoption' => $manualAdoption,
-            'endDay' => $endDate->format('Y-m-d')
-        ];
+            [
+                'expectedDuration' => $expectedDuration,
+                'actualDuration' => $actualDuration,
+                'overtime' => $overtime,
+                'overtimeFormatted' => $overtimeFormatted,
+                'manualAdoption' => $manualAdoption,
+                'endDay' => $endDate->format('Y-m-d')
+            ];
 
         return $result;
     }
@@ -469,7 +469,7 @@ class ApprovalRepository extends ServiceEntityRepository
         } else {
             $weekString = $week;
         }
-        
+
         $em = $this->getEntityManager();
 
         return $em->createQueryBuilder()
@@ -628,6 +628,13 @@ class ApprovalRepository extends ServiceEntityRepository
             },
             []
         );
+    }
+
+    public function filterWeeksNotApproved(array $parseToViewArray): array
+    {
+        return array_values(array_filter($parseToViewArray, function ($approve) {
+            return $approve['status'] !== ApprovalStatus::APPROVED;
+        }));
     }
 
     public function filterWeeksNotSubmitted($parseToViewArray): array

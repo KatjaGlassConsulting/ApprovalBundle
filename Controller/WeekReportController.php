@@ -60,7 +60,8 @@ class WeekReportController extends BaseApprovalController
         private ApprovalTimesheetRepository $approvalTimesheetRepository,
         private BreakTimeCheckToolGER $breakTimeCheckToolGER,
         private ReportRepository $reportRepository
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/week_by_user', name: 'approval_bundle_report', methods: ['GET', 'POST'])]
     public function weekByUser(Request $request): Response
@@ -177,6 +178,10 @@ class WeekReportController extends BaseApprovalController
         }
 
         $allRows = $this->approvalRepository->findAllWeek($users);
+
+        if ($this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_HIDE_APPROVED_NY, false)) {
+            $allRows = $this->approvalRepository->filterWeeksNotApproved($allRows);
+        }
 
         $pastRows = [];
         $currentRows = [];
@@ -301,10 +306,8 @@ class WeekReportController extends BaseApprovalController
             $this->settingsTool->setConfiguration(ConfigEnum::CUSTOMER_FOR_FREE_DAYS, $this->collectCustomerForFreeDays($data));
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_MAIL_SUBMITTED_NY, $data[FormEnum::MAIL_SUBMITTED_NY]);
             $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_MAIL_ACTION_NY, $data[FormEnum::MAIL_ACTION_NY]);
-
-            if (isset($data[FormEnum::EXPECTED_DURATION_NY])) {
-                $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_EXPECTED_DURATION_NY, $data[FormEnum::EXPECTED_DURATION_NY]);
-            }
+            $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_EXPECTED_DURATION_NY, $data[FormEnum::EXPECTED_DURATION_NY]);
+            $this->settingsTool->setConfiguration(ConfigEnum::APPROVAL_HIDE_APPROVED_NY, $data[FormEnum::HIDE_APPROVED_NY]);
 
             $this->flashSuccess('action.update.success');
         }

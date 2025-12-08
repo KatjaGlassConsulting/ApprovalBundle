@@ -28,7 +28,8 @@ class SettingsForm extends AbstractType
         private readonly FormTool $formTool,
         private readonly SettingsTool $settingsTool,
         private readonly CustomerRepository $customerRepository
-    ) {}
+    ) {
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -107,6 +108,12 @@ class SettingsForm extends AbstractType
         $builder->add(FormEnum::EXPECTED_DURATION_NY, CheckboxType::class, [
             'label' => 'label.approval_expected_duration_ny',
             'data' => $this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_EXPECTED_DURATION_NY, true),
+            'required' => false
+        ]);
+
+        $builder->add(FormEnum::HIDE_APPROVED_NY, CheckboxType::class, [
+            'label' => 'label.approval_hide_approved_ny',
+            'data' => $this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_HIDE_APPROVED_NY, false),
             'required' => false
         ]);
 
