@@ -332,7 +332,10 @@ class ApprovalRepository extends ServiceEntityRepository
                         'expectedDuration' => $item->getExpectedDuration(),
                         'actualDuration' => $item->getActualDuration(),
                         'user' => $item->getUser()->getDisplayName(),
-                        'week' => $this->formatting->parseDate(clone $item->getStartDate()),
+                        'week' => (object) [
+                            'label' => $this->formatting->parseDate(clone $item->getStartDate()),
+                            'value' => (clone $item->getStartDate()),
+                        ],
                         'status' => $item->getHistory()[0]->getStatus()->getName()
                     ];
             }
@@ -380,14 +383,13 @@ class ApprovalRepository extends ServiceEntityRepository
             if (!\in_array($firstDay, $approvedWeeks) && $firstDay->format('Y-m-d') > $approval_ws_start_week) {
                 $weeks[] = (object) [
                     'label' => $this->formatting->parseDate($firstDay),
-                    'value' => (clone $firstDay)->format('Y-m-d')
+                    'value' => (clone $firstDay)
                 ];
             }
             $firstDay->modify('next monday');
         }
 
         array_pop($weeks);
-
         return $weeks;
     }
 
@@ -446,19 +448,18 @@ class ApprovalRepository extends ServiceEntityRepository
         foreach ($users as $user) {
             $weeks = $this->getWeeks($user);
             foreach ($weeks as $week) {
-                if (!\in_array($user->getId() . '-' . $week->value, $usedUsersWeeks)) {
+                if (!\in_array($user->getId() . '-' . $week->value->format('Y-m-d'), $usedUsersWeeks)) {
                     $parseToViewArray[] =
                         [
                             'userId' => $user->getId(),
-                            'startDate' => $week->value,
+                            'startDate' => $week->value->format('Y-m-d'),
                             'user' => $user->getDisplayName(),
-                            'week' => $week->label,
+                            'week' => $week,
                             'status' => ApprovalStatus::NOT_SUBMITTED
                         ];
                 }
             }
         }
-
         return $parseToViewArray;
     }
 

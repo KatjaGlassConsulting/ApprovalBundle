@@ -20,6 +20,8 @@ use App\Repository\Query\BaseQuery;
 use App\Repository\Query\TimesheetQuery;
 use App\Repository\TimesheetRepository;
 use App\Repository\UserRepository;
+use App\Utils\DataTable;
+use App\Utils\Pagination;
 use DateTime;
 use Doctrine\ORM\Exception\ORMException;
 use KimaiPlugin\ApprovalBundle\Entity\Approval;
@@ -29,16 +31,20 @@ use KimaiPlugin\ApprovalBundle\Enumeration\FormEnum;
 use KimaiPlugin\ApprovalBundle\Form\AddWorkdayHistoryForm;
 use KimaiPlugin\ApprovalBundle\Form\SettingsForm;
 use KimaiPlugin\ApprovalBundle\Form\WeekByUserForm;
+use KimaiPlugin\ApprovalBundle\Form\Toolbar\ApprovalToolbarForm;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalHistoryRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalTimesheetRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalWorkdayHistoryRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ReportRepository;
+use KimaiPlugin\ApprovalBundle\Repository\Query\ApprovalQuery;
 use KimaiPlugin\ApprovalBundle\Toolbox\BreakTimeCheckToolGER;
 use KimaiPlugin\ApprovalBundle\Toolbox\Formatting;
 use KimaiPlugin\ApprovalBundle\Toolbox\SecurityTool;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
+use Pagerfanta\Adapter\ArrayAdapter;
 use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -163,8 +169,13 @@ class WeekReportController extends BaseApprovalController
 
     #[Route(path: '/to_approve', name: 'approval_bundle_to_approve', methods: ['GET', 'POST'])]
     #[IsGranted(new Expression("is_granted('view_team_approval') or is_granted('view_all_approval')"))]
-    public function toApprove(): Response
+    public function toApprove(ApprovalQuery $query, Request $request): Response
     {
+        $form = $this->getToolbarForm($query);
+        if ($this->handleSearch($form, $request)) {
+            return $this->redirectToRoute('approval_bundle_to_approve');
+        }
+
         if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY) == '1') {
             $users = $this->getUsers(true);
         } else {
@@ -183,6 +194,81 @@ class WeekReportController extends BaseApprovalController
             $allRows = $this->approvalRepository->filterWeeksNotApproved($allRows);
         }
 
+        $selectedUsers = $query->getUsers();
+        if (!empty($selectedUsers)) {
+            $selectedUserIds = array_map(fn(User $user) => $user->getId(), $selectedUsers);
+            $allRows = array_filter(
+                $allRows,
+                function ($row) use ($selectedUserIds) {
+                    return in_array($row['userId'], $selectedUserIds);
+                }
+            );
+        }
+
+        $dateRange = $query->getDateRange();
+        if ($dateRange !== null && $dateRange->getBegin() !== null && $dateRange->getEnd() !== null) {
+            $begin = $dateRange->getBegin();
+            $end = $dateRange->getEnd();
+
+            $allRows = array_filter(
+                $allRows,
+                function ($row) use ($begin, $end) {
+                    $weekStart = $row['week']->value;
+                    $weekEnd = (clone $weekStart)->modify('+6 days');
+                    return ($weekStart >= $begin && $weekStart <= $end) ||
+                        ($weekEnd >= $begin && $weekEnd <= $end);
+                }
+            );
+        }
+
+        $selectedStatus = $query->getStatus();
+        if (!empty($selectedStatus)) {
+            $allRows = array_filter(
+                $allRows,
+                function ($row) use ($selectedStatus) {
+                    return in_array($row['status'], $selectedStatus);
+                }
+            );
+        }
+
+        $searchTerm = $query->getSearchTerm();
+        if ($searchTerm !== null && !empty($searchTerm->getSearchTerm())) {
+
+            $searchParts = $searchTerm->getParts();
+
+            $allRows = array_filter(
+                $allRows,
+                function ($row) use ($searchParts) {
+                    foreach ($searchParts as $part) {
+                        $term = mb_strtolower($part->getTerm());
+                        $matchedInRow = false;
+
+                        $userName = mb_strtolower($row['user']);
+                        if (str_contains($userName, $term)) {
+                            $matchedInRow = true;
+                        }
+
+                        $weekLabel = mb_strtolower($row['week']->label ?? '');
+                        if (str_contains($weekLabel, $term)) {
+                            $matchedInRow = true;
+                        }
+
+                        $status = mb_strtolower($row['status']);
+                        if (str_contains($status, $term)) {
+                            $matchedInRow = true;
+                        }
+
+                        if (!$matchedInRow) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            );
+        }
+
+        $allRows = $this->sortArrayByQuery($allRows, $query);
+
         $pastRows = [];
         $currentRows = [];
         $futureRows = [];
@@ -199,13 +285,83 @@ class WeekReportController extends BaseApprovalController
         }
         $pastRows = $this->approvalRepository->filterPastWeeksNotApproved($pastRows);
 
+        $allRowsDataTable = new DataTable('approval_all_entries', $query);
+        $allRowsDataTable->deactivateConfiguration();
+        $allRowsDataTable->addColumn("user");
+        $allRowsDataTable->addColumn("week");
+        $allRowsDataTable->addColumn("status");
+        $allRowsDataTable->addColumn("actions", ['class' => 'actions alwaysVisible']);
+
+        $allRowsAdapter = new ArrayAdapter($allRows);
+        $allRowsPagination = new Pagination($allRowsAdapter);
+        $allRowsDataTable->setPagination($allRowsPagination);
+        $allRowsDataTable->setSearchForm($form);
+
         return $this->render('@Approval/to_approve.html.twig', [
             'current_tab' => 'to_approve',
+            'all_rows_datatable' => $allRowsDataTable,
             'past_rows' => $pastRows,
             'current_rows' => $currentRows,
             'future_rows' => $futureRows,
             'warningNoUsers' => $warningNoUsers
         ] + $this->getDefaultTemplateParams($this->settingsTool));
+    }
+
+    protected function getToolbarForm(ApprovalQuery $query): FormInterface
+    {
+        return $this->createSearchForm(ApprovalToolbarForm::class, $query, [
+            'action' => $this->generateUrl('approval_bundle_to_approve', [
+                'page' => $query->getPage(),
+            ]),
+            'timezone' => $this->getDateTimeFactory()->getTimezone()->getName(),
+        ]);
+    }
+
+    private function sortArrayByQuery(array $rows, ApprovalQuery $query): array
+    {
+        $orderBy = $query->getOrderBy();
+        $order = $query->getOrder();
+
+        if (!$orderBy || !in_array($orderBy, ['user', 'week', 'status'])) {
+            return $rows;
+        }
+
+        usort($rows, function ($a, $b) use ($orderBy, $order) {
+
+            $sortFields = match ($orderBy) {
+                'user' => ['user', 'week', 'status'],
+                'week' => ['week', 'user', 'status'],
+                'status' => ['status', 'user', 'week'],
+            };
+
+            foreach ($sortFields as $field) {
+                $valueA = $a[$field];
+                $valueB = $b[$field];
+
+                if (is_object($valueA)) {
+                    $valueA = $valueA->value ?? (string) $valueA;
+                }
+                if (is_object($valueB)) {
+                    $valueB = $valueB->value ?? (string) $valueB;
+                }
+
+                if ($valueA === $valueB) {
+                    continue;
+                }
+
+                $comparison = $valueA < $valueB ? -1 : 1;
+
+                if ($field === $orderBy && $order === 'DESC') {
+                    return -$comparison;
+                }
+
+                return $comparison;
+            }
+
+            return 0;
+        });
+
+        return $rows;
     }
 
     #[Route(path: '/settings', name: 'approval_bundle_settings', methods: ['GET', 'POST'])]

@@ -1,88 +1,130 @@
 {% extends '@Approval/layout.html.twig' %}
 {% from '@Approval/macros.html.twig' import status_color_class %}
+{% import "macros/datatables.html.twig" as tables %}
 
 {% block report_title %}{{ report_title|trans }}{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        tr.table-section-header td {
+            font-weight: bold;
+            padding: 15px 10px;
+        }
+
+        tr.table-section-header h3 {
+            margin: 0;
+        }
+    </style>
+{% endblock %}
+
 {% block report %}
+    {{ tables.actions(all_rows_datatable) }}
+    {{ tables.header(all_rows_datatable) }}
+
+    {% set sortedColumns = all_rows_datatable.sortedColumnNames %}
+
     {% if past_rows is not empty %}
-        <h3 class="mt-4 ps-3">{{ 'table.past_weeks'|trans }}</h3>
-
-        <table class="table table-vcenter table-hover dataTable">
-            <thead>
-            <tr>
-                <th>{{ 'table.approve_user'|trans }}</th>
-                <th>{{ 'table.approve_week'|trans }}</th>
-                <th>{{ 'table.approve_status'|trans }}</th>
-                <th class="actions"></th>
-            </tr>
-
-            {% for row in past_rows %}
-                <tr class="{{ status_color_class(row['status']) }}">
-                    <td>{{ row['user'] }}</td>
-                    <td>{{ row['week'] }}</td>
-                    <td>{{ row['status']|trans }}</td>
-                    <td class="actions">
-                        <a class="btn btn-default" style="font-weight: bold;"
-                           href="{{ path('approval_bundle_report', {'user':row['userId'], 'date': row['startDate']}) }}">
-                            <i class="fas fa-1x fa-eye"></i>
-                        </a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </thead>
-        </table>
-    {% endif %}
-
-    <h3 class="mt-4 ps-3">{{ 'table.current_week'|trans }}</h3>
-
-    <table class="table table-vcenter table-hover dataTable">
-        <thead>
-        <tr>
-            <th>{{ 'table.approve_user'|trans }}</th>
-            <th>{{ 'table.approve_week'|trans }}</th>
-            <th>{{ 'table.approve_status'|trans }}</th>
-            <th class="actions"></th>
+        <tr class="table-section-header">
+            <td colspan="{{ sortedColumns|length }}">
+                <h3>{{ 'table.past_weeks'|trans }}</h3>
+            </td>
         </tr>
-        {% for row in current_rows %}
-            <tr class="{{ status_color_class(row['status']) }}">
-                <td>{{ row['user'] }}</td>
-                <td>{{ row['week'] }}</td>
-                <td>{{ row['status']|trans }}</td>
-                <td class="actions">
-                    <a class="btn btn-default" style="font-weight: bold;"
-                       href="{{ path('approval_bundle_report', {'user':row['userId'], 'date': row['startDate']}) }}">
-                        <i class="fas fa-eye"></i>
-                    </a>
-                </td>
-            </tr>
+        {% for entry in past_rows %}
+            {{ block('datatable_row') }}
         {% endfor %}
-        </thead>
-    </table>
-
-    {% if future_rows is not empty %}                                
-        <h3 class="mt-4 ps-3">{{ 'table.future_week'|trans }}</h3>
-        <table class="table table-vcenter table-hover dataTable">
-            <thead>
-            <tr>
-                <th>{{ 'table.approve_user'|trans }}</th>
-                <th>{{ 'table.approve_week'|trans }}</th>
-                <th>{{ 'table.approve_status'|trans }}</th>
-                <th class="actions"></th>
-            </tr>
-            {% for row in future_rows %}
-                <tr class="{{ status_color_class(row['status']) }}">
-                    <td>{{ row['user'] }}</td>
-                    <td>{{ row['week'] }}</td>
-                    <td>{{ row['status']|trans }}</td>
-                    <td class="actions">
-                        <a class="btn btn-default" style="font-weight: bold;"
-                          href="{{ path('approval_bundle_report', {'user':row['userId'], 'date': row['startDate']}) }}">
-                            <i class="fas fa-eye"></i>
-                        </a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </thead>
-        </table>
     {% endif %}
+
+    {% if current_rows is not empty %}
+        <tr class="table-section-header">
+            <td colspan="{{ sortedColumns|length }}">
+                <h3>{{ 'table.current_week'|trans }}</h3>
+            </td>
+        </tr>
+        {% for entry in current_rows %}
+            {{ block('datatable_row') }}
+        {% endfor %}
+    {% endif %}
+
+    {% if future_rows is not empty %}
+        <tr class="table-section-header">
+            <td colspan="{{ sortedColumns|length }}">
+                <h3>{{ 'table.future_week'|trans }}</h3>
+            </td>
+        </tr>
+        {% for entry in future_rows %}
+            {{ block('datatable_row') }}
+        {% endfor %}
+    {% endif %}
+
+    {{ tables.footer(all_rows_datatable) }}
+{% endblock %}
+
+{% block datatable_row %}
+    <tr class="{{ status_color_class(entry['status']) }}">
+        {% for column, data in sortedColumns %}
+            {{ block('datatable_column') }}
+        {% endfor %}
+    </tr>
+{% endblock %}
+
+{% block datatable_column %}
+    <td class="{{ tables.class(all_rows_datatable, column) }}">
+    {% if column == 'user' %}
+        {{ entry['user'] }}
+    {% elseif column == 'week' %}
+        {{ entry['week'].label }}
+    {% elseif column == 'status' %}
+        {{ entry['status']|trans }}
+    {% elseif column == 'actions' %}
+        <a class="btn btn-default" style="font-weight: bold;"
+            href="{{ path('approval_bundle_report', {'user':entry['userId'], 'date': entry['startDate']}) }}">
+                <i class="fas fa-1x fa-eye"></i>
+        </a>
+    {% endif %}
+    </td>
+{% endblock %}
+
+{% block javascripts %}
+   {{ parent() }}
+    <script>
+        let kimaiInstance = null;
+        
+        document.addEventListener('kimai.initialized', function(e) {
+            kimaiInstance = e.detail.kimai;
+        });
+    
+        document.addEventListener('kimai.reloadedContent', function() {
+            if (kimaiInstance) {
+                const formSelectPlugin = kimaiInstance.getPlugin('form-select');
+                const searchForm = document.querySelector('form.searchform');
+                
+                if (formSelectPlugin && searchForm) {
+                    formSelectPlugin.activateForm(searchForm);
+                }
+            }
+        });
+
+        // Override Kimai's default DESC sorting behavior
+        document.body.addEventListener('click', (event) => {
+            if (!event.target.matches('th.sortable')) {
+                return;
+            }
+            const isSorted = event.target.classList.contains('sorting_asc') || 
+                           event.target.classList.contains('sorting_desc');
+            if (!isSorted) {
+                event.stopImmediatePropagation();
+                
+                const orderBy = event.target.dataset['order'];
+                const formSelector = 'form.searchform';
+                
+                document.querySelector(formSelector + ' #orderBy').value = orderBy;
+                document.querySelector(formSelector + ' #order').value = 'ASC';
+                
+                document.querySelector(formSelector + ' #orderBy').dispatchEvent(new Event('change'));
+                document.querySelector(formSelector + ' #order').dispatchEvent(new Event('change'));
+                document.dispatchEvent(new Event('filter-change'));
+            }
+        }, true);
+    </script>
 {% endblock %}

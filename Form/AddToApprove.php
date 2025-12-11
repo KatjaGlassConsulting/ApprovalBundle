@@ -32,11 +32,17 @@ class AddToApprove extends AbstractType
             'width' => false
         ]);
 
+        $choices = [];
+        foreach ($this->approvalRepository->getWeeks($options['user']) as $w) {
+            $w->value = $w->value->format('Y-m-d');
+            $choices[] = $w;
+        }
+
         $builder->add('week', ChoiceType::class, [
             'label' => 'agendaWeek',
             'required' => true,
             'multiple' => true,
-            'choices' => $this->approvalRepository->getWeeks($options['user']),
+            'choices' => $choices,
             'choice_value' => 'value',
             'choice_label' => 'label'
         ]);
