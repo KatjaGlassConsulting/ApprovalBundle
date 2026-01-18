@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.3
+
+- new feature: Added configuration to hide approved approvals
+- new feature: New sorting and filtering options for the to_approve endpoint
+- fix: break time issues error occured in rare cases
+
+
 ## 2.2.4
 
 - new feature: Expected duration display can now be toggled to omit display - thanks to Luis Antonio Galvez Bommer for this change!
