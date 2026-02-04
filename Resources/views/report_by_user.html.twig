@@ -44,7 +44,7 @@
                     </a>
                 {% endif %}
                     {% if (status == 'submitted') and (user.id != currentUser or canManageHimself) %}
-                    <a href="{{ path('approve',{'approveId':approveId,'user':user.id,'date':current|date('Y-m-d')}) }}" class="btn btn-default btn-create" title="{{ 'tooltip.approve'|trans }}">
+                    <a id="approveButton" href="{{ path('approve',{'approveId':approveId,'user':user.id,'date':current|date('Y-m-d')}) }}" class="btn btn-default btn-create" title="{{ 'tooltip.approve'|trans }}">
                         <i class="fa fa-1x fa-check-circle"></i>
                     </a>
                     <a id="deniedButton" class="btn btn-default btn-create closeModal" title="{{ 'tooltip.reject'|trans }}" data-bs-toggle="modal" data-bs-target="#deniedMessage">
@@ -234,6 +234,11 @@
             </table>
         </div>
     {% endif %}
+    <div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; justify-content: center; align-items: center;">
+         <div class="spinner-border text-success" role="status" style="width: 3rem; height: 3rem; border-width: 0.4rem;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
@@ -244,6 +249,14 @@
         if (userForm !== null) {
             userForm.addEventListener('change', (event) => {
                 userForm.submit();
+            });
+        }
+
+        const approveButton = document.getElementById("approveButton");
+        if (approveButton !== null) {
+            approveButton.addEventListener("click", (event) => {
+                const loadingOverlay = document.getElementById("loadingOverlay");
+                loadingOverlay.style.display = "flex";
             });
         }
 
