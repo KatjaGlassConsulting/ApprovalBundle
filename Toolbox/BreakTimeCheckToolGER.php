@@ -60,8 +60,9 @@ class BreakTimeCheckToolGER
         foreach ($timesheets as $timesheet) {
             if (
                 \in_array($timesheet->getBegin()->format('Y-m-d'), $offdays) &&
-                ($errors[$timesheet->getBegin()->format('Y-m-d')] == null ||
-                    \in_array($this->translator->trans('error.work_offdays'), $errors[$timesheet->getBegin()->format('Y-m-d')]) == false)
+                (array_key_exists($timesheet->getBegin()->format('Y-m-d'), $errors) &&
+                    ($errors[$timesheet->getBegin()->format('Y-m-d')] == null ||
+                        \in_array($this->translator->trans('error.work_offdays'), $errors[$timesheet->getBegin()->format('Y-m-d')]) == false))
             ) {
                 $errors[$timesheet->getBegin()->format('Y-m-d')][] = $this->translator->trans('error.work_offdays');
             }
@@ -101,6 +102,7 @@ class BreakTimeCheckToolGER
             }
             $blockEnd = $timesheet->getEnd()->getTimestamp();
             if ($blockEnd - $blockStart > $sixHoursInSeconds) {
+
                 if (
                     array_key_exists($timesheet->getBegin()->format('Y-m-d'), $errors) && ($errors[$timesheet->getBegin()->format('Y-m-d')] == null ||
                         \in_array($this->translator->trans('error.six_hours_without_stop_break'), $errors[$timesheet->getBegin()->format('Y-m-d')]) == false)

@@ -15,11 +15,61 @@
         tr.table-section-header h3 {
             margin: 0;
         }
+
+        #to-approve-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
     </style>
 {% endblock %}
 
 {% block report %}
-    {{ tables.actions(all_rows_datatable) }}
+    <div id="to-approve-actions">
+        {{ tables.actions(all_rows_datatable) }}
+        <button class="btn btn-default" id="auto-approve-button" data-bs-toggle="modal" data-bs-target="#autoApproveConfirmationMessage">{{ 'table.auto_approve'|trans}}</button>
+    </div>
+    <div class="modal fade" id="autoApproveConfirmationMessage" tabindex="-1" aria-labelledby="autoApproveConfirmationLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="autoApproveConfirmationLabel">{{ 'table.auto_approve'|trans}}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>{{ 'table.auto_approve_confirm'|trans({'%count%': weeks_submitted}) }}</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="{{path('auto_approve')}}" class="btn btn-primary pull-left" id="autoApproveLink">{{ 'action.save'|trans }}</a>
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">{{ 'action.close'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="autoApproveResultMessage" tabindex="-1" aria-labelledby="autoApproveResultLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="autoApproveResultLabel">{{ 'table.auto_approve'|trans}}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{ 'table.auto_approve_result'|trans({
+                            '%success%': auto_approve_success,
+                            '%fail%': auto_approve_fail
+                        }) }}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">{{ 'action.close'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{ tables.header(all_rows_datatable) }}
 
     {% set sortedColumns = all_rows_datatable.sortedColumnNames %}
@@ -71,6 +121,12 @@
 {% block datatable_column %}
     <td class="{{ tables.class(all_rows_datatable, column) }}">
     {% if column == 'user' %}
+        {% if entry['hasErrors'] %}
+        <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+      title="{{ 'table.has_errors_tooltip'|trans }}">
+            <i class="fa fa-1x fa-exclamation-circle" style="color: red"></i>
+        </span>
+        {% endif %}
         {{ entry['user'] }}
     {% elseif column == 'week' %}
         {{ entry['week'].label }}
@@ -126,5 +182,38 @@
                 document.dispatchEvent(new Event('filter-change'));
             }
         }, true);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const modal = document.getElementById('autoApproveResultMessage');
+            const closeBtns = modal?.querySelectorAll('[data-bs-dismiss="modal"]');
+
+            const hasResult = urlParams.has('auto_approve_success') && urlParams.has('auto_approve_fail');
+
+
+            if (hasResult && modal) {
+                modal.classList.add('show');
+                modal.setAttribute('aria-modal', 'true');
+                modal.setAttribute('aria-hidden', 'false');
+                modal.style.display = 'block';
+                document.body.classList.add('modal-open');
+
+                urlParams.delete('auto_approve_success');
+                urlParams.delete('auto_approve_fail');
+                const newUrl = `${location.pathname}?${urlParams.toString()}`;
+                history.replaceState({}, '', newUrl);
+            }
+
+            closeBtns?.forEach(btn => btn.addEventListener('click', () => {
+                if (document.activeElement) {
+                    document.activeElement.blur();
+                }
+                modal.classList.remove('show');
+                modal.removeAttribute('aria-modal');
+                modal.setAttribute('aria-hidden', 'true');
+                modal.style.display = 'none';
+                document.body.classList.remove('modal-open');
+            }));
+        });
     </script>
 {% endblock %}

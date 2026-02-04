@@ -19,6 +19,7 @@ use KimaiPlugin\ApprovalBundle\Entity\Approval;
 use KimaiPlugin\ApprovalBundle\Entity\ApprovalHistory;
 use KimaiPlugin\ApprovalBundle\Entity\ApprovalStatus;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
+use KimaiPlugin\ApprovalBundle\Repository\Query\ApprovalQuery;
 use KimaiPlugin\ApprovalBundle\Settings\ApprovalSettingsInterface;
 use KimaiPlugin\ApprovalBundle\Toolbox\Formatting;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
@@ -780,6 +781,109 @@ class ApprovalRepository extends ServiceEntityRepository
         }
 
         return $parseToViewArray;
+    }
+
+    public function getUserApprovalsFiltered(?array $users, ApprovalQuery $query, $startDate = null)
+    {
+        if (count($users) == 0) {
+            return [];
+        }
+
+        $usersId = array_map(function ($user) {
+            return $user->getId();
+        }, $users);
+
+        $approval_workflow_start = $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_WORKFLOW_START);
+        if ($approval_workflow_start == '') {
+            $approval_workflow_start = '0000-01-01';
+        } else {
+            $approval_workflow_start = (new DateTime($approval_workflow_start))->modify('-7 day')->format('Y-m-d');
+        }
+
+        if ($startDate !== null) {
+            $start = $startDate;
+        } else {
+            $start = $approval_workflow_start;
+        }
+
+        $dateRangeStart = $query->getBegin() ?? null;
+        $dateRangeEnd = $query->getEnd() ?? null;
+        $searchTerm = $query->getSearchTerm();
+
+
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder()
+            ->select('ap')
+            ->from(Approval::class, 'ap')
+            ->join('ap.user', 'u')
+            ->join('ap.history', 'ah')
+            ->join('ah.status', 'ast')
+            ->andWhere($em->getExpressionBuilder()->in('u.id', $usersId))
+            ->andWhere("ast.name = '" . ApprovalStatus::SUBMITTED . "'")
+            ->andWhere('ap.startDate >= :begin')
+            ->setParameter('begin', $start);
+
+        if ($dateRangeStart !== null) {
+            $qb->andWhere('ap.startDate >= :dateRangeStart')
+                ->setParameter('dateRangeStart', $dateRangeStart);
+        }
+
+        if ($dateRangeEnd !== null) {
+            $qb->andWhere('ap.endDate <= :dateRangeEnd')
+                ->setParameter('dateRangeEnd', $dateRangeEnd);
+        }
+
+        $approvedListFiltered = $qb
+            ->getQuery()
+            ->getResult();
+
+        $this->parseHistoryToOneElement($approvedListFiltered);
+
+        if ($searchTerm !== null && !empty($searchTerm->getSearchTerm())) {
+            $searchParts = $searchTerm->getParts();
+            $approvedListFiltered = array_filter(
+                $approvedListFiltered,
+                function ($item) use ($searchParts) {
+                    foreach ($searchParts as $part) {
+                        $term = mb_strtolower($part->getTerm());
+                        $matchedInItem = false;
+
+                        $userName = mb_strtolower($item->getUser()->getUsername() ?? '');
+                        if (str_contains($userName, $term)) {
+                            $matchedInItem = true;
+                        }
+
+                        $userAlias = mb_strtolower($item->getUser()->getAlias() ?? '');
+                        if (str_contains($userAlias, $term)) {
+                            $matchedInItem = true;
+                        }
+
+                        $weekLabel = mb_strtolower($this->formatting->parseDate($item->getStartDate()) ?? '');
+                        if (str_contains($weekLabel, $term)) {
+                            $matchedInItem = true;
+                        }
+
+                        if (!$matchedInItem) {
+                            return false;
+                        }
+
+                    }
+                    return true;
+                }
+            );
+        }
+        $approvedListFiltered = array_filter(
+            $approvedListFiltered,
+            function ($item) {
+                $status = mb_strtolower($item->getHistory()[0]->getStatus()->getName() ?? '');
+                if ($status === mb_strtolower(ApprovalStatus::SUBMITTED)) {
+                    return true;
+                }
+                return false;
+            }
+        );
+
+        return $approvedListFiltered;
     }
 
     private function getLastHistory(Approval $item)

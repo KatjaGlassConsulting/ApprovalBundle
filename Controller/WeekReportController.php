@@ -38,6 +38,7 @@ use KimaiPlugin\ApprovalBundle\Repository\ApprovalTimesheetRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalWorkdayHistoryRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ReportRepository;
 use KimaiPlugin\ApprovalBundle\Repository\Query\ApprovalQuery;
+use KimaiPlugin\ApprovalBundle\Service\ApprovalDataService;
 use KimaiPlugin\ApprovalBundle\Toolbox\BreakTimeCheckToolGER;
 use KimaiPlugin\ApprovalBundle\Toolbox\Formatting;
 use KimaiPlugin\ApprovalBundle\Toolbox\SecurityTool;
@@ -65,7 +66,8 @@ class WeekReportController extends BaseApprovalController
         private TimesheetRepository $timesheetRepository,
         private ApprovalTimesheetRepository $approvalTimesheetRepository,
         private BreakTimeCheckToolGER $breakTimeCheckToolGER,
-        private ReportRepository $reportRepository
+        private ReportRepository $reportRepository,
+        private ApprovalDataService $approvalDataService
     ) {
     }
 
@@ -176,135 +178,59 @@ class WeekReportController extends BaseApprovalController
             return $this->redirectToRoute('approval_bundle_to_approve');
         }
 
-        if ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY) == '1') {
-            $users = $this->getUsers(true);
-        } else {
-            $users = $this->getUsers(false);
-        }
+        $request->getSession()->set('query', $query);
 
-        $warningNoUsers = false;
-        if (empty($users)) {
-            $warningNoUsers = true;
+        $users = $this->getUsersForApproval();
+        $warningNoUsers = empty($users);
+
+        if ($warningNoUsers) {
             $users = [$this->getUser()];
         }
 
-        $allRows = $this->approvalRepository->findAllWeek($users);
-
-        if ($this->settingsTool->getBooleanConfiguration(ConfigEnum::APPROVAL_HIDE_APPROVED_NY, false)) {
-            $allRows = $this->approvalRepository->filterWeeksNotApproved($allRows);
-        }
-
-        $selectedUsers = $query->getUsers();
-        if (!empty($selectedUsers)) {
-            $selectedUserIds = array_map(fn(User $user) => $user->getId(), $selectedUsers);
-            $allRows = array_filter(
-                $allRows,
-                function ($row) use ($selectedUserIds) {
-                    return in_array($row['userId'], $selectedUserIds);
-                }
-            );
-        }
-
-        $dateRange = $query->getDateRange();
-        if ($dateRange !== null && $dateRange->getBegin() !== null && $dateRange->getEnd() !== null) {
-            $begin = $dateRange->getBegin();
-            $end = $dateRange->getEnd();
-
-            $allRows = array_filter(
-                $allRows,
-                function ($row) use ($begin, $end) {
-                    $weekStart = $row['week']->value;
-                    $weekEnd = (clone $weekStart)->modify('+6 days');
-                    return ($weekStart >= $begin && $weekStart <= $end) ||
-                        ($weekEnd >= $begin && $weekEnd <= $end);
-                }
-            );
-        }
-
-        $selectedStatus = $query->getStatus();
-        if (!empty($selectedStatus)) {
-            $allRows = array_filter(
-                $allRows,
-                function ($row) use ($selectedStatus) {
-                    return in_array($row['status'], $selectedStatus);
-                }
-            );
-        }
-
-        $searchTerm = $query->getSearchTerm();
-        if ($searchTerm !== null && !empty($searchTerm->getSearchTerm())) {
-
-            $searchParts = $searchTerm->getParts();
-
-            $allRows = array_filter(
-                $allRows,
-                function ($row) use ($searchParts) {
-                    foreach ($searchParts as $part) {
-                        $term = mb_strtolower($part->getTerm());
-                        $matchedInRow = false;
-
-                        $userName = mb_strtolower($row['user']);
-                        if (str_contains($userName, $term)) {
-                            $matchedInRow = true;
-                        }
-
-                        $weekLabel = mb_strtolower($row['week']->label ?? '');
-                        if (str_contains($weekLabel, $term)) {
-                            $matchedInRow = true;
-                        }
-
-                        $status = mb_strtolower($row['status']);
-                        if (str_contains($status, $term)) {
-                            $matchedInRow = true;
-                        }
-
-                        if (!$matchedInRow) {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-            );
-        }
-
+        $allRows = $this->approvalDataService->fetchAndFilterApprovalRows($query, $users);
+        $allRows = $this->approvalDataService->enrichRowsWithErrors($allRows);
         $allRows = $this->sortArrayByQuery($allRows, $query);
 
-        $pastRows = [];
-        $currentRows = [];
-        $futureRows = [];
-        $currentWeek = (new DateTime('now'))->modify('next monday')->modify('-2 week')->format('Y-m-d');
-        $futureWeek = (new DateTime('now'))->modify('next monday')->modify('-1 week')->format('Y-m-d');
-        foreach ($allRows as $row) {
-            if ($row['startDate'] >= $futureWeek) {
-                $futureRows[] = $row;
-            } elseif ($row['startDate'] >= $currentWeek) {
-                $currentRows[] = $row;
-            } else {
-                $pastRows[] = $row;
-            }
-        }
+        [$pastRows, $currentRows, $futureRows] = $this->approvalDataService->categorizeRowsByWeek($allRows);
         $pastRows = $this->approvalRepository->filterPastWeeksNotApproved($pastRows);
 
-        $allRowsDataTable = new DataTable('approval_all_entries', $query);
-        $allRowsDataTable->deactivateConfiguration();
-        $allRowsDataTable->addColumn("user");
-        $allRowsDataTable->addColumn("week");
-        $allRowsDataTable->addColumn("status");
-        $allRowsDataTable->addColumn("actions", ['class' => 'actions alwaysVisible']);
-
-        $allRowsAdapter = new ArrayAdapter($allRows);
-        $allRowsPagination = new Pagination($allRowsAdapter);
-        $allRowsDataTable->setPagination($allRowsPagination);
-        $allRowsDataTable->setSearchForm($form);
+        $weeksSubmitted = $this->approvalDataService->countSubmittedWeeks($allRows);
+        $dataTable = $this->buildDataTable($query, $allRows, $form);
 
         return $this->render('@Approval/to_approve.html.twig', [
             'current_tab' => 'to_approve',
-            'all_rows_datatable' => $allRowsDataTable,
+            'all_rows_datatable' => $dataTable,
             'past_rows' => $pastRows,
             'current_rows' => $currentRows,
             'future_rows' => $futureRows,
+            'weeks_submitted' => $weeksSubmitted,
+            'auto_approve_success' => $request->query->getInt('auto_approve_success', 0),
+            'auto_approve_fail' => $request->query->getInt('auto_approve_fail', 0),
             'warningNoUsers' => $warningNoUsers
         ] + $this->getDefaultTemplateParams($this->settingsTool));
+    }
+
+    private function getUsersForApproval(): array
+    {
+        $includeSelf = $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY) == '1';
+        return $this->getUsers($includeSelf);
+    }
+
+    private function buildDataTable(ApprovalQuery $query, array $rows, FormInterface $form): DataTable
+    {
+        $dataTable = new DataTable('approval_all_entries', $query);
+        $dataTable->deactivateConfiguration();
+        $dataTable->addColumn("user");
+        $dataTable->addColumn("week");
+        $dataTable->addColumn("status");
+        $dataTable->addColumn("actions", ['class' => 'actions alwaysVisible']);
+
+        $adapter = new ArrayAdapter($rows);
+        $pagination = new Pagination($adapter);
+        $dataTable->setPagination($pagination);
+        $dataTable->setSearchForm($form);
+
+        return $dataTable;
     }
 
     protected function getToolbarForm(ApprovalQuery $query): FormInterface
