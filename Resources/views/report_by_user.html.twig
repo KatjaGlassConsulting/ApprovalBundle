@@ -4,6 +4,10 @@
 
 {% block report_title %}{{ report_title|trans }}{% endblock %}
 
+{% set lastStatus = approve|last %}
+{% set penultimateStatus = approve|length > 1 ? approve[approve|length - 2] : null %}
+
+
 {% block report %}
     {% if approvePreviousWeeksMessage and approvePreviousWeeksMessage < (current | date_format('Y-m-d')) %}
         {{ widgets.callout('danger', 'warning.add_to_approve_previous_weeks'|trans) }}
@@ -18,7 +22,11 @@
     {% endif %}
 
     <div class="card mb-4">
-        <div class="card-body {{ status_color_class(status) }}">
+        <div class="card-body {%- if penultimateStatus and penultimateStatus['status'] == 'denied' and lastStatus and lastStatus['status'] == 'not_submitted' %}
+            bg-danger
+        {%- else %}
+            {{ status_color_class(status) }}
+        {%- endif %}">
             {{ form_start(form, {'attr': {'class': 'form-inline', 'id': 'user_approval_form'}}) }}
             <div class="btn-list w-100">
             {% if form.date is defined %}
