@@ -121,7 +121,7 @@
 {% block datatable_column %}
     <td class="{{ tables.class(all_rows_datatable, column) }}">
     {% if column == 'user' %}
-        {% if entry['hasErrors'] %}
+        {% if entry['hasErrors'] is defined and entry['hasErrors'] %}
         <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
       title="{{ 'table.has_errors_tooltip'|trans }}">
             <i class="fa fa-1x fa-exclamation-circle" style="color: red"></i>

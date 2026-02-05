@@ -188,7 +188,9 @@ class WeekReportController extends BaseApprovalController
         }
 
         $allRows = $this->approvalDataService->fetchAndFilterApprovalRows($query, $users);
-        $allRows = $this->approvalDataService->enrichRowsWithErrors($allRows);
+        if ($this->settingsTool->isBreakTimeCheckActive()) {
+            $allRows = $this->approvalDataService->enrichRowsWithErrors($allRows);
+        }
         $allRows = $this->sortArrayByQuery($allRows, $query);
 
         [$pastRows, $currentRows, $futureRows] = $this->approvalDataService->categorizeRowsByWeek($allRows);
