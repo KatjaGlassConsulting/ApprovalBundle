@@ -126,6 +126,18 @@
         <source>stats.duration_actual</source>
         <target>Erfasste Dauer</target>
       </trans-unit>
+      <trans-unit id="xK9mL2pQ" resname="table.auto_approve_confirm">
+        <source>table.auto_approve_confirm</source>
+        <target>Möchten Sie %count% Wochen automatisch genehmigen?</target>
+      </trans-unit>
+      <trans-unit id="R7kLm2Qf" resname="table.auto_approve_result">
+        <source>table.auto_approve_result</source>
+        <target>%success% Wochen automatisch genehmigt, %fail% fehlgeschlagen.</target>
+      </trans-unit>
+      <trans-unit id="aB3cD_eF" resname="table.auto_approve">
+        <source>table.auto_approve</source>
+        <target>Automatische Genehmigung</target>
+      </trans-unit>
       <trans-unit id="YDDLiv4" resname="table.past_weeks">
         <source>table.past_weeks</source>
         <target>Vergangene Wochen</target>
@@ -137,6 +149,10 @@
       <trans-unit id="dKDLQKN" resname="table.future_week">
         <source>table.future_week</source>
         <target>Kommende Wochen</target>
+      </trans-unit>
+      <trans-unit id="Qx7pLmA2" resname="table.has_errors_tooltip">
+        <source>table.has_errors_tooltip</source>
+        <target>Hat Errors</target>
       </trans-unit>
       <trans-unit id="oTr3M.5" resname="table.approve_user">
         <source>table.approve_user</source>
