@@ -925,7 +925,6 @@ class ApprovalRepository extends ServiceEntityRepository
         if (empty($allRows)) {
             return null;
         }
-
         // Otherwise, when there are $allRows, get the one which would be next (located in the future)
         $prevWeekDay = end($allRows)['startDate'];
         $prev = strtotime($prevWeekDay . ' + 7 days');
@@ -934,6 +933,36 @@ class ApprovalRepository extends ServiceEntityRepository
         }
 
         return date('Y-m-d', $prev);
+    }
+
+    /**
+     * @param array<int> $userIds
+     * @return Approval[]
+     */
+    public function findApprovedForUsersAndDateRange(array $userIds, \DateTimeInterface $begin, \DateTimeInterface $end): array
+    {
+        if ($userIds === []) {
+            return [];
+        }
+
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder()
+            ->select('ap')
+            ->from(Approval::class, 'ap')
+            ->join('ap.user', 'u')
+            ->join('ap.history', 'ah')
+            ->join('ah.status', 'ast')
+            ->andWhere($em->getExpressionBuilder()->in('u.id', ':userIds'))
+            ->andWhere('ap.startDate <= :end')
+            ->andWhere('ap.endDate >= :begin')
+            ->andWhere('ah.date = (SELECT MAX(ah2.date) FROM ' . ApprovalHistory::class . ' ah2 WHERE ah2.approval = ap)')
+            ->andWhere('ast.name = :status')
+            ->setParameter('userIds', $userIds)
+            ->setParameter('begin', $begin->format('Y-m-d'))
+            ->setParameter('end', $end->format('Y-m-d'))
+            ->setParameter('status', ApprovalStatus::APPROVED);
+
+        return $qb->getQuery()->getResult();
     }
 
     public function updateExpectedActualDurationForUser(User $user)
