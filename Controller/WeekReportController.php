@@ -490,22 +490,25 @@ class WeekReportController extends BaseApprovalController
             $this->settingsTool->isInConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY) == false or
             $this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_BREAKCHECKS_NY)
         ) {
-            $errors = $this->breakTimeCheckToolGER->checkBreakTime($timesheets);
+            $breakTimeErrors = $this->breakTimeCheckToolGER->checkBreakTimeDetails($timesheets);
+            $errors = $breakTimeErrors['days'];
+            $timesheetErrors = $breakTimeErrors['timesheets'];
         } else {
             $errors = [];
+            $timesheetErrors = [];
         }
 
         return [
             array_reduce(
                 $timesheets,
-                function ($result, Timesheet $timesheet) use ($errors) {
+                function ($result, Timesheet $timesheet) use ($timesheetErrors) {
                     $date = $timesheet->getBegin()->format('Y-m-d');
                     if ($timesheet->getEnd()) {
                         $result[] = [
                             'date' => $date,
                             'begin' => $timesheet->getBegin()->format('H:i'),
                             'end' => $timesheet->getEnd()->format('H:i'),
-                            'error' => \array_key_exists($date, $errors) ? $errors[$date] : [],
+                            'error' => $timesheetErrors[spl_object_id($timesheet)] ?? [],
                             'duration' => $timesheet->getDuration(),
                             'customerName' => $timesheet->getProject()->getCustomer()->getName(),
                             'projectName' => $timesheet->getProject()->getName(),
