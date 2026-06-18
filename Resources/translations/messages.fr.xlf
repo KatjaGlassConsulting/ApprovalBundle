@@ -258,7 +258,6 @@
         <source>error.more_than_ten_hours_worked</source>
         <target>Vous avez travaillé plus de 10 heures !</target>
       </trans-unit>
-
       <trans-unit id="fRH6l.V" resname="error.nine_hours_without_break">
         <source>error.nine_hours_without_break</source>
         <target>Vous avez travaillé plus de 9 heures sans prendre de pause de 45 minutes !</target>

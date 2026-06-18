@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.4
+
+- new translation: Frensh
+- new translation: Spain
+- fix: missing ConfigEnum
+
 ## 2.3
 
 - new feature: Added configuration to hide approved approvals

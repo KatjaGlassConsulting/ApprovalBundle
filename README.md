@@ -171,7 +171,7 @@ E.g.
 
 Many thanks go to [HMR-IT](https://www.hmr-it.de) which had been highly involved in this project at the beginning.
 
-Additional thanks go to Milo Ivir for additional translations and to Kevin Papst for code enhancements and the update to use this bundle with less pre-requisites.
+Additional thanks go to Kevin Papst for code enhancements and the update to use this bundle with less pre-requisites, to Milo Ivir, sinresaca and mfutech for additional translations and to omani for a fix.
 
 Many thanks to Kevin Papst, Vitor Mattos and Sam MacLennan for working on the migration of the ApprovalBundle supporting Kimai 2.
 
