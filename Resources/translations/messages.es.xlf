@@ -196,7 +196,7 @@
       </trans-unit>
       <trans-unit id="vRqh2y2" resname="api.wrongUser">
         <source>api.wrongUser</source>
-        <target>User doesn\'t exists</target>
+        <target>El usuario no existe</target>
       </trans-unit>
       <trans-unit id="97NkKd5" resname="api.noOvertimeSetting">
         <source>api.noOvertimeSetting</source>
