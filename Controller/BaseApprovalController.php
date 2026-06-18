@@ -30,7 +30,8 @@ class BaseApprovalController extends AbstractController
             'showToApproveTab' => $this->canManageAllPerson() || $this->canManageTeam(),
             'showSettings' => $this->isGranted('ROLE_SUPER_ADMIN'),
             'showSettingsWorkdays' => $this->isGranted('ROLE_SUPER_ADMIN') && $settingsTool->isOvertimeCheckActive(),
-            'showOvertime' => $settingsTool->isOvertimeCheckActive()
+            'showOvertime' => $settingsTool->isOvertimeCheckActive(),
+            'showWorkingTimeActCheckGER' => $this->isGranted('ROLE_SUPER_ADMIN') && $settingsTool->isBreakTimeCheckActive(),
         ];
     }
 }

@@ -2,6 +2,7 @@
 namespace KimaiPlugin\ApprovalBundle\Repository\Query;
 
 use App\Entity\User;
+use App\Form\Model\DateRange;
 use App\Repository\Query\BaseQuery;
 use App\Repository\Query\DateRangeTrait;
 use App\Repository\Query\DateRangeInterface;
@@ -14,7 +15,7 @@ class ApprovalQuery extends BaseQuery implements DateRangeInterface
     /**
      * @var array<User>
      */
-    public array $users = [];
+    private array $users = [];
     private array $weeks = [];
     private array $statuses = [];
 
@@ -26,6 +27,8 @@ class ApprovalQuery extends BaseQuery implements DateRangeInterface
         ]);
 
         $this->setAllowedOrderColumns(self::APPROVAL_ORDER_ALLOWED);
+
+        $this->dateRange = new DateRange();
     }
 
     public function getStatus(): array
@@ -44,5 +47,10 @@ class ApprovalQuery extends BaseQuery implements DateRangeInterface
     public function getUsers(): array
     {
         return array_values($this->users);
+    }
+
+    public function setUsers(array $users): void
+    {
+        $this->users = $users;
     }
 }

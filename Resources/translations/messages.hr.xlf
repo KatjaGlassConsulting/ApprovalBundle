@@ -122,6 +122,18 @@
         <source>stats.duration_actual</source>
         <target>Stvarno trajanje</target>
       </trans-unit>
+      <trans-unit id="aB3cD_eF" resname="table.auto_approve">
+        <source>table.auto_approve</source>
+        <target>Automatsko odobrenje</target>
+      </trans-unit>
+      <trans-unit id="xK9mL2pQ" resname="table.auto_approve_confirm">
+        <source>table.auto_approve_confirm</source>
+        <target>Želite li automatski odobriti %count% tjedana?</target>
+      </trans-unit>
+      <trans-unit id="R7kLm2Qf" resname="table.auto_approve_result">
+        <source>table.auto_approve_result</source>
+        <target>%success% tjedana automatski odobreno, %fail% neuspješno.</target>
+      </trans-unit>
       <trans-unit id="YDDLiv4" resname="table.past_weeks">
         <source>table.past_weeks</source>
         <target>Prošli tjedan</target>
@@ -133,6 +145,30 @@
       <trans-unit id="dKDLQKN" resname="table.future_week">
         <source>table.future_week</source>
         <target>Nadolazećih tjedana</target>
+      </trans-unit>
+      <trans-unit id="Qx7pLmA2" resname="table.has_errors_tooltip">
+        <source>table.has_errors_tooltip</source>
+        <target>Ima greške</target>
+      </trans-unit>
+      <trans-unit id="pQ8mNx4" resname="menu.working_time_act_ger_check">
+        <source>menu.working_time_act_ger_check</source>
+        <target>Provjera članka 3 Zakona o radnom vremenu</target>
+      </trans-unit>
+      <trans-unit id="nR7jVqW" resname="label.compliance">
+        <source>label.compliance</source>
+        <target>Usklađenost</target>
+      </trans-unit>
+      <trans-unit id="vK2rTyL" resname="label.average_6months">
+        <source>label.average_6months</source>
+        <target>Prosječno 6 mjeseci</target>
+      </trans-unit>
+      <trans-unit id="hB9wXsF" resname="label.average_24weeks">
+        <source>label.average_24weeks</source>
+        <target>Prosječno 24 tjedna</target>
+      </trans-unit>
+      <trans-unit id="zM3cDgP" resname="label.average_daterange">
+        <source>label.average_daterange</source>
+        <target>Prosječni raspon datuma</target>
       </trans-unit>
       <trans-unit id="oTr3M.5" resname="table.approve_user">
         <source>table.approve_user</source>

@@ -21,11 +21,23 @@ class BreakTimeCheckToolGER
 
     /**
      * @param array<Timesheet> $timesheets
-     * @return array
+     * @return array<string, array<int, string>>
      */
     public function checkBreakTime(array $timesheets): array
     {
-        $errors = [];
+        return $this->checkBreakTimeDetails($timesheets)['days'];
+    }
+
+    /**
+     * @param array<Timesheet> $timesheets
+     * @return array{days: array<string, array<int, string>>, timesheets: array<int, array<int, string>>}
+     */
+    public function checkBreakTimeDetails(array $timesheets): array
+    {
+        $errors = [
+            'days' => [],
+            'timesheets' => [],
+        ];
 
         $customerId = (int) $this->settingsTool->getConfiguration(ConfigEnum::CUSTOMER_FOR_FREE_DAYS, null);
         if ($customerId !== null) {
@@ -55,29 +67,25 @@ class BreakTimeCheckToolGER
         return $this->addEmptyErrorsDays($timesheets, $errors);
     }
 
-    private function checkOffdayWork($timesheets, &$errors, $offdays)
+    private function checkOffdayWork(array $timesheets, array &$errors, array $offdays): void
     {
         foreach ($timesheets as $timesheet) {
-            if (
-                \in_array($timesheet->getBegin()->format('Y-m-d'), $offdays) &&
-                ($errors[$timesheet->getBegin()->format('Y-m-d')] == null ||
-                    \in_array($this->translator->trans('error.work_offdays'), $errors[$timesheet->getBegin()->format('Y-m-d')]) == false)
-            ) {
-                $errors[$timesheet->getBegin()->format('Y-m-d')][] = $this->translator->trans('error.work_offdays');
+            if (\in_array($timesheet->getBegin()->format('Y-m-d'), $offdays, true)) {
+                $this->addError($errors, $timesheet, $this->translator->trans('error.work_offdays'));
             }
         }
     }
 
-    private function checkSundayWork($timesheets, &$errors)
+    private function checkSundayWork(array $timesheets, array &$errors): void
     {
         foreach ($timesheets as $timesheet) {
             if ($timesheet->getBegin()->format('w') == 0) {
-                $errors[$timesheet->getBegin()->format('Y-m-d')][] = $this->translator->trans('error.work_on_sunday');
+                $this->addError($errors, $timesheet, $this->translator->trans('error.work_on_sunday'));
             }
         }
     }
 
-    private function checkSixHoursWithoutBreak($timesheets, &$errors)
+    private function checkSixHoursWithoutBreak(array $timesheets, array &$errors): void
     {
         $sixHoursInSeconds = 6 * 60 * 60;
         $thirtyMinutesBreakInSeconds = 30 * 60;
@@ -101,17 +109,12 @@ class BreakTimeCheckToolGER
             }
             $blockEnd = $timesheet->getEnd()->getTimestamp();
             if ($blockEnd - $blockStart > $sixHoursInSeconds) {
-                if (
-                    array_key_exists($timesheet->getBegin()->format('Y-m-d'), $errors) && ($errors[$timesheet->getBegin()->format('Y-m-d')] == null ||
-                        \in_array($this->translator->trans('error.six_hours_without_stop_break'), $errors[$timesheet->getBegin()->format('Y-m-d')]) == false)
-                ) {
-                    $errors[$timesheet->getBegin()->format('Y-m-d')][] = $this->translator->trans('error.six_hours_without_stop_break');
-                }
+                $this->addError($errors, $timesheet, $this->translator->trans('error.six_hours_without_stop_break'));
             }
         }
     }
 
-    private function checkSixHoursAndBreak($timesheets, &$errors)
+    private function checkSixHoursAndBreak(array $timesheets, array &$errors): void
     {
         $sixHoursInSeconds = 6 * 60 * 60;
         $thirtyMinutesBreakInSeconds = 30 * 60;
@@ -119,7 +122,7 @@ class BreakTimeCheckToolGER
         $this->checkHoursBreak($sixHoursInSeconds, $thirtyMinutesBreakInSeconds, 'error.six_hours_without_break', $timesheets, $errors);
     }
 
-    private function checkHoursBreak($hoursInSeconds, $breakInSeconds, $translationKey, $timesheets, &$errors)
+    private function checkHoursBreak(int $hoursInSeconds, int $breakInSeconds, string $translationKey, array $timesheets, array &$errors): void
     {
         $minDurationForBreak = 15 * 60;
         $result = [];
@@ -150,14 +153,14 @@ class BreakTimeCheckToolGER
 
                 if ($result[$hash]['duration'] > $hoursInSeconds) {
                     if ($result[$hash]['breakDuration'] < $breakInSeconds) {
-                        $errors[$timesheet->getBegin()->format('Y-m-d')][] = $this->translator->trans($translationKey);
+                        $this->addError($errors, $timesheet, $this->translator->trans($translationKey));
                     }
                 }
             }
         }
     }
 
-    private function checkNineHoursWithoutBreak($timesheets, &$errors)
+    private function checkNineHoursWithoutBreak(array $timesheets, array &$errors): void
     {
         $nineHoursInSeconds = 9 * 60 * 60;
         $fortyFiveMinutesBreakInSeconds = 45 * 60;
@@ -165,7 +168,7 @@ class BreakTimeCheckToolGER
         $this->checkHoursBreak($nineHoursInSeconds, $fortyFiveMinutesBreakInSeconds, 'error.nine_hours_without_break', $timesheets, $errors);
     }
 
-    private function checkMoreThanTenHours($timesheets, &$errors)
+    private function checkMoreThanTenHours(array $timesheets, array &$errors): void
     {
         $tenHoursInSeconds = 10 * 60 * 60;
         $result = [];
@@ -180,7 +183,7 @@ class BreakTimeCheckToolGER
             }
 
             if ($result[$hash]['duration'] > $tenHoursInSeconds) {
-                $errors[$timesheet->getBegin()->format('Y-m-d')][] = $this->translator->trans('error.more_than_ten_hours_worked');
+                $this->addError($errors, $timesheet, $this->translator->trans('error.more_than_ten_hours_worked'));
             }
         }
     }
@@ -193,7 +196,7 @@ class BreakTimeCheckToolGER
                 if (\array_key_exists($timesheet->getUser()->getId(), $result)) {
                     $result[$timesheet->getUser()->getId()][] = $timesheet;
                 } else {
-                    $result[$timesheet->getUser()->getId()] = [];
+                    $result[$timesheet->getUser()->getId()] = [$timesheet];
                 }
 
                 return $result;
@@ -210,10 +213,10 @@ class BreakTimeCheckToolGER
                     $timesheetOne = $value[$i]->getEnd()->getTimestamp();
                     $timesheetTwo = $value[$i + 1]->getBegin()->getTimestamp();
                     if ($value[$i]->getEnd() == null) {
-                        $errors[$value[$i + 1]->getBegin()->format('Y-m-d')][] = $this->translator->trans('error.no_end_date');
+                        $this->addError($errors, $value[$i + 1], $this->translator->trans('error.no_end_date'));
                     }
                     if (abs($timesheetOne - $timesheetTwo) < 11 * 60 * 60 && $value[$i]->getEnd()->format('Y-m-d') < $value[$i + 1]->getEnd()->format('Y-m-d')) {    // 11h * 60 * 60 -> to seconds
-                        $errors[$value[$i + 1]->getBegin()->format('Y-m-d')][] = $this->translator->trans('error.less_than_eleven_hours_off');
+                        $this->addError($errors, $value[$i + 1], $this->translator->trans('error.less_than_eleven_hours_off'));
                     }
                 }
             }
@@ -223,16 +226,44 @@ class BreakTimeCheckToolGER
     /**
      * @param array $timesheets
      * @param array $errors
-     * @return array
+     * @return array{days: array<string, array<int, string>>, timesheets: array<int, array<int, string>>}
      */
     protected function addEmptyErrorsDays(array $timesheets, array $errors): array
     {
         foreach ($timesheets as $timesheet) {
-            if (!\array_key_exists($timesheet->getBegin()->format('Y-m-d'), $errors)) {
-                $errors[$timesheet->getBegin()->format('Y-m-d')] = [];
-            }
+            $this->initializeErrorEntries($errors, $timesheet);
         }
 
         return $errors;
+    }
+
+    private function addError(array &$errors, Timesheet $timesheet, string $message): void
+    {
+        $this->initializeErrorEntries($errors, $timesheet);
+
+        $date = $timesheet->getBegin()->format('Y-m-d');
+        $timesheetId = spl_object_id($timesheet);
+
+        if (!\in_array($message, $errors['days'][$date], true)) {
+            $errors['days'][$date][] = $message;
+        }
+
+        if (!\in_array($message, $errors['timesheets'][$timesheetId], true)) {
+            $errors['timesheets'][$timesheetId][] = $message;
+        }
+    }
+
+    private function initializeErrorEntries(array &$errors, Timesheet $timesheet): void
+    {
+        $date = $timesheet->getBegin()->format('Y-m-d');
+        $timesheetId = spl_object_id($timesheet);
+
+        if (!\array_key_exists($date, $errors['days'])) {
+            $errors['days'][$date] = [];
+        }
+
+        if (!\array_key_exists($timesheetId, $errors['timesheets'])) {
+            $errors['timesheets'][$timesheetId] = [];
+        }
     }
 }

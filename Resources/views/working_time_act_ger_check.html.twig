@@ -1,0 +1,91 @@
+{% extends '@Approval/layout.html.twig' %}
+{% from '@Approval/macros.html.twig' import status_color_class %}
+{% import "macros/datatables.html.twig" as tables %}
+
+{% block report_title %}{{ report_title|trans }}{% endblock %}
+
+
+{% block report %}
+     
+     {{ tables.actions(dataTable) }}
+
+     {{ tables.header(dataTable) }}
+
+     {% set sortedColumns = dataTable.sortedColumnNames %}
+
+     {% for entry in dataTable %}
+          <tr>
+               {% for column, data in sortedColumns %}
+                    <td class="{{ tables.class(dataTable, column) }}">
+                         {% if column == 'user' %}
+                              {{ entry['user'] }}
+                         {% elseif column == 'label.average_6months' and entry['average_6months'] is defined %}
+                              {{ entry['average_6months'] }}
+                         {% elseif column == 'label.average_24weeks' and entry['average_24weeks'] is defined %}
+                              {{ entry['average_24weeks'] }}
+                         {% elseif column == 'label.average_daterange' and entry['average_daterange'] is defined %}
+                              {{ entry['average_daterange'] }}
+                         {% elseif column == 'label.compliance' and entry['compliance'] is defined %}
+                              {% if entry['compliance'] %}
+                                   <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="{{ 'compliance.yes'|trans }}">
+                                        <i class="fa fa-check-circle text-success"></i>
+                                   </span>
+                              {% else %}
+                                   <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="{{ 'compliance.no'|trans }}">
+                                        <i class="fa fa-times-circle text-danger"></i>
+                                   </span>
+                              {% endif %}
+                         {% endif %}
+                    </td>
+               {% endfor %}
+          </tr>
+     {% endfor %}
+
+     
+     {{ tables.footer(dataTable) }}
+
+{% endblock %}
+
+{% block javascripts %}
+   {{ parent() }}
+    <script>
+        let kimaiInstance = null;
+        
+        document.addEventListener('kimai.initialized', function(e) {
+            kimaiInstance = e.detail.kimai;
+        });
+    
+        document.addEventListener('kimai.reloadedContent', function() {
+            if (kimaiInstance) {
+                const formSelectPlugin = kimaiInstance.getPlugin('form-select');
+                const searchForm = document.querySelector('form.searchform');
+                
+                if (formSelectPlugin && searchForm) {
+                    formSelectPlugin.activateForm(searchForm);
+                }
+            }
+        });
+
+        // Override Kimai's default DESC sorting behavior
+        document.body.addEventListener('click', (event) => {
+            if (!event.target.matches('th.sortable')) {
+                return;
+            }
+            const isSorted = event.target.classList.contains('sorting_asc') || 
+                           event.target.classList.contains('sorting_desc');
+            if (!isSorted) {
+                event.stopImmediatePropagation();
+                
+                const orderBy = event.target.dataset['order'];
+                const formSelector = 'form.searchform';
+                
+                document.querySelector(formSelector + ' #orderBy').value = orderBy;
+                document.querySelector(formSelector + ' #order').value = 'ASC';
+                
+                document.querySelector(formSelector + ' #orderBy').dispatchEvent(new Event('change'));
+                document.querySelector(formSelector + ' #order').dispatchEvent(new Event('change'));
+                document.dispatchEvent(new Event('filter-change'));
+            }
+        }, true);
+    </script>
+{% endblock %}

@@ -37,4 +37,11 @@
             </a>
         </li>
     {% endif %}
+    {% if showWorkingTimeActCheckGER %}
+        <li class="nav-item">
+            <a class="nav-link{% if current_tab == "working_time_act_ger_check" %} active{% endif %}" href="{{ path('approval_bundle_working_time_act_ger') }}">
+                {{ 'menu.working_time_act_ger_check' |trans }}
+            </a>
+        </li>
+    {% endif %}
 </ul>
