@@ -53,6 +53,15 @@
             "composer validate --strict --no-check-version",
             "@codestyle-check",
             "@phpstan"
+        ],
+        "tests": "@php ../../../vendor/bin/phpunit",
+        "tests-unit": "@php ../../../vendor/bin/phpunit --exclude-group integration",
+        "tests-integration": "@php ../../../vendor/bin/phpunit --group integration",
+        "tests-testdox": "@php ../../../vendor/bin/phpunit --testdox",
+        "tests-coverage": "@php ../../../vendor/bin/phpunit --coverage-text --coverage-html .phpunit.coverage",
+        "db-setup": [
+            "@php ../../../bin/console kimai:reset:test --env=test --no-interaction",
+            "@php ../../../bin/console kimai:bundle:approval:install --env=test --no-interaction"
         ]
     },
     "require-dev": {
@@ -60,6 +69,7 @@
         "kimai/kimai": "dev-main",
         "phpstan/phpstan": "^1.0",
         "phpstan/phpstan-doctrine": "^1.0",
-        "phpstan/phpstan-symfony": "^1.0"
+        "phpstan/phpstan-symfony": "^1.0",
+        "phpunit/phpunit": "^10.0"
     }
 }

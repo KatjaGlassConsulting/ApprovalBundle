@@ -11,6 +11,7 @@ services:
             - '../../Migrations/'
             - '../../Resources/'
             - '../../Scripts/'
+            - '../../Tests/'
 
     KimaiPlugin\ApprovalBundle\API\:
         resource: '../../API'

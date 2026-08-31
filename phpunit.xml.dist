@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         backupGlobals="false"
+         colors="true"
+         bootstrap="Tests/bootstrap.php"
+         cacheDirectory=".phpunit.cache/"
+         displayDetailsOnTestsThatTriggerDeprecations="true"
+         displayDetailsOnTestsThatTriggerErrors="true"
+         displayDetailsOnTestsThatTriggerNotices="true"
+         displayDetailsOnTestsThatTriggerWarnings="true"
+         displayDetailsOnPhpunitDeprecations="true">
+  <php>
+    <ini name="error_reporting" value="-1"/>
+    <ini name="max_execution_time" value="-1"/>
+    <ini name="intl.default_locale" value="en_US"/>
+    <ini name="date.timezone" value="Europe/Vienna"/>
+    <!-- Kimai skips plugins in the test env, so we boot our own kernel -->
+    <env name="KERNEL_CLASS" value="KimaiPlugin\ApprovalBundle\Tests\ApprovalTestKernel" force="true"/>
+    <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak"/>
+    <env name="APP_ENV" value="test" force="true"/>
+    <env name="APP_DEBUG" value="0" force="true"/>
+    <env name="APP_SECRET" value="5a79a1c866efef9ca1800f971d689f3e" force="true"/>
+    <!-- same test database as Kimai core, see <kimai>/phpunit.xml.dist -->
+    <env name="DATABASE_URL" value="mysql://kimai2_test:kimai2_test@127.0.0.1:3306/kimai2_test?charset=utf8mb4&amp;serverVersion=10.5.8-MariaDB"/>
+    <env name="CORS_ALLOW_ORIGIN" value="^https?://localhost(:[0-9]+)?$"/>
+    <env name="MAILER_URL" value="null://null"/>
+    <env name="MAILER_FROM" value="kimai@example.com"/>
+  </php>
+  <testsuites>
+    <testsuite name="ApprovalBundle">
+      <directory>Tests/</directory>
+    </testsuite>
+  </testsuites>
+  <extensions>
+    <!-- wraps every test in a transaction that is rolled back afterwards -->
+    <bootstrap class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"/>
+  </extensions>
+  <source>
+    <include>
+      <directory suffix=".php">.</directory>
+    </include>
+    <exclude>
+      <directory suffix=".php">Migrations/</directory>
+      <directory suffix=".php">Resources/</directory>
+      <directory suffix=".php">Tests/</directory>
+      <directory suffix=".php">vendor/</directory>
+    </exclude>
+  </source>
+</phpunit>

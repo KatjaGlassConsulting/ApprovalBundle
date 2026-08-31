@@ -1,0 +1,8 @@
+# keep development-only files out of the release archive that is uploaded to the Kimai store
+/Tests/           export-ignore
+/.github/         export-ignore
+/phpunit.xml.dist export-ignore
+/phpstan.neon     export-ignore
+/.php-cs-fixer.dist.php export-ignore
+/.gitattributes   export-ignore
+/.gitignore       export-ignore
