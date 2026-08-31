@@ -21,10 +21,12 @@ use KimaiPlugin\ApprovalBundle\Repository\LockdownRepository;
 use KimaiPlugin\ApprovalBundle\Toolbox\EmailTool;
 use KimaiPlugin\ApprovalBundle\Toolbox\SettingsTool;
 use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route(path: '/approval')]
 class ApprovalController extends BaseApprovalController
@@ -59,6 +61,7 @@ class ApprovalController extends BaseApprovalController
     }
 
     #[Route(path: '/approve/{approveId}', defaults: ['approveId' => 0], name: 'approve', methods: ['GET'])]
+    #[IsGranted(new Expression("is_granted('view_team_approval') or is_granted('view_all_approval')"))]
     public function approveAction(Request $request, string $approveId): RedirectResponse
     {
         $approval = $this->approvalRepository->find($approveId);
@@ -91,6 +94,7 @@ class ApprovalController extends BaseApprovalController
     }
 
     #[Route(path: '/not_approved/{approveId}', defaults: ['approveId' => 0], name: 'not_approved', methods: ['GET'])]
+    #[IsGranted(new Expression("is_granted('view_team_approval') or is_granted('view_all_approval')"))]
     public function notApprovedAction(Request $request, string $approveId): RedirectResponse
     {
         $approval = $this->approvalRepository->find($approveId);
@@ -117,6 +121,7 @@ class ApprovalController extends BaseApprovalController
     }
 
     #[Route(path: '/denied/{approveId}', defaults: ['approveId' => 0], name: 'denied', methods: ['GET'])]
+    #[IsGranted(new Expression("is_granted('view_team_approval') or is_granted('view_all_approval')"))]
     public function deniedAction(Request $request, string $approveId): RedirectResponse
     {
         $approval = $this->approvalRepository->find($approveId);

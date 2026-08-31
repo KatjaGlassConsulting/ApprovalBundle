@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.5
+
+- additional access checks for approval management actions
+- add tests
+
+
 ## 2.4
 
 - new translation: Frensh

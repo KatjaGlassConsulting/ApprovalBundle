@@ -69,9 +69,53 @@ php ../../../bin/console kimai:reset:test --env=test --no-interaction
 php ../../../bin/console kimai:bundle:approval:install --env=test --no-interaction
 ```
 
-`bin/console` reads `<kimai>/.env`, not `phpunit.xml.dist`, so the test `DATABASE_URL` has to be
-configured there (or exported into the environment) before running the setup. Afterwards the DAMA
-extension wraps every test in a transaction and rolls it back, so the data stays clean.
+### DANGER: point the test environment at a test database first
+
+`kimai:reset:test` runs `doctrine:schema:drop --force --full-database`. `bin/console` reads the
+dotenv files, **not** `phpunit.xml.dist`, so without a test-specific override it resolves
+`DATABASE_URL` from `<kimai>/.env` - the real installation - and destroys it.
+
+Create `<kimai>/.env.test.local` (git-ignored, only read for `APP_ENV=test`):
+
+```
+DATABASE_URL=mysql://kimai2_test:kimai2_test@127.0.0.1:3306/kimai2_test?charset=utf8mb4&serverVersion=10.5.8-MariaDB
+```
+
+and create that database once:
+
+```sql
+CREATE DATABASE IF NOT EXISTS `kimai2_test`;
+CREATE USER IF NOT EXISTS `kimai2_test`@`localhost` IDENTIFIED BY 'kimai2_test';
+GRANT ALL ON `kimai2_test`.* TO `kimai2_test`@`localhost`;
+```
+
+Two guards enforce this and must not be removed:
+
+* `Tests/guard-test-database.php` - first step of `composer db-setup`
+* `Tests/bootstrap.php` - refuses to start the suite at all against a non-`_test` database
+
+### What db-setup does
+
+```
+composer db-setup
+```
+
+1. verifies the target database name ends with `_test`
+2. `kimai:reset:test` - drops the schema, runs all 71 core migrations, loads Kimai's
+   deterministic test data (8 users incl. `john_user`, `tony_teamlead`, `anna_admin`,
+   1 customer, 1 project, 1 activity, 1 team)
+3. runs the 9 ApprovalBundle migrations, which create the 6 plugin tables and seed the four
+   `kimai2_ext_approval_status` rows
+
+Step 3 deliberately does **not** use `kimai:bundle:approval:install`: Kimai's Kernel skips plugin
+discovery in the `test` environment, so that command is not registered there. The migrations are
+executed directly via `Migrations/approval.yaml` instead.
+
+The script is idempotent - re-run it whenever migrations change. Afterwards the DAMA extension
+wraps every test in a transaction and rolls it back, so data stays clean between tests.
+
+Do **not** use `kimai:reset:dev`: it generates large amounts of random Faker data, which makes
+assertions non-deterministic. `kimai:reset:test` is the fixed, minimal set the core suite uses.
 
 ## Writing tests
 

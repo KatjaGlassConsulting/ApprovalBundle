@@ -59,10 +59,7 @@
         "tests-integration": "@php ../../../vendor/bin/phpunit --group integration",
         "tests-testdox": "@php ../../../vendor/bin/phpunit --testdox",
         "tests-coverage": "@php ../../../vendor/bin/phpunit --coverage-text --coverage-html .phpunit.coverage",
-        "db-setup": [
-            "@php ../../../bin/console kimai:reset:test --env=test --no-interaction",
-            "@php ../../../bin/console kimai:bundle:approval:install --env=test --no-interaction"
-        ]
+        "db-setup": "@php Tests/setup-test-database.php"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
