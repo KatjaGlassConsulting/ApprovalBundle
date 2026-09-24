@@ -149,7 +149,13 @@ class BreakTimeCheckToolGER
                 }
 
                 if ($result[$hash]['duration'] > $hoursInSeconds) {
-                    if ($result[$hash]['breakDuration'] < $breakInSeconds) {
+                    if (
+                        $result[$hash]['breakDuration'] < $breakInSeconds &&
+                        (
+                            !\array_key_exists($timesheet->getBegin()->format('Y-m-d'), $errors) ||
+                            \in_array($this->translator->trans($translationKey), $errors[$timesheet->getBegin()->format('Y-m-d')]) == false
+                        )
+                    ) {
                         $errors[$timesheet->getBegin()->format('Y-m-d')][] = $this->translator->trans($translationKey);
                     }
                 }
@@ -202,12 +208,13 @@ class BreakTimeCheckToolGER
             });
 
             for ($i = 0; $i < \count($value) - 1; $i++) {
-                if ($value[$i]->getEnd() != null && $value[$i + 1]->getEnd() != null) {
+                if ($value[$i]->getEnd() == null) {
+                    $errors[$value[$i + 1]->getBegin()->format('Y-m-d')][] = $this->translator->trans('error.no_end_date');
+                    continue;
+                }
+                if ($value[$i + 1]->getEnd() != null) {
                     $timesheetOne = $value[$i]->getEnd()->getTimestamp();
                     $timesheetTwo = $value[$i + 1]->getBegin()->getTimestamp();
-                    if ($value[$i]->getEnd() == null) {
-                        $errors[$value[$i + 1]->getBegin()->format('Y-m-d')][] = $this->translator->trans('error.no_end_date');
-                    }
                     if (abs($timesheetOne - $timesheetTwo) < 11 * 60 * 60 && $value[$i]->getEnd()->format('Y-m-d') < $value[$i + 1]->getEnd()->format('Y-m-d')) {    // 11h * 60 * 60 -> to seconds
                         $errors[$value[$i + 1]->getBegin()->format('Y-m-d')][] = $this->translator->trans('error.less_than_eleven_hours_off');
                     }
