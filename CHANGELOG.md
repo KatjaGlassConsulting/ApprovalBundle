@@ -2,11 +2,15 @@
 
 ## 2.5
 
-- additional access checks for approval management actions
 - add tests
 - new arabian translation
 - included new translation for fixed text in mail (submitted a timesheet for approval:)
-
+- additional access checks for approval management actions
+- fix: checkHoursBreak() is checking for duplicates, so it's now not available multiple time in case the issue occurs several times
+- fix: checkElevenHoursBreak() is now also checking including the very first timesheet
+- fix: checkSixHoursWithoutBreak() the error text is now added
+- fix: set an approved timesheet to unapproved is no longer possible by a teamlead (URL workaround had been possible)
+- fix: formatting of minutes <9 is fixed
 
 ## 2.4
 

@@ -144,6 +144,23 @@ class BreakTimeCheckToolGERTest extends TestCase
         self::assertSame([self::MONDAY => ['error.six_hours_without_stop_break']], $errors);
     }
 
+    public function testABreakRuleIsReportedOnlyOncePerDay(): void
+    {
+        // both records push the day over six hours without enough break time,
+        // but the message must appear only once
+        $errors = $this->createSut()->checkBreakTime([
+            $this->createTimesheet(self::MONDAY . ' 08:00', self::MONDAY . ' 14:30'),
+            $this->createTimesheet(self::MONDAY . ' 14:40', self::MONDAY . ' 16:00'),
+        ]);
+
+        self::assertSame([
+            self::MONDAY => [
+                'error.six_hours_without_stop_break',
+                'error.six_hours_without_break',
+            ],
+        ], $errors);
+    }
+
     public function testMoreThanNineHoursNeedsAFortyFiveMinuteBreak(): void
     {
         // 9.5 hours with a 30 minute break: enough for the six hour rule, not for the nine hour rule
@@ -181,6 +198,22 @@ class BreakTimeCheckToolGERTest extends TestCase
         ]);
 
         self::assertSame(['error.less_than_eleven_hours_off'], $errors[self::TUESDAY]);
+        self::assertSame([], $errors[self::MONDAY]);
+    }
+
+    public function testARunningTimesheetFollowedByAnotherOneIsReported(): void
+    {
+        // Monday was never stopped, but Tuesday already has a new record
+        $running = $this->createTimesheet(self::MONDAY . ' 08:00', self::MONDAY . ' 09:00');
+        $running->setEnd(null);
+        $running->setDuration(0);
+
+        $errors = $this->createSut()->checkBreakTime([
+            $running,
+            $this->createTimesheet(self::TUESDAY . ' 09:00', self::TUESDAY . ' 12:00'),
+        ]);
+
+        self::assertSame(['error.no_end_date'], $errors[self::TUESDAY]);
         self::assertSame([], $errors[self::MONDAY]);
     }
 
