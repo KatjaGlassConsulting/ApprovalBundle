@@ -102,8 +102,8 @@ class BreakTimeCheckToolGER
             $blockEnd = $timesheet->getEnd()->getTimestamp();
             if ($blockEnd - $blockStart > $sixHoursInSeconds) {
                 if (
-                    array_key_exists($timesheet->getBegin()->format('Y-m-d'), $errors) && ($errors[$timesheet->getBegin()->format('Y-m-d')] == null ||
-                        \in_array($this->translator->trans('error.six_hours_without_stop_break'), $errors[$timesheet->getBegin()->format('Y-m-d')]) == false)
+                    !\array_key_exists($timesheet->getBegin()->format('Y-m-d'), $errors) ||
+                    \in_array($this->translator->trans('error.six_hours_without_stop_break'), $errors[$timesheet->getBegin()->format('Y-m-d')]) == false
                 ) {
                     $errors[$timesheet->getBegin()->format('Y-m-d')][] = $this->translator->trans('error.six_hours_without_stop_break');
                 }
@@ -190,11 +190,7 @@ class BreakTimeCheckToolGER
         $reduce = array_reduce(
             $timesheets,
             function ($result, Timesheet $timesheet) {
-                if (\array_key_exists($timesheet->getUser()->getId(), $result)) {
-                    $result[$timesheet->getUser()->getId()][] = $timesheet;
-                } else {
-                    $result[$timesheet->getUser()->getId()] = [];
-                }
+                $result[$timesheet->getUser()->getId()][] = $timesheet;
 
                 return $result;
             },

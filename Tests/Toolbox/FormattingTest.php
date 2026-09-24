@@ -43,6 +43,10 @@ class FormattingTest extends TestCase
     {
         yield 'zero' => [0, '0:00'];
         yield 'below ten minutes' => [480, '0:08'];
+        yield 'nine minutes' => [540, '0:09'];
+        yield 'ten minutes' => [600, '0:10'];
+        yield 'seconds are cut off' => [590, '0:09'];
+        yield 'negative nine minutes' => [-540, '-0:09'];
         yield 'below one hour' => [3540, '0:59'];
         yield 'exactly one hour' => [3600, '1:00'];
         yield 'one hour and one minute' => [3660, '1:01'];

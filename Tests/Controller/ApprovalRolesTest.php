@@ -19,9 +19,9 @@ use Symfony\Component\HttpFoundation\Response;
  *   "Teamleads - ... approve team members weeks"
  *   "Admins - Overview & Overrule"      -> "the admin is able to reset an already approved week"
  *
- * The approve/deny/undo routes carry #[IsGranted] expressions for "view_team_approval" or
- * "view_all_approval"; ApprovalExtension::prepend() grants the first to ROLE_TEAMLEAD and both
- * to ROLE_SUPER_ADMIN.
+ * The approve/deny routes carry #[IsGranted] expressions for "view_team_approval" or
+ * "view_all_approval", the undo route requires "view_all_approval"; ApprovalExtension::prepend()
+ * grants the first to ROLE_TEAMLEAD and both to ROLE_SUPER_ADMIN.
  *
  * @group integration
  */
@@ -72,6 +72,18 @@ class ApprovalRolesTest extends AbstractApprovalTestCase
         $this->approveWeek($approval, $this->approver);
 
         self::assertTrue($this->client->getResponse()->isRedirect());
+        self::assertSame(ApprovalStatus::APPROVED, $this->lastStatusOf($approval));
+    }
+
+    public function testATeamleadMustNotUndoAnApproval(): void
+    {
+        // documentation.md: "Once an approval is accepted, the teamlead is not able to "undo" that acceptance."
+        $approval = $this->submitWeek();
+        $this->approveWeek($approval, $this->approver);
+
+        $this->undoApproval($approval, $this->approver);
+
+        self::assertSame(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode());
         self::assertSame(ApprovalStatus::APPROVED, $this->lastStatusOf($approval));
     }
 

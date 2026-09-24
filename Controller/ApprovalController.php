@@ -94,7 +94,7 @@ class ApprovalController extends BaseApprovalController
     }
 
     #[Route(path: '/not_approved/{approveId}', defaults: ['approveId' => 0], name: 'not_approved', methods: ['GET'])]
-    #[IsGranted(new Expression("is_granted('view_team_approval') or is_granted('view_all_approval')"))]
+    #[IsGranted('view_all_approval')]
     public function notApprovedAction(Request $request, string $approveId): RedirectResponse
     {
         $approval = $this->approvalRepository->find($approveId);

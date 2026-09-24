@@ -36,11 +36,10 @@ final class Formatting
     public function formatDuration(int $duration): string
     {
         $prefix = $duration < 0 ? '-' : '';
-        $mins = abs($duration) / 60;
-        $hours = floor($mins / 60);
-        $mins = $mins - ($hours * 60);
-        $preZero = $mins < 9 ? '0' : '';
+        $mins = intdiv(abs($duration), 60);
+        $hours = intdiv($mins, 60);
+        $mins = $mins % 60;
 
-        return $prefix . $hours . ':' . $preZero . $mins;
+        return \sprintf('%s%d:%02d', $prefix, $hours, $mins);
     }
 }

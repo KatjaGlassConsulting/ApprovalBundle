@@ -108,7 +108,12 @@ class BreakTimeCheckToolGERTest extends TestCase
             $this->createTimesheet(self::MONDAY . ' 08:00', self::MONDAY . ' 15:00'),
         ]);
 
-        self::assertSame([self::MONDAY => ['error.six_hours_without_break']], $errors);
+        self::assertSame([
+            self::MONDAY => [
+                'error.six_hours_without_stop_break',
+                'error.six_hours_without_break',
+            ],
+        ], $errors);
     }
 
     public function testAnInterruptionBelowFifteenMinutesDoesNotCountAsBreak(): void
@@ -119,7 +124,24 @@ class BreakTimeCheckToolGERTest extends TestCase
             $this->createTimesheet(self::MONDAY . ' 12:10', self::MONDAY . ' 15:00'),
         ]);
 
-        self::assertSame([self::MONDAY => ['error.six_hours_without_break']], $errors);
+        self::assertSame([
+            self::MONDAY => [
+                'error.six_hours_without_stop_break',
+                'error.six_hours_without_break',
+            ],
+        ], $errors);
+    }
+
+    public function testMoreThanSixHoursInOneStretchIsReportedDespiteEnoughBreakTime(): void
+    {
+        // 1h + 30 min break + 6.5h in one stretch: the day has its 30 minute break,
+        // but the second block exceeds six hours without interruption
+        $errors = $this->createSut()->checkBreakTime([
+            $this->createTimesheet(self::MONDAY . ' 07:00', self::MONDAY . ' 08:00'),
+            $this->createTimesheet(self::MONDAY . ' 08:30', self::MONDAY . ' 15:00'),
+        ]);
+
+        self::assertSame([self::MONDAY => ['error.six_hours_without_stop_break']], $errors);
     }
 
     public function testMoreThanNineHoursNeedsAFortyFiveMinuteBreak(): void
@@ -142,6 +164,7 @@ class BreakTimeCheckToolGERTest extends TestCase
 
         self::assertSame([
             self::MONDAY => [
+                'error.six_hours_without_stop_break',
                 'error.six_hours_without_break',
                 'error.nine_hours_without_break',
                 'error.more_than_ten_hours_worked',
@@ -151,12 +174,8 @@ class BreakTimeCheckToolGERTest extends TestCase
 
     public function testLessThanElevenHoursRestBetweenTwoDaysIsReported(): void
     {
-        // Monday ends at 22:00, Tuesday starts at 06:00 -> only 8 hours of rest.
-        //
-        // The first record of a user is dropped by BreakTimeCheckToolGER::checkElevenHoursBreak(),
-        // so a leading record is needed to get the Monday/Tuesday pair into the comparison.
+        // Monday ends at 22:00, Tuesday starts at 06:00 -> only 8 hours of rest
         $errors = $this->createSut()->checkBreakTime([
-            $this->createTimesheet(self::MONDAY . ' 08:00', self::MONDAY . ' 09:00'),
             $this->createTimesheet(self::MONDAY . ' 18:00', self::MONDAY . ' 22:00'),
             $this->createTimesheet(self::TUESDAY . ' 06:00', self::TUESDAY . ' 08:00'),
         ]);
