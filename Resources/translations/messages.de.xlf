@@ -109,6 +109,10 @@
       <trans-unit id="gffLvUV" resname="email.cronjob.teamleadNotSubmittedUsersTitle">
         <source>email.cronjob.teamleadNotSubmittedUsersTitle</source>
         <target>Liste der nicht eingereichten Wochen:</target>
+      </trans-unit>      
+      <trans-unit id="ArEmail1" resname="email.submitted.message">
+        <source>email.submitted.message</source>
+        <target>hat einen Stundenzettel zur Genehmigung eingereicht:</target>
       </trans-unit>
       <trans-unit id="4UTsL.X" resname="menu.settings">
         <source>menu.settings</source>

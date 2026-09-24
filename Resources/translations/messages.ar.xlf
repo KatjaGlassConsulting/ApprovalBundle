@@ -1,302 +1,298 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file date="2021-12-17T20:00:00Z" source-language="en" target-language="fr" datatype="plaintext" original="none">
+  <file date="2026-09-18T00:00:00Z" source-language="en" target-language="ar" datatype="plaintext" original="none">
     <body>
       <trans-unit id="M9qu6_Q" resname="title.approval_bundle">
         <source>title.approval_bundle</source>
-        <target>Approbation des heures</target>
+        <target>اعتماد الساعات</target>
       </trans-unit>
       <trans-unit id="32.1ITn" resname="menu.approval_bundle">
         <source>menu.approval_bundle</source>
-        <target>Approbation des heures</target>
+        <target>اعتماد الساعات</target>
       </trans-unit>
       <trans-unit id="mSorheL" resname="menu.to_approve">
         <source>menu.to_approve</source>
-        <target>À approuver</target>
+        <target>بانتظار الاعتماد</target>
       </trans-unit>
       <trans-unit id="Jpn34gg" resname="menu.report_user_week">
         <source>menu.report_user_week</source>
-        <target>Rapport des semaines approuvées</target>
+        <target>تقرير الأسابيع المعتمدة</target>
       </trans-unit>
       <trans-unit id="D8YT2co" resname="menu.settings_workday_history">
         <source>menu.settings_workday_history</source>
-        <target>Paramètres des jours ouvrés</target>
+        <target>إعدادات أيام العمل</target>
       </trans-unit>
       <trans-unit id="opwlnqi" resname="menu.report_overtime">
         <source>menu.report_overtime</source>
-        <target>Heures supplémentaires</target>
+        <target>الوقت الإضافي</target>
       </trans-unit>
       <trans-unit id="UiDe0kR" resname="menu.settings_overtime_history">
         <source>menu.settings_overtime_history</source>
-        <target>Paramètres des heures supplémentaires</target>
+        <target>إعدادات الوقت الإضافي</target>
       </trans-unit>
       <trans-unit id="CLaoXBM" resname="table.history">
         <source>table.history</source>
-        <target>Historique de</target>
+        <target>السجل لـ</target>
       </trans-unit>
       <trans-unit id="rTn3oW9" resname="table.approver">
         <source>table.approver</source>
-        <target>Approbateur</target>
+        <target>المعتمد</target>
       </trans-unit>
       <trans-unit id="0kTj.54" resname="table.status">
         <source>table.status</source>
-        <target>Statut</target>
+        <target>الحالة</target>
       </trans-unit>
       <trans-unit id="4nuv8Xg" resname="table.message">
         <source>table.message</source>
-        <target>Message</target>
+        <target>الرسالة</target>
       </trans-unit>
       <trans-unit id="1BnDRmX" resname="table.dateOfApprove">
         <source>table.dateOfApprove</source>
-        <target>Date d'approbation</target>
+        <target>تاريخ الاعتماد</target>
       </trans-unit>
       <trans-unit id="PVlmoUj" resname="email.subjectSubmitted">
         <source>email.subjectSubmitted</source>
-        <target>Demande d'approbation de feuille de temps</target>
+        <target>طلب اعتماد كشف الوقت</target>
       </trans-unit>
       <trans-unit id="GylmrH1" resname="email.subjectApproved">
         <source>email.subjectApproved</source>
-        <target>La feuille de temps a été approuvée</target>
+        <target>تم اعتماد كشف الوقت</target>
       </trans-unit>
       <trans-unit id="xR_kulD" resname="email.subjectReject">
         <source>email.subjectReject</source>
-        <target>La feuille de temps a été rejetée</target>
+        <target>تم رفض كشف الوقت</target>
       </trans-unit>
       <trans-unit id="rdM9EDv" resname="email.closedMonth">
         <source>email.closedMonth</source>
-        <target>Mois clos</target>
+        <target>شهر مغلق</target>
       </trans-unit>
       <trans-unit id="JhH.w0b" resname="email.closedMonthMessage">
         <source>email.closedMonthMessage</source>
-        <target>Le mois est entièrement approuvé - </target>
+        <target>تم اعتماد الشهر بالكامل - </target>
       </trans-unit>
       <trans-unit id="GplFCXV" resname="email.hello">
         <source>email.hello</source>
-        <target>Bonjour</target>
+        <target>مرحباً</target>
       </trans-unit>
       <trans-unit id="dYRDhPq" resname="email.approved.message">
         <source>email.approved.message</source>
-        <target>a approuvé votre feuille de temps pour la semaine </target>
+        <target>اعتمد كشف وقتك للأسبوع </target>
       </trans-unit>
       <trans-unit id="Ok8jCeM" resname="email.reject.message">
         <source>email.reject.message</source>
-        <target>a refusé votre feuille de temps pour la semaine </target>
+        <target>رفض كشف وقتك للأسبوع </target>
       </trans-unit>
       <trans-unit id="7oAiqQ6" resname="email.reason">
         <source>email.reason</source>
-        <target>Raison : </target>
+        <target>السبب: </target>
       </trans-unit>
       <trans-unit id="DuuF34p" resname="email.cronjob.adminNotSubmittedSubject">
         <source>email.cronjob.adminNotSubmittedSubject</source>
-        <target>Liste des utilisateurs non soumis</target>
+        <target>قائمة المستخدمين الذين لم يقدّموا</target>
       </trans-unit>
       <trans-unit id="jFhYeRV" resname="email.cronjob.adminNotSubmittedTitle">
         <source>email.cronjob.adminNotSubmittedTitle</source>
-        <target>Liste des utilisateurs non soumis :</target>
+        <target>قائمة المستخدمين الذين لم يقدّموا:</target>
       </trans-unit>
       <trans-unit id="L7RIsf1" resname="email.cronjob.userNotSubmittedWeeksSubject">
         <source>email.cronjob.userNotSubmittedWeeksSubject</source>
-        <target>Liste des semaines non soumises</target>
+        <target>قائمة الأسابيع غير المقدَّمة</target>
       </trans-unit>
       <trans-unit id="e3jW8Wg" resname="email.cronjob.userNotSubmittedWeeksTitle">
         <source>email.cronjob.userNotSubmittedWeeksTitle</source>
-        <target>Liste des semaines non soumises :</target>
+        <target>قائمة الأسابيع غير المقدَّمة:</target>
       </trans-unit>
       <trans-unit id="G6xTIdS" resname="email.cronjob.teamleadNotSubmittedUsersSubject">
         <source>email.cronjob.teamleadNotSubmittedUsersSubject</source>
-        <target>Liste des semaines non soumises</target>
+        <target>قائمة الأسابيع غير المقدَّمة</target>
       </trans-unit>
       <trans-unit id="gffLvUV" resname="email.cronjob.teamleadNotSubmittedUsersTitle">
         <source>email.cronjob.teamleadNotSubmittedUsersTitle</source>
-        <target>Liste des semaines non soumises :</target>
-      </trans-unit>
-      <trans-unit id="ArEmail1" resname="email.submitted.message">
-        <source>email.submitted.message</source>
-        <target>a soumis une feuille de temps pour approbation :</target>
+        <target>قائمة الأسابيع غير المقدَّمة:</target>
       </trans-unit>
       <trans-unit id="4UTsL.X" resname="menu.settings">
         <source>menu.settings</source>
-        <target>Paramètres</target>
+        <target>الإعدادات</target>
       </trans-unit>
       <trans-unit id="G_t_3Se" resname="stats.duration_total">
         <source>stats.duration_total</source>
-        <target>Durée totale</target>
+        <target>المدة الإجمالية</target>
       </trans-unit>
       <trans-unit id="C_UHtRf" resname="stats.duration_expected">
         <source>stats.duration_expected</source>
-        <target>Durée prévue</target>
+        <target>المدة المتوقعة</target>
       </trans-unit>
       <trans-unit id="wTg5hH2" resname="stats.duration_actual">
         <source>stats.duration_actual</source>
-        <target>Durée réelle</target>
+        <target>المدة الفعلية</target>
       </trans-unit>
       <trans-unit id="YDDLiv4" resname="table.past_weeks">
         <source>table.past_weeks</source>
-        <target>Semaines passées</target>
+        <target>الأسابيع السابقة</target>
       </trans-unit>
       <trans-unit id="mtGlTOm" resname="table.current_week">
         <source>table.current_week</source>
-        <target>Semaine actuelle</target>
+        <target>الأسبوع الحالي</target>
       </trans-unit>
       <trans-unit id="dKDLQKN" resname="table.future_week">
         <source>table.future_week</source>
-        <target>Semaines à venir</target>
+        <target>الأسابيع القادمة</target>
       </trans-unit>
       <trans-unit id="oTr3M.5" resname="table.approve_user">
         <source>table.approve_user</source>
-        <target>Utilisateur</target>
+        <target>المستخدم</target>
       </trans-unit>
       <trans-unit id="b659oMC" resname="table.approve_week">
         <source>table.approve_week</source>
-        <target>Semaine</target>
+        <target>الأسبوع</target>
       </trans-unit>
       <trans-unit id="cU6hKwA" resname="table.approve_status">
         <source>table.approve_status</source>
-        <target>Statut</target>
+        <target>الحالة</target>
       </trans-unit>
       <trans-unit id="e79F7vi" resname="warning.add_to_approve_previous_weeks">
         <source>warning.add_to_approve_previous_weeks</source>
-        <target>Veuillez ajouter les semaines précédentes à approuver</target>
+        <target>يرجى إضافة الأسابيع السابقة للاعتماد أولاً</target>
       </trans-unit>
       <trans-unit id="olL6IjD" resname="warning.selected_user_sunday_issue">
         <source>warning.selected_user_sunday_issue</source>
-        <target>L'utilisateur sélectionné a dimanche comme début de semaine - cela n'est pas pris en charge par le plugin d'approbation.</target>
+        <target>المستخدم المحدد لديه الأحد كبداية للأسبوع — وهذا غير مدعوم في إضافة الاعتماد.</target>
       </trans-unit>
       <trans-unit id="9WCJXXi" resname="warning.currentUserSundayIssue">
         <source>warning.currentUserSundayIssue</source>
-        <target>Le paramètre dimanche comme début de semaine est disponible - cela n'est pas pris en charge par le plugin d'approbation.</target>
+        <target>إعداد بداية الأسبوع يوم الأحد مفعّل — وهذا غير مدعوم في إضافة الاعتماد.</target>
       </trans-unit>
       <trans-unit id="4G_M.Dn" resname="submitted">
         <source>submitted</source>
-        <target>Soumis</target>
+        <target>مقدَّم</target>
       </trans-unit>
       <trans-unit id="YtbCMwA" resname="denied">
         <source>denied</source>
-        <target>Refusé</target>
+        <target>مرفوض</target>
       </trans-unit>
       <trans-unit id="IM2Tii6" resname="rejected">
         <source>rejected</source>
-        <target>Rejeté</target>
+        <target>مرفوض</target>
       </trans-unit>
       <trans-unit id="Jof4btZ" resname="approved">
         <source>approved</source>
-        <target>Approuvé</target>
+        <target>معتمد</target>
       </trans-unit>
       <trans-unit id="9GPC890" resname="not_submitted">
         <source>not_submitted</source>
-        <target>Non soumis</target>
+        <target>غير مقدَّم</target>
       </trans-unit>
       <trans-unit id="dkxLqg4" resname="label.undoMessage">
         <source>label.undoMessage</source>
-        <target>Voulez-vous restaurer le statut "Non soumis" ?</target>
+        <target>هل تريد استعادة الحالة «غير مقدَّم»؟</target>
       </trans-unit>
       <trans-unit id="bHtEnEI" resname="api.wrongTeam">
         <source>api.wrongTeam</source>
-        <target>Utilisateur non issu de votre équipe</target>
+        <target>المستخدم ليس من فريقك</target>
       </trans-unit>
       <trans-unit id="zHRxV_o" resname="api.accessDenied">
         <source>api.accessDenied</source>
-        <target>Accès refusé</target>
+        <target>الوصول مرفوض</target>
       </trans-unit>
       <trans-unit id="vRqh2y2" resname="api.wrongUser">
         <source>api.wrongUser</source>
-        <target>L'utilisateur n'existe pas</target>
+        <target>المستخدم غير موجود</target>
       </trans-unit>
       <trans-unit id="97NkKd5" resname="api.noOvertimeSetting">
         <source>api.noOvertimeSetting</source>
-        <target>Les heures supplémentaires sont désactivées dans les paramètres</target>
+        <target>الوقت الإضافي معطّل في الإعدادات</target>
       </trans-unit>
       <trans-unit id="Ty9xyW2" resname="api.alreadyExists">
         <source>api.alreadyExists</source>
-        <target>L'approbation existe déjà</target>
+        <target>طلب الاعتماد موجود مسبقاً</target>
       </trans-unit>
       <trans-unit id="WGNStcn" resname="api.add_to_approve_previous_weeks">
         <source>api.add_to_approve_previous_weeks</source>
-        <target>Veuillez ajouter les semaines précédentes à approuver</target>
+        <target>يرجى إضافة الأسابيع السابقة للاعتماد أولاً</target>
       </trans-unit>
       <trans-unit id=".HPkVRu" resname="api.noData">
         <source>api.noData</source>
-        <target>Aucune donnée pour cet utilisateur</target>
+        <target>لا توجد بيانات لهذا المستخدم</target>
       </trans-unit>
       <trans-unit id="hDVvIuT" resname="warning.noUserToApprove">
         <source>warning.noUserToApprove</source>
-        <target>Aucun utilisateur à approuver</target>
+        <target>لا يوجد مستخدمون للاعتماد</target>
       </trans-unit>
       <trans-unit id="8numka1" resname="header.date">
         <source>header.date</source>
-        <target>Date</target>
+        <target>التاريخ</target>
       </trans-unit>
       <trans-unit id="tYmRWqd" resname="header.begin">
         <source>header.begin</source>
-        <target>Début</target>
+        <target>البداية</target>
       </trans-unit>
       <trans-unit id="fcOA1xc" resname="header.end">
         <source>header.end</source>
-        <target>Fin</target>
+        <target>النهاية</target>
       </trans-unit>
       <trans-unit id="Czf447q" resname="header.duration">
         <source>header.duration</source>
-        <target>Durée</target>
+        <target>المدة</target>
       </trans-unit>
       <trans-unit id="Az.gm5S" resname="header.customer">
         <source>header.customer</source>
-        <target>Client</target>
+        <target>العميل</target>
       </trans-unit>
       <trans-unit id="Ggg5J8x" resname="header.project">
         <source>header.project</source>
-        <target>Projet</target>
+        <target>المشروع</target>
       </trans-unit>
       <trans-unit id="YoJWI9r" resname="header.activity">
         <source>header.activity</source>
-        <target>Activité</target>
+        <target>النشاط</target>
       </trans-unit>
       <trans-unit id="uIoZr6R" resname="header.description">
         <source>header.description</source>
-        <target>Description</target>
+        <target>الوصف</target>
       </trans-unit>
       <trans-unit id="0TjTcEG" resname="error.less_than_eleven_hours_off">
         <source>error.less_than_eleven_hours_off</source>
-        <target>Vous n'avez pas respecté la période de repos de 11 heures.</target>
+        <target>لم تلتزم بفترة الراحة البالغة 11 ساعة.</target>
       </trans-unit>
       <trans-unit id="CbTaeLC" resname="error.more_than_ten_hours_worked">
         <source>error.more_than_ten_hours_worked</source>
-        <target>Vous avez travaillé plus de 10 heures !</target>
+        <target>عملت أكثر من 10 ساعات!</target>
       </trans-unit>
       <trans-unit id="fRH6l.V" resname="error.nine_hours_without_break">
         <source>error.nine_hours_without_break</source>
-        <target>Vous avez travaillé plus de 9 heures sans prendre de pause de 45 minutes !</target>
+        <target>عملت أكثر من 9 ساعات دون أخذ استراحة 45 دقيقة!</target>
       </trans-unit>
       <trans-unit id="DglCyZG" resname="error.six_hours_without_break">
         <source>error.six_hours_without_break</source>
-        <target>Vous avez travaillé plus de 6 heures sans prendre de pause de 30 minutes !</target>
+        <target>عملت أكثر من 6 ساعات دون أخذ استراحة 30 دقيقة!</target>
       </trans-unit>
       <trans-unit id="MEOmY9S" resname="error.six_hours_without_stop_break">
         <source>error.six_hours_without_stop_break</source>
-        <target>Vous avez travaillé plus de 6 heures sans pause !</target>
+        <target>عملت أكثر من 6 ساعات دون استراحة!</target>
       </trans-unit>
       <trans-unit id="RQKdSVx" resname="error.work_on_sunday">
         <source>error.work_on_sunday</source>
-        <target>Vous avez travaillé le dimanche !</target>
+        <target>عملت يوم الأحد!</target>
       </trans-unit>
       <trans-unit id="UJv0FyA" resname="error.work_offdays">
         <source>error.work_offdays</source>
-        <target>Vous avez travaillé un jour de congé !</target>
+        <target>عملت في يوم عطلة!</target>
       </trans-unit>
       <trans-unit id="XanuWvg" resname="error.no_end_date">
         <source>error.no_end_date</source>
-        <target>Il n'y a pas de date de fin pour cette entrée de temps.</target>
+        <target>لا يوجد وقت انتهاء لقيد الوقت.</target>
       </trans-unit>
       <trans-unit id="0ySZ.uY" resname="label.customer_for_free_days">
         <source>label.customer_for_free_days</source>
-        <target>Client pour les jours de congé</target>
+        <target>العميل لأيام الإجازة</target>
       </trans-unit>
       <trans-unit id="3M4Epld" resname="label.email_link_url">
         <source>label.email_link_url</source>
-        <target>URL du lien e-mail</target>
+        <target>رابط البريد الإلكتروني</target>
       </trans-unit>
       <trans-unit id="voEX3bt" resname="label.workflow_start">
         <source>label.workflow_start</source>
-        <target>Date de début du workflow d'approbation</target>
+        <target>تاريخ بدء سير عمل الاعتماد</target>
       </trans-unit>
       <!-- START formatting patterns form -->
       <trans-unit id="0A0ov8D" resname="format.full_datetime">
@@ -313,153 +309,158 @@
       </trans-unit>
       <trans-unit id="U8qC3dP" resname="format.thousands_separator">
         <source>format.thousands_separator</source>
-        <target>'</target>
+        <target>,</target>
       </trans-unit>
       <!-- END formatting patterns form -->
       <!-- START month form -->
       <trans-unit id="GFYIa9S" resname="month.january">
         <source>month.january</source>
-        <target>Janvier</target>
+        <target>يناير</target>
       </trans-unit>
       <trans-unit id="jWiYJCq" resname="month.february">
         <source>month.february</source>
-        <target>Février</target>
+        <target>فبراير</target>
       </trans-unit>
       <trans-unit id="X_VvCAA" resname="month.march">
         <source>month.march</source>
-        <target>Mars</target>
+        <target>مارس</target>
       </trans-unit>
       <trans-unit id="trmIV1m" resname="month.april">
         <source>month.april</source>
-        <target>Avril</target>
+        <target>أبريل</target>
       </trans-unit>
       <trans-unit id="JeDq94m" resname="month.may">
         <source>month.may</source>
-        <target>Mai</target>
+        <target>مايو</target>
       </trans-unit>
       <trans-unit id="RsY9NcG" resname="month.june">
         <source>month.june</source>
-        <target>Juin</target>
+        <target>يونيو</target>
       </trans-unit>
       <trans-unit id="trHhJOb" resname="month.july">
         <source>month.july</source>
-        <target>Juillet</target>
+        <target>يوليو</target>
       </trans-unit>
       <trans-unit id="cRoWKY4" resname="month.august">
         <source>month.august</source>
-        <target>Août</target>
+        <target>أغسطس</target>
       </trans-unit>
       <trans-unit id="pV0rFEJ" resname="month.september">
         <source>month.september</source>
-        <target>Septembre</target>
+        <target>سبتمبر</target>
       </trans-unit>
       <trans-unit id="_U33TCM" resname="month.october">
         <source>month.october</source>
-        <target>Octobre</target>
+        <target>أكتوبر</target>
       </trans-unit>
       <trans-unit id="vYzQ1Ia" resname="month.november">
         <source>month.november</source>
-        <target>Novembre</target>
+        <target>نوفمبر</target>
       </trans-unit>
       <trans-unit id="2xCp5NT" resname="month.december">
         <source>month.december</source>
-        <target>Décembre</target>
+        <target>ديسمبر</target>
       </trans-unit>
       <!-- END month form -->
       <!-- START Tooltips for buttons -->
       <trans-unit id="qZG5IdP" resname="tooltip.description">
         <source>tooltip.description</source>
-        <target>Afficher les descriptions des activités</target>
+        <target>عرض أوصاف النشاط</target>
       </trans-unit>
       <trans-unit id="UZWxVoj" resname="tooltip.timesheets">
         <source>tooltip.timesheets</source>
-        <target>Feuilles de temps</target>
+        <target>كشوف الوقت</target>
       </trans-unit>
       <trans-unit id="0Iya7gx" resname="tooltip.history">
         <source>tooltip.history</source>
-        <target>Historique</target>
+        <target>السجل</target>
       </trans-unit>
       <trans-unit id="2i0AxI1" resname="tooltip.approve">
         <source>tooltip.approve</source>
-        <target>Approuver</target>
+        <target>اعتماد</target>
       </trans-unit>
       <trans-unit id="HVIm9.e" resname="tooltip.reject">
         <source>tooltip.reject</source>
-        <target>Rejeter</target>
+        <target>رفض</target>
       </trans-unit>
       <trans-unit id="p7q3C.O" resname="tooltip.undo">
         <source>tooltip.undo</source>
-        <target>Annuler l'approbation</target>
+        <target>التراجع عن الاعتماد</target>
       </trans-unit>
       <trans-unit id="XV.qEtm" resname="tooltip.submit">
         <source>tooltip.submit</source>
-        <target>Soumettre pour approbation</target>
+        <target>تقديم للاعتماد</target>
       </trans-unit>
       <!-- END Tooltips for buttons -->
       <trans-unit id="MMObi4p" resname="label.valid_till">
         <source>label.valid_till</source>
-        <target>Valable jusqu'au</target>
+        <target>صالح حتى</target>
       </trans-unit>
       <trans-unit id="p8UAyEF" resname="label.approval_overtime_ny">
         <source>label.approval_overtime_ny</source>
-        <target>Afficher les heures supplémentaires</target>
+        <target>عرض الوقت الإضافي</target>
       </trans-unit>
       <trans-unit id="gc2Eczk" resname="label.approval_breakchecks_ny">
         <source>label.approval_breakchecks_ny</source>
-        <target>Calculer les problèmes de pause</target>
+        <target>حساب مخالفات الاستراحة</target>
       </trans-unit>
       <trans-unit id="Mdn3yh_" resname="label.approval_include_admin_ny">
         <source>label.approval_include_admin_ny</source>
-        <target>Inclure les approbations pour les administrateurs système</target>
+        <target>تضمين اعتمادات مديري النظام</target>
       </trans-unit>
       <trans-unit id="9yM8I2U" resname="label.approval_teamlead_selfapprove_ny">
         <source>label.approval_teamlead_selfapprove_ny</source>
-        <target>Auto-approuver pour les chefs d'équipe</target>
+        <target>السماح لقائد الفريق باعتماد أسابيعه</target>
       </trans-unit>
       <trans-unit id="9yljk2U" resname="label.approval_mail_submitted_ny">
         <source>label.approval_mail_submitted_ny</source>
-        <target>Mail à la demande d'approbation</target>
+        <target>إرسال بريد عند طلب الاعتماد</target>
       </trans-unit>
       <trans-unit id="58u8I2U" resname="label.approval_mail_action_ny">
         <source>label.approval_mail_action_ny</source>
-        <target>Mail à la décision d'approbation</target>
+        <target>إرسال بريد عند قرار الاعتماد</target>
       </trans-unit>
       <trans-unit id="K7mDx9p" resname="label.approval_expected_duration_ny">
         <source>label.approval_expected_duration_ny</source>
-        <target>Afficher la durée prévue</target>
+        <target>عرض المدة المتوقعة</target>
       </trans-unit>
       <trans-unit id="hJkL2mN" resname="label.approval_hide_approved_ny">
         <source>label.approval_hide_approved_ny</source>
-        <target>Masquer les approbations approuvées</target>
+        <target>إخفاء الاعتمادات المكتملة</target>
       </trans-unit>
       <trans-unit id="NUgf0fZ" resname="description.workday_history">
         <source>description.workday_history</source>
         <target>
-          Historique du temps de travail quotidien - saisissez ici les modifications du temps de travail quotidien si nécessaire.
-          Le temps de travail quotidien saisi sera pris en compte jusqu'au jour "valable jusqu'au".
+          سجل ساعات العمل اليومية — أدخل هنا التغييرات على ساعات العمل اليومية إن وُجدت.
+          ساعات العمل اليومية المدخلة تُحتسب حتى يوم «صالح حتى».
         </target>
       </trans-unit>
       <trans-unit id="aSwuAam" resname="label.addWorkdayHistory">
         <source>label.addWorkdayHistory</source>
-        <target>Nouvel historique du temps de travail quotidien</target>
+        <target>سجل ساعات عمل يومية جديد</target>
       </trans-unit>
       <trans-unit id="qS9DJiY" resname="label.addOvertimeHistory">
         <source>label.addOvertimeHistory</source>
-        <target>Nouvel historique des heures supplémentaires</target>
+        <target>سجل وقت إضافي جديد</target>
       </trans-unit>
       <trans-unit id="ZxzEvV_" resname="label.yearly_overtime">
         <source>label.yearly_overtime</source>
-        <target>Heures supplémentaires (Année)</target>
+        <target>الوقت الإضافي (سنوي)</target>
       </trans-unit>
       <trans-unit id="As197nd" resname="label.overtime">
         <source>label.overtime</source>
-        <target>Heures supplémentaires</target>
+        <target>الوقت الإضافي</target>
       </trans-unit>
       <trans-unit id="sLVHir2" resname="description.overtime_history">
         <source>description.overtime_history</source>
         <target>
-          Historique des heures supplémentaires - si des ajustements manuels des heures supplémentaires doivent être effectués, ils peuvent être saisis ici. Le total des heures supplémentaires par an prend en compte ces valeurs positives ou négatives.
+          سجل الوقت الإضافي — إذا لزم إجراء تعديلات يدوية على الوقت الإضافي، يمكن إدخالها هنا. إجمالي الوقت الإضافي لكل سنة
+          يأخذ هذه القيم الموجبة أو السالبة في الحسبان.
         </target>
+      </trans-unit>
+      <trans-unit id="ArEmail1" resname="email.submitted.message">
+        <source>email.submitted.message</source>
+        <target>قدّم كشف وقت للاعتماد: </target>
       </trans-unit>
     </body>
   </file>

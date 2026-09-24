@@ -110,6 +110,10 @@
         <source>email.cronjob.teamleadNotSubmittedUsersTitle</source>
         <target>Lista de semanas no enviadas:</target>
       </trans-unit>
+      <trans-unit id="ArEmail1" resname="email.submitted.message">
+        <source>email.submitted.message</source>
+        <target>envió una hoja de horas para su aprobación:</target>
+      </trans-unit>
       <trans-unit id="4UTsL.X" resname="menu.settings">
         <source>menu.settings</source>
         <target>Configuración</target>
