@@ -15,9 +15,11 @@ use App\Tests\DataFixtures\TestFixture;
 use Doctrine\Persistence\ObjectManager;
 
 /**
- * Creates the two users the approval workflow needs: someone who submits a week and the
- * teamlead who approves it. Both are put into one team, otherwise the teamlead has no
- * permission to see the submitter's timesheets.
+ * Creates the three actors documentation.md describes: a user who submits a week, the teamlead
+ * who approves or denies it and an admin who may overrule an already approved week.
+ *
+ * Submitter and teamlead are put into one team, otherwise the teamlead has no permission to
+ * see the submitter's timesheets.
  *
  * Passwords are never verified in tests - AbstractControllerBaseTestCase::loginUser()
  * injects the security token directly - so a placeholder hash is enough.
@@ -26,17 +28,21 @@ final class ApprovalUserFixtures implements TestFixture
 {
     public const USERNAME_SUBMITTER = 'approval_submitter';
     public const USERNAME_APPROVER = 'approval_approver';
+    public const USERNAME_ADMIN = 'approval_admin';
 
     /**
-     * @return array{0: User, 1: User, 2: Team}
+     * @return array{0: User, 1: User, 2: User, 3: Team}
      */
     public function load(ObjectManager $manager): array
     {
         $submitter = $this->createUser(self::USERNAME_SUBMITTER, 'Sam Submitter', [User::ROLE_USER]);
         $approver = $this->createUser(self::USERNAME_APPROVER, 'Alex Approver', [User::ROLE_TEAMLEAD]);
+        // only ROLE_SUPER_ADMIN carries "view_all_approval", see ApprovalExtension::prepend()
+        $admin = $this->createUser(self::USERNAME_ADMIN, 'Andy Admin', [User::ROLE_SUPER_ADMIN]);
 
         $manager->persist($submitter);
         $manager->persist($approver);
+        $manager->persist($admin);
 
         $team = new Team('Approval test team');
         $team->addTeamlead($approver);
@@ -45,7 +51,7 @@ final class ApprovalUserFixtures implements TestFixture
 
         $manager->flush();
 
-        return [$submitter, $approver, $team];
+        return [$submitter, $approver, $admin, $team];
     }
 
     /**

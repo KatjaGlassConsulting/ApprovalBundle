@@ -1,0 +1,4 @@
+1. BreakTimeCheckToolGER::checkElevenHoursBreak() — the array_reduce at line 190 drops the first timesheet of each user ($result[$userId] = [] instead of = [$timesheet]). With only two records the 11-hour rest rule never fires. My test adds a third, filler record and says so in a comment.
+2. checkSixHoursWithoutBreak() only appends its error if the day already has an entry in $errors (array_key_exists guard, line 105), so error.six_hours_without_stop_break is effectively unreachable.
+3. documentation.md line 17 says the teamlead "is not able to undo that acceptance", but /approval/not_approved/{id} is guarded by view_team_approval or view_all_approval — a teamlead can undo via a hand-typed URL. It is only the undo button that is hidden. That's an authorization gap versus the documented intent.
+4. Formatting::formatDuration() still has the $mins < 9 off-by-one (9 minutes renders 0:9) — unchanged from before.
