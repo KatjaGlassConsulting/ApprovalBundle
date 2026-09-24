@@ -110,6 +110,10 @@
         <source>email.cronjob.teamleadNotSubmittedUsersTitle</source>
         <target>Liste des semaines non soumises :</target>
       </trans-unit>
+      <trans-unit id="ArEmail1" resname="email.submitted.message">
+        <source>email.submitted.message</source>
+        <target>a soumis une feuille de temps pour approbation :</target>
+      </trans-unit>
       <trans-unit id="4UTsL.X" resname="menu.settings">
         <source>menu.settings</source>
         <target>Paramètres</target>

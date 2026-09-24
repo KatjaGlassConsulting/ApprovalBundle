@@ -106,6 +106,10 @@
         <source>email.cronjob.teamleadNotSubmittedUsersTitle</source>
         <target>Popis neprijavljenih tjedana:</target>
       </trans-unit>
+      <trans-unit id="ArEmail1" resname="email.submitted.message">
+        <source>email.submitted.message</source>
+        <target>je poslao/la vremensku tablicu na odobrenje:</target>
+      </trans-unit>
       <trans-unit id="4UTsL.X" resname="menu.settings">
         <source>menu.settings</source>
         <target>Postavke</target>
