@@ -4,6 +4,8 @@
 
 - additional access checks for approval management actions
 - add tests
+- new arabian translation
+- included new translation for fixed text in mail (submitted a timesheet for approval:)
 
 
 ## 2.4
