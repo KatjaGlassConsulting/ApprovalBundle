@@ -60,7 +60,7 @@ class BreakTimeCheckToolGER
         foreach ($timesheets as $timesheet) {
             if (
                 \in_array($timesheet->getBegin()->format('Y-m-d'), $offdays) &&
-                ($errors[$timesheet->getBegin()->format('Y-m-d')] == null ||
+                (!\array_key_exists($timesheet->getBegin()->format('Y-m-d'), $errors) ||
                     \in_array($this->translator->trans('error.work_offdays'), $errors[$timesheet->getBegin()->format('Y-m-d')]) == false)
             ) {
                 $errors[$timesheet->getBegin()->format('Y-m-d')][] = $this->translator->trans('error.work_offdays');
